@@ -1,7 +1,10 @@
 #include "Display.hpp"
 
-#include <GLFW/glfw3.h>
 #include <iostream>
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void processInput(GLFWwindow *window);
 
 Display::Display() {
 	// glfw: initialize and configure
@@ -22,75 +25,46 @@ Display::Display() {
 	
 	// Set screenWidth to be square and the shortest side
 	if (monitorHeight < monitorWidth) {
-		screenWidth = monitorHeight;
+		windowWidth = monitorHeight;
 	}
 	else {
-		screenWidth = monitorWidth;
+		windowWidth = monitorWidth;
 	}
 
 	// glfw window creation
-	auto glWindow = glfwCreateWindow(screenWidth, screenWidth, "S2VX", NULL, NULL);
-	if (glWindow == NULL)
-	{
+	window = glfwCreateWindow(windowWidth, windowWidth, "S2VX", NULL, NULL);
+	if (window == NULL)	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 	}
-	glfwMakeContextCurrent(glWindow);
-	glfwSetFramebufferSizeCallback(glWindow, framebuffer_size_callback);
-	glfwSetCursorPosCallback(glWindow, mouse_callback);
-	glfwSetScrollCallback(glWindow, scroll_callback);
-}
+	glfwMakeContextCurrent(window);
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void Display::processInput(GLFWwindow *window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	// GLFW_DECORATED sets window position to top left corner, need to reset window to middle of screen
+	auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
+	glfwSetWindowPos(window, midX, 0);
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, deltaTime);
-}
+	// tell GLFW to capture our mouse
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void Display::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
-}
-
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void Display::mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
+	// glad: load all OpenGL function pointers
+	// ---------------------------------------
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		std::cout << "Failed to initialize GLAD" << std::endl;
 	}
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	// configure global opengl state
+	// -----------------------------
+	glEnable(GL_DEPTH_TEST);
 }
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void Display::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera.ProcessMouseScroll(yoffset);
+Display::~Display() {
+	// Hopefully this doesn't kill all windows lmaO
+	// glfw: terminate, clearing all previously allocated GLFW resources.
+	// ------------------------------------------------------------------
+	glfwTerminate();
+}
+
+
+bool Display::shouldClose() {
+	return glfwWindowShouldClose(window);
 }

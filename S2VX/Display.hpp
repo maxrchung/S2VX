@@ -1,11 +1,17 @@
 #pragma once
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <memory>
 
 class Display {
 public:
 	Display();								// default constructor
-	~Display() {};							// d'tor
+	~Display();								// d'tor
 
-	int screenWidth = -1;
+	bool shouldClose();
+
+	GLFWwindow* window = nullptr;
+	int windowWidth = -1;
 
 private:
 	// Window should not be copied/assigned/etc.
@@ -14,9 +20,4 @@ private:
 	Display& operator=(const Display&) {};	// copy-assign
 	Display(Display&&) {};					// move c'tor
 	Display& operator=(Display&&) {};		// move-assign
-
-	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-	void processInput(GLFWwindow *window);
 };
