@@ -133,6 +133,7 @@
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="S2VX.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Display.cpp" />
@@ -142,8 +143,8 @@
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="CommandsGrid.hpp" />
-    <ClInclude Include="Parameter.hpp" />
     <ClInclude Include="Element.hpp" />
+    <ClInclude Include="S2VX.hpp" />
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

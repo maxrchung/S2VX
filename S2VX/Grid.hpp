@@ -4,7 +4,7 @@
 
 class Grid : Element {
 public:
-	Grid(const std::vector<std::unique_ptr<Command>>& commands);
+	Grid(std::vector<std::unique_ptr<Command>>& commands);
 	void update(int time);
 	void draw();
 };

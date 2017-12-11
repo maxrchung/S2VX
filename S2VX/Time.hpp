@@ -1,5 +1,4 @@
-#ifndef TIME_HPP
-#define TIME_HPP
+#pragma once
 
 #include <string>
 
@@ -11,5 +10,3 @@ public:
 	int ms;
 	std::string format;
 };
-
-#endif//TIME_HPP

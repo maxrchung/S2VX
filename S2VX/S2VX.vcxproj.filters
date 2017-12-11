@@ -60,6 +60,9 @@
     <ClCompile Include="Element.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -71,9 +74,6 @@
     <ClInclude Include="Grid.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
-    <ClInclude Include="Parameter.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Element.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
@@ -82,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="CommandsGrid.hpp">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="S2VX.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
