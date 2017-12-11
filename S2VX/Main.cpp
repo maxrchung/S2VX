@@ -28,10 +28,17 @@ float lastFrame = 0.0f;
 
 #include "S2VX.hpp"
 
-int main() {
-	S2VX S2VX;
-	S2VX.run();
+int main(int argc, char** argv) {
+	if (argc != 2) {
+		std::cout << "Invalid number of arguments." << std::endl;
+	}
+	std::string script(argv[1]);
 
+	S2VX S2VX(script);
+	S2VX.run();
+}
+
+int learnOpenGL() {
 	Display display;
 	glfwSetCursorPosCallback(display.window, mouse_callback);
 	glfwSetScrollCallback(display.window, scroll_callback);
@@ -173,8 +180,7 @@ int main() {
 
 	// render loop
 	// -----------
-	while (!display.shouldClose())
-	{
+	while (!display.shouldClose()) {
 		// per-frame time logic
 		// --------------------
 		float currentFrame = glfwGetTime();

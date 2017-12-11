@@ -1,13 +1,19 @@
 #pragma once
 
-#include "Display.hpp"
+#include <string>
 
 class S2VX {
 public:
-	S2VX();
+	S2VX(const std::string& pScript);
+	~S2VX() {};
 
 	void run();
 
-	Display display;
-	bool running = true;
+	std::string script;
+private:
+	// Don't make copies of this
+	S2VX(const S2VX&) {};
+	S2VX& operator=(const S2VX&) {};
+	S2VX(S2VX&&) {};
+	S2VX& operator=(S2VX&&) {};
 };

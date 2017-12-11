@@ -4,14 +4,14 @@
 #include <vector>
 
 enum CommandType {
-	CommandGrid_ColorBack
+	Grid_ColorBack
 };
 
 // Generic class for parameters
 // The idea is that we parse a generic command down to a specific command
 class CommandParameter {
 public:
-	CommandParameter(std::string pValue, std::vector<std::string> pValues, std::vector<CommandParameter> pChildren);
+	CommandParameter(const std::string& pValue, const std::vector<std::string>& pValues, const std::vector<CommandParameter>& pChildren);
 	std::string value;
 	std::vector<std::string> values;
 	std::vector<CommandParameter> children;

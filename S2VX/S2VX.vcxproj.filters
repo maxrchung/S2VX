@@ -63,6 +63,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -84,6 +87,9 @@
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="S2VX.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

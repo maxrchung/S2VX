@@ -64,7 +64,6 @@ Display::~Display() {
 	glfwTerminate();
 }
 
-
 bool Display::shouldClose() {
 	return glfwWindowShouldClose(window);
 }
