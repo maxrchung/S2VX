@@ -1,29 +1,21 @@
 #pragma once
 
+#include "Element.hpp"
 #include <string>
 #include <vector>
 
-enum CommandType {
-	Grid_ColorBack
-};
-
-// Generic class for parameters
-// The idea is that we parse a generic command down to a specific command
-class CommandParameter {
-public:
-	CommandParameter(const std::string& pValue, const std::vector<std::string>& pValues, const std::vector<CommandParameter>& pChildren);
-	std::string value;
-	std::vector<std::string> values;
-	std::vector<CommandParameter> children;
+enum class CommandType {
+	CommandGrid_ColorBack
 };
 
 // Base class that all commands inherit from
 class Command {
 public:
-	Command(CommandType pType, int pStart, int pEnd, CommandParameter pParameter);
+	Command(CommandType pCommandType, ElementType pElementType, int pStart, int pEnd);
 
-	CommandType type;
+	CommandType commandType;
+	ElementType elementType;
+
 	int start;
 	int end;
-	CommandParameter parameter;
 };

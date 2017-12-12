@@ -93,4 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="testing.chai">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

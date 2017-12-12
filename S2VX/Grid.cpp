@@ -1,4 +1,5 @@
 #include "Grid.hpp"
+
 #include <GLFW/glfw3.h>
 
 Grid::Grid(std::vector<std::unique_ptr<Command>>& commands) 

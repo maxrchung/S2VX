@@ -3,9 +3,9 @@
 #include "Command.hpp"
 #include <glm/glm.hpp>
 
-class Grid_ColorBack : Command {
+class CommandGrid_ColorBack : public Command {
 public:
-	Grid_ColorBack(CommandType type, int start, int end, const CommandParameter& parameter);
-	glm::vec3 startColor;
-	glm::vec3 endColor;
+	CommandGrid_ColorBack(int start, int end, float startR, float startG, float startA, float startB, float endR, float endG, float endB, float endA);
+	glm::vec4 startColor;
+	glm::vec4 endColor;
 };

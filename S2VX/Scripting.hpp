@@ -12,7 +12,7 @@ public:
 	Scripting();
 	// Evaluates chaiscript
 	std::vector<std::unique_ptr<Element>> evaluate(std::string path);
-	void Grid_ColorBack(int start, int end, float startR, float startG, float startB, float endR, float endG, float endB);
+	void Grid_ColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
 
 	chaiscript::ChaiScript chai;
 	// Instance for chaiscript
