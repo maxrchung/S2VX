@@ -15,7 +15,7 @@ Display::Display() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// It is not recommended to use GLFW_FLOATING, but this is an easy way to display window over task bar
-	glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+	//glfwWindowHint(GLFW_FLOATING, GL_TRUE);
 	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 
 	auto monitor = glfwGetPrimaryMonitor();

@@ -141,7 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.hpp" />
+    <ClInclude Include="CommandType.hpp" />
     <ClInclude Include="Display.hpp" />
+    <ClInclude Include="ElementType.hpp" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="CommandsGrid.hpp" />
     <ClInclude Include="Element.hpp" />
@@ -150,7 +152,7 @@
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="testing.chai" />
+    <None Include="test.chai" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

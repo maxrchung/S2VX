@@ -10,13 +10,18 @@ class Scripting {
 public:
 	// Initializing scripting
 	Scripting();
+
+	void init();
 	// Evaluates chaiscript
 	std::vector<std::unique_ptr<Element>> evaluate(std::string path);
-	void Grid_ColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
+	void GridColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
+	void Test();
+
 
 	chaiscript::ChaiScript chai;
 	// Instance for chaiscript
+	// Guess I have to use pointer since it's being defined haHa
 	std::unique_ptr<Scripting> instance;
 
-	std::multiset<std::unique_ptr<Command>> sortedCommands;
+	std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
 };

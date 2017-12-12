@@ -11,6 +11,7 @@ void S2VX::run() {
 	Display display;
 
 	Scripting scripting;
+	scripting.init();
 	auto elements = scripting.evaluate(script);
 	 
 	float now = glfwGetTime();

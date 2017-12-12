@@ -92,9 +92,15 @@
     <ClInclude Include="Scripting.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandType.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementType.hpp">
+      <Filter>Header Files\Element</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="testing.chai">
+    <None Include="test.chai">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
