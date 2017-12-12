@@ -6,8 +6,8 @@
 Scripting::Scripting() {}
 
 void Scripting::init() {
-	instance = std::make_unique<Scripting>();
-	chai.add(chaiscript::fun(&Scripting::GridColorBack, instance.get()), "GridColorBack");
+	chai.add(chaiscript::var(this), "S2VX");
+	chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
 }
 
 void Scripting::GridColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
@@ -22,7 +22,7 @@ void Scripting::Test() {
 std::vector<std::unique_ptr<Element>> Scripting::evaluate(std::string path) {
 	sortedCommands.clear();
 	try {
-		chai.eval_file(path);
+		chai.use(path);
 	}
 	catch (const chaiscript::exception::eval_error &e) {
 		std::cout << "Error\n" << e.pretty_print() << '\n';
@@ -32,7 +32,6 @@ std::vector<std::unique_ptr<Element>> Scripting::evaluate(std::string path) {
 	}
 
 	std::vector<std::unique_ptr<Element>> elements;
-
 	std::vector<std::unique_ptr<Command>> gridCommands;
 	for (auto& command : gridCommands) {
 		switch (command->elementType) {

@@ -19,9 +19,5 @@ public:
 
 
 	chaiscript::ChaiScript chai;
-	// Instance for chaiscript
-	// Guess I have to use pointer since it's being defined haHa
-	std::unique_ptr<Scripting> instance;
-
 	std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
 };
