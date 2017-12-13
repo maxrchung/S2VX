@@ -11,6 +11,7 @@
 class Command {
 public:
 	Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd);
+	virtual ~Command() {};
 	
 	CommandType commandType;
 	ElementType elementType;

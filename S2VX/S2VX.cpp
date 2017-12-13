@@ -17,6 +17,7 @@ void S2VX::run() {
 	float now = glfwGetTime();
 	float previous = now;
 	float delta = 0.0f;
+	float total = 0.0f;
 
 	// render loop
 	// -----------
@@ -26,10 +27,14 @@ void S2VX::run() {
 		now = glfwGetTime();
 		delta = now - previous;
 		previous = now;
+		total += delta;
+
+		// Convert to milliseconds
+		Time totalTime{ static_cast<int>(total * 1000.0f) };
 
 		// Update
 		for (auto& element : elements) {
-			element->update(delta);
+			element->update(totalTime);
 		}
 
 		// Draw

@@ -37,3 +37,21 @@ Time::Time() {
 bool Time::operator<(const Time& rhs) {
 	return ms < rhs.ms;
 }
+
+bool Time::operator<=(const Time& rhs) {
+	return ms <= rhs.ms;
+
+}
+
+bool Time::operator==(const Time& rhs) {
+	return ms == rhs.ms;
+
+}
+
+bool Time::operator>(const Time& rhs) {
+	return ms > rhs.ms;
+}
+
+bool Time::operator>=(const Time& rhs) {
+	return ms >= rhs.ms;
+}

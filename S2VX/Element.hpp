@@ -8,15 +8,17 @@
 class Element {
 public:
 	// To preserve unique_ptr, elements are moved from pCommands to commands
-	Element(std::vector<std::unique_ptr<Command>>& pCommands);
-	void updateActiveCommands(const Time& time);
+	Element(const std::vector<Command*>& pCommands);
+	virtual ~Element() {};
 
+	// Updates list of active commands
+	void updateActives(const Time& time);
 
 	virtual void update(const Time& time) = 0;
 	virtual void draw() = 0;
 	
-	std::vector<std::unique_ptr<Command>> commands;
-	std::unordered_set<int> activeCommands;
-	int activeIndex = 0;
-
+	// Deciding to use raw pointers because ownership is handled in Scripting class
+	std::vector<Command*> commands;
+	std::unordered_set<int> actives;
+	int next = 0;
 };

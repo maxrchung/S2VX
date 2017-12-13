@@ -66,13 +66,13 @@
     <ClCompile Include="Time.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="easing.c">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.hpp">
-      <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="Grid.hpp">
       <Filter>Header Files\Element</Filter>
@@ -97,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="ElementType.hpp">
       <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="easing.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
