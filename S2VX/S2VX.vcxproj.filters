@@ -48,9 +48,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\OsuukiSB\OsuukiSB\OsuukiSB\Time.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
@@ -65,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Scripting.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

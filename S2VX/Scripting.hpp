@@ -14,10 +14,8 @@ public:
 	void init();
 	// Evaluates chaiscript
 	std::vector<std::unique_ptr<Element>> evaluate(std::string path);
-	void GridColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
-	void Test();
-
+	void GridColorBack(const Time& start, const Time& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
 
 	chaiscript::ChaiScript chai;
-	std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
+	std::set<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
 };

@@ -4,9 +4,11 @@
 
 class Time {
 public:
-	Time() { Time(0); }
-	Time(int value);
-	Time(std::string format);
+	Time(int pMS);
+	Time(const std::string& pFormat);
+	Time();
+	bool operator<(const Time& time);
+
 	int ms;
 	std::string format;
 };

@@ -10,13 +10,9 @@ void Scripting::init() {
 	chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
 }
 
-void Scripting::GridColorBack(int start, int end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
-	std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(start, end, startR, startG, startB, startA, endR, endG, endB, endA);
+void Scripting::GridColorBack(const Time& start, const Time& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
+	std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA);
 	sortedCommands.insert(std::move(command));
-}
-
-void Scripting::Test() {
-	std::cout << "Test" << std::endl;
 }
 
 std::vector<std::unique_ptr<Element>> Scripting::evaluate(std::string path) {
