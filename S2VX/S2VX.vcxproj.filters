@@ -66,7 +66,7 @@
     <ClCompile Include="Time.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="easing.c">
+    <ClCompile Include="easing.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClInclude Include="Command.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="easing.h">
+    <ClInclude Include="easing.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

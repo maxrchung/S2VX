@@ -7,22 +7,24 @@
 #include <string>
 #include <vector>
 
-// Base class that all commands inherit from
-class Command {
-public:
-	Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd);
-	virtual ~Command() {};
-	
-	CommandType commandType;
-	ElementType elementType;
+namespace S2VX {
+	// Base class that all commands inherit from
+	class Command {
+	public:
+		Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd);
+		virtual ~Command() {};
 
-	Time start;
-	Time end;
-};
+		CommandType commandType;
+		ElementType elementType;
 
-class CommandUniquePointerComparison {
-public:
-	bool operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
-		return lhs->start < rhs->start;
-	}
-};
+		Time start;
+		Time end;
+	};
+
+	class CommandUniquePointerComparison {
+	public:
+		bool operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
+			return lhs->start < rhs->start;
+		}
+	};
+}

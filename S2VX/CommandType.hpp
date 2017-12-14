@@ -1,5 +1,8 @@
 #pragma once
 
-enum class CommandType {
-	CommandGridColorBack
-};
+namespace S2VX {
+	enum class CommandType {
+		CommandGridColorBack,
+		Count
+	};
+}

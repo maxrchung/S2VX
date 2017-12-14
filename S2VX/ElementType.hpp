@@ -1,5 +1,8 @@
 #pragma once
 
-enum class ElementType {
-	Grid
-};
+namespace S2VX {
+	enum class ElementType {
+		Grid,
+		Count
+	};
+}
