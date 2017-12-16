@@ -127,9 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandsGrid.cpp" />
-    <ClCompile Include="easing.cpp" />
+    <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Grid.cpp" />
@@ -141,10 +142,12 @@
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandType.hpp" />
     <ClInclude Include="Display.hpp" />
-    <ClInclude Include="easing.hpp" />
+    <ClInclude Include="Easing.hpp" />
+    <ClInclude Include="EasingType.hpp" />
     <ClInclude Include="ElementType.hpp" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="CommandsGrid.hpp" />

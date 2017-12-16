@@ -11,8 +11,8 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
 	}
 
-	void Scripting::GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
-		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA);
+	void Scripting::GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, EasingType easing) {
+		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA, easing);
 		sortedCommands.insert(std::move(command));
 	}
 

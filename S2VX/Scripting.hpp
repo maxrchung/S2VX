@@ -15,7 +15,7 @@ namespace S2VX {
 		void init();
 		// Evaluates chaiscript
 		std::vector<std::unique_ptr<Element>> evaluate(const std::string& path);
-		void GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
+		void GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, EasingType easing = EasingType::LinearInterpolation);
 
 		chaiscript::ChaiScript chai;
 		std::set<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;

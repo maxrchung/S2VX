@@ -66,8 +66,11 @@
     <ClCompile Include="Time.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="easing.cpp">
+    <ClCompile Include="Easing.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Element</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,8 +104,14 @@
     <ClInclude Include="Command.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="easing.hpp">
+    <ClInclude Include="Easing.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="EasingType.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Header Files\Element</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

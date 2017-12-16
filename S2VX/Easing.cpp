@@ -15,7 +15,7 @@
 #include "Easing.hpp"
 
 namespace S2VX {
-	AHFloat get(EasingType type, AHFloat value) {
+	AHFloat Easing(EasingType type, AHFloat value) {
 		switch (type) {
 			case EasingType::LinearInterpolation:
 				return LinearInterpolation(value);

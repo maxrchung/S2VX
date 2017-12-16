@@ -1,6 +1,7 @@
 #include "Grid.hpp"
 
 #include "CommandsGrid.hpp"
+#include "Easing.hpp"
 #include <GLFW/glfw3.h>
 
 namespace S2VX {
@@ -13,12 +14,13 @@ namespace S2VX {
 
 		for (auto active : actives) {
 			auto command = commands[active];
-			auto factor = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto easing = interpolation = Easing(command->easing, interpolation);
 			switch (command->commandType) {
 				case CommandType::CommandGridColorBack: {
 					// ? lol
-					auto derived = dynamic_cast<CommandGridColorBack*>(command);
-					backColor = glm::mix(derived->startColor, derived->endColor, factor);
+					auto derived = static_cast<CommandGridColorBack*>(command);
+					backColor = glm::mix(derived->startColor, derived->endColor, easing);
 					break;
 				}
 			}

@@ -13,6 +13,8 @@
 #ifndef AH_EASING_H
 #define AH_EASING_H
 
+#include "EasingType.hpp"
+
 // With modification for ease of use
 namespace S2VX {
 #if defined(__LP64__) && !defined(AH_EASING_USE_DBL_PRECIS)
@@ -26,42 +28,7 @@ namespace S2VX {
 #endif
 	typedef AH_FLOAT_TYPE AHFloat;
 
-	enum class EasingType {
-		LinearInterpolation,
-		QuadraticEaseIn,
-		QuadraticEaseOut,
-		QuadraticEaseInOut,
-		CubicEaseIn,
-		CubicEaseOut,
-		CubicEaseInOut,
-		QuarticEaseIn,
-		QuarticEaseOut,
-		QuarticEaseInOut,
-		QuinticEaseIn,
-		QuinticEaseOut,
-		QuinticEaseInOut,
-		SineEaseIn,
-		SineEaseOut,
-		SineEaseInOut,
-		CircularEaseIn,
-		CircularEaseOut,
-		CircularEaseInOut,
-		ExponentialEaseIn,
-		ExponentialEaseOut,
-		ExponentialEaseInOut,
-		ElasticEaseIn,
-		ElasticEaseOut,
-		ElasticEaseInOut,
-		BackEaseIn,
-		BackEaseOut,
-		BackEaseInOut,
-		BounceEaseIn,
-		BounceEaseOut,
-		BounceEaseInOut,
-		Count
-	};
-
-	AHFloat get(EasingType type, AHFloat value);
+	AHFloat Easing(EasingType type, AHFloat value);
 
 #if defined __cplusplus
 	extern "C" {

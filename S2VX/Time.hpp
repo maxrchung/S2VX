@@ -14,7 +14,6 @@ namespace S2VX {
 		bool operator>(const Time& rhs);
 		bool operator>=(const Time& rhs);
 
-
 		int ms;
 		std::string format;
 	};

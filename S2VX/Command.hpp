@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CommandType.hpp"
+#include "Easing.hpp"
 #include "ElementType.hpp"
 #include "Time.hpp"
 #include <memory>
@@ -11,11 +12,12 @@ namespace S2VX {
 	// Base class that all commands inherit from
 	class Command {
 	public:
-		Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd);
+		Command(CommandType pCommandType, ElementType pElementType, EasingType pEasing, const Time& pStart, const Time& pEnd);
 		virtual ~Command() {};
 
 		CommandType commandType;
 		ElementType elementType;
+		EasingType easing;
 
 		Time start;
 		Time end;
