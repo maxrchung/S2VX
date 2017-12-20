@@ -11,12 +11,13 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
 	}
 
-	void Scripting::GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, EasingType easing) {
-		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA, easing);
+	void Scripting::GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, int easing) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA, convert);
 		sortedCommands.insert(std::move(command));
 	}
 
-	std::vector<std::unique_ptr<Element>> Scripting::evaluate(const std::string& path) {
+	Elements Scripting::evaluate(const std::string& path) {
 		sortedCommands.clear();
 		try {
 			chai.use(path);
@@ -28,23 +29,23 @@ namespace S2VX {
 			std::cout << e.what() << std::endl;
 		}
 
-		std::vector<std::unique_ptr<Element>> elements;
+		// const iterator, can't move BiggerKappa                                   killme
+		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
+		std::vector<Command*> cameraCommands;
 		std::vector<Command*> gridCommands;
 		for (auto& command : sortedCommands) {
 			switch (command->elementType) {
+				case ElementType::Camera:
+					cameraCommands.push_back(command.get());
+					break;
 				case ElementType::Grid:
-					// const iterator, can't move BiggerKappa                                   killme
-					// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
 					gridCommands.push_back(command.get());
 					break;
 			}
 		}
 
-		std::unique_ptr<Element> grid = std::make_unique<Grid>(gridCommands);
-
-		// Element ordering
-		elements.push_back(std::move(grid));
-
+		Elements elements{ std::make_unique<Camera>(cameraCommands),
+						   std::make_unique<Grid>(gridCommands) };
 		return elements;
 	}
 }

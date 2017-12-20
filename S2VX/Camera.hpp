@@ -11,25 +11,30 @@ namespace S2VX {
 		Camera(const std::vector<Command*>& pCommands);
 
 		void update(const Time& time);
+		// Camera doesn't need to draw
+		void draw(Camera* camera) {};
 
-		void draw();
+		// Reposition camera
+		void move(glm::vec3 pPosition);
 
-		// Camera Attributes
+		// Global roll CCW in degrees
+		void rotateZ(float pRoll);
+
+		// Sets the scaling of the camera
+		// Parameter is the number of squares to stretch the screen
+		void zoom(float pScale);
+
 		glm::vec3 position = glm::vec3(0.0f, 0.0f, 1.0f);
 		glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
-		glm::vec3 upWorld = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 upLocal;
-		glm::vec3 right;
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
 		glm::mat4 view;
 
+		float scale = 1.0f;
+		// Used for perspective matrix generation
 		float fov = 45.0f;
 
-		// Eular Angles
-		// z-axis rotation CCW x
-		float yaw = -90.0f;
-		// y-axis rotation CCW z
-		float pitch = 0.0f;
-		// x-axis rotation CCW z
+		// z-axis rotation +x to +y
 		float roll = 0.0f;
 
 	private:

@@ -6,6 +6,8 @@
 #include <vector>
 
 namespace S2VX {
+	class Camera;
+
 	class Element {
 	public:
 		// To preserve unique_ptr, elements are moved from pCommands to commands
@@ -16,7 +18,7 @@ namespace S2VX {
 		void updateActives(const Time& time);
 
 		virtual void update(const Time& time) = 0;
-		virtual void draw() = 0;
+		virtual void draw(Camera* camera) = 0;
 
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		std::vector<Command*> commands;

@@ -31,6 +31,15 @@
     <Filter Include="Source Files\Element">
       <UniqueIdentifier>{fb73121e-c156-4e70-b556-4231bb1f3919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{0704fd34-eaba-4a96-b598-6ed631764512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Vertex">
+      <UniqueIdentifier>{e87cdf71-c185-4011-a8fa-561ba6cbd141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Fragment">
+      <UniqueIdentifier>{24b67bce-ea67-4834-9453-b7aab7d6b9c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="S2VX.cpp">
@@ -71,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Elements.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,10 +128,22 @@
     <ClInclude Include="Camera.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
+    <ClInclude Include="Elements.hpp">
+      <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.chai">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Line.FragmentShader">
+      <Filter>Shaders\Fragment</Filter>
+    </None>
+    <None Include="Line.VertexShader">
+      <Filter>Shaders\Vertex</Filter>
     </None>
   </ItemGroup>
 </Project>

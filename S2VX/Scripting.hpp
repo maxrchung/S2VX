@@ -2,6 +2,8 @@
 
 #include "Command.hpp"
 #include "Element.hpp"
+#include "Elements.hpp"
+#include "EasingType.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <memory>
 #include <set>
@@ -14,8 +16,8 @@ namespace S2VX {
 
 		void init();
 		// Evaluates chaiscript
-		std::vector<std::unique_ptr<Element>> evaluate(const std::string& path);
-		void GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, EasingType easing = EasingType::LinearInterpolation);
+		Elements evaluate(const std::string& path);
+		void GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, int easing);
 
 		chaiscript::ChaiScript chai;
 		std::set<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;

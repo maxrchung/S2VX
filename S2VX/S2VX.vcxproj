@@ -132,11 +132,13 @@
     <ClCompile Include="CommandsGrid.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
+    <ClCompile Include="Elements.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="S2VX.cpp" />
     <ClCompile Include="Scripting.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -148,15 +150,19 @@
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Easing.hpp" />
     <ClInclude Include="EasingType.hpp" />
+    <ClInclude Include="Elements.hpp" />
     <ClInclude Include="ElementType.hpp" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="CommandsGrid.hpp" />
     <ClInclude Include="Element.hpp" />
     <ClInclude Include="S2VX.hpp" />
     <ClInclude Include="Scripting.hpp" />
+    <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Line.FragmentShader" />
+    <None Include="Line.VertexShader" />
     <None Include="test.chai" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

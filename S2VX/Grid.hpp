@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Element.hpp"
+#include "Shader.hpp"
 #include <glm/glm.hpp>
 
 namespace S2VX {
@@ -8,8 +9,17 @@ namespace S2VX {
 	public:
 		Grid(const std::vector<Command*>& commands);
 		void update(const Time& time);
-		void draw();
+		void draw(Camera* camera);
 
 		glm::vec4 backColor;
+
+		unsigned int VBO, VAO;
+		static constexpr float vertices[] = {
+			-0.1f, -0.1f,
+			-0.1f, 0.1f,
+			0.1f, 0.1f,
+			0.1f, -0.1f
+		};
+		Shader shader;
 	};
 }

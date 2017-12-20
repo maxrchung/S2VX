@@ -34,15 +34,8 @@ namespace S2VX {
 			// Convert to milliseconds
 			Time totalTime{ static_cast<int>(total * 1000.0f) };
 
-			// Update
-			for (auto& element : elements) {
-				element->update(totalTime);
-			}
-
-			// Draw
-			for (auto& element : elements) {
-				element->draw();
-			}
+			elements.update(totalTime);
+			elements.draw();
 
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			// -------------------------------------------------------------------------------
