@@ -4,6 +4,7 @@
 #include "CommandsGrid.hpp"
 #include "Easing.hpp"
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 namespace S2VX {
 	Grid::Grid(const std::vector<Command*>& commands)
@@ -42,8 +43,22 @@ namespace S2VX {
 		glClearColor(backColor.r, backColor.g, backColor.b, backColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		//print("projection", camera->projection * glm::vec4(vertices[0], vertices[1], 0.0f, 1.0f));
+		//print("view", camera->view * glm::vec4(vertices[0], vertices[1], 0.0f, 1.0f));
+		print("final", camera->projection * camera->view * glm::vec4(vertices[0], vertices[1], 0.0f, 1.0f));
+
+		//print("projection", camera->projection * glm::vec4(vertices[2], vertices[3], 0.0f, 1.0f));
+		//print("view", camera->view * glm::vec4(vertices[2], vertices[3], 0.0f, 1.0f));
+		print("final", camera->projection * camera->view * glm::vec4(vertices[2], vertices[3], 0.0f, 1.0f));
+
+		shader.setMat4("view", camera->view);
+		shader.setMat4("projection", camera->projection);
 		shader.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_LINES, 0, 4);
+	}
+
+	void Grid::print(std::string id, glm::vec4 vector) {
+		std::cout << id << " " << vector.x << " " << vector.y << " " << vector.z << " " << vector.w << std::endl;
 	}
 }

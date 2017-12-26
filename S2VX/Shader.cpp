@@ -8,7 +8,7 @@
 namespace S2VX {
 	Shader::Shader() {}
 
-	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = "") {
+	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) {
 		// 1. retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;
 		std::string fragmentCode;

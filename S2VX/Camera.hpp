@@ -29,17 +29,18 @@ namespace S2VX {
 		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
 		glm::mat4 view;
+		glm::mat4 projection;
 
 		float scale = 1.0f;
 		// Used for perspective matrix generation
-		float fov = 45.0f;
+		float fov;
 
 		// z-axis rotation +x to +y
 		float roll = 0.0f;
 
 	private:
-		// Calculates the front vector from the Camera's (updated) Eular Angles
-		// Updates the view matrix calculated using Eular Angles and the LookAt Matrix
-		void updateView();
+		// Updates the view/projection matrices
+		// Might be costly to call this everytime camera changes - Need to probably monitor this
+		void updateMatrices();
 	};
 }

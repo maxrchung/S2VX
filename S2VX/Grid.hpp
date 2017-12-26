@@ -15,11 +15,13 @@ namespace S2VX {
 
 		unsigned int VBO, VAO;
 		static constexpr float vertices[] = {
-			-0.1f, -0.1f,
-			-0.1f, 0.1f,
-			0.1f, 0.1f,
-			0.1f, -0.1f
+			-0.49f, -0.49f,
+			-0.01f, 0.01f,
+			0.49f, -0.49f,
+			0.49f, 0.49f,
 		};
 		Shader shader;
+
+		void print(std::string id, glm::vec4 vector);
 	};
 }
