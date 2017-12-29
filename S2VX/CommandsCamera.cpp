@@ -11,4 +11,10 @@ namespace S2VX {
 		startRoll{ pStartRoll },
 		endRoll{ pEndRoll } {
 	}
+
+	CommandCameraZoom::CommandCameraZoom(const Time& start, const Time& end, EasingType pEasing, float pStartScale, float pEndScale)
+		: Command{ CommandType::CommandCameraZoom, ElementType::Camera, pEasing, start, end },
+		startScale{ pStartScale },
+		endScale{ pEndScale } {
+	}
 }

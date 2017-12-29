@@ -31,7 +31,7 @@ namespace S2VX {
 		glm::mat4 view;
 		glm::mat4 projection;
 
-		float scale = 10.0f;
+		float scale = 3.0f;
 		float fov = 90.0f;
 
 		// z-axis rotation +x to +y

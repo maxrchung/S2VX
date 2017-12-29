@@ -40,30 +40,31 @@ namespace S2VX {
 
 		vertices.clear();
 		auto scale = camera->scale;
-		auto step = 2.0f / scale;
-		auto corner = 1.0f + step * 2;
-		for (int i = 0; i < camera->scale + 4; ++i) {
+		auto posX = static_cast<int>(camera->position.x);
+		auto posY = static_cast<int>(camera->position.y);
+		auto corner = 0.5f + roundf(scale);
+		for (int i = 0; i < camera->scale * 2 + 2; ++i) {
 			// Left X
-			vertices.push_back(-corner);
+			vertices.push_back(posX - corner);
 			// Left Y
-			auto horizontalY = corner - i * step;
+			auto horizontalY = posY + corner - i;
 			vertices.push_back(horizontalY);
 
 			// Right X
-			vertices.push_back(corner);
+			vertices.push_back(posX + corner);
 			// Right Y
 			vertices.push_back(horizontalY);
 
 			// Top X
-			auto verticalX = -corner + i * step;
+			auto verticalX = posX - corner + i;
 			vertices.push_back(verticalX);
 			// Top Y
-			vertices.push_back(corner);
+			vertices.push_back(posY + corner);
 
 			// Bot X
 			vertices.push_back(verticalX);
 			// Bot Y
-			vertices.push_back(-corner);
+			vertices.push_back(posY - corner);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);

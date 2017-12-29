@@ -18,4 +18,11 @@ namespace S2VX {
 		float startRoll;
 		float endRoll;
 	};
+
+	class CommandCameraZoom : public Command {
+	public:
+		CommandCameraZoom(const Time& start, const Time& end, EasingType pEasing, float pStartScale, float pEndScale);
+		float startScale;
+		float endScale;
+	};
 }

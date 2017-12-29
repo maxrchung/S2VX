@@ -20,6 +20,7 @@ namespace S2VX {
 		void GridColorBack(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
 		void CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
 		void CameraRotate(const std::string& start, const std::string& end, int easing, float startDegrees, float endDegrees);
+		void CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale);
 
 		chaiscript::ChaiScript chai;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;

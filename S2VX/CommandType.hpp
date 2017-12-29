@@ -5,6 +5,7 @@ namespace S2VX {
 		CommandGridColorBack,
 		CommandCameraMove,
 		CommandCameraRotate,
+		CommandCameraZoom,
 		Count
 	};
 }
