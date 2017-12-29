@@ -17,9 +17,11 @@ namespace S2VX {
 		void init();
 		// Evaluates chaiscript
 		Elements evaluate(const std::string& path);
-		void GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, int easing);
+		void GridColorBack(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
+		void CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
+		void CameraRotate(const std::string& start, const std::string& end, int easing, float startDegrees, float endDegrees);
 
 		chaiscript::ChaiScript chai;
-		std::set<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
 	};
 }

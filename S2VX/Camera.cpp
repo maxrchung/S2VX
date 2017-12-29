@@ -1,5 +1,7 @@
 #include "Camera.hpp"
 
+#include "CommandsCamera.hpp"
+#include "Easing.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
 namespace S2VX {
@@ -11,6 +13,26 @@ namespace S2VX {
 
 	void Camera::update(const Time& time) {
 		updateActives(time);
+
+		for (auto active : actives) {
+			auto command = commands[active];
+			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto easing = interpolation = Easing(command->easingType, interpolation);
+			switch (command->commandType) {
+				case CommandType::CommandCameraMove: {
+					auto derived = static_cast<CommandCameraMove*>(command);
+					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
+					move(glm::vec3(pos, position.z));
+					break;
+				}
+				case CommandType::CommandCameraRotate: {
+					auto derived = static_cast<CommandCameraRotate*>(command);
+					auto rotation = glm::mix(derived->startRoll, derived->endRoll, easing);
+					rotateZ(rotation);
+					break;
+				}
+			}
+		}
 	}
 
 	void Camera::move(glm::vec3 pPosition) {
@@ -22,9 +44,10 @@ namespace S2VX {
 		// https://stackoverflow.com/questions/6653080/in-opengl-how-can-i-determine-the-bounds-of-the-view-at-a-given-depth
 		// Distance is always 1
 		// In our camera, fov is halved
-		fov = glm::degrees(atan(pScale));
+		// Divide by 4 to get half of half
+		auto z = (pScale / 2.0f) / tan(glm::radians(fov / 2.0f));
 		scale = pScale;
-		updateMatrices();
+		move(glm::vec3(position.x, position.y, z));
 	}
 
 	void Camera::rotateZ(float degrees) {
@@ -36,6 +59,6 @@ namespace S2VX {
 	void Camera::updateMatrices() {
 		view = glm::lookAt(position, position + front, up);
 		// Near plane cannot be 0
-		projection = glm::perspective(glm::radians(fov), 1.0f, 0.1f, 2.0f);
+		projection = glm::perspective(glm::radians(fov), 1.0f, 0.1f, 100.0f);
 	}
 }

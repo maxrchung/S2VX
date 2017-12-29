@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CommandsCamera.cpp" />
     <ClCompile Include="CommandsGrid.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
+    <ClInclude Include="CommandsCamera.hpp" />
     <ClInclude Include="CommandType.hpp" />
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Easing.hpp" />

@@ -1,5 +1,6 @@
 #include "Scripting.hpp"
 
+#include "CommandsCamera.hpp"
 #include "CommandsGrid.hpp"
 #include "Grid.hpp"
 
@@ -9,11 +10,25 @@ namespace S2VX {
 	void Scripting::init() {
 		chai.add(chaiscript::var(this), "S2VX");
 		chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
+		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
+		chai.add(chaiscript::fun(&Scripting::CameraRotate, this), "CameraRotate");
 	}
 
-	void Scripting::GridColorBack(const std::string& start, const std::string& end, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA, int easing) {
+	void Scripting::GridColorBack(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
 		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), startR, startG, startB, startA, endR, endG, endB, endA, convert);
+		std::unique_ptr<Command> command = std::make_unique<CommandGridColorBack>(Time(start), Time(end), convert, startR, startG, startB, startA, endR, endG, endB, endA);
+		sortedCommands.insert(std::move(command));
+	}
+
+	void Scripting::CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<CommandCameraMove>(Time(start), Time(end), convert, startX, startY, endX, endY);
+		sortedCommands.insert(std::move(command));
+	}
+
+	void Scripting::CameraRotate(const std::string& start, const std::string& end, int easing, float startRoll, float endRoll) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<CommandCameraRotate>(Time(start), Time(end), convert, startRoll, endRoll);
 		sortedCommands.insert(std::move(command));
 	}
 

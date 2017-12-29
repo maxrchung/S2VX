@@ -14,13 +14,9 @@ namespace S2VX {
 		glm::vec4 backColor;
 
 		unsigned int VBO, VAO;
-		static constexpr float vertices[] = {
-			-0.49f, -0.49f,
-			-0.01f, 0.01f,
-			0.49f, -0.49f,
-			0.49f, 0.49f,
-		};
 		Shader shader;
+
+		std::vector<float> vertices;
 
 		void print(std::string id, glm::vec4 vector);
 	};

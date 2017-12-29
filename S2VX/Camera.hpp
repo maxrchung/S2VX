@@ -31,9 +31,8 @@ namespace S2VX {
 		glm::mat4 view;
 		glm::mat4 projection;
 
-		float scale = 1.0f;
-		// Used for perspective matrix generation
-		float fov;
+		float scale = 10.0f;
+		float fov = 90.0f;
 
 		// z-axis rotation +x to +y
 		float roll = 0.0f;
