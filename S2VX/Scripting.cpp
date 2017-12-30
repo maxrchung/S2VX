@@ -2,6 +2,7 @@
 
 #include "CommandsCamera.hpp"
 #include "CommandsGrid.hpp"
+#include "CommandsSprite.hpp"
 #include "Grid.hpp"
 
 namespace S2VX {
@@ -39,8 +40,20 @@ namespace S2VX {
 		sortedCommands.insert(std::move(command));
 	}
 
+	void Scripting::SpriteBind(const std::string& path) {
+		spriteID++;
+	}
+
+	void Scripting::SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<CommandSpriteMove>(Time(start), Time(end), convert, spriteID, startX, startY, endX, endY);
+		sortedCommands.insert(std::move(command));
+	}
+
 	Elements Scripting::evaluate(const std::string& path) {
 		sortedCommands.clear();
+		spriteID = -1;
+
 		try {
 			chai.use(path);
 		}
@@ -62,6 +75,9 @@ namespace S2VX {
 					break;
 				case ElementType::Grid:
 					gridCommands.push_back(command.get());
+					break;
+				case ElementType::Sprite:
+					spriteCommands.push_back(command.get());
 					break;
 			}
 		}

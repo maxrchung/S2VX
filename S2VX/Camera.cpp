@@ -19,22 +19,24 @@ namespace S2VX {
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
-			auto easing = Easing(command->easingType, interpolation);
 			switch (command->commandType) {
 				case CommandType::CommandCameraMove: {
 					auto derived = static_cast<CommandCameraMove*>(command);
+					auto easing = Easing(derived->easing, interpolation);
 					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
 					move(glm::vec3(pos, position.z));
 					break;
 				}
 				case CommandType::CommandCameraRotate: {
 					auto derived = static_cast<CommandCameraRotate*>(command);
+					auto easing = Easing(derived->easing, interpolation);
 					auto rotation = glm::mix(derived->startRoll, derived->endRoll, easing);
 					rotateZ(rotation);
 					break;
 				}
 				case CommandType::CommandCameraZoom: {
 					auto derived = static_cast<CommandCameraZoom*>(command);
+					auto easing = Easing(derived->easing, interpolation);
 					auto scale = glm::mix(derived->startScale, derived->endScale, easing);
 					zoom(scale);
 					break;

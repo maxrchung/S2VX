@@ -22,11 +22,11 @@ namespace S2VX {
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
-			auto easing = Easing(command->easingType, interpolation);
 			switch (command->commandType) {
 				case CommandType::CommandGridColorBack: {
 					// ? lol
 					auto derived = static_cast<CommandGridColorBack*>(command);
+					auto easing = Easing(derived->easing, interpolation);
 					backColor = glm::mix(derived->startColor, derived->endColor, easing);
 					break;
 				}

@@ -131,6 +131,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandsCamera.cpp" />
     <ClCompile Include="CommandsGrid.cpp" />
+    <ClCompile Include="CommandsSprite.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="Elements.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="S2VX.cpp" />
     <ClCompile Include="Scripting.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -148,6 +150,7 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandsCamera.hpp" />
+    <ClInclude Include="CommandsSprite.hpp" />
     <ClInclude Include="CommandType.hpp" />
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Easing.hpp" />
@@ -160,6 +163,7 @@
     <ClInclude Include="S2VX.hpp" />
     <ClInclude Include="Scripting.hpp" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -90,6 +90,12 @@
     <ClCompile Include="CommandsCamera.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandsSprite.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -138,6 +144,12 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="CommandsCamera.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.hpp">
+      <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandsSprite.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>

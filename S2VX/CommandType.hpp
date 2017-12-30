@@ -6,6 +6,7 @@ namespace S2VX {
 		CommandCameraMove,
 		CommandCameraRotate,
 		CommandCameraZoom,
+		CommandSpriteMove,
 		Count
 	};
 }

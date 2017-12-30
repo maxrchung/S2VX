@@ -7,7 +7,8 @@
 namespace S2VX {
 	class CommandGridColorBack : public Command {
 	public:
-		CommandGridColorBack(const Time& start, const Time& end, EasingType easing, float startR, float startG, float startA, float startB, float endR, float endG, float endB, float endA);
+		CommandGridColorBack(const Time& start, const Time& end, EasingType pEasing, float startR, float startG, float startA, float startB, float endR, float endG, float endB, float endA);
+		EasingType easing;
 		glm::vec4 startColor;
 		glm::vec4 endColor;
 	};
