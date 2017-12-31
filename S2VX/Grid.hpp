@@ -17,7 +17,5 @@ namespace S2VX {
 		Shader shader;
 
 		std::vector<float> vertices;
-
-		void print(std::string id, glm::vec4 vector);
 	};
 }

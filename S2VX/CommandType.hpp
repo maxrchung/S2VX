@@ -2,11 +2,14 @@
 
 namespace S2VX {
 	enum class CommandType {
-		CommandGridColorBack,
-		CommandCameraMove,
-		CommandCameraRotate,
-		CommandCameraZoom,
-		CommandSpriteMove,
+		GridColorBack,
+		CameraMove,
+		CameraRotate,
+		CameraZoom,
+		SpriteBind,
+		SpriteCreate,
+		SpriteDestroy,
+		SpriteMove,
 		Count
 	};
 }

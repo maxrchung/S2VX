@@ -1,10 +1,11 @@
 #pragma once
 
-#include <string>
+#include "Texture.hpp"
 
 namespace S2VX {
 	class Sprite {
 	public:
-		Sprite(const std::string& path);
+		Sprite(Texture* pTexture);
+		Texture* texture;
 	};
 }

@@ -60,9 +60,6 @@
     <ClCompile Include="Command.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
-    <ClCompile Include="CommandsGrid.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
     <ClCompile Include="Element.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
@@ -87,14 +84,23 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="CommandsCamera.cpp">
+    <ClCompile Include="CameraCommands.cpp">
       <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCommands.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteCommands.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandsSprite.cpp">
-      <Filter>Source Files\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="Time.hpp">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandsGrid.hpp">
-      <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="S2VX.hpp">
       <Filter>Header Files</Filter>
@@ -143,14 +146,23 @@
     <ClInclude Include="Shader.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="CommandsCamera.hpp">
+    <ClInclude Include="GridCommands.hpp">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraCommands.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteCommands.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.hpp">
+      <Filter>Header Files\Element</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
-    <ClInclude Include="CommandsSprite.hpp">
-      <Filter>Header Files\Command</Filter>
+    <ClInclude Include="Texture.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
