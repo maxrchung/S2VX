@@ -2,6 +2,7 @@
 
 #include "Camera.hpp"
 #include "Grid.hpp"
+#include "Sprites.hpp"
 #include "Time.hpp"
 #include <memory>
 
@@ -10,11 +11,12 @@ namespace S2VX {
 	// Responsible for updating/drawing in proper order
 	class Elements {
 	public:
-		Elements(std::unique_ptr<Camera> pCamera, std::unique_ptr<Grid> pGrid);
+		Elements(std::unique_ptr<Camera> pCamera, std::unique_ptr<Grid> pGrid, std::unique_ptr<Sprites> pSprite);
 		void update(const Time& time);
 		void draw();
 
 		std::unique_ptr<Camera> camera;
 		std::unique_ptr<Grid> grid;
+		std::unique_ptr<Sprites> sprite;
 	};
 }

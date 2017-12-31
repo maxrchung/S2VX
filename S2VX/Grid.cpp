@@ -1,7 +1,7 @@
 #include "Grid.hpp"
 
 #include "Camera.hpp"
-#include "CommandsGrid.hpp"
+#include "GridCommands.hpp"
 #include "Easing.hpp"
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -23,9 +23,9 @@ namespace S2VX {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
 			switch (command->commandType) {
-				case CommandType::CommandGridColorBack: {
+				case CommandType::GridColorBack: {
 					// ? lol
-					auto derived = static_cast<CommandGridColorBack*>(command);
+					auto derived = static_cast<GridColorBackCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					backColor = glm::mix(derived->startColor, derived->endColor, easing);
 					break;
@@ -80,9 +80,5 @@ namespace S2VX {
 		shader.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_LINES, 0, vertices.size());
-	}
-
-	void Grid::print(std::string id, glm::vec4 vector) {
-		std::cout << id << " " << vector.x << " " << vector.y << " " << vector.z << " " << vector.w << std::endl;
 	}
 }

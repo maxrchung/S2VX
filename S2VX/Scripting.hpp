@@ -4,10 +4,11 @@
 #include "Element.hpp"
 #include "Elements.hpp"
 #include "EasingType.hpp"
-#include "Sprite.hpp"
+#include "Sprites.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <memory>
 #include <set>
+#include <unordered_map>
 
 namespace S2VX {
 	class Scripting {
@@ -26,10 +27,18 @@ namespace S2VX {
 		void CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale);
 
 		int spriteID = -1;
+		Time spriteStart = Time(std::numeric_limits<float>::max());
+		std::unordered_map<int, Time> spriteStarts;
+		Time spriteEnd;
+		std::unordered_map<int, Time> spriteEnds;
 		void SpriteBind(const std::string& path);
 		void SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
 
 		chaiscript::ChaiScript chai;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
+
+	private:
+		void reset();
+		void resetSpriteTime();
 	};
 }

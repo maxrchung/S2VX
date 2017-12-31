@@ -129,9 +129,10 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="CommandsCamera.cpp" />
-    <ClCompile Include="CommandsGrid.cpp" />
-    <ClCompile Include="CommandsSprite.cpp" />
+    <ClCompile Include="CameraCommands.cpp" />
+    <ClCompile Include="GridCommands.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteCommands.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="Elements.cpp" />
@@ -141,16 +142,18 @@
     <ClCompile Include="S2VX.cpp" />
     <ClCompile Include="Scripting.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
-    <ClInclude Include="CommandsCamera.hpp" />
-    <ClInclude Include="CommandsSprite.hpp" />
+    <ClInclude Include="CameraCommands.hpp" />
+    <ClInclude Include="Sprite.hpp" />
+    <ClInclude Include="SpriteCommands.hpp" />
     <ClInclude Include="CommandType.hpp" />
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Easing.hpp" />
@@ -158,12 +161,13 @@
     <ClInclude Include="Elements.hpp" />
     <ClInclude Include="ElementType.hpp" />
     <ClInclude Include="Grid.hpp" />
-    <ClInclude Include="CommandsGrid.hpp" />
+    <ClInclude Include="GridCommands.hpp" />
     <ClInclude Include="Element.hpp" />
     <ClInclude Include="S2VX.hpp" />
     <ClInclude Include="Scripting.hpp" />
     <ClInclude Include="Shader.hpp" />
-    <ClInclude Include="Sprite.hpp" />
+    <ClInclude Include="Sprites.hpp" />
+    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>

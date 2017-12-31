@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-#include "CommandsCamera.hpp"
+#include "CameraCommands.hpp"
 #include "Easing.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
@@ -20,22 +20,22 @@ namespace S2VX {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
 			switch (command->commandType) {
-				case CommandType::CommandCameraMove: {
-					auto derived = static_cast<CommandCameraMove*>(command);
+				case CommandType::CameraMove: {
+					auto derived = static_cast<CameraMoveCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
 					move(glm::vec3(pos, position.z));
 					break;
 				}
-				case CommandType::CommandCameraRotate: {
-					auto derived = static_cast<CommandCameraRotate*>(command);
+				case CommandType::CameraRotate: {
+					auto derived = static_cast<CameraRotateCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					auto rotation = glm::mix(derived->startRoll, derived->endRoll, easing);
 					rotateZ(rotation);
 					break;
 				}
-				case CommandType::CommandCameraZoom: {
-					auto derived = static_cast<CommandCameraZoom*>(command);
+				case CommandType::CameraZoom: {
+					auto derived = static_cast<CameraZoomCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					auto scale = glm::mix(derived->startScale, derived->endScale, easing);
 					zoom(scale);
