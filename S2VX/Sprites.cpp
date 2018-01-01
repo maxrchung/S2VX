@@ -6,7 +6,7 @@ namespace S2VX {
 		: Element{ commands } {
 		// TODO: Assign default block to texture
 	}
-	void Sprites::draw(Camera* camera) {
+	void Sprites::draw(const Camera& camera) {
 		for (auto& active : activeSprites) {
 			active.second.draw();
 		}
@@ -51,5 +51,4 @@ namespace S2VX {
 			}
 		}
 	}
-
 }

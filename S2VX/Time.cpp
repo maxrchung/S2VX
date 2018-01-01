@@ -17,7 +17,7 @@ namespace S2VX {
 	Time::Time(const std::string& pFormat)
 		: format{ pFormat } {
 		std::smatch smatch;
-		std::regex regex{ R"(\d*)" };
+		std::regex regex{ R"(\d+)" };
 		std::regex_search(pFormat, smatch, regex);
 		int minutes = std::stoi(smatch[0]);
 

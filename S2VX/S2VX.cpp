@@ -9,7 +9,6 @@ namespace S2VX {
 	void S2VX::run() {
 		Display display;
 		Scripting scripting;
-		scripting.init();
 		auto elements = scripting.evaluate(script);
 		auto now = static_cast<float>(glfwGetTime());
 		auto previous = now;
@@ -30,7 +29,7 @@ namespace S2VX {
 			elements.draw();
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			// -------------------------------------------------------------------------------
-			glfwSwapBuffers(display.window);
+			glfwSwapBuffers(display.getWindow());
 			glfwPollEvents();
 		}
 	}

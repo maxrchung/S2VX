@@ -8,8 +8,9 @@ namespace S2VX {
 	class Sprites : public Element {
 	public:
 		Sprites(const std::vector<Command*>& commands);
-		void draw(Camera* camera);
+		void draw(const Camera& camera);
 		void update(const Time& time);
+	private:
 		// ID to Sprite
 		std::map<int, Sprite> activeSprites;
 		// ID to path

@@ -8,14 +8,14 @@ namespace S2VX {
 		Display();								// default constructor
 		~Display();								// d'tor
 		bool shouldClose();
-		GLFWwindow* window = nullptr;
-		int windowWidth = -1;
+		GLFWwindow* getWindow() const { return window; }
 	private:
 		// Window should not be copied/assigned/etc.
 		// C++11:
 		Display(const Display&) {};				// copy c'tor
-		Display& operator=(const Display&) {};	// copy-assign
 		Display(Display&&) {};					// move c'tor
+		Display& operator=(const Display&) {};	// copy-assign
 		Display& operator=(Display&&) {};		// move-assign
+		GLFWwindow* window = nullptr;
 	};
 }

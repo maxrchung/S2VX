@@ -13,7 +13,6 @@ namespace S2VX {
 	public:
 		// Initializing scripting
 		Scripting();
-		void init();
 		void CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
 		void CameraRotate(const std::string& start, const std::string& end, int easing, float startDegrees, float endDegrees);
 		void CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale);
@@ -22,6 +21,9 @@ namespace S2VX {
 		void GridColorBack(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
 		void SpriteBind(const std::string& path);
 		void SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
+	private:
+		void reset();
+		void resetSpriteTime();
 		chaiscript::ChaiScript chai;
 		int spriteID = -1;
 		Time spriteStart = Time(std::numeric_limits<int>::max());
@@ -29,8 +31,5 @@ namespace S2VX {
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
 		std::unordered_map<int, Time> spriteStarts;
 		std::unordered_map<int, Time> spriteEnds;
-	private:
-		void reset();
-		void resetSpriteTime();
 	};
 }

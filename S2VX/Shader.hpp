@@ -21,9 +21,9 @@ namespace S2VX {
 		void setMat4(const std::string &name, const glm::mat4 &mat) const;
 		// Use shader
 		void use();
-		unsigned int ID;
 	private:
 		// Checks for compilation/linker errors
 		void checkCompileErrors(GLuint shader, std::string type);
+		int ID;
 	};
 }

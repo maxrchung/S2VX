@@ -15,8 +15,8 @@ namespace S2VX {
 				active++;
 			}
 		}
-		while (next != commands.size() && commands[next]->start <= time) {
-			actives.insert(next++);
+		while (nextCommand != commands.size() && commands[nextCommand]->start <= time) {
+			actives.insert(nextCommand++);
 		}
 	}
 }

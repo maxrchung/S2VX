@@ -4,8 +4,7 @@
 #include "GridCommands.hpp"
 #include "SpriteCommands.hpp"
 namespace S2VX {
-	Scripting::Scripting() {}
-	void Scripting::init() {
+	Scripting::Scripting() {
 		chai.add(chaiscript::var(this), "S2VX");
 		chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");

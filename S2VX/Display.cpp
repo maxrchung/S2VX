@@ -15,11 +15,9 @@ namespace S2VX {
 		auto mode = glfwGetVideoMode(monitor);
 		auto monitorWidth = mode->width;
 		auto monitorHeight = mode->height;
+		auto windowWidth = monitorHeight;
 		// Set screenWidth to be square and the shortest side
-		if (monitorHeight < monitorWidth) {
-			windowWidth = monitorHeight;
-		}
-		else {
+		if (monitorWidth < monitorHeight) {
 			windowWidth = monitorWidth;
 		}
 		// glfw window creation

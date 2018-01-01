@@ -9,11 +9,11 @@ namespace S2VX {
 	// Responsible for updating/drawing in proper order
 	class Elements {
 	public:
-		Elements(std::unique_ptr<Camera> pCamera, std::unique_ptr<Grid> pGrid, std::unique_ptr<Sprites> pSprite);
+		Elements(std::unique_ptr<Camera> pCamera, std::unique_ptr<Grid> pGrid, std::unique_ptr<Sprites> pSprites);
 		void draw();
 		void update(const Time& time);
 		std::unique_ptr<Camera> camera;
 		std::unique_ptr<Grid> grid;
-		std::unique_ptr<Sprites> sprite;
+		std::unique_ptr<Sprites> sprites;
 	};
 }

@@ -6,12 +6,12 @@ namespace S2VX {
 		Time();
 		Time(int pMS);
 		Time(const std::string& pFormat);
-		int ms;
 		bool operator<(const Time& rhs);
 		bool operator<=(const Time& rhs);
 		bool operator==(const Time& rhs);
 		bool operator>(const Time& rhs);
 		bool operator>=(const Time& rhs);
+		int ms;
 		std::string format;
 	};
 }
