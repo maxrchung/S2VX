@@ -1,14 +1,13 @@
 #pragma once
-
 namespace S2VX {
 	enum class CommandType {
-		GridColorBack,
 		CameraMove,
 		CameraRotate,
 		CameraZoom,
+		GridColorBack,
 		SpriteBind,
 		SpriteCreate,
-		SpriteDestroy,
+		SpriteDelete,
 		SpriteMove,
 		Count
 	};

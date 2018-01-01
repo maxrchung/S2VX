@@ -1,5 +1,4 @@
 #pragma once
-
 namespace S2VX {
 	enum class EasingType {
 		LinearInterpolation,	//0

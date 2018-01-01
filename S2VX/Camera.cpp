@@ -1,9 +1,7 @@
 #include "Camera.hpp"
-
 #include "CameraCommands.hpp"
 #include "Easing.hpp"
 #include <glm/gtc/type_ptr.hpp>
-
 namespace S2VX {
 	Camera::Camera(const std::vector<Command*>& pCommands)
 		: Element{ pCommands } {
@@ -12,10 +10,17 @@ namespace S2VX {
 		// Near plane cannot be 0
 		projection = glm::perspective(glm::radians(fov), 1.0f, 0.1f, 100.0f);
 	}
-
+	void Camera::move(glm::vec3 pPosition) {
+		position = pPosition;
+		updateMatrices();
+	}
+	void Camera::rotateZ(float degrees) {
+		roll = glm::radians(degrees);
+		up = glm::vec3(cos(glm::radians(degrees + 90)), sin(glm::radians(degrees + 90)), 0.0f);
+		updateMatrices();
+	}
 	void Camera::update(const Time& time) {
 		updateActives(time);
-
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
@@ -44,27 +49,14 @@ namespace S2VX {
 			}
 		}
 	}
-
-	void Camera::move(glm::vec3 pPosition) {
-		position = pPosition;
-		updateMatrices();
+	void Camera::updateMatrices() {
+		view = glm::lookAt(position, position + front, up);
 	}
-
 	void Camera::zoom(float pScale) {
 		// https://stackoverflow.com/questions/6653080/in-opengl-how-can-i-determine-the-bounds-of-the-view-at-a-given-depth
 		auto z = (pScale / 2.0f) / tan(glm::radians(fov / 2.0f));
 		scale = pScale;
 		position.z = z;
 		updateMatrices();
-	}
-
-	void Camera::rotateZ(float degrees) {
-		roll = glm::radians(degrees);
-		up = glm::vec3(cos(glm::radians(degrees + 90)), sin(glm::radians(degrees + 90)), 0.0f);
-		updateMatrices();
-	}
-
-	void Camera::updateMatrices() {
-		view = glm::lookAt(position, position + front, up);
 	}
 }

@@ -1,15 +1,11 @@
 #pragma once
-
 #include <string>
-
 namespace S2VX {
 	class S2VX {
 	public:
 		S2VX(const std::string& pScript);
 		~S2VX() {};
-
 		void run();
-
 		std::string script;
 	private:
 		// Don't make copies of this

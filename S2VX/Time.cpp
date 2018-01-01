@@ -1,8 +1,9 @@
 #include "Time.hpp"
-
 #include <regex>
-
 namespace S2VX {
+	Time::Time() {
+		Time(0);
+	}
 	Time::Time(int pMS)
 		: ms{ pMS } {
 		int minutes = ms / 60000;
@@ -13,7 +14,6 @@ namespace S2VX {
 		sprintf(buffer, "%02d:%02d:%03d", minutes, seconds, minusSeconds);
 		format = buffer;
 	}
-
 	Time::Time(const std::string& pFormat)
 		: format{ pFormat } {
 		std::smatch smatch;
@@ -30,29 +30,20 @@ namespace S2VX {
 		int pMS = std::stoi(smatch[0]);
 		ms = minutes * 60000 + seconds * 1000 + pMS;
 	}
-
-	Time::Time() {
-		Time(0);
-	}
-
 	bool Time::operator<(const Time& rhs) {
 		return ms < rhs.ms;
 	}
-
 	bool Time::operator<=(const Time& rhs) {
 		return ms <= rhs.ms;
 
 	}
-
 	bool Time::operator==(const Time& rhs) {
 		return ms == rhs.ms;
 
 	}
-
 	bool Time::operator>(const Time& rhs) {
 		return ms > rhs.ms;
 	}
-
 	bool Time::operator>=(const Time& rhs) {
 		return ms >= rhs.ms;
 	}

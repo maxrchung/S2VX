@@ -1,12 +1,10 @@
 #include "Element.hpp"
 #include <algorithm>
 #include <iostream>
-
 namespace S2VX {
 	Element::Element(const std::vector<Command*>& pCommands)
 		: commands{ pCommands } {
 	}
-
 	void Element::updateActives(const Time& time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (commands[*active]->end <= time) {
@@ -17,7 +15,6 @@ namespace S2VX {
 				active++;
 			}
 		}
-
 		while (next != commands.size() && commands[next]->start <= time) {
 			actives.insert(next++);
 		}

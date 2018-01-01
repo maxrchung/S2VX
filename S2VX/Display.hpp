@@ -2,18 +2,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <memory>
-
 namespace S2VX {
 	class Display {
 	public:
 		Display();								// default constructor
 		~Display();								// d'tor
-
 		bool shouldClose();
-
 		GLFWwindow* window = nullptr;
 		int windowWidth = -1;
-
 	private:
 		// Window should not be copied/assigned/etc.
 		// C++11:

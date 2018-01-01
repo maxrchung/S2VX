@@ -18,7 +18,7 @@
 // With modification for ease of use
 namespace S2VX {
 #if defined(__LP64__) && !defined(AH_EASING_USE_DBL_PRECIS)
-#define AH_EASING_USE_DBL_PRECIS
+//#define AH_EASING_USE_DBL_PRECIS
 #endif
 
 #ifdef AH_EASING_USE_DBL_PRECIS
