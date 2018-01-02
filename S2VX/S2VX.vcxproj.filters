@@ -16,9 +16,6 @@
     <Filter Include="Header Files\Command">
       <UniqueIdentifier>{90785da4-e13b-48bb-b0a5-ab3f53326c2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Command">
-      <UniqueIdentifier>{86856646-5dd4-4fd1-bb7a-3fa981d84e6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{61497ead-e547-49b1-a1b1-fbe1c523c987}</UniqueIdentifier>
     </Filter>
@@ -57,9 +54,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
     <ClCompile Include="Element.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
@@ -83,15 +77,6 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraCommands.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCommands.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommands.cpp">
-      <Filter>Source Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="Sprites.cpp">
       <Filter>Source Files\Element</Filter>
@@ -173,6 +158,12 @@
       <Filter>Shaders\Fragment</Filter>
     </None>
     <None Include="Line.VertexShader">
+      <Filter>Shaders\Vertex</Filter>
+    </None>
+    <None Include="Sprite.FragmentShader">
+      <Filter>Shaders\Fragment</Filter>
+    </None>
+    <None Include="Sprite.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
   </ItemGroup>

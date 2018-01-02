@@ -8,7 +8,8 @@
 namespace S2VX {
 	// Plain old object that holds command info
 	struct Command {
-		Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd);
+		Command(CommandType pCommandType, ElementType pElementType, const Time& pStart, const Time& pEnd)
+			: commandType{ pCommandType }, elementType{ pElementType }, start{ pStart }, end{ pEnd } {}
 		virtual ~Command() {};
 		CommandType commandType;
 		ElementType elementType;

@@ -1,8 +1,6 @@
 #pragma once
 #include "Element.hpp"
-#include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
 	class Camera : public Element {
 	public:

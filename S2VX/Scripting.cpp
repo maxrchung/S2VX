@@ -34,7 +34,7 @@ namespace S2VX {
 			chai.use(path);
 		}
 		catch (const chaiscript::exception::eval_error &e) {
-			std::cout << "Error\n" << e.pretty_print() << '\n';
+			std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
 		}
 		catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;

@@ -5,6 +5,10 @@ namespace S2VX {
 	public:
 		// Default texture returns as generic block
 		Texture() {};
+		// Cleanup imageTexture
+		~Texture();
 		Texture(const std::string& path);
+	private:
+		unsigned int imageTexture;
 	};
 }

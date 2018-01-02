@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 #include "CameraCommands.hpp"
 #include "Easing.hpp"
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
 	Camera::Camera(const std::vector<Command*>& pCommands)
 		: Element{ pCommands } {

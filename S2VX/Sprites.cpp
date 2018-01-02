@@ -23,7 +23,7 @@ namespace S2VX {
 					paths[derived->spriteID] = path;
 					Texture texture;
 					if (textures.find(path) != textures.end()) {
-						textures[path] = Texture(path);
+						texture = textures[path] = Texture(path);
 					}
 					else {
 						texture = textures[path];

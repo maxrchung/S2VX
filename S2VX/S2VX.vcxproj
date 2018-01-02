@@ -128,11 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Command.cpp" />
-    <ClCompile Include="CameraCommands.cpp" />
-    <ClCompile Include="GridCommands.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteCommands.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="Elements.cpp" />
@@ -173,6 +169,8 @@
   <ItemGroup>
     <None Include="Line.FragmentShader" />
     <None Include="Line.VertexShader" />
+    <None Include="Sprite.FragmentShader" />
+    <None Include="Sprite.VertexShader" />
     <None Include="test.chai" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

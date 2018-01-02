@@ -6,6 +6,7 @@ namespace S2VX {
 	class Shader {
 	public:
 		Shader();
+		~Shader();
 		Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = "");
 		void setBool(const std::string &name, bool value) const;
 		void setInt(const std::string &name, int value) const;
@@ -24,6 +25,6 @@ namespace S2VX {
 	private:
 		// Checks for compilation/linker errors
 		void checkCompileErrors(GLuint shader, std::string type);
-		int ID;
+		unsigned int program;
 	};
 }

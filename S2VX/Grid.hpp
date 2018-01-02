@@ -10,9 +10,9 @@ namespace S2VX {
 		void update(const Time& time);
 	private:
 		glm::vec4 backColor;
+		Shader shader = Shader(R"(c:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Line.VertexShader)", R"(c:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Line.FragmentShader)");
+		std::vector<float> linePoints;
 		unsigned int linesVertexArray;
 		unsigned int linesVertexBuffer;
-		Shader shader;
-		std::vector<float> vertices;
 	};
 }
