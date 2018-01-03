@@ -9,11 +9,11 @@ namespace S2VX {
 		Sprite() {};
 		// Cleanup OpenGL objects
 		~Sprite();
-		Sprite(const Texture& pTexture);
+		Sprite(const Texture& pTexture, const Shader& imageShader);
 		void draw(const Camera& camera);
 		void move(glm::vec2 pPosition);
 	private:
-		Shader imageShader = Shader("Image.VertexShader", "Image.FragmentShader");
+		Shader imageShader;
 		static constexpr float corners[16] = {
 			// Position			// Texture
 			 0.5f,	 0.5f,		1.0f,	1.0f, // TR

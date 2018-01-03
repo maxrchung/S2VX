@@ -3,8 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 namespace S2VX {
-	Sprite::Sprite(const Texture& pTexture)
-		: texture(pTexture) {
+	Sprite::Sprite(const Texture& pTexture, const Shader& pImageShader)
+		: texture{ pTexture }, imageShader{ pImageShader } {
 		glGenVertexArrays(1, &imageVertexArray);
 		glGenBuffers(1, &imageVertexBuffer);
 		glGenBuffers(1, &imageElementBuffer);

@@ -11,6 +11,7 @@ namespace S2VX {
 		void draw(const Camera& camera);
 		void update(const Time& time);
 	private:
+		Shader imageShader = Shader("Image.VertexShader", "Image.FragmentShader");
 		// ID to Sprite
 		std::map<int, Sprite> activeSprites;
 		// ID to path

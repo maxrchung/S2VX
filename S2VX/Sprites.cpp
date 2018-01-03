@@ -35,7 +35,7 @@ namespace S2VX {
 					auto derived = static_cast<SpriteCreateCommand*>(command);
 					auto path = paths[derived->spriteID];
 					auto texture = textures[path];
-					activeSprites[derived->spriteID] = Sprite(texture);
+					activeSprites[derived->spriteID] = Sprite(texture, imageShader);
 					break;
 				}
 				case CommandType::SpriteDelete: {
