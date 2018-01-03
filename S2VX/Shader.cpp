@@ -81,7 +81,7 @@ namespace S2VX {
 		}
 	}
 	Shader::~Shader() {
-		//glDeleteProgram(program);
+		glDeleteProgram(program);
 	}
 	void Shader::checkCompileErrors(GLuint shader, std::string type) {
 		GLint success;

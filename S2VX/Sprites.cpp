@@ -9,7 +9,7 @@ namespace S2VX {
 	}
 	void Sprites::draw(const Camera& camera) {
 		for (auto& active : activeSprites) {
-			active.second.draw(camera);
+			active.second->draw(camera);
 		}
 	}
 	void Sprites::update(const Time& time) {
@@ -22,20 +22,16 @@ namespace S2VX {
 					auto derived = static_cast<SpriteBindCommand*>(command);
 					auto path = derived->path;
 					paths[derived->spriteID] = path;
-					Texture texture;
 					if (textures.find(path) == textures.end()) {
-						texture = textures[path] = Texture(path);
-					}
-					else {
-						texture = textures[path];
+						textures[path] = std::make_unique<Texture>(path);
 					}
 					break;
 				}
 				case CommandType::SpriteCreate: {
 					auto derived = static_cast<SpriteCreateCommand*>(command);
 					auto path = paths[derived->spriteID];
-					auto texture = textures[path];
-					activeSprites[derived->spriteID] = Sprite(texture, imageShader);
+					auto texture = textures[path].get();
+					activeSprites[derived->spriteID] = std::make_unique<Sprite>(texture, imageShader.get());
 					break;
 				}
 				case CommandType::SpriteDelete: {
@@ -48,7 +44,7 @@ namespace S2VX {
 					auto easing = Easing(derived->easing, interpolation);
 					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
 					auto& sprite = activeSprites[derived->spriteID];
-					sprite.move(pos);
+					sprite->move(pos);
 					break;
 				}
 			}

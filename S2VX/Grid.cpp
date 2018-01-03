@@ -45,9 +45,9 @@ namespace S2VX {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(linePoints[0]) * linePoints.size(), &linePoints[0], GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		linesShader.use();
-		linesShader.setMat4("view", camera.getView());
-		linesShader.setMat4("projection", camera.getProjection());
+		linesShader->use();
+		linesShader->setMat4("view", camera.getView());
+		linesShader->setMat4("projection", camera.getProjection());
 		glDrawArrays(GL_LINES, 0, linePoints.size());
 	}
 	void Grid::update(const Time& time) {

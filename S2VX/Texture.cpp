@@ -28,6 +28,6 @@ namespace S2VX {
 		stbi_image_free(data);
 	}
 	Texture::~Texture() {
-		//glDeleteTextures(1, &imageTexture);
+		glDeleteTextures(1, &imageTexture);
 	}
 }
