@@ -8,6 +8,7 @@ namespace S2VX {
 		// Cleanup imageTexture
 		~Texture();
 		Texture(const std::string& path);
+		unsigned int getImageTexture() const { return imageTexture; }
 	private:
 		unsigned int imageTexture;
 	};

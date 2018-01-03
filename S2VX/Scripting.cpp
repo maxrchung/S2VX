@@ -1,17 +1,23 @@
 #include "Scripting.hpp"
+#include "BackCommands.hpp"
 #include "CameraCommands.hpp"
-#include "Grid.hpp"
 #include "GridCommands.hpp"
 #include "SpriteCommands.hpp"
 namespace S2VX {
 	Scripting::Scripting() {
 		chai.add(chaiscript::var(this), "S2VX");
-		chai.add(chaiscript::fun(&Scripting::GridColorBack, this), "GridColorBack");
+		chai.add(chaiscript::fun(&Scripting::BackColor, this), "BackColor");
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
 		chai.add(chaiscript::fun(&Scripting::CameraRotate, this), "CameraRotate");
 		chai.add(chaiscript::fun(&Scripting::CameraZoom, this), "CameraZoom");
+		chai.add(chaiscript::fun(&Scripting::GridSetLineWidth, this), "GridSetLineWidth");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteMove, this), "SpriteMove");
+	}
+	void Scripting::BackColor(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<BackColorCommand>(Time(start), Time(end), convert, startR, startG, startB, startA, endR, endG, endB, endA);
+		sortedCommands.insert(std::move(command));
 	}
 	void Scripting::CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY) {
 		auto convert = static_cast<EasingType>(easing);
@@ -58,11 +64,15 @@ namespace S2VX {
 		}
 		// const iterator, can't move BiggerKappa                                   killme
 		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
+		std::vector<Command*> backCommands;
 		std::vector<Command*> cameraCommands;
 		std::vector<Command*> gridCommands;
 		std::vector<Command*> spriteCommands;
 		for (auto& command : sortedCommands) {
 			switch (command->elementType) {
+				case ElementType::Back:
+					backCommands.push_back(command.get());
+					break;
 				case ElementType::Camera:
 					cameraCommands.push_back(command.get());
 					break;
@@ -74,15 +84,11 @@ namespace S2VX {
 					break;
 			}
 		}
-		Elements elements{ std::make_unique<Camera>(cameraCommands),
+		Elements elements{ std::make_unique<Back>(backCommands),
+			std::make_unique<Camera>(cameraCommands),
 			std::make_unique<Grid>(gridCommands),
 			std::make_unique<Sprites>(spriteCommands) };
 		return elements;
-	}
-	void Scripting::GridColorBack(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<GridColorBackCommand>(Time(start), Time(end), convert, startR, startG, startB, startA, endR, endG, endB, endA);
-		sortedCommands.insert(std::move(command));
 	}
 	void Scripting::reset() {
 		sortedCommands.clear();
@@ -94,11 +100,17 @@ namespace S2VX {
 		std::unordered_map<int, Time> spriteStarts;
 		spriteEnd = Time(0);
 	}
+	void Scripting::GridSetLineWidth(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<GridSetLineWidthCommand>(Time(start), Time(end), convert, startThickness, endThickness);
+		sortedCommands.insert(std::move(command));
+	}
 	void Scripting::SpriteBind(const std::string& path) {
-		if (spriteID++ >= 0) {
+		if (spriteID >= 0) {
 			spriteStarts[spriteID] = spriteStart;
 			spriteEnds[spriteID] = spriteEnd;
 		}
+		spriteID++;
 		resetSpriteTime();
 		std::unique_ptr<Command> command = std::make_unique<SpriteBindCommand>(spriteID, path);
 		sortedCommands.insert(std::move(command));

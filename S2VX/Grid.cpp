@@ -3,7 +3,6 @@
 #include "GridCommands.hpp"
 #include "Easing.hpp"
 #include <GLFW/glfw3.h>
-#include <iostream>
 namespace S2VX {
 	Grid::Grid(const std::vector<Command*>& commands)
 		: Element{ commands } {
@@ -11,8 +10,6 @@ namespace S2VX {
 		glGenBuffers(1, &linesVertexBuffer);
 	}
 	void Grid::draw(const Camera& camera) {
-		glClearColor(backColor.r, backColor.g, backColor.b, backColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		linePoints.clear();
 		auto scale = camera.getScale();
 		auto posX = static_cast<int>(camera.getPosition().x);
@@ -48,9 +45,9 @@ namespace S2VX {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(linePoints[0]) * linePoints.size(), &linePoints[0], GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		shader.setMat4("view", camera.getView());
-		shader.setMat4("projection", camera.getProjection());
-		shader.use();
+		linesShader.use();
+		linesShader.setMat4("view", camera.getView());
+		linesShader.setMat4("projection", camera.getProjection());
 		glDrawArrays(GL_LINES, 0, linePoints.size());
 	}
 	void Grid::update(const Time& time) {
@@ -59,11 +56,11 @@ namespace S2VX {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
 			switch (command->commandType) {
-				case CommandType::GridColorBack: {
-					// ? lol
-					auto derived = static_cast<GridColorBackCommand*>(command);
+				case CommandType::GridSetLineWidth: {
+					auto derived = static_cast<GridSetLineWidthCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
-					backColor = glm::mix(derived->startColor, derived->endColor, easing);
+					auto lineWidth = glm::mix(derived->startThickness, derived->endThickness, easing);
+					glLineWidth(lineWidth);
 					break;
 				}
 			}

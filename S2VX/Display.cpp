@@ -30,16 +30,14 @@ namespace S2VX {
 		// GLFW_DECORATED sets window position to top left corner, need to reset window to middle of screen
 		auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
-		// tell GLFW to capture our mouse
-		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		// glad: load all OpenGL function pointers
 		// ---------------------------------------
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			std::cout << "Failed to initialize GLAD" << std::endl;
 		}
-		// configure global opengl state
-		// -----------------------------
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_LINE_SMOOTH);
 	}
 	Display::~Display() {
 		// Hopefully this doesn't kill all windows lmaO

@@ -1,6 +1,7 @@
 #include "Sprites.hpp"
 #include "SpriteCommands.hpp"
 #include "Easing.hpp"
+#include <iostream>
 namespace S2VX {
 	Sprites::Sprites(const std::vector<Command*>& commands)
 		: Element{ commands } {
@@ -8,7 +9,7 @@ namespace S2VX {
 	}
 	void Sprites::draw(const Camera& camera) {
 		for (auto& active : activeSprites) {
-			active.second.draw();
+			active.second.draw(camera);
 		}
 	}
 	void Sprites::update(const Time& time) {
@@ -22,7 +23,7 @@ namespace S2VX {
 					auto path = derived->path;
 					paths[derived->spriteID] = path;
 					Texture texture;
-					if (textures.find(path) != textures.end()) {
+					if (textures.find(path) == textures.end()) {
 						texture = textures[path] = Texture(path);
 					}
 					else {
@@ -35,16 +36,18 @@ namespace S2VX {
 					auto path = paths[derived->spriteID];
 					auto texture = textures[path];
 					activeSprites[derived->spriteID] = Sprite(texture);
+					break;
 				}
 				case CommandType::SpriteDelete: {
 					auto derived = static_cast<SpriteDeleteCommand*>(command);
 					activeSprites.erase(derived->spriteID);
+					break;
 				}
 				case CommandType::SpriteMove: {
 					auto derived = static_cast<SpriteMoveCommand*>(command);
-					auto sprite = activeSprites[derived->spriteID];
 					auto easing = Easing(derived->easing, interpolation);
 					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
+					auto& sprite = activeSprites[derived->spriteID];
 					sprite.move(pos);
 					break;
 				}

@@ -14,7 +14,12 @@ namespace S2VX {
 		stbi_set_flip_vertically_on_load(true);
 		auto data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		if (data) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			if (channels == 4) {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			}
+			else {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			}
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else {
@@ -23,6 +28,6 @@ namespace S2VX {
 		stbi_image_free(data);
 	}
 	Texture::~Texture() {
-		glDeleteTextures(1, &imageTexture);
+		//glDeleteTextures(1, &imageTexture);
 	}
 }

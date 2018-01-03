@@ -87,6 +87,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
+    <ClCompile Include="Back.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -143,28 +146,42 @@
     <ClInclude Include="Sprites.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.hpp">
-      <Filter>Header Files\Element</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Back.hpp">
+      <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="BackCommands.hpp">
+      <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.chai">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Line.FragmentShader">
+    <None Include="Lines.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </None>
-    <None Include="Line.VertexShader">
+    <None Include="Lines.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
-    <None Include="Sprite.FragmentShader">
+    <None Include="Image.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </None>
-    <None Include="Sprite.VertexShader">
+    <None Include="Image.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="testOpacity.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

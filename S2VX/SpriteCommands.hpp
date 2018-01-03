@@ -14,13 +14,13 @@ namespace S2VX {
 	};
 	struct SpriteCreateCommand : Command {
 		SpriteCreateCommand(const Time& start, int pSpriteID)
-			: Command{ CommandType::SpriteBind, ElementType::Sprite, start, start },
+			: Command{ CommandType::SpriteCreate, ElementType::Sprite, start, start },
 			spriteID{ pSpriteID } {}
 		int spriteID;
 	};
 	struct SpriteDeleteCommand : Command {
 		SpriteDeleteCommand(const Time& end, int pSpriteID)
-			: Command{ CommandType::SpriteBind, ElementType::Sprite, end, end },
+			: Command{ CommandType::SpriteDelete, ElementType::Sprite, end, end },
 			spriteID{ pSpriteID } {}
 		int spriteID;
 	};
