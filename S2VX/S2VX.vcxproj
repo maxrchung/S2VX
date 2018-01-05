@@ -146,6 +146,7 @@
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AntiAliasLines.FragmentShader" />
     <ClInclude Include="Back.hpp" />
     <ClInclude Include="BackCommands.hpp" />
     <ClInclude Include="Camera.hpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AntiAliasLines.VertexShader" />
     <None Include="Lines.FragmentShader" />
     <None Include="Lines.VertexShader" />
     <None Include="Image.FragmentShader" />

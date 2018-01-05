@@ -1,0 +1,11 @@
+#version 330 core
+layout (location = 0) in vec2 pPosition;
+layout (location = 1) in vec2 pNormal;
+uniform float lineWidth;
+uniform mat4 view;
+uniform mat4 projection;
+void main() {
+	vec4 delta = vec4(pNormal * lineWidth, 0.0f, 0.0f);
+	vec4 pos = vec4(pPosition, 0.0f, 1.0f);
+	gl_Position = projection * view * (pos + delta);
+}
