@@ -15,10 +15,8 @@ namespace S2VX {
 		auto delta = 0.0f;
 		auto total = 0.0f;
 		// render loop
-		// -----------
 		while (!display.shouldClose()) {
 			// per-frame time logic
-			// --------------------
 			now = static_cast<float>(glfwGetTime());
 			delta = now - previous;
 			previous = now;
@@ -28,7 +26,6 @@ namespace S2VX {
 			elements.update(totalTime);
 			elements.draw();
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-			// -------------------------------------------------------------------------------
 			glfwSwapBuffers(display.getWindow());
 			glfwPollEvents();
 		}

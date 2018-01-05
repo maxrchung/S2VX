@@ -13,7 +13,6 @@ namespace S2VX {
 		}
 	}
 	void Sprites::update(const Time& time) {
-		updateActives(time);
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
@@ -32,7 +31,7 @@ namespace S2VX {
 					auto path = paths[derived->spriteID];
 					auto texture = textures[path].get();
 					activeSprites[derived->spriteID] = std::make_unique<Sprite>(texture, imageShader.get());
-					break;
+					break; // Christ remember to break          eEK
 				}
 				case CommandType::SpriteDelete: {
 					auto derived = static_cast<SpriteDeleteCommand*>(command);

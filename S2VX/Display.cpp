@@ -3,7 +3,6 @@
 namespace S2VX {
 	Display::Display() {
 		// glfw: initialize and configure
-		// ------------------------------
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -31,7 +30,6 @@ namespace S2VX {
 		auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
 		// glad: load all OpenGL function pointers
-		// ---------------------------------------
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			std::cout << "Failed to initialize GLAD" << std::endl;
 		}
@@ -41,7 +39,6 @@ namespace S2VX {
 	Display::~Display() {
 		// Hopefully this doesn't kill all windows lmaO
 		// glfw: terminate, clearing all previously allocated GLFW resources.
-		// ------------------------------------------------------------------
 		glfwTerminate();
 	}
 	bool Display::shouldClose() {

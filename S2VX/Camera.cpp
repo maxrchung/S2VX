@@ -20,7 +20,6 @@ namespace S2VX {
 		updateMatrices();
 	}
 	void Camera::update(const Time& time) {
-		updateActives(time);
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);

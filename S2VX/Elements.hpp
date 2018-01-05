@@ -17,5 +17,7 @@ namespace S2VX {
 		std::unique_ptr<Camera> camera;
 		std::unique_ptr<Grid> grid;
 		std::unique_ptr<Sprites> sprites;
+		// Holds everything
+		std::vector<Element*> all;
 	};
 }

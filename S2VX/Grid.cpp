@@ -3,13 +3,11 @@
 #include "GridCommands.hpp"
 #include "Easing.hpp"
 #include <GLFW/glfw3.h>
-#include <iostream>
 namespace S2VX {
 	Grid::Grid(const std::vector<Command*>& commands)
 		: Element{ commands } {
 		glGenVertexArrays(1, &linesVertexArray);
 		glGenBuffers(1, &linesVertexBuffer);
-
 	}
 	Grid::~Grid() {
 		glDeleteVertexArrays(1, &linesVertexArray);
@@ -17,16 +15,11 @@ namespace S2VX {
 	}
 	void Grid::draw(const Camera& camera) {
 		std::vector<float> linePoints;
-
-		std::vector<float> testPoints;
-
-
-
 		auto scale = camera.getScale();
 		auto posX = static_cast<int>(camera.getPosition().x);
 		auto posY = static_cast<int>(camera.getPosition().y);
-		auto corner = 0.5f + ceilf(scale);
-		auto range = static_cast<int>(ceill(scale)) * 2 + 2;
+		auto corner = 0.5f + floorf(scale);
+		auto range = static_cast<int>(scale) * 2 + 2;
 		for (auto i = 0; i < range; ++i) {
 			// Left X
 			auto leftX = posX - corner;
@@ -56,23 +49,6 @@ namespace S2VX {
 			linePoints.push_back(verticalX); linePoints.push_back(botY); linePoints.push_back(1.0f); linePoints.push_back(0.0f);
 			linePoints.push_back(verticalX); linePoints.push_back(botY); linePoints.push_back(-1.0f); linePoints.push_back(0.0f);
 			linePoints.push_back(verticalX); linePoints.push_back(topY); linePoints.push_back(-1.0f); linePoints.push_back(0.0f);
-
-
-			testPoints.push_back(rightX); testPoints.push_back(horizontalY);
-			testPoints.push_back(rightX); testPoints.push_back(horizontalY);
-			testPoints.push_back(leftX); testPoints.push_back(horizontalY);
-
-			testPoints.push_back(rightX); testPoints.push_back(horizontalY);
-			testPoints.push_back(leftX); testPoints.push_back(horizontalY);
-			testPoints.push_back(leftX); testPoints.push_back(horizontalY);
-
-			testPoints.push_back(verticalX); testPoints.push_back(topY);
-			testPoints.push_back(verticalX); testPoints.push_back(botY);
-			testPoints.push_back(verticalX); testPoints.push_back(topY);
-			testPoints.push_back(verticalX); testPoints.push_back(botY);
-			testPoints.push_back(verticalX); testPoints.push_back(botY);
-			testPoints.push_back(verticalX); testPoints.push_back(topY);
-
 		}
 		glBindVertexArray(linesVertexArray);
 		glBindBuffer(GL_ARRAY_BUFFER, linesVertexBuffer);
@@ -89,16 +65,9 @@ namespace S2VX {
 		linesShader->setFloat("lineWidth", lineWidth);
 		linesShader->setMat4("view", camera.getView());
 		linesShader->setMat4("projection", camera.getProjection());
-		
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
-
-		auto blah = glGetError();
-		if (blah != 0) {
-			std::cout << blah << std::endl;
-		}
 	}
 	void Grid::update(const Time& time) {
-		updateActives(time);
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);

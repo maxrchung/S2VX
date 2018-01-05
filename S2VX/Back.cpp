@@ -10,7 +10,6 @@ namespace S2VX {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	void Back::update(const Time& time) {
-		updateActives(time);
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);

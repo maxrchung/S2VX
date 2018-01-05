@@ -12,9 +12,9 @@ namespace S2VX {
 		virtual ~Element() {};
 		virtual void draw(const Camera& camera) = 0;
 		virtual void update(const Time& time) = 0;
-	protected:
 		// Updates list of active commands
 		void updateActives(const Time& time);
+	protected:
 		std::unordered_set<int> actives;
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		std::vector<Command*> commands;
