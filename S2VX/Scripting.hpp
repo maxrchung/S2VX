@@ -24,13 +24,18 @@ namespace S2VX {
 		void SpriteBind(const std::string& path);
 		void SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
 	private:
+		// Converts sortedCommands to vector form
+		std::vector<Command*> sortedToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands);
 		void reset();
 		void resetSpriteTime();
 		chaiscript::ChaiScript chai;
 		int spriteID = -1;
 		Time spriteStart = Time(std::numeric_limits<int>::max());
 		Time spriteEnd;
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedSpriteCommands;
 		std::unordered_map<int, Time> spriteStarts;
 		std::unordered_map<int, Time> spriteEnds;
 	};

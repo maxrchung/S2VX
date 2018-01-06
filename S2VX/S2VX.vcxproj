@@ -146,7 +146,7 @@
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AntiAliasLines.FragmentShader" />
+    <ClInclude Include="FeatherLines.FragmentShader" />
     <ClInclude Include="Back.hpp" />
     <ClInclude Include="BackCommands.hpp" />
     <ClInclude Include="Camera.hpp" />
@@ -159,7 +159,6 @@
     <ClInclude Include="Easing.hpp" />
     <ClInclude Include="EasingType.hpp" />
     <ClInclude Include="Elements.hpp" />
-    <ClInclude Include="ElementType.hpp" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="GridCommands.hpp" />
     <ClInclude Include="Element.hpp" />
@@ -171,9 +170,7 @@
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AntiAliasLines.VertexShader" />
-    <None Include="Lines.FragmentShader" />
-    <None Include="Lines.VertexShader" />
+    <None Include="FeatherLines.VertexShader" />
     <None Include="Image.FragmentShader" />
     <None Include="Image.VertexShader" />
     <None Include="test.chai" />

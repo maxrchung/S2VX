@@ -113,9 +113,6 @@
     <ClInclude Include="CommandType.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="ElementType.hpp">
-      <Filter>Header Files\Element</Filter>
-    </ClInclude>
     <ClInclude Include="Command.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
@@ -158,7 +155,7 @@
     <ClInclude Include="BackCommands.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="AntiAliasLines.FragmentShader">
+    <ClInclude Include="FeatherLines.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </ClInclude>
   </ItemGroup>
@@ -166,19 +163,13 @@
     <None Include="test.chai">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Lines.FragmentShader">
-      <Filter>Shaders\Fragment</Filter>
-    </None>
-    <None Include="Lines.VertexShader">
-      <Filter>Shaders\Vertex</Filter>
-    </None>
     <None Include="Image.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </None>
     <None Include="Image.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
-    <None Include="AntiAliasLines.VertexShader">
+    <None Include="FeatherLines.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
   </ItemGroup>

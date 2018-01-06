@@ -18,22 +18,22 @@ namespace S2VX {
 	void Scripting::BackColor(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<BackColorCommand>(Time(start), Time(end), convert, startR, startG, startB, startA, endR, endG, endB, endA);
-		sortedCommands.insert(std::move(command));
+		sortedBackCommands.insert(std::move(command));
 	}
 	void Scripting::CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<CameraMoveCommand>(Time(start), Time(end), convert, startX, startY, endX, endY);
-		sortedCommands.insert(std::move(command));
+		sortedCameraCommands.insert(std::move(command));
 	}
 	void Scripting::CameraRotate(const std::string& start, const std::string& end, int easing, float startRoll, float endRoll) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<CameraRotateCommand>(Time(start), Time(end), convert, startRoll, endRoll);
-		sortedCommands.insert(std::move(command));
+		sortedCameraCommands.insert(std::move(command));
 	}
 	void Scripting::CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<CameraZoomCommand>(Time(start), Time(end), convert, startScale, endScale);
-		sortedCommands.insert(std::move(command));
+		sortedCameraCommands.insert(std::move(command));
 	}
 	Elements Scripting::evaluate(const std::string& path) {
 		reset();
@@ -56,35 +56,18 @@ namespace S2VX {
 			// -1 to guarantee always before
 			auto before = Time(start.second.ms - 1);
 			std::unique_ptr<Command> command = std::make_unique<SpriteCreateCommand>(Time(start.second.ms - 1), start.first);
-			sortedCommands.insert(std::move(command));
+			sortedSpriteCommands.insert(std::move(command));
 		}
 		for (auto& end : spriteEnds) {
 			// +1 to guarantee always after
 			std::unique_ptr<Command> command = std::make_unique<SpriteDeleteCommand>(Time(end.second.ms + 1), end.first);
-			sortedCommands.insert(std::move(command));
+			sortedSpriteCommands.insert(std::move(command));
 		}
-		// const iterator, can't move BiggerKappa                                   killme
 		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
-		std::vector<Command*> backCommands;
-		std::vector<Command*> cameraCommands;
-		std::vector<Command*> gridCommands;
-		std::vector<Command*> spriteCommands;
-		for (auto& command : sortedCommands) {
-			switch (command->elementType) {
-				case ElementType::Back:
-					backCommands.push_back(command.get());
-					break;
-				case ElementType::Camera:
-					cameraCommands.push_back(command.get());
-					break;
-				case ElementType::Grid:
-					gridCommands.push_back(command.get());
-					break;
-				case ElementType::Sprite:
-					spriteCommands.push_back(command.get());
-					break;
-			}
-		}
+		std::vector<Command*> backCommands = sortedToVector(sortedBackCommands);
+		std::vector<Command*> cameraCommands = sortedToVector(sortedCameraCommands);
+		std::vector<Command*> gridCommands = sortedToVector(sortedGridCommands);
+		std::vector<Command*> spriteCommands = sortedToVector(sortedSpriteCommands);
 		Elements elements{ std::make_unique<Back>(backCommands),
 			std::make_unique<Camera>(cameraCommands),
 			std::make_unique<Grid>(gridCommands),
@@ -92,7 +75,11 @@ namespace S2VX {
 		return elements;
 	}
 	void Scripting::reset() {
-		sortedCommands.clear();
+		sortedBackCommands.clear();
+		sortedCameraCommands.clear();
+		sortedGridCommands.clear();
+		sortedSpriteCommands.clear();
+		sortedGridCommands.clear();
 		spriteID = -1;
 		resetSpriteTime();
 	}
@@ -104,12 +91,21 @@ namespace S2VX {
 	void Scripting::GridFeather(const std::string& start, const std::string& end, int easing, float startFeather, float endFeather) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<GridFeatherCommand>(Time(start), Time(end), convert, startFeather, endFeather);
-		sortedCommands.insert(std::move(command));
+		sortedGridCommands.insert(std::move(command));
 	}
 	void Scripting::GridThickness(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<GridThicknessCommand>(Time(start), Time(end), convert, startThickness, endThickness);
-		sortedCommands.insert(std::move(command));
+		sortedGridCommands.insert(std::move(command));
+	}
+	std::vector<Command*> Scripting::sortedToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
+		auto vector = std::vector<Command*>(sortedCommands.size());
+		int i = 0;
+		// This should be a little faster than just adding by push_back?
+		for (auto& command : sortedCommands) {
+			vector[i++] = command.get();
+		}
+		return vector;
 	}
 	void Scripting::SpriteBind(const std::string& path) {
 		if (spriteID >= 0) {
@@ -119,14 +115,14 @@ namespace S2VX {
 		spriteID++;
 		resetSpriteTime();
 		std::unique_ptr<Command> command = std::make_unique<SpriteBindCommand>(spriteID, path);
-		sortedCommands.insert(std::move(command));
+		sortedSpriteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY) {
 		auto convert = static_cast<EasingType>(easing);
 		auto startTime = Time(start);
 		auto endTime = Time(end);
 		std::unique_ptr<Command> command = std::make_unique<SpriteMoveCommand>(startTime, endTime, convert, spriteID, startX, startY, endX, endY);
-		sortedCommands.insert(std::move(command));
+		sortedSpriteCommands.insert(std::move(command));
 
 		if (startTime < spriteStart) {
 			spriteStart = startTime;

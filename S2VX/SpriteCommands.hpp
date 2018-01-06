@@ -6,7 +6,7 @@ namespace S2VX {
 	// Special command that only takes in path and spriteID; put into a lookup later to determine sprite path
 	struct SpriteBindCommand : Command {
 		SpriteBindCommand(int pSpriteID, const std::string& pPath)
-			: Command{ CommandType::SpriteBind, ElementType::Sprite, Time(), Time() },
+			: Command{ CommandType::SpriteBind, Time(), Time() },
 			spriteID{ pSpriteID },
 			path{ pPath } {}
 		int spriteID;
@@ -14,19 +14,19 @@ namespace S2VX {
 	};
 	struct SpriteCreateCommand : Command {
 		SpriteCreateCommand(const Time& start, int pSpriteID)
-			: Command{ CommandType::SpriteCreate, ElementType::Sprite, start, start },
+			: Command{ CommandType::SpriteCreate, start, start },
 			spriteID{ pSpriteID } {}
 		int spriteID;
 	};
 	struct SpriteDeleteCommand : Command {
 		SpriteDeleteCommand(const Time& end, int pSpriteID)
-			: Command{ CommandType::SpriteDelete, ElementType::Sprite, end, end },
+			: Command{ CommandType::SpriteDelete, end, end },
 			spriteID{ pSpriteID } {}
 		int spriteID;
 	};
 	struct SpriteMoveCommand : Command {
 		SpriteMoveCommand(const Time& start, const Time& end, EasingType pEasing, int pSpriteID, float startX, float startY, float endX, float endY)
-			: Command{ CommandType::SpriteMove, ElementType::Sprite, start, end },
+			: Command{ CommandType::SpriteMove, start, end },
 			easing{ pEasing },
 			spriteID{ pSpriteID },
 			startCoordinate{ glm::vec2(startX, startY) },

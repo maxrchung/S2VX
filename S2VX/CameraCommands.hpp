@@ -5,7 +5,7 @@
 namespace S2VX {
 	struct CameraMoveCommand : Command {
 		CameraMoveCommand(const Time& start, const Time& end, EasingType pEasing, float startX, float startY, float endX, float endY)
-			: Command{ CommandType::CameraMove, ElementType::Camera, start, end },
+			: Command{ CommandType::CameraMove, start, end },
 			easing{ pEasing },
 			startCoordinate{ glm::vec2(startX, startY) },
 			endCoordinate{ glm::vec2(endX, endY) } {}
@@ -15,7 +15,7 @@ namespace S2VX {
 	};
 	struct CameraRotateCommand : Command {
 		CameraRotateCommand(const Time& start, const Time& end, EasingType pEasing, float pStartRoll, float pEndRoll)
-			: Command{ CommandType::CameraRotate, ElementType::Camera, start, end },
+			: Command{ CommandType::CameraRotate, start, end },
 			easing{ pEasing },
 			startRoll{ pStartRoll },
 			endRoll{ pEndRoll } {}
@@ -25,7 +25,7 @@ namespace S2VX {
 	};
 	struct CameraZoomCommand : Command {
 		CameraZoomCommand(const Time& start, const Time& end, EasingType pEasing, float pStartScale, float pEndScale)
-			: Command{ CommandType::CameraZoom, ElementType::Camera, start, end },
+			: Command{ CommandType::CameraZoom, start, end },
 			easing{ pEasing },
 			startScale{ pStartScale },
 			endScale{ pEndScale } {}

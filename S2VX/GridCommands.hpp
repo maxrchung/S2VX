@@ -5,7 +5,7 @@
 namespace S2VX {
 	struct GridFeatherCommand : Command {
 		GridFeatherCommand(const Time& start, const Time& end, EasingType pEasing, float pStartFeather, float pEndFeather)
-			: Command{ CommandType::GridFeather, ElementType::Grid, start, end },
+			: Command{ CommandType::GridFeather, start, end },
 			easing{ pEasing },
 			startFeather{ pStartFeather },
 			endFeather{ pEndFeather } {}
@@ -15,7 +15,7 @@ namespace S2VX {
 	};
 	struct GridThicknessCommand : Command {
 		GridThicknessCommand(const Time& start, const Time& end, EasingType pEasing, float pStartThickness, float pEndThickness)
-			: Command{ CommandType::GridThickness, ElementType::Grid, start, end },
+			: Command{ CommandType::GridThickness, start, end },
 			easing{ pEasing },
 			startThickness{ pStartThickness },
 			endThickness{ pEndThickness } {}
