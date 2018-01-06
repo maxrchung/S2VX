@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	struct CameraMoveCommand : Command {
-		CameraMoveCommand(const Time& start, const Time& end, EasingType pEasing, float startX, float startY, float endX, float endY)
+		CameraMoveCommand(int start, int end, EasingType pEasing, float startX, float startY, float endX, float endY)
 			: Command{ CommandType::CameraMove, start, end },
 			easing{ pEasing },
 			startCoordinate{ glm::vec2(startX, startY) },
@@ -14,7 +14,7 @@ namespace S2VX {
 		glm::vec2 endCoordinate;
 	};
 	struct CameraRotateCommand : Command {
-		CameraRotateCommand(const Time& start, const Time& end, EasingType pEasing, float pStartRoll, float pEndRoll)
+		CameraRotateCommand(int start, int end, EasingType pEasing, float pStartRoll, float pEndRoll)
 			: Command{ CommandType::CameraRotate, start, end },
 			easing{ pEasing },
 			startRoll{ pStartRoll },
@@ -24,7 +24,7 @@ namespace S2VX {
 		float endRoll;
 	};
 	struct CameraZoomCommand : Command {
-		CameraZoomCommand(const Time& start, const Time& end, EasingType pEasing, float pStartScale, float pEndScale)
+		CameraZoomCommand(int start, int end, EasingType pEasing, float pStartScale, float pEndScale)
 			: Command{ CommandType::CameraZoom, start, end },
 			easing{ pEasing },
 			startScale{ pStartScale },

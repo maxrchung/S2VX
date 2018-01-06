@@ -8,7 +8,7 @@ namespace S2VX {
 		sprites->draw(*camera.get());
 		grid->draw(*camera.get());
 	}
-	void Elements::update(const Time& time) {
+	void Elements::update(int time) {
 		for (auto element : all) {
 			element->updateActives(time);
 			element->update(time);

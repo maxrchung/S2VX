@@ -8,13 +8,13 @@ namespace S2VX {
 		Grid(const std::vector<Command*>& commands);
 		~Grid();
 		void draw(const Camera& camera);
-		void update(const Time& time);
+		void update(int time);
 	private:
 		// https://blog.mapbox.com/drawing-antialiased-lines-with-opengl-8766f34192dc
 		std::unique_ptr<Shader> linesShader = std::make_unique<Shader>("FeatherLines.VertexShader", "FeatherLines.FragmentShader");
 		unsigned int linesVertexArray;
 		unsigned int linesVertexBuffer;
-		float lineWidth = 1.0f;
+		float lineWidth = 0.1f;
 		float feather = 0.01f;
 	};
 }

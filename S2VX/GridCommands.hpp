@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	struct GridFeatherCommand : Command {
-		GridFeatherCommand(const Time& start, const Time& end, EasingType pEasing, float pStartFeather, float pEndFeather)
+		GridFeatherCommand(int start, int end, EasingType pEasing, float pStartFeather, float pEndFeather)
 			: Command{ CommandType::GridFeather, start, end },
 			easing{ pEasing },
 			startFeather{ pStartFeather },
@@ -14,7 +14,7 @@ namespace S2VX {
 		float endFeather;
 	};
 	struct GridThicknessCommand : Command {
-		GridThicknessCommand(const Time& start, const Time& end, EasingType pEasing, float pStartThickness, float pEndThickness)
+		GridThicknessCommand(int start, int end, EasingType pEasing, float pStartThickness, float pEndThickness)
 			: Command{ CommandType::GridThickness, start, end },
 			easing{ pEasing },
 			startThickness{ pStartThickness },

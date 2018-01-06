@@ -19,10 +19,10 @@ namespace S2VX {
 		up = glm::vec3(cos(glm::radians(degrees + 90)), sin(glm::radians(degrees + 90)), 0.0f);
 		updateMatrices();
 	}
-	void Camera::update(const Time& time) {
+	void Camera::update(int time) {
 		for (auto active : actives) {
 			auto command = commands[active];
-			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
 				case CommandType::CameraMove: {
 					auto derived = static_cast<CameraMoveCommand*>(command);

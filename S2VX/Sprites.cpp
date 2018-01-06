@@ -12,10 +12,10 @@ namespace S2VX {
 			active.second->draw(camera);
 		}
 	}
-	void Sprites::update(const Time& time) {
+	void Sprites::update(int time) {
 		for (auto active : actives) {
 			auto command = commands[active];
-			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
 				case CommandType::SpriteBind: {
 					auto derived = static_cast<SpriteBindCommand*>(command);

@@ -22,8 +22,8 @@ namespace S2VX {
 			previous = now;
 			total += delta;
 			// Convert to milliseconds
-			Time totalTime{ static_cast<int>(total * 1000.0f) };
-			elements.update(totalTime);
+			auto milliseconds = static_cast<int>(total * 1000.0f);
+			elements.update(milliseconds);
 			elements.draw();
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			glfwSwapBuffers(display.getWindow());

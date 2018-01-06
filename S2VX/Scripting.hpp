@@ -13,16 +13,16 @@ namespace S2VX {
 	public:
 		// Initializing scripting
 		Scripting();
-		void BackColor(const std::string& start, const std::string& end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
-		void CameraMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
-		void CameraRotate(const std::string& start, const std::string& end, int easing, float startDegrees, float endDegrees);
-		void CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale);
+		void BackColor(int start, int end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
+		void CameraMove(int start, int end, int easing, float startX, float startY, float endX, float endY);
+		void CameraRotate(int start, int end, int easing, float startDegrees, float endDegrees);
+		void CameraZoom(int start, int end, int easing, float startScale, float endScale);
 		// Evaluates chaiscript
 		Elements evaluate(const std::string& path);
-		void GridFeather(const std::string& start, const std::string& end, int easing, float startFeather, float endFeather);
-		void GridThickness(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness);
+		void GridFeather(int start, int end, int easing, float startFeather, float endFeather);
+		void GridThickness(int start, int end, int easing, float startThickness, float endThickness);
 		void SpriteBind(const std::string& path);
-		void SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
+		void SpriteMove(int start, int end, int easing, float startX, float startY, float endX, float endY);
 	private:
 		// Converts sortedCommands to vector form
 		std::vector<Command*> sortedToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands);
@@ -30,13 +30,13 @@ namespace S2VX {
 		void resetSpriteTime();
 		chaiscript::ChaiScript chai;
 		int spriteID = -1;
-		Time spriteStart = Time(std::numeric_limits<int>::max());
-		Time spriteEnd;
+		int spriteStart = std::numeric_limits<int>::max();
+		int spriteEnd;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedSpriteCommands;
-		std::unordered_map<int, Time> spriteStarts;
-		std::unordered_map<int, Time> spriteEnds;
+		std::unordered_map<int, int> spriteStarts;
+		std::unordered_map<int, int> spriteEnds;
 	};
 }

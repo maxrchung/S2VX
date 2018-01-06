@@ -3,7 +3,6 @@
 #include "Camera.hpp"
 #include "Grid.hpp"
 #include "Sprites.hpp"
-#include "Time.hpp"
 #include <memory>
 namespace S2VX {
 	// Structure for handling all elements together
@@ -12,7 +11,7 @@ namespace S2VX {
 	public:
 		Elements(std::unique_ptr<Back>& pBack, std::unique_ptr<Camera>& pCamera, std::unique_ptr<Grid>& pGrid, std::unique_ptr<Sprites>& pSprites);
 		void draw();
-		void update(const Time& time);
+		void update(int time);
 		std::unique_ptr<Back> back;
 		std::unique_ptr<Camera> camera;
 		std::unique_ptr<Grid> grid;

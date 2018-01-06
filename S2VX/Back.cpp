@@ -9,10 +9,10 @@ namespace S2VX {
 		glClearColor(color.r, color.g, color.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	void Back::update(const Time& time) {
+	void Back::update(int time) {
 		for (auto active : actives) {
 			auto command = commands[active];
-			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
 				case CommandType::BackColor: {
 					auto derived = static_cast<BackColorCommand*>(command);

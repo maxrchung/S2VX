@@ -68,10 +68,10 @@ namespace S2VX {
 		linesShader->setFloat("feather", feather);
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
 	}
-	void Grid::update(const Time& time) {
+	void Grid::update(int time) {
 		for (auto active : actives) {
 			auto command = commands[active];
-			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
+			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
 				case CommandType::GridFeather: {
 					auto derived = static_cast<GridFeatherCommand*>(command);

@@ -9,7 +9,7 @@ namespace S2VX {
 	public:
 		Sprites(const std::vector<Command*>& commands);
 		void draw(const Camera& camera);
-		void update(const Time& time);
+		void update(int time);
 	private:
 		std::unique_ptr<Shader> imageShader = std::make_unique<Shader>("Image.VertexShader", "Image.FragmentShader");
 		// ID to Sprite

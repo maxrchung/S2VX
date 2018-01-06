@@ -5,11 +5,11 @@ namespace S2VX {
 	Element::Element(const std::vector<Command*>& pCommands)
 		: commands{ pCommands } {
 	}
-	void Element::updateActives(const Time& time) {
+	void Element::updateActives(int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (commands[*active]->end <= time) {
+				std::cout << "Removed " << std::to_string(static_cast<int>(commands[*active]->commandType)) << " at " << time << std::endl;
 				active = actives.erase(active);
-				std::cout << "Removed: " << " " << time.format << std::endl;
 			}
 			else {
 				active++;
