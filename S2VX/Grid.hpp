@@ -15,5 +15,6 @@ namespace S2VX {
 		unsigned int linesVertexArray;
 		unsigned int linesVertexBuffer;
 		float lineWidth = 1.0f;
+		float feather = 0.25f;
 	};
 }

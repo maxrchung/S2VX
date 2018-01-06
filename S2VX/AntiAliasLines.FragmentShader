@@ -1,5 +1,17 @@
 #version 330 core
 out vec4 fragmentColor;
+in vec2 normal;
+uniform float lineWidth;
+uniform float feather;
 void main() {
-    fragmentColor = vec4(1.0f,1.0f,1.0f,0.1f);
+	float normalLength = length(normal);
+	if (normalLength < feather) {
+		fragmentColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+	else {
+		float normalPartial = normalLength - feather;
+		float lineWidthPartial = lineWidth - feather;
+		float alpha = 1.0f - normalPartial / lineWidthPartial;
+		fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
+	}
 }

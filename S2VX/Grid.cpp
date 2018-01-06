@@ -65,6 +65,7 @@ namespace S2VX {
 		linesShader->setFloat("lineWidth", lineWidth);
 		linesShader->setMat4("view", camera.getView());
 		linesShader->setMat4("projection", camera.getProjection());
+		linesShader->setFloat("feather", feather);
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
 	}
 	void Grid::update(const Time& time) {
