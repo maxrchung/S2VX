@@ -5,13 +5,15 @@ uniform float lineWidth;
 uniform float feather;
 void main() {
 	float normalLength = length(normal);
-	if (normalLength < feather) {
-		fragmentColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	float featherPartial = lineWidth - feather;
+	float alpha = 1.0f;
+	if (featherPartial <= 0) {
+		alpha = 0.0f;
 	}
-	else {
-		float normalPartial = normalLength - feather;
-		float lineWidthPartial = lineWidth - feather;
-		float alpha = 1.0f - normalPartial / lineWidthPartial;
-		fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
+	else if (normalLength > featherPartial) {
+		float normalPartial = normalLength - featherPartial;
+		float lineWidthPartial = lineWidth - featherPartial;
+		alpha = 1.0f - normalPartial / lineWidthPartial;
 	}
+	fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
 }

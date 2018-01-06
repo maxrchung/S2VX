@@ -19,7 +19,8 @@ namespace S2VX {
 		void CameraZoom(const std::string& start, const std::string& end, int easing, float startScale, float endScale);
 		// Evaluates chaiscript
 		Elements evaluate(const std::string& path);
-		void GridSetLineWidth(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness);
+		void GridFeather(const std::string& start, const std::string& end, int easing, float startFeather, float endFeather);
+		void GridThickness(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness);
 		void SpriteBind(const std::string& path);
 		void SpriteMove(const std::string& start, const std::string& end, int easing, float startX, float startY, float endX, float endY);
 	private:

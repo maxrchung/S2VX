@@ -10,7 +10,8 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
 		chai.add(chaiscript::fun(&Scripting::CameraRotate, this), "CameraRotate");
 		chai.add(chaiscript::fun(&Scripting::CameraZoom, this), "CameraZoom");
-		chai.add(chaiscript::fun(&Scripting::GridSetLineWidth, this), "GridSetLineWidth");
+		chai.add(chaiscript::fun(&Scripting::GridFeather, this), "GridFeather");
+		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteMove, this), "SpriteMove");
 	}
@@ -100,9 +101,14 @@ namespace S2VX {
 		std::unordered_map<int, Time> spriteStarts;
 		spriteEnd = Time(0);
 	}
-	void Scripting::GridSetLineWidth(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness) {
+	void Scripting::GridFeather(const std::string& start, const std::string& end, int easing, float startFeather, float endFeather) {
 		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<GridSetLineWidthCommand>(Time(start), Time(end), convert, startThickness, endThickness);
+		std::unique_ptr<Command> command = std::make_unique<GridFeatherCommand>(Time(start), Time(end), convert, startFeather, endFeather);
+		sortedCommands.insert(std::move(command));
+	}
+	void Scripting::GridThickness(const std::string& start, const std::string& end, int easing, float startThickness, float endThickness) {
+		auto convert = static_cast<EasingType>(easing);
+		std::unique_ptr<Command> command = std::make_unique<GridThicknessCommand>(Time(start), Time(end), convert, startThickness, endThickness);
 		sortedCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteBind(const std::string& path) {

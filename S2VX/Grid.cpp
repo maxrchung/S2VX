@@ -73,8 +73,15 @@ namespace S2VX {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time.ms - command->start.ms) / (command->end.ms - command->start.ms);
 			switch (command->commandType) {
-				case CommandType::GridSetLineWidth: {
-					auto derived = static_cast<GridSetLineWidthCommand*>(command);
+				case CommandType::GridFeather: {
+					auto derived = static_cast<GridFeatherCommand*>(command);
+					auto easing = Easing(derived->easing, interpolation);
+					auto pFeather = glm::mix(derived->startFeather, derived->endFeather, easing);
+					feather = pFeather;
+					break;
+				}
+				case CommandType::GridThickness: {
+					auto derived = static_cast<GridThicknessCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					auto pLineWidth = glm::mix(derived->startThickness, derived->endThickness, easing);
 					lineWidth = pLineWidth;

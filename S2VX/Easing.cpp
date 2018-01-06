@@ -16,6 +16,10 @@
 
 namespace S2VX {
 	AHFloat Easing(EasingType type, AHFloat value) {
+		// Handles cases where start = end time
+		if (isnan(value)) {
+			return 1;
+		}
 		switch (type) {
 			case EasingType::LinearInterpolation:
 				return LinearInterpolation(value);
