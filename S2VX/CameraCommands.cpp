@@ -1,4 +1,5 @@
 #include "CameraCommands.hpp"
+#include "ScriptError.hpp"
 namespace S2VX {
 	CameraMoveCommand::CameraMoveCommand(int start, int end, EasingType pEasing, float startX, float startY, float endX, float endY)
 		: Command{ CommandType::CameraMove, start, end },
@@ -15,7 +16,12 @@ namespace S2VX {
 		easing{ pEasing },
 		startScale{ pStartScale },
 		endScale{ pEndScale } {
-		validateScale(startScale);
-		validateScale(endScale);
+		validateZoom(pStartScale);
+		validateZoom(pEndScale);
+	}
+	void CameraZoomCommand::validateZoom(float scale) {
+		if (scale < 1.0f) {
+			throw ScriptError("Command color must be greather than 1. Given: " + std::to_string(scale));
+		}
 	}
 }

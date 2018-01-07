@@ -22,7 +22,7 @@ namespace S2VX {
 		// glfw window creation
 		window = glfwCreateWindow(windowWidth, windowWidth, "S2VX", NULL, NULL);
 		if (window == NULL) {
-			throw ScriptError("Failed to create GLFW window");
+			throw ScriptError("Failed to create GLFW window.");
 			glfwTerminate();
 		}
 		glfwMakeContextCurrent(window);
@@ -31,7 +31,7 @@ namespace S2VX {
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
 		// glad: load all OpenGL function pointers
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-			throw ScriptError("Failed to initialize GLAD");
+			throw ScriptError("Failed to initialize GLAD.");
 		}
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

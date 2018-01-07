@@ -16,9 +16,12 @@ namespace S2VX {
 		float endRotation;
 	};
 	struct CameraZoomCommand : Command {
+	public:
 		CameraZoomCommand(int start, int end, EasingType pEasing, float pStartScale, float pEndScale);
 		EasingType easing;
 		float startScale;
 		float endScale;
+	private:
+		void validateZoom(float scale);
 	};
 }

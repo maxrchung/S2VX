@@ -12,10 +12,10 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 		else if (start < 0) {
-			throw ScriptError("Command start time must be >= 0. Given:" + std::to_string(start));
+			throw ScriptError("Command start time must be greater than or equal to 0. Given: " + std::to_string(start));
 		}
 		else if (end < 0) {
-			throw ScriptError("Command end time must be >= 0. Given:" + std::to_string(end));
+			throw ScriptError("Command end time must be greater than or equal to 0. Given: " + std::to_string(end));
 		}
 	}
 	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
@@ -42,13 +42,7 @@ namespace S2VX {
 	}
 	void Command::validateFade(float fade) {
 		if (fade < 0.0f || fade > 1.0f) {
-			throw ScriptError("Command fade must be >= 0. Given: " + std::to_string(fade));
-		}
-	}
-	void Command::validateScale(float scale) {
-		if (scale < 0.0f) {
-			auto message = std::stringstream();
-			throw ScriptError("Command color must be between 0 and 1. Given: " + std::to_string(scale));
+			throw ScriptError("Command fade must be between 0 and 1. Given: " + std::to_string(fade));
 		}
 	}
 	void Command::validateScale(const glm::vec2& scale) {
@@ -61,7 +55,7 @@ namespace S2VX {
 	}
 	void Command::validateSpriteID(int spriteID) {
 		if (spriteID < 0) {
-			throw ScriptError("Invalid Sprite command called. SpriteBind() must be called before a Sprite command can take effect.");
+			throw ScriptError("Invalid Sprite command called. SpriteBind() must be called before other Sprite commands.");
 		}
 	}
 

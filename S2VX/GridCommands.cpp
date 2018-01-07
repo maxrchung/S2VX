@@ -11,7 +11,7 @@ namespace S2VX {
 	}
 	void GridFeatherCommand::validateFeather(float feather) {
 		if (feather < 0.0f) {
-			throw ScriptError("Grid line feather must be >= 0. Given: " + std::to_string(feather));
+			throw ScriptError("Grid line feather must be greater than or equal to 0. Given: " + std::to_string(feather));
 		}
 	}
 	GridThicknessCommand::GridThicknessCommand(int start, int end, EasingType pEasing, float pStartThickness, float pEndThickness)
@@ -24,7 +24,7 @@ namespace S2VX {
 	}
 	void GridThicknessCommand::validateThickness(float thickness) {
 		if (thickness < 0.0f) {
-			throw ScriptError("Grid line thickness must be >= 0. Given: " + std::to_string(thickness));
+			throw ScriptError("Grid line thickness must be greater than equal to 0. Given: " + std::to_string(thickness));
 		}
 	}
 }
