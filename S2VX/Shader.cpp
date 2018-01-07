@@ -1,7 +1,7 @@
 #include "Shader.hpp"
+#include "ScriptError.hpp"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 namespace S2VX {
 	Shader::Shader() {}
 	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) {
@@ -40,7 +40,7 @@ namespace S2VX {
 			}
 		}
 		catch (std::ifstream::failure e) {
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			throw ScriptError("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
 		}
 		const char* vShaderCode = vertexCode.c_str();
 		const char * fShaderCode = fragmentCode.c_str();
@@ -90,14 +90,14 @@ namespace S2VX {
 			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 			if (!success) {
 				glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-				std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+				throw ScriptError("ERROR::SHADER_COMPILATION_ERROR of type: " + type + "\n" + infoLog + "\n -- --------------------------------------------------- -- ");
 			}
 		}
 		else {
 			glGetProgramiv(shader, GL_LINK_STATUS, &success);
 			if (!success) {
 				glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-				std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+				throw ScriptError("ERROR::PROGRAM_LINKING_ERROR of type: " + type + "\n" + infoLog + "\n -- --------------------------------------------------- -- ");
 			}
 		}
 	}

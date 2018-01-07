@@ -1,7 +1,6 @@
 #include "Sprite.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 namespace S2VX {
 	Sprite::Sprite(Texture* pTexture, Shader* pImageShader)
 		: texture{ pTexture }, imageShader{ pImageShader } {

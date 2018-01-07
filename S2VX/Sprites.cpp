@@ -1,7 +1,6 @@
 #include "Sprites.hpp"
 #include "SpriteCommands.hpp"
 #include "Easing.hpp"
-#include <iostream>
 namespace S2VX {
 	Sprites::Sprites(const std::vector<Command*>& commands)
 		: Element{ commands } {

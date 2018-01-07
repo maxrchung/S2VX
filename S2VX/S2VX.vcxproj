@@ -152,6 +152,7 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CameraCommands.hpp" />
+    <ClInclude Include="ScriptError.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="SpriteCommands.hpp" />
     <ClInclude Include="CommandType.hpp" />
@@ -176,6 +177,7 @@
     <None Include="test.chai" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="blank.png" />
     <Image Include="test.png" />
     <Image Include="testOpacity.png" />
   </ItemGroup>

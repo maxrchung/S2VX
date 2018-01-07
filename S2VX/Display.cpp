@@ -1,5 +1,5 @@
 #include "Display.hpp"
-#include <iostream>
+#include "ScriptError.hpp"
 namespace S2VX {
 	Display::Display() {
 		// glfw: initialize and configure
@@ -22,7 +22,7 @@ namespace S2VX {
 		// glfw window creation
 		window = glfwCreateWindow(windowWidth, windowWidth, "S2VX", NULL, NULL);
 		if (window == NULL) {
-			std::cout << "Failed to create GLFW window" << std::endl;
+			throw ScriptError("Failed to create GLFW window");
 			glfwTerminate();
 		}
 		glfwMakeContextCurrent(window);
@@ -31,7 +31,7 @@ namespace S2VX {
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
 		// glad: load all OpenGL function pointers
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-			std::cout << "Failed to initialize GLAD" << std::endl;
+			throw ScriptError("Failed to initialize GLAD");
 		}
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

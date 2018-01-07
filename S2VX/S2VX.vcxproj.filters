@@ -158,6 +158,9 @@
     <ClInclude Include="FeatherLines.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptError.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.chai">
@@ -178,6 +181,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="testOpacity.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="blank.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

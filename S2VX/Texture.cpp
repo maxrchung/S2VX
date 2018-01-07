@@ -1,7 +1,7 @@
 #include "Texture.hpp"
 #include <glad/glad.h>
-#include <iostream>
 #include <stb_image.h>
+#include "ScriptError.hpp"
 namespace S2VX {
 	Texture::Texture(const std::string& path) {
 		glGenTextures(1, &imageTexture);
@@ -23,7 +23,7 @@ namespace S2VX {
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else {
-			std::cout << "Unable to load texture: " + path << std::endl;
+			throw ScriptError("Unable to load texture: " + path);
 		}
 		stbi_image_free(data);
 	}

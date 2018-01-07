@@ -37,15 +37,7 @@ namespace S2VX {
 	}
 	Elements Scripting::evaluate(const std::string& path) {
 		reset();
-		try {
-			chai.use(path);
-		}
-		catch (const chaiscript::exception::eval_error &e) {
-			std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
-		}
-		catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
+		chai.use(path);
 		// Record last sprite
 		if (spriteID >= 0) {
 			spriteStarts[spriteID] = spriteStart;

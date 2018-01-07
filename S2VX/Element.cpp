@@ -1,6 +1,7 @@
 #include "Element.hpp"
 #include <algorithm>
 #include <iostream>
+#include <string>
 namespace S2VX {
 	Element::Element(const std::vector<Command*>& pCommands)
 		: commands{ pCommands } {

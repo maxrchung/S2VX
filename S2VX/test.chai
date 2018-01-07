@@ -7,7 +7,7 @@ CameraZoom(0, 10000,1,3.5f,5.0f)
 CameraMove(1000,5000,1,0.0f,0.0f,4.5f,4.5f)
 
 SpriteBind("test.png")
-SpriteMove(0, 10000, 1, 0.0f, 0.0f, 1.0f, 1.0f)
+SpriteMove(0, -10000, 1, 0.0f, 0.0f, 1.0f, 1.0f)
 
 SpriteBind("testOpacity.png")
 SpriteMove(0, 10000, 1, 1.0f, 1.0f, 0.0f, 0.0f)

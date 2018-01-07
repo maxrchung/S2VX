@@ -1,6 +1,5 @@
 #pragma once
 #include "Command.hpp"
-#include <memory>
 #include <unordered_set>
 #include <vector>
 namespace S2VX {
