@@ -2,6 +2,9 @@
 out vec4 fragmentColor;
 in vec2 textureCoordinate;
 uniform sampler2D image;
+uniform float fade;
 void main() {
-    fragmentColor = texture(image, textureCoordinate);
+	vec4 textureColor = texture(image, textureCoordinate);
+	textureColor.a *= fade;
+    fragmentColor = textureColor;
 }

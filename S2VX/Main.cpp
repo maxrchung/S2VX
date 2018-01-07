@@ -1,6 +1,6 @@
-#include <chaiscript/chaiscript.hpp>
 #include "S2VX.hpp"
 #include "ScriptError.hpp"
+#include <chaiscript/chaiscript.hpp>
 #include <iostream>
 std::string addNewLine(const char* what) {
 	std::string message(what);

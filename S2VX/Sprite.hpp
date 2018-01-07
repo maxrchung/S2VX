@@ -6,14 +6,20 @@
 namespace S2VX {
 	class Sprite {
 	public:
-		Sprite() {};
+		Sprite(Texture* pTexture, Shader* imageShader);
 		// Cleanup OpenGL objects
 		~Sprite();
-		Sprite(Texture* pTexture, Shader* imageShader);
 		void draw(const Camera& camera);
-		void move(glm::vec2 pPosition);
+		void setFade(float pFade);
+		void setPosition(const glm::vec2& pPosition);
+		void setRotation(float pRotation);
+		void setScale(const glm::vec2& pScale);
 	private:
-		Shader* imageShader;
+		float fade = 1.0f;
+		float rotation = 0.0f;
+		glm::vec2 position = glm::vec2(0);
+		glm::vec2 scale = glm::vec2(1.0f, 1.0f);
+		Shader* imageShader = nullptr;
 		static constexpr float corners[16] = {
 			// Position			// Texture
 			 0.5f,	 0.5f,		1.0f,	1.0f, // TR
@@ -25,10 +31,9 @@ namespace S2VX {
 			0, 1, 3,
 			1, 2, 3
 		};
-		Texture* texture;
+		Texture* texture = nullptr;
 		unsigned int imageVertexArray;
 		unsigned int imageVertexBuffer;
 		unsigned int imageElementBuffer;
-		glm::vec2 position;
 	};
 }

@@ -3,9 +3,7 @@
 #include "Easing.hpp"
 namespace S2VX {
 	Sprites::Sprites(const std::vector<Command*>& commands)
-		: Element{ commands } {
-		// TODO: Assign default block to texture
-	}
+		: Element{ commands } {}
 	void Sprites::draw(const Camera& camera) {
 		for (auto& active : activeSprites) {
 			active.second->draw(camera);
@@ -37,12 +35,36 @@ namespace S2VX {
 					activeSprites.erase(derived->spriteID);
 					break;
 				}
+				case CommandType::SpriteFade: {
+					auto derived = static_cast<SpriteFadeCommand*>(command);
+					auto easing = Easing(derived->easing, interpolation);
+					auto fade = glm::mix(derived->startFade, derived->endFade, easing);
+					auto& sprite = activeSprites[derived->spriteID];
+					sprite->setFade(fade);
+					break;
+				}
 				case CommandType::SpriteMove: {
 					auto derived = static_cast<SpriteMoveCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
 					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
 					auto& sprite = activeSprites[derived->spriteID];
-					sprite->move(pos);
+					sprite->setPosition(pos);
+					break;
+				}
+				case CommandType::SpriteRotate: {
+					auto derived = static_cast<SpriteRotateCommand*>(command);
+					auto easing = Easing(derived->easing, interpolation);
+					auto rotation = glm::mix(derived->startRotation, derived->endRotation, easing);
+					auto& sprite = activeSprites[derived->spriteID];
+					sprite->setRotation(rotation);
+					break;
+				}
+				case CommandType::SpriteScale: {
+					auto derived = static_cast<SpriteScaleCommand*>(command);
+					auto easing = Easing(derived->easing, interpolation);
+					auto scale = glm::mix(derived->startScale, derived->endScale, easing);
+					auto& sprite = activeSprites[derived->spriteID];
+					sprite->setScale(scale);
 					break;
 				}
 			}

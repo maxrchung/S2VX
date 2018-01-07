@@ -10,10 +10,10 @@ namespace S2VX {
 		glm::vec2 endCoordinate;
 	};
 	struct CameraRotateCommand : Command {
-		CameraRotateCommand(int start, int end, EasingType pEasing, float pStartRoll, float pEndRoll);
+		CameraRotateCommand(int start, int end, EasingType pEasing, float pStartRotation, float pEndRotation);
 		EasingType easing;
-		float startRoll;
-		float endRoll;
+		float startRotation;
+		float endRotation;
 	};
 	struct CameraZoomCommand : Command {
 		CameraZoomCommand(int start, int end, EasingType pEasing, float pStartScale, float pEndScale);

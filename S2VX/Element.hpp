@@ -1,6 +1,6 @@
 #pragma once
 #include "Command.hpp"
-#include <unordered_set>
+#include <set>
 #include <vector>
 namespace S2VX {
 	class Camera;
@@ -14,7 +14,8 @@ namespace S2VX {
 		// Updates list of active commands
 		void updateActives(int time);
 	protected:
-		std::unordered_set<int> actives;
+		// Has to be ordered because some commands must be ran before others, e.g. Sprite creation/commands
+		std::set<int> actives;
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		std::vector<Command*> commands;
 	private:

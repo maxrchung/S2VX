@@ -182,7 +182,6 @@
     <None Include="test.chai" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="blank.png" />
     <Image Include="test.png" />
     <Image Include="testOpacity.png" />
   </ItemGroup>

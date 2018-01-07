@@ -13,7 +13,10 @@ namespace S2VX {
 		// and then finish with Delete
 		SpriteBind,
 		SpriteCreate,
+		SpriteFade,
 		SpriteMove,
+		SpriteRotate,
+		SpriteScale,
 		SpriteDelete,
 		Count
 	};

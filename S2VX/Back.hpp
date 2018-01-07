@@ -8,6 +8,6 @@ namespace S2VX {
 		void draw(const Camera& camera);
 		void update(int time);
 	private:
-		glm::vec4 color;
+		glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	};
 }

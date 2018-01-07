@@ -12,8 +12,11 @@ namespace S2VX {
 		int start;
 		int end;
 	protected:
-		void validateColor(glm::vec4 color);
+		void validateColor(const glm::vec4& color);
+		void validateFade(float fade);
+		// Camera for example should not have X and Y scaling, so it validates with this
 		void validateScale(float scale);
+		void validateScale(const glm::vec2& scale);
 	};
 	class CommandUniquePointerComparison {
 	public:

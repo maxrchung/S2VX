@@ -12,7 +12,7 @@ namespace S2VX {
 		// Camera doesn't need to draw
 		void draw(const Camera& camera) {};
 		// Reposition camera
-		void move(glm::vec3 pPosition);
+		void move(const glm::vec3& pPosition);
 		// Global roll CCW in degrees
 		void rotateZ(float pRoll);
 		void update(int time);

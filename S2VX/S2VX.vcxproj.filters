@@ -25,9 +25,6 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{0433baf9-68b6-4eb6-ad53-191508043fe8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Element">
-      <UniqueIdentifier>{fb73121e-c156-4e70-b556-4231bb1f3919}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{0704fd34-eaba-4a96-b598-6ed631764512}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Source Files\Command">
       <UniqueIdentifier>{7cd53f27-560a-48f0-bfa3-a3f1c79c480a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Element">
+      <UniqueIdentifier>{fb73121e-c156-4e70-b556-4231bb1f3919}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -199,9 +199,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="testOpacity.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="blank.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

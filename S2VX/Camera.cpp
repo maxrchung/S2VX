@@ -10,7 +10,7 @@ namespace S2VX {
 		// Near plane cannot be 0
 		projection = glm::perspective(glm::radians(fov), 1.0f, 0.1f, 100.0f);
 	}
-	void Camera::move(glm::vec3 pPosition) {
+	void Camera::move(const glm::vec3& pPosition) {
 		position = pPosition;
 		updateMatrices();
 	}
@@ -34,7 +34,7 @@ namespace S2VX {
 				case CommandType::CameraRotate: {
 					auto derived = static_cast<CameraRotateCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
-					auto rotation = glm::mix(derived->startRoll, derived->endRoll, easing);
+					auto rotation = glm::mix(derived->startRotation, derived->endRotation, easing);
 					rotateZ(rotation);
 					break;
 				}
