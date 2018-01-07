@@ -13,6 +13,7 @@
 #define _USE_MATH_DEFINES // Microsoft Kappa
 #include <math.h>
 #include "Easing.hpp"
+#include "ScriptError.hpp"
 
 namespace S2VX {
 	AHFloat Easing(EasingType type, AHFloat value) {
@@ -84,7 +85,7 @@ namespace S2VX {
 			case EasingType::BounceEaseInOut:
 				return BounceEaseInOut(value);
 			default:
-				return LinearInterpolation(value);
+				throw ScriptError("Invalid Easing type. Given: " + std::to_string(static_cast<int>(type)));
 		}
 	}
 
