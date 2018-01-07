@@ -1,4 +1,5 @@
 #include "SpriteCommands.hpp"
+#include "ScriptError.hpp"
 namespace S2VX {
 	SpriteBindCommand::SpriteBindCommand(int pSpriteID, const std::string& pPath)
 		: Command{ CommandType::SpriteBind, 0, 0 },
@@ -18,19 +19,24 @@ namespace S2VX {
 		endFade{ pEndFade } {
 		validateFade(startFade);
 		validateFade(endFade);
+		validateSpriteID(spriteID);
 	}
 	SpriteMoveCommand::SpriteMoveCommand(int start, int end, EasingType pEasing, int pSpriteID, float startX, float startY, float endX, float endY)
 		: Command{ CommandType::SpriteMove, start, end },
 		easing{ pEasing },
 		spriteID{ pSpriteID },
 		startCoordinate{ glm::vec2{ startX, startY } },
-		endCoordinate{ glm::vec2{ endX, endY } } {}
+		endCoordinate{ glm::vec2{ endX, endY } } {
+		validateSpriteID(spriteID);
+	}
 	SpriteRotateCommand::SpriteRotateCommand(int start, int end, EasingType pEasing, int pSpriteID, float pStartRotation, float pEndRotation)
 		: Command{ CommandType::SpriteRotate, start, end },
 		easing{ pEasing },
 		spriteID{ pSpriteID },
 		startRotation{ pStartRotation },
-		endRotation{ pEndRotation } {}
+		endRotation{ pEndRotation } {
+		validateSpriteID(spriteID);
+	}
 	SpriteScaleCommand::SpriteScaleCommand(int start, int end, EasingType pEasing, int pSpriteID, float pStartScaleX, float pStartScaleY, float pEndScaleX, float pEndScaleY)
 		: Command{ CommandType::SpriteScale, start, end },
 		easing{ pEasing },
@@ -39,5 +45,6 @@ namespace S2VX {
 		endScale{ glm::vec2{ pEndScaleX, pEndScaleY } } {
 		validateScale(startScale);
 		validateScale(endScale);
+		validateSpriteID(spriteID);
 	}
 }
