@@ -11,7 +11,8 @@ namespace S2VX {
 		~Sprite();
 		void draw(const Camera& camera);
 		void setFade(float pFade);
-		void setPosition(const glm::vec2& pPosition);
+		void setPositionX(float posX);
+		void setPositionY(float posY);
 		void setRotation(float pRotation);
 		void setScale(const glm::vec2& pScale);
 	private:

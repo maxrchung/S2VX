@@ -21,12 +21,20 @@ namespace S2VX {
 		validateFade(endFade);
 		validateSpriteID(spriteID);
 	}
-	SpriteMoveCommand::SpriteMoveCommand(int start, int end, EasingType pEasing, int pSpriteID, float startX, float startY, float endX, float endY)
-		: Command{ CommandType::SpriteMove, start, end },
+	SpriteMoveXCommand::SpriteMoveXCommand(int start, int end, EasingType pEasing, int pSpriteID, int pStartX, int pEndX)
+		: Command{ CommandType::SpriteMoveX, start, end },
 		easing{ pEasing },
 		spriteID{ pSpriteID },
-		startCoordinate{ glm::vec2{ startX, startY } },
-		endCoordinate{ glm::vec2{ endX, endY } } {
+		startX{ pStartX },
+		endX{ pEndX } {
+		validateSpriteID(spriteID);
+	}
+	SpriteMoveYCommand::SpriteMoveYCommand(int start, int end, EasingType pEasing, int pSpriteID, int pStartY, int pEndY)
+		: Command{ CommandType::SpriteMoveX, start, end },
+		easing{ pEasing },
+		spriteID{ pSpriteID },
+		startY{ pStartY },
+		endY{ pEndY } {
 		validateSpriteID(spriteID);
 	}
 	SpriteRotateCommand::SpriteRotateCommand(int start, int end, EasingType pEasing, int pSpriteID, float pStartRotation, float pEndRotation)

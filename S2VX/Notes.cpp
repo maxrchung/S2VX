@@ -1,20 +1,15 @@
-#include "Sprites.hpp"
-#include "SpriteCommands.hpp"
-#include "Easing.hpp"
+#include "Notes.hpp"
 namespace S2VX {
-	Sprites::Sprites(const std::vector<Command*>& commands)
+	Notes::Notes(const std::vector<Command*>& commands)
 		: Element{ commands } {}
-	void Sprites::draw(const Camera& camera) {
-		for (auto& active : activeSprites) {
-			active.second->draw(camera);
-		}
+	void Notes::draw(const Camera& camera) {
 	}
-	void Sprites::update(int time) {
+	void Notes::update(int time) {
 		for (auto active : actives) {
 			auto command = commands[active];
 			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
-				case CommandType::SpriteBind: {
+				case CommandType::Note: {
 					auto derived = static_cast<SpriteBindCommand*>(command);
 					auto path = derived->path;
 					paths[derived->spriteID] = path;
@@ -43,20 +38,12 @@ namespace S2VX {
 					sprite->setFade(fade);
 					break;
 				}
-				case CommandType::SpriteMoveX: {
-					auto derived = static_cast<SpriteMoveXCommand*>(command);
+				case CommandType::SpriteMove: {
+					auto derived = static_cast<SpriteMoveCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
-					auto posX = glm::mix(derived->startX, derived->endX, easing);
+					auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
 					auto& sprite = activeSprites[derived->spriteID];
-					sprite->setPositionX(posX);
-					break;
-				}
-				case CommandType::SpriteMoveY: {
-					auto derived = static_cast<SpriteMoveYCommand*>(command);
-					auto easing = Easing(derived->easing, interpolation);
-					auto posY = glm::mix(derived->startY, derived->endY, easing);
-					auto& sprite = activeSprites[derived->spriteID];
-					sprite->setPositionY(posY);
+					sprite->setPosition(pos);
 					break;
 				}
 				case CommandType::SpriteRotate: {

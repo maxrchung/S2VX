@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	struct CameraMoveCommand : Command {
-		CameraMoveCommand(int start, int end, EasingType pEasing, float startX, float startY, float endX, float endY);
+		CameraMoveCommand(int start, int end, EasingType pEasing, int startX, int startY, int endX, int endY);
 		EasingType easing;
 		glm::vec2 startCoordinate;
 		glm::vec2 endCoordinate;

@@ -7,6 +7,7 @@ namespace S2VX {
 		CameraZoom,
 		GridFeather,
 		GridThickness,
+		Note,
 		// Note that for Sprite, the commands must be arranged in a certain order
 		// The enum order determines the order of the command in the case of overlapping start times
 		// In such a scenario Bind must happens first, then Create, ... other Sprite commands ..., 
@@ -14,7 +15,8 @@ namespace S2VX {
 		SpriteBind,
 		SpriteCreate,
 		SpriteFade,
-		SpriteMove,
+		SpriteMoveX,
+		SpriteMoveY,
 		SpriteRotate,
 		SpriteScale,
 		SpriteDelete,

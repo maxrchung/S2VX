@@ -1,7 +1,7 @@
 #include "CameraCommands.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
-	CameraMoveCommand::CameraMoveCommand(int start, int end, EasingType pEasing, float startX, float startY, float endX, float endY)
+	CameraMoveCommand::CameraMoveCommand(int start, int end, EasingType pEasing, int startX, int startY, int endX, int endY)
 		: Command{ CommandType::CameraMove, start, end },
 		easing{ pEasing },
 		startCoordinate{ glm::vec2{ startX, startY } },

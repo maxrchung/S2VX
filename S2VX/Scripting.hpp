@@ -14,7 +14,7 @@ namespace S2VX {
 		// Initializing scripting
 		Scripting();
 		void BackColor(int start, int end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA);
-		void CameraMove(int start, int end, int easing, float startX, float startY, float endX, float endY);
+		void CameraMove(int start, int end, int easing, int startX, int startY, int endX, int endY);
 		void CameraRotate(int start, int end, int easing, float startRotate, float endRotate);
 		void CameraZoom(int start, int end, int easing, float startScale, float endScale);
 		// Evaluates chaiscript
@@ -23,7 +23,8 @@ namespace S2VX {
 		void GridThickness(int start, int end, int easing, float startThickness, float endThickness);
 		void SpriteBind(const std::string& path);
 		void SpriteFade(int start, int end, int easing, float startFade, float endFade);
-		void SpriteMove(int start, int end, int easing, float startX, float startY, float endX, float endY);
+		void SpriteMoveX(int start, int end, int easing, int startX, int endX);
+		void SpriteMoveY(int start, int end, int easing, int startY, int endY);
 		void SpriteRotate(int start, int end, int easing, float startRotation, float endRotation);
 		void SpriteScale(int start, int end, int easing, float startScaleX, float startScaleY, float endScaleX, float endScaleY);
 	private:

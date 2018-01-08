@@ -14,7 +14,8 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteFade, this), "SpriteFade");
-		chai.add(chaiscript::fun(&Scripting::SpriteMove, this), "SpriteMove");
+		chai.add(chaiscript::fun(&Scripting::SpriteMoveX, this), "SpriteMoveX");
+		chai.add(chaiscript::fun(&Scripting::SpriteMoveY, this), "SpriteMoveY");
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
 		chai.add(chaiscript::fun(&Scripting::SpriteScale, this), "SpriteScale");
 	}
@@ -23,7 +24,7 @@ namespace S2VX {
 		std::unique_ptr<Command> command = std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, startA, endR, endG, endB, endA);
 		sortedBackCommands.insert(std::move(command));
 	}
-	void Scripting::CameraMove(int start, int end, int easing, float startX, float startY, float endX, float endY) {
+	void Scripting::CameraMove(int start, int end, int easing, int startX, int startY, int endX, int endY) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<CameraMoveCommand>(start, end, convert, startX, startY, endX, endY);
 		sortedCameraCommands.insert(std::move(command));
@@ -122,11 +123,24 @@ namespace S2VX {
 			spriteEnd = endTime;
 		}
 	}
-	void Scripting::SpriteMove(int start, int end, int easing, float startX, float startY, float endX, float endY) {
+	void Scripting::SpriteMoveX(int start, int end, int easing, int startX, int endX) {
 		auto convert = static_cast<EasingType>(easing);
 		auto startTime = start;
 		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteMoveCommand>(startTime, endTime, convert, spriteID, startX, startY, endX, endY);
+		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(startTime, endTime, convert, spriteID, startX, endX);
+		sortedSpriteCommands.insert(std::move(command));
+		if (startTime < spriteStart) {
+			spriteStart = startTime;
+		}
+		if (endTime > spriteEnd) {
+			spriteEnd = endTime;
+		}
+	}
+	void Scripting::SpriteMoveY(int start, int end, int easing, int startY, int endY) {
+		auto convert = static_cast<EasingType>(easing);
+		auto startTime = start;
+		auto endTime = end;
+		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(startTime, endTime, convert, spriteID, startY, endY);
 		sortedSpriteCommands.insert(std::move(command));
 		if (startTime < spriteStart) {
 			spriteStart = startTime;

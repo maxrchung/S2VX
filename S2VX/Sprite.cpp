@@ -43,8 +43,11 @@ namespace S2VX {
 	void Sprite::setFade(float pFade) {
 		fade = pFade;
 	}
-	void Sprite::setPosition(const glm::vec2& pPosition) {
-		position = pPosition;
+	void Sprite::setPositionX(float posX) {
+		position.x = posX;
+	}
+	void Sprite::setPositionY(float posY) {
+		position.y = posY;
 	}
 	void Sprite::setRotation(float pRotation) {
 		rotation = pRotation;
