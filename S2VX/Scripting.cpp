@@ -2,6 +2,7 @@
 #include "BackCommands.hpp"
 #include "CameraCommands.hpp"
 #include "GridCommands.hpp"
+#include "NoteCommands.hpp"
 #include "SpriteCommands.hpp"
 namespace S2VX {
 	Scripting::Scripting() {
@@ -60,10 +61,12 @@ namespace S2VX {
 		auto backCommands = sortedToVector(sortedBackCommands);
 		auto cameraCommands = sortedToVector(sortedCameraCommands);
 		auto gridCommands = sortedToVector(sortedGridCommands);
+		auto noteCommands = sortedToVector(sortedNoteCommands);
 		auto spriteCommands = sortedToVector(sortedSpriteCommands);
 		auto elements = Elements(std::make_unique<Back>(backCommands),
 								 std::make_unique<Camera>(cameraCommands),
 								 std::make_unique<Grid>(gridCommands),
+								 std::make_unique<Notes>(noteCommands),
 								 std::make_unique<Sprites>(spriteCommands));
 		return elements;
 	}

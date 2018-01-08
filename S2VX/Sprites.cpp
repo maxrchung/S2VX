@@ -46,7 +46,8 @@ namespace S2VX {
 				case CommandType::SpriteMoveX: {
 					auto derived = static_cast<SpriteMoveXCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
-					auto posX = glm::mix(derived->startX, derived->endX, easing);
+					// Need to cast to float or else glm::mix will return an int
+					auto posX = glm::mix(static_cast<float>(derived->startX), static_cast<float>(derived->endX), easing);
 					auto& sprite = activeSprites[derived->spriteID];
 					sprite->setPositionX(posX);
 					break;
@@ -54,7 +55,7 @@ namespace S2VX {
 				case CommandType::SpriteMoveY: {
 					auto derived = static_cast<SpriteMoveYCommand*>(command);
 					auto easing = Easing(derived->easing, interpolation);
-					auto posY = glm::mix(derived->startY, derived->endY, easing);
+					auto posY = glm::mix(static_cast<float>(derived->startY), static_cast<float>(derived->endY), easing);
 					auto& sprite = activeSprites[derived->spriteID];
 					sprite->setPositionY(posY);
 					break;

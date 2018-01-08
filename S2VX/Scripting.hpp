@@ -21,6 +21,7 @@ namespace S2VX {
 		Elements evaluate(const std::string& path);
 		void GridFeather(int start, int end, int easing, float startFeather, float endFeather);
 		void GridThickness(int start, int end, int easing, float startThickness, float endThickness);
+		void Note(int start, int startX, int startY, int endX, int endY);
 		void SpriteBind(const std::string& path);
 		void SpriteFade(int start, int end, int easing, float startFade, float endFade);
 		void SpriteMoveX(int start, int end, int easing, int startX, int endX);
@@ -39,6 +40,7 @@ namespace S2VX {
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;
+		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedNoteCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedSpriteCommands;
 		std::unordered_map<int, int> spriteStarts;
 		std::unordered_map<int, int> spriteEnds;

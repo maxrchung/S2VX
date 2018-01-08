@@ -133,6 +133,7 @@
     <ClCompile Include="CameraCommands.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="GridCommands.cpp" />
+    <ClCompile Include="Notes.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
@@ -157,6 +158,8 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CameraCommands.hpp" />
+    <ClInclude Include="NoteCommands.hpp" />
+    <ClInclude Include="Notes.hpp" />
     <ClInclude Include="ScriptError.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="SpriteCommands.hpp" />
