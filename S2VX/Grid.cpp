@@ -54,7 +54,7 @@ namespace S2VX {
 		glBindBuffer(GL_ARRAY_BUFFER, linesVertexBuffer);
 		// Use sizeof and size to get total size
 		// Use & to get pointer to first element
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * linePoints.size(), linePoints.data(), GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * linePoints.size(), linePoints.data(), GL_DYNAMIC_DRAW);
 		// Position
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);

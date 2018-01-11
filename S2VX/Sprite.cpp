@@ -36,23 +36,7 @@ namespace S2VX {
 		imageShader->setMat4("view", camera.getView());
 		imageShader->setMat4("projection", camera.getProjection());
 		imageShader->setFloat("fade", fade);
-		imageShader->use();
 		glBindVertexArray(imageVertexArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
-	void Sprite::setFade(float pFade) {
-		fade = pFade;
-	}
-	void Sprite::setPositionX(float posX) {
-		position.x = posX;
-	}
-	void Sprite::setPositionY(float posY) {
-		position.y = posY;
-	}
-	void Sprite::setRotation(float pRotation) {
-		rotation = pRotation;
-	}
-	void Sprite::setScale(const glm::vec2& pScale) {
-		scale = pScale;
 	}
 }

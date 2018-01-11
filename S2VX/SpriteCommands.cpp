@@ -49,8 +49,8 @@ namespace S2VX {
 		: Command{ CommandType::SpriteScale, start, end },
 		easing{ pEasing },
 		spriteID{ pSpriteID },
-		startScale{ glm::vec2{ pStartScaleX, pStartScaleY } },
-		endScale{ glm::vec2{ pEndScaleX, pEndScaleY } } {
+		startScale{ glm::vec2{pStartScaleX, pStartScaleY} },
+		endScale{ glm::vec2{pEndScaleX, pEndScaleY} } {
 		validateScale(startScale);
 		validateScale(endScale);
 		validateSpriteID(spriteID);

@@ -13,6 +13,7 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::CameraZoom, this), "CameraZoom");
 		chai.add(chaiscript::fun(&Scripting::GridFeather, this), "GridFeather");
 		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");
+		chai.add(chaiscript::fun(&Scripting::NoteBind, this), "NoteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteFade, this), "SpriteFade");
 		chai.add(chaiscript::fun(&Scripting::SpriteMoveX, this), "SpriteMoveX");
@@ -102,6 +103,12 @@ namespace S2VX {
 			vector[i++] = command.get();
 		}
 		return vector;
+	}
+	void Scripting::NoteBind(int time, int x, int y) {
+		noteConfiguration.setEnd(time);
+		noteConfiguration.setPosition(glm::vec2(x, y));
+		std::unique_ptr<Command> command = std::make_unique<NoteBindCommand>(noteConfiguration.getStart(), noteConfiguration);
+		sortedNoteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteBind(const std::string& path) {
 		if (spriteID >= 0) {

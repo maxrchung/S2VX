@@ -4,8 +4,8 @@ namespace S2VX {
 	CameraMoveCommand::CameraMoveCommand(int start, int end, EasingType pEasing, int startX, int startY, int endX, int endY)
 		: Command{ CommandType::CameraMove, start, end },
 		easing{ pEasing },
-		startCoordinate{ glm::vec2{ startX, startY } },
-		endCoordinate{ glm::vec2{ endX, endY } } {}
+		startCoordinate{ glm::vec2{startX, startY} },
+		endCoordinate{ glm::vec2{endX, endY} } {}
 	CameraRotateCommand::CameraRotateCommand(int start, int end, EasingType pEasing, float pStartRotate, float pEndRotate)
 		: Command{ CommandType::CameraRotate, start, end },
 		easing{ pEasing },

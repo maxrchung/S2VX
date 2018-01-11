@@ -11,7 +11,7 @@ namespace S2VX {
 		void update(int time);
 	private:
 		// https://blog.mapbox.com/drawing-antialiased-lines-with-opengl-8766f34192dc
-		std::unique_ptr<Shader> linesShader = std::make_unique<Shader>("FeatherLines.VertexShader", "FeatherLines.FragmentShader");
+		std::unique_ptr<Shader> linesShader = std::make_unique<Shader>("Line.VertexShader", "Line.FragmentShader");
 		unsigned int linesVertexArray;
 		unsigned int linesVertexBuffer;
 		float lineWidth = 0.1f;

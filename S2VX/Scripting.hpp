@@ -3,6 +3,7 @@
 #include "Element.hpp"
 #include "Elements.hpp"
 #include "EasingType.hpp"
+#include "NoteConfiguration.hpp"
 #include "Sprites.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <memory>
@@ -21,7 +22,7 @@ namespace S2VX {
 		Elements evaluate(const std::string& path);
 		void GridFeather(int start, int end, int easing, float startFeather, float endFeather);
 		void GridThickness(int start, int end, int easing, float startThickness, float endThickness);
-		void Note(int start, int startX, int startY, int endX, int endY);
+		void NoteBind(int time, int x, int y);
 		void SpriteBind(const std::string& path);
 		void SpriteFade(int start, int end, int easing, float startFade, float endFade);
 		void SpriteMoveX(int start, int end, int easing, int startX, int endX);
@@ -37,6 +38,7 @@ namespace S2VX {
 		int spriteID = -1;
 		int spriteStart;
 		int spriteEnd;
+		NoteConfiguration noteConfiguration;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;

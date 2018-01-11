@@ -111,6 +111,15 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="NoteCommands.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Note.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteConfiguration.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -176,9 +185,6 @@
     <ClInclude Include="BackCommands.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="FeatherLines.FragmentShader">
-      <Filter>Shaders\Fragment</Filter>
-    </ClInclude>
     <ClInclude Include="ScriptError.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -187,6 +193,18 @@
     </ClInclude>
     <ClInclude Include="NoteCommands.hpp">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularQueue.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Note.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteConfiguration.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.FragmentShader">
+      <Filter>Shaders\Fragment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +217,10 @@
     <None Include="Image.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
-    <None Include="FeatherLines.VertexShader">
+    <None Include="Line.VertexShader">
+      <Filter>Shaders\Vertex</Filter>
+    </None>
+    <None Include="Square.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
   </ItemGroup>

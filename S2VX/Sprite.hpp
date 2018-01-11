@@ -10,11 +10,11 @@ namespace S2VX {
 		// Cleanup OpenGL objects
 		~Sprite();
 		void draw(const Camera& camera);
-		void setFade(float pFade);
-		void setPositionX(float posX);
-		void setPositionY(float posY);
-		void setRotation(float pRotation);
-		void setScale(const glm::vec2& pScale);
+		void setFade(float pFade) { fade = pFade; }
+		void setPositionX(float posX) { position.x = posX; }
+		void setPositionY(float posY) { position.y = posY; }
+		void setRotation(float pRotation) { rotation = pRotation; }
+		void setScale(const glm::vec2& pScale) { scale = pScale; }
 	private:
 		float fade = 1.0f;
 		float rotation = 0.0f;

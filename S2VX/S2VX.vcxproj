@@ -133,6 +133,9 @@
     <ClCompile Include="CameraCommands.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="GridCommands.cpp" />
+    <ClCompile Include="Note.cpp" />
+    <ClCompile Include="NoteCommands.cpp" />
+    <ClCompile Include="NoteConfiguration.cpp" />
     <ClCompile Include="Notes.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Easing.cpp" />
@@ -152,13 +155,16 @@
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FeatherLines.FragmentShader" />
+    <ClInclude Include="CircularQueue.hpp" />
+    <ClInclude Include="Line.FragmentShader" />
     <ClInclude Include="Back.hpp" />
     <ClInclude Include="BackCommands.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CameraCommands.hpp" />
+    <ClInclude Include="Note.hpp" />
     <ClInclude Include="NoteCommands.hpp" />
+    <ClInclude Include="NoteConfiguration.hpp" />
     <ClInclude Include="Notes.hpp" />
     <ClInclude Include="ScriptError.hpp" />
     <ClInclude Include="Sprite.hpp" />
@@ -179,9 +185,10 @@
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FeatherLines.VertexShader" />
+    <None Include="Line.VertexShader" />
     <None Include="Image.FragmentShader" />
     <None Include="Image.VertexShader" />
+    <None Include="Square.VertexShader" />
     <None Include="test.chai" />
   </ItemGroup>
   <ItemGroup>

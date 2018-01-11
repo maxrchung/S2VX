@@ -1,8 +1,10 @@
 #pragma once
 #include "Command.hpp"
+#include "NoteConfiguration.hpp"
 namespace S2VX {
-	struct NoteCommand : Command {
-		NoteCommand(int start, int end, float startX, float startY, float endX, float endY);
-
+	struct NoteBindCommand : Command {
+		NoteBindCommand(int time, const NoteConfiguration& pConfiguration);
+		NoteConfiguration configuration;
+		glm::vec2 coordinate;
 	};
 }
