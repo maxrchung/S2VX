@@ -4,7 +4,7 @@ in vec2 normal;
 uniform float lineWidth;
 uniform float feather;
 void main() {
-	float normalLength = length(normal);
+	float normalLength = length(normal) * lineWidth;
 	float featherPartial = lineWidth - feather;
 	float alpha = 1.0f;
 	if (featherPartial <= 0) {
