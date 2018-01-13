@@ -1,6 +1,7 @@
 #include "Note.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 namespace S2VX {
 	Note::Note(const NoteConfiguration& pConfiguration) 
 		: configuration{ pConfiguration }, adjustedPoints{ squarePoints } {
@@ -11,48 +12,31 @@ namespace S2VX {
 		glDeleteVertexArrays(1, &squareVertexArray);
 		glDeleteBuffers(1, &squareVertexBuffer);
 	}
+	void Note::adjustPoints(int startIndex, int end, float lineWidth, float feather) {
+		for (int i = startIndex; i < end; i += 4) {
+			if (adjustedPoints[i] > 0) {
+				adjustedPoints[i] = squarePoints[i] + lineWidth - feather / 2.0f;
+			}
+			else {
+				adjustedPoints[i] = squarePoints[i] - lineWidth + feather / 2.0f;
+			}
+		}
+	}
 	void Note::draw(const Camera& camera) {
 		glBindVertexArray(squareVertexArray);
 		glBindBuffer(GL_ARRAY_BUFFER, squareVertexBuffer);
 		auto lineWidth = configuration.getWidth();
+		auto feather = configuration.getFeather();
 		// Points need to be adjusted so that lines do not overlap
-		// Right
-		for (int i = 1; i < 24; i += 4) {
-			if (adjustedPoints[i] > 0) {
-				adjustedPoints[i] = squarePoints[i] + lineWidth - 0.01f;
-			}
-			else {
-				adjustedPoints[i] = squarePoints[i] - lineWidth + 0.01f;
-			}
-		}
-		// Bottom
-		for (int i = 24; i < 48; i += 4) {
-			if (adjustedPoints[i] > 0) {
-				adjustedPoints[i] = squarePoints[i] + lineWidth - 0.01f;
-			}
-			else {
-				adjustedPoints[i] = squarePoints[i] - lineWidth + 0.01f;
-			}
-		}
-		// Left
-		for (int i = 49; i < 72; i += 4) {
-			if (adjustedPoints[i] > 0) {
-				adjustedPoints[i] = squarePoints[i] + lineWidth - 0.01f;
-			}
-			else {
-				adjustedPoints[i] = squarePoints[i] - lineWidth + 0.01f;
-			}
-		}
-		// Top
-		for (int i = 72; i < 96; i += 4) {
-			if (adjustedPoints[i] > 0) {
-				adjustedPoints[i] = squarePoints[i] + lineWidth - 0.01f;
-			}
-			else {
-				adjustedPoints[i] = squarePoints[i] - lineWidth + 0.01f;
-			}
-		}
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * squarePointsLength, adjustedPoints.data(), GL_STATIC_DRAW);
+		adjustPoints( 1, 24, lineWidth, feather);
+		//adjustPoints( 0, 24, feather, 0);
+		adjustPoints(24, 48, lineWidth, feather);
+		//adjustPoints(25, 48, -feather, 0);
+		adjustPoints(49, 72, lineWidth, feather);
+		//adjustPoints(48, 72, feather, 0);
+		adjustPoints(72, 96, lineWidth, feather);
+		//adjustPoints(73, 96, -feather, 0);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * squarePointsLength, adjustedPoints.data(), GL_DYNAMIC_DRAW);
 		// Position
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -68,8 +52,7 @@ namespace S2VX {
 		squareShader->setMat4("view", camera.getView());
 		squareShader->setMat4("projection", camera.getProjection());
 		squareShader->setFloat("fade", 1.0f);
-		squareShader->setFloat("feather", 0.01f);
-		squareShader->use();
+		squareShader->setFloat("feather", feather);
 		glDrawArrays(GL_TRIANGLES, 0, squarePointsLength / 4);
 		// Approaching square
 		glm::mat4 outerModel;
@@ -78,10 +61,24 @@ namespace S2VX {
 		outerModel = glm::scale(outerModel, glm::vec3(activeScale, activeScale, 1.0f));
 		squareShader->setMat4("model", outerModel);
 		glDrawArrays(GL_TRIANGLES, 0, squarePointsLength / 4);
-
 	}
 	void Note::update(int time) {
+		auto start = configuration.getStart();
+		auto end = configuration.getEnd();
 		auto interpolation = static_cast<float>(time - configuration.getStart()) / (configuration.getEnd() - configuration.getStart());
 		activeScale = glm::mix(configuration.getDistance(), 0.5f, interpolation);
+		auto fadeIn = start + configuration.getFadeIn();
+		auto fadeOut = end - configuration.getFadeOut();
+		if (time < fadeIn) {
+			interpolation = static_cast<float>(time - start) / (fadeIn - start);
+			activeFade = glm::mix(0.0f, 1.0f, interpolation);
+		}
+		else if (time > fadeOut) {
+			interpolation = static_cast<float>(time - fadeOut) / (end - fadeOut);
+			activeFade = glm::mix(1.0f, 0.0f, interpolation);
+		}
+		else {
+			activeFade = 1.0f;
+		}
 	}
 }

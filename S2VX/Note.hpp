@@ -11,10 +11,11 @@ namespace S2VX {
 		void draw(const Camera& camera);
 		void update(int time);
 	private:
+		// Interpolated distance
+		float activeScale;
+		float activeFade;
 		NoteConfiguration configuration;
 		std::unique_ptr<Shader> squareShader = std::make_unique<Shader>("Square.VertexShader", "Line.FragmentShader");
-		unsigned int squareVertexArray;
-		unsigned int squareVertexBuffer;
 		static constexpr unsigned int squarePointsLength = 96;
 		static constexpr std::array<float, squarePointsLength> squarePoints = {
 			// Position			// Normal
@@ -51,7 +52,8 @@ namespace S2VX {
 			-0.5f,	 0.5f,		 0.0f,	 1.0f,	// Top triangle bottom-left		92
 		};
 		std::array<float, squarePointsLength> adjustedPoints;
-		// Interpolated distance
-		float activeScale;
+		unsigned int squareVertexArray;
+		unsigned int squareVertexBuffer;
+		void adjustPoints(int startIndex, int end, float lineWidth, float feather);
 	};
 }

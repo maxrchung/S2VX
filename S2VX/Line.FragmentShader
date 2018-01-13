@@ -3,17 +3,17 @@ out vec4 fragmentColor;
 in vec2 normal;
 uniform float lineWidth;
 uniform float feather;
+uniform float fade;
 void main() {
 	float normalLength = length(normal) * lineWidth;
 	float featherPartial = lineWidth - feather;
-	float alpha = 1.0f;
+	float alpha = fade;
 	if (featherPartial <= 0) {
 		alpha = 0.0f;
 	}
 	else if (normalLength > featherPartial) {
 		float normalPartial = normalLength - featherPartial;
-		float lineWidthPartial = lineWidth - featherPartial;
-		alpha = 1.0f - normalPartial / lineWidthPartial;
+		alpha = fade - normalPartial / feather;
 	}
 	fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
 }

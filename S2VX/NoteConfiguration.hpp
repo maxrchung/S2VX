@@ -26,10 +26,10 @@ namespace S2VX {
 		float feather = 0.01f;
 		float width = 0.2f;
 		glm::vec2 position;
-		int approach = 1000;
+		int approach = 4000;
 		int end;
-		int fadeIn = 100;
-		int fadeOut = 100;
+		int fadeIn = 500;
+		int fadeOut = 500;
 		int start;
 	};
 }
