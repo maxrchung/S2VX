@@ -1,0 +1,22 @@
+#version 330 core
+out vec4 fragmentColor;
+in vec2 normals;
+uniform vec2 lengths;
+uniform float feather;
+uniform float fade;
+void main() {
+	float normalXLength = length(normals.x) * lengths.x;
+	float normalYLength = length(normals.y) * lengths.y;
+	float featherXPartial = lengths.x - feather;
+	float featherYPartial = lengths.y - feather;
+	float alpha = fade;
+	if (normalXLength > featherXPartial) {
+		float normalXPartial = normalXLength - featherXPartial;
+		alpha = fade - normalXPartial / feather;
+	}
+	else if (normalYLength > featherYPartial) {
+		float normalYPartial = normalYLength - featherYPartial;
+		alpha = fade - normalYPartial / feather;
+	}
+	fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
+}

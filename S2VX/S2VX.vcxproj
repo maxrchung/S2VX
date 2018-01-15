@@ -137,6 +137,7 @@
     <ClCompile Include="NoteCommands.cpp" />
     <ClCompile Include="NoteConfiguration.cpp" />
     <ClCompile Include="Notes.cpp" />
+    <ClCompile Include="RectanglePoints.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Element.cpp" />
@@ -166,6 +167,8 @@
     <ClInclude Include="NoteCommands.hpp" />
     <ClInclude Include="NoteConfiguration.hpp" />
     <ClInclude Include="Notes.hpp" />
+    <ClInclude Include="RectanglePoints.hpp" />
+    <ClInclude Include="RectangleOrientation.hpp" />
     <ClInclude Include="ScriptError.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="SpriteCommands.hpp" />
@@ -188,7 +191,8 @@
     <None Include="Line.VertexShader" />
     <None Include="Image.FragmentShader" />
     <None Include="Image.VertexShader" />
-    <None Include="Square.VertexShader" />
+    <None Include="Rectangle.FragmentShader" />
+    <None Include="Rectangle.VertexShader" />
     <None Include="test.chai" />
   </ItemGroup>
   <ItemGroup>

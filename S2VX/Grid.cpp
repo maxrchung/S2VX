@@ -32,9 +32,9 @@ namespace S2VX {
 			linePoints.push_back(rightX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(-1.0f);
 			linePoints.push_back(leftX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(1.0f);
 			// Bot triangle
-			linePoints.push_back(rightX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(-1);
-			linePoints.push_back(leftX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(-1);
-			linePoints.push_back(leftX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(1);
+			linePoints.push_back(rightX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(-1.0f);
+			linePoints.push_back(leftX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(-1.0f);
+			linePoints.push_back(leftX); linePoints.push_back(horizontalY); linePoints.push_back(0.0f); linePoints.push_back(1.0f);
 			// Top X
 			auto verticalX = posX - corner + i;
 			// Top Y
@@ -52,8 +52,6 @@ namespace S2VX {
 		}
 		glBindVertexArray(linesVertexArray);
 		glBindBuffer(GL_ARRAY_BUFFER, linesVertexBuffer);
-		// Use sizeof and size to get total size
-		// Use & to get pointer to first element
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * linePoints.size(), linePoints.data(), GL_DYNAMIC_DRAW);
 		// Position
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -62,10 +60,11 @@ namespace S2VX {
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 		linesShader->use();
-		linesShader->setFloat("lineWidth", lineWidth);
-		linesShader->setMat4("view", camera.getView());
-		linesShader->setMat4("projection", camera.getProjection());
+		linesShader->setFloat("fade", 1.0f);
 		linesShader->setFloat("feather", feather);
+		linesShader->setFloat("lineWidth", lineWidth);
+		linesShader->setMat4("projection", camera.getProjection());
+		linesShader->setMat4("view", camera.getView());
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
 	}
 	void Grid::update(int time) {

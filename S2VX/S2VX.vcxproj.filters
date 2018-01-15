@@ -87,9 +87,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Back.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
@@ -118,6 +115,12 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="NoteConfiguration.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Back.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="RectanglePoints.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,6 +209,12 @@
     <ClInclude Include="Line.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </ClInclude>
+    <ClInclude Include="RectangleOrientation.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="RectanglePoints.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.chai">
@@ -220,8 +229,11 @@
     <None Include="Line.VertexShader">
       <Filter>Shaders\Vertex</Filter>
     </None>
-    <None Include="Square.VertexShader">
+    <None Include="Rectangle.VertexShader">
       <Filter>Shaders\Vertex</Filter>
+    </None>
+    <None Include="Rectangle.FragmentShader">
+      <Filter>Shaders\Fragment</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -8,10 +8,7 @@ void main() {
 	float normalLength = length(normal) * lineWidth;
 	float featherPartial = lineWidth - feather;
 	float alpha = fade;
-	if (featherPartial <= 0) {
-		alpha = 0.0f;
-	}
-	else if (normalLength > featherPartial) {
+	if (normalLength > featherPartial) {
 		float normalPartial = normalLength - featherPartial;
 		alpha = fade - normalPartial / feather;
 	}
