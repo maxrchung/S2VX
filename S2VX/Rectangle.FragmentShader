@@ -14,9 +14,12 @@ void main() {
 		float normalXPartial = normalXLength - featherXPartial;
 		alpha = fade - normalXPartial / feather;
 	}
-	else if (normalYLength > featherYPartial) {
+	if (normalYLength > featherYPartial) {
 		float normalYPartial = normalYLength - featherYPartial;
-		alpha = fade - normalYPartial / feather;
+		float compare = fade - normalYPartial / feather;
+		if (compare < alpha) {
+			alpha = compare;
+		}
 	}
 	fragmentColor = vec4(1.0f, 1.0f, 1.0f, alpha);
 }

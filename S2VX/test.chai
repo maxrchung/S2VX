@@ -3,7 +3,7 @@ BackColor(1000, 5000,1,0.0f,0.0f,0.0f,0.0f,0.0f,0.5f,0.5f,0.0f)
 //BackColor(10000, 11000,1,0.0f,0.0f,0.0f,0.0f,0.5f,0.5f,0.5f,0.5f)
 
 CameraRotate(0, 10000,1,0.0f,385.0f)
-CameraZoom(0, 10000,1,3.5f,5.0f)
+CameraZoom(0, 20000,1,3.5f,2.0f)
 CameraMove(1000,5000,1,0.0f,0.0f,1.0f,1.0f)
 
 //SpriteBind("test.png")
@@ -24,3 +24,4 @@ GridThickness(0, 20000, 1, 0.0f, 0.1f)
 //GridFeather(10000, 13000, 1, 0.1f, 0.0f)
 
 NoteBind(5000, 1, 1)
+NoteBind(10000, 2, 2)
