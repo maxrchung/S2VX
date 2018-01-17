@@ -24,12 +24,12 @@ namespace S2VX {
 	private:
 		float distance = 3.0f;
 		float feather = 0.01f;
-		float width = 0.2f;
+		float width = 0.1f;
 		glm::vec2 position;
-		int approach = 4000;
+		int approach = 2000;
 		int end;
 		int fadeIn = 500;
-		int fadeOut = 500;
+		int fadeOut = 100;
 		int start;
 	};
 }

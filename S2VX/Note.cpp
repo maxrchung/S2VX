@@ -1,7 +1,6 @@
 #include "Note.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 namespace S2VX {
 	Note::Note(const NoteConfiguration& pConfiguration)
 		: configuration{ pConfiguration },
@@ -57,7 +56,6 @@ namespace S2VX {
 			else {
 				squareShader->setVec2("lengths", glm::vec2(0.5f * activeScale + lineWidth, lineWidth));
 			}
-			glm::mat4 outerModel;
 			glDrawArrays(GL_TRIANGLES, 0, scaled.size() / 4);
 		}
 	}

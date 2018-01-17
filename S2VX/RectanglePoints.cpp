@@ -14,8 +14,8 @@ namespace S2VX {
 	std::vector<float> RectanglePoints::getScaled(float scale) {
 		for (int i = 0; i < static_cast<int>(points.size());) {
 			scaled[i] = points[i] * scale;
-			if (i % 4 == 2) {
-				i += 2;
+			if (i % 4 == 1) {
+				i += 3;
 			}
 			else {
 				++i;
