@@ -108,9 +108,6 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="NoteCommands.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
     <ClCompile Include="Note.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -193,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Notes.hpp">
       <Filter>Header Files\Element</Filter>
-    </ClInclude>
-    <ClInclude Include="NoteCommands.hpp">
-      <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="CircularQueue.hpp">
       <Filter>Header Files\Utility</Filter>

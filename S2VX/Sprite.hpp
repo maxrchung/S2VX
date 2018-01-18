@@ -1,9 +1,9 @@
 #pragma once
 #include "Camera.hpp"
 #include "Shader.hpp"
-#include "Texture.hpp"
 #include <glm/glm.hpp>
 namespace S2VX {
+	class Texture;
 	class Sprite {
 	public:
 		Sprite(Texture* pTexture, Shader* imageShader);

@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include "Texture.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {

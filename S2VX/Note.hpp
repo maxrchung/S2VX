@@ -9,6 +9,7 @@ namespace S2VX {
 	public:
 		Note(const NoteConfiguration& pConfiguration);
 		~Note();
+		NoteConfiguration getConfiguration() { return configuration; }
 		void draw(const Camera& camera);
 		void update(int time);
 	private:
@@ -20,5 +21,10 @@ namespace S2VX {
 		std::array<RectanglePoints, 4> lines;
 		unsigned int squareVertexArray;
 		unsigned int squareVertexBuffer;
+	};
+	class NoteUniquePointerComparison {
+	public:
+		// Sort by start time
+		bool operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs);
 	};
 }

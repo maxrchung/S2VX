@@ -25,3 +25,7 @@ GridThickness(0, 20000, 1, 0.0f, 0.03f)
 //GridFeather(10000, 13000, 1, 0.1f, 0.0f)
 
 NoteBind(3000, 0, 0)
+NoteBind(3000, 1, 1)
+
+NoteBind(6000, -1, -1)
+

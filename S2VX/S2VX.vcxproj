@@ -134,7 +134,6 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="GridCommands.cpp" />
     <ClCompile Include="Note.cpp" />
-    <ClCompile Include="NoteCommands.cpp" />
     <ClCompile Include="NoteConfiguration.cpp" />
     <ClCompile Include="Notes.cpp" />
     <ClCompile Include="RectanglePoints.cpp" />
@@ -164,7 +163,6 @@
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CameraCommands.hpp" />
     <ClInclude Include="Note.hpp" />
-    <ClInclude Include="NoteCommands.hpp" />
     <ClInclude Include="NoteConfiguration.hpp" />
     <ClInclude Include="Notes.hpp" />
     <ClInclude Include="RectanglePoints.hpp" />

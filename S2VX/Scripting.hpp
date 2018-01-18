@@ -3,6 +3,7 @@
 #include "Element.hpp"
 #include "Elements.hpp"
 #include "EasingType.hpp"
+#include "Note.hpp"
 #include "NoteConfiguration.hpp"
 #include "Sprites.hpp"
 #include <chaiscript/chaiscript.hpp>
@@ -31,7 +32,8 @@ namespace S2VX {
 		void SpriteScale(int start, int end, int easing, float startScaleX, float startScaleY, float endScaleX, float endScaleY);
 	private:
 		// Converts sortedCommands to vector form
-		std::vector<Command*> sortedToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands);
+		std::vector<Command*> sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands);
+		std::vector<Note*> sortedNotesToVector();
 		void reset();
 		void resetSpriteTime();
 		chaiscript::ChaiScript chai;
@@ -42,7 +44,7 @@ namespace S2VX {
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedNoteCommands;
+		std::multiset<std::unique_ptr<Note>, NoteUniquePointerComparison> sortedNotes;
 		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedSpriteCommands;
 		std::unordered_map<int, int> spriteStarts;
 		std::unordered_map<int, int> spriteEnds;

@@ -84,4 +84,7 @@ namespace S2VX {
 			activeFade = 1.0f;
 		}
 	}
+	bool NoteUniquePointerComparison::operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs) {
+		return lhs->getConfiguration().getStart() < rhs->getConfiguration().getStart();
+	}
 }

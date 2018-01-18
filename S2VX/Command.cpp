@@ -18,14 +18,6 @@ namespace S2VX {
 			throw ScriptError("Command end time must be greater than or equal to 0. Given: " + std::to_string(end));
 		}
 	}
-	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
-		if (lhs->start != rhs->start) {
-			return lhs->start < rhs->start;
-		}
-		else {
-			return static_cast<int>(lhs->commandType) < static_cast<int>(rhs->commandType);
-		}
-	}
 	void Command::validateColor(const glm::vec4& color) {
 		if (color.r < 0.0f || color.r > 1.0f || 
 			color.g < 0.0f || color.g > 1.0f ||
@@ -58,5 +50,12 @@ namespace S2VX {
 			throw ScriptError("Invalid Sprite command called. SpriteBind() must be called before other Sprite commands.");
 		}
 	}
-
+	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
+		if (lhs->start != rhs->start) {
+			return lhs->start < rhs->start;
+		}
+		else {
+			return static_cast<int>(lhs->commandType) < static_cast<int>(rhs->commandType);
+		}
+	}
 }

@@ -1,29 +1,29 @@
 #include "Notes.hpp"
-#include "NoteCommands.hpp"
 namespace S2VX {
-	Notes::Notes(const std::vector<Command*>& commands)
-		: Element{ commands } {}
+	Notes::Notes(const std::vector<Note*>& pNotes)
+		: notes{ pNotes } {}
 	void Notes::draw(const Camera& camera) {
-		for (auto& note : activeNotes) {
-			note->draw(camera);
+		for (auto active : actives) {
+			notes[active]->draw(camera);
 		}
 	}
 	void Notes::update(int time) {
 		for (auto active : actives) {
-			auto command = commands[active];
-			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
-			switch (command->commandType) {
-				case CommandType::NoteBind: {
-					auto derived = static_cast<NoteBindCommand*>(command);
-					auto configuration = derived->configuration;
-					auto note = std::make_unique<Note>(configuration);
-					activeNotes.insert(std::move(note));
-					break;
-				}
+			notes[active]->update(time);
+		}
+	}
+
+	void Notes::updateActives(int time) {
+		for (auto active = actives.begin(); active != actives.end(); ) {
+			if (notes[*active]->getConfiguration().getEnd() <= time) {
+				active = actives.erase(active);
+			}
+			else {
+				++active;
 			}
 		}
-		for (auto& note : activeNotes) {
-			note->update(time);
+		while (nextActive != notes.size() && notes[nextActive]->getConfiguration().getStart() <= time) {
+			actives.insert(nextActive++);
 		}
 	}
 }

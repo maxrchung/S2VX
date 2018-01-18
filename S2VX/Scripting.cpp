@@ -2,7 +2,6 @@
 #include "BackCommands.hpp"
 #include "CameraCommands.hpp"
 #include "GridCommands.hpp"
-#include "NoteCommands.hpp"
 #include "SpriteCommands.hpp"
 namespace S2VX {
 	Scripting::Scripting() {
@@ -59,15 +58,15 @@ namespace S2VX {
 			sortedSpriteCommands.insert(std::move(command));
 		}
 		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
-		auto backCommands = sortedToVector(sortedBackCommands);
-		auto cameraCommands = sortedToVector(sortedCameraCommands);
-		auto gridCommands = sortedToVector(sortedGridCommands);
-		auto noteCommands = sortedToVector(sortedNoteCommands);
-		auto spriteCommands = sortedToVector(sortedSpriteCommands);
+		auto backCommands = sortedCommandsToVector(sortedBackCommands);
+		auto cameraCommands = sortedCommandsToVector(sortedCameraCommands);
+		auto gridCommands = sortedCommandsToVector(sortedGridCommands);
+		auto notes = sortedNotesToVector();
+		auto spriteCommands = sortedCommandsToVector(sortedSpriteCommands);
 		auto elements = Elements(std::make_unique<Back>(backCommands),
 								 std::make_unique<Camera>(cameraCommands),
 								 std::make_unique<Grid>(gridCommands),
-								 std::make_unique<Notes>(noteCommands),
+								 std::make_unique<Notes>(notes),
 								 std::make_unique<Sprites>(spriteCommands));
 		return elements;
 	}
@@ -95,7 +94,7 @@ namespace S2VX {
 		std::unique_ptr<Command> command = std::make_unique<GridThicknessCommand>(start, end, convert, startThickness, endThickness);
 		sortedGridCommands.insert(std::move(command));
 	}
-	std::vector<Command*> Scripting::sortedToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
+	std::vector<Command*> Scripting::sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
 		auto vector = std::vector<Command*>(sortedCommands.size());
 		int i = 0;
 		// This should be a little faster than just adding by push_back?
@@ -104,11 +103,18 @@ namespace S2VX {
 		}
 		return vector;
 	}
+	std::vector<Note*> Scripting::sortedNotesToVector() {
+		auto vector = std::vector<Note*>(sortedNotes.size());
+		int i = 0;
+		for (auto& command : sortedNotes) {
+			vector[i++] = command.get();
+		}
+		return vector;
+	}
 	void Scripting::NoteBind(int time, int x, int y) {
 		noteConfiguration.setEnd(time);
 		noteConfiguration.setPosition(glm::vec2(x, y));
-		std::unique_ptr<Command> command = std::make_unique<NoteBindCommand>(noteConfiguration.getStart(), noteConfiguration);
-		sortedNoteCommands.insert(std::move(command));
+		sortedNotes.insert(std::make_unique<Note>(noteConfiguration));
 	}
 	void Scripting::SpriteBind(const std::string& path) {
 		if (spriteID >= 0) {
