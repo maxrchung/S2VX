@@ -2,8 +2,8 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
-	Note::Note(const NoteConfiguration& pConfiguration)
-		: configuration{ pConfiguration },
+	Note::Note(const NoteConfiguration& pConfiguration, Shader* pSquareShader)
+		: configuration{ pConfiguration }, squareShader{ pSquareShader },
 		lines{
 		RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
 		RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),

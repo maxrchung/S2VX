@@ -7,7 +7,7 @@
 namespace S2VX {
 	class Note {
 	public:
-		Note(const NoteConfiguration& pConfiguration);
+		Note(const NoteConfiguration& pConfiguration, Shader* pSquareShader);
 		~Note();
 		NoteConfiguration getConfiguration() { return configuration; }
 		void draw(const Camera& camera);
@@ -17,7 +17,7 @@ namespace S2VX {
 		float activeScale;
 		float activeFade;
 		NoteConfiguration configuration;
-		std::unique_ptr<Shader> squareShader = std::make_unique<Shader>("Rectangle.VertexShader", "Rectangle.FragmentShader");
+		std::unique_ptr<Shader> squareShader;
 		std::array<RectanglePoints, 4> lines;
 		unsigned int squareVertexArray;
 		unsigned int squareVertexBuffer;

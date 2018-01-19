@@ -20,6 +20,57 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
 		chai.add(chaiscript::fun(&Scripting::SpriteScale, this), "SpriteScale");
 	}
+	Elements Scripting::evaluate(const std::string& path) {
+		reset();
+		chai.use(path);
+		// Handle last sprite
+		addSprite();
+		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
+		auto backCommands = sortedCommandsToVector(sortedBackCommands);
+		auto cameraCommands = sortedCommandsToVector(sortedCameraCommands);
+		auto gridCommands = sortedCommandsToVector(sortedGridCommands);
+		auto notes = sortedNotesToVector();
+		auto sprites = sortedSpritesToVector();
+		auto elements = Elements(std::make_unique<Back>(backCommands),
+								 std::make_unique<Camera>(cameraCommands),
+								 std::make_unique<Grid>(gridCommands),
+								 std::make_unique<Notes>(notes),
+								 std::make_unique<Sprites>(sprites));
+		return elements;
+	}
+	std::vector<Command*> Scripting::sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
+		auto vector = std::vector<Command*>(sortedCommands.size());
+		int i = 0;
+		// This should be a little faster than just adding by push_back?
+		for (auto& command : sortedCommands) {
+			vector[i++] = command.get();
+		}
+		return vector;
+	}
+	std::vector<Note*> Scripting::sortedNotesToVector() {
+		auto vector = std::vector<Note*>(sortedNotes.size());
+		int i = 0;
+		for (auto& command : sortedNotes) {
+			vector[i++] = command.get();
+		}
+		return vector;
+	}
+	std::vector<Sprite*> Scripting::sortedSpritesToVector() {
+		auto vector = std::vector<Sprite*>(sortedSprites.size());
+		int i = 0;
+		sortedSprites.begin();
+		for (auto& sprite : sortedSprites) {
+			vector[i++] = sprite.get();
+		}
+		return vector;
+	}
+	void Scripting::addSprite() {
+		// Bind previous sprite if there are commands
+		if (!currentSpriteCommands.empty()) {
+			auto spriteCommands = sortedCommandsToVector(currentSpriteCommands);
+			sortedSprites.insert(std::make_unique<Sprite>(spriteCommands, currentTexture, imageShader.get()));
+		}
+	}
 	void Scripting::BackColor(int start, int end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, startA, endR, endG, endB, endA);
@@ -40,50 +91,6 @@ namespace S2VX {
 		std::unique_ptr<Command> command = std::make_unique<CameraZoomCommand>(start, end, convert, startScale, endScale);
 		sortedCameraCommands.insert(std::move(command));
 	}
-	Elements Scripting::evaluate(const std::string& path) {
-		reset();
-		chai.use(path);
-		// Record last sprite
-		if (spriteID >= 0) {
-			spriteStarts[spriteID] = spriteStart;
-			spriteEnds[spriteID] = spriteEnd;
-		}
-		// Make create and destroy commands depending on recorded times
-		for (auto& start : spriteStarts) {
-			std::unique_ptr<Command> command = std::make_unique<SpriteCreateCommand>(start.second, start.first);
-			sortedSpriteCommands.insert(std::move(command));
-		}
-		for (auto& end : spriteEnds) {
-			std::unique_ptr<Command> command = std::make_unique<SpriteDeleteCommand>(end.second, end.first);
-			sortedSpriteCommands.insert(std::move(command));
-		}
-		// I think it is okay to use raw pointer because the ownership should be handled by sortedCommands
-		auto backCommands = sortedCommandsToVector(sortedBackCommands);
-		auto cameraCommands = sortedCommandsToVector(sortedCameraCommands);
-		auto gridCommands = sortedCommandsToVector(sortedGridCommands);
-		auto notes = sortedNotesToVector();
-		auto spriteCommands = sortedCommandsToVector(sortedSpriteCommands);
-		auto elements = Elements(std::make_unique<Back>(backCommands),
-								 std::make_unique<Camera>(cameraCommands),
-								 std::make_unique<Grid>(gridCommands),
-								 std::make_unique<Notes>(notes),
-								 std::make_unique<Sprites>(spriteCommands));
-		return elements;
-	}
-	void Scripting::reset() {
-		sortedBackCommands.clear();
-		sortedCameraCommands.clear();
-		sortedGridCommands.clear();
-		sortedSpriteCommands.clear();
-		sortedGridCommands.clear();
-		spriteID = -1;
-		resetSpriteTime();
-	}
-	void Scripting::resetSpriteTime() {
-		spriteStart = std::numeric_limits<int>::max();
-		std::unordered_map<int, int> spriteStarts;
-		spriteEnd = 0;
-	}
 	void Scripting::GridFeather(int start, int end, int easing, float startFeather, float endFeather) {
 		auto convert = static_cast<EasingType>(easing);
 		std::unique_ptr<Command> command = std::make_unique<GridFeatherCommand>(start, end, convert, startFeather, endFeather);
@@ -94,101 +101,52 @@ namespace S2VX {
 		std::unique_ptr<Command> command = std::make_unique<GridThicknessCommand>(start, end, convert, startThickness, endThickness);
 		sortedGridCommands.insert(std::move(command));
 	}
-	std::vector<Command*> Scripting::sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
-		auto vector = std::vector<Command*>(sortedCommands.size());
-		int i = 0;
-		// This should be a little faster than just adding by push_back?
-		for (auto& command : sortedCommands) {
-			vector[i++] = command.get();
-		}
-		return vector;
-	}
-	std::vector<Note*> Scripting::sortedNotesToVector() {
-		auto vector = std::vector<Note*>(sortedNotes.size());
-		int i = 0;
-		for (auto& command : sortedNotes) {
-			vector[i++] = command.get();
-		}
-		return vector;
-	}
 	void Scripting::NoteBind(int time, int x, int y) {
 		noteConfiguration.setEnd(time);
 		noteConfiguration.setPosition(glm::vec2(x, y));
-		sortedNotes.insert(std::make_unique<Note>(noteConfiguration));
+		sortedNotes.insert(std::make_unique<Note>(noteConfiguration, rectangleShader.get()));
+	}
+	void Scripting::reset() {
+		currentSpriteCommands.clear();
+		currentTexture = nullptr;
+		sortedBackCommands.clear();
+		sortedCameraCommands.clear();
+		sortedGridCommands.clear();
+		sortedNotes.clear();
+		sortedSprites.clear();
+		spriteTextures.clear();
 	}
 	void Scripting::SpriteBind(const std::string& path) {
-		if (spriteID >= 0) {
-			spriteStarts[spriteID] = spriteStart;
-			spriteEnds[spriteID] = spriteEnd;
+		addSprite();
+		// Otherwise start setting up Texture for next Sprite
+		if (spriteTextures.find(path) == spriteTextures.end()) {
+			spriteTextures[path] = std::make_unique<Texture>(path);
 		}
-		spriteID++;
-		resetSpriteTime();
-		std::unique_ptr<Command> command = std::make_unique<SpriteBindCommand>(spriteID, path);
-		sortedSpriteCommands.insert(std::move(command));
+		currentTexture = spriteTextures[path].get();
 	}
 	void Scripting::SpriteFade(int start, int end, int easing, float startFade, float endFade) {
 		auto convert = static_cast<EasingType>(easing);
-		auto startTime = start;
-		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteFadeCommand>(startTime, endTime, convert, spriteID, startFade, endFade);
-		sortedSpriteCommands.insert(std::move(command));
-		if (startTime < spriteStart) {
-			spriteStart = startTime;
-		}
-		if (endTime > spriteEnd) {
-			spriteEnd = endTime;
-		}
+		std::unique_ptr<Command> command = std::make_unique<SpriteFadeCommand>(start, end, convert, startFade, endFade);
+		currentSpriteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteMoveX(int start, int end, int easing, int startX, int endX) {
 		auto convert = static_cast<EasingType>(easing);
-		auto startTime = start;
-		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(startTime, endTime, convert, spriteID, startX, endX);
-		sortedSpriteCommands.insert(std::move(command));
-		if (startTime < spriteStart) {
-			spriteStart = startTime;
-		}
-		if (endTime > spriteEnd) {
-			spriteEnd = endTime;
-		}
+		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(start, end, convert, startX, endX);
+		currentSpriteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteMoveY(int start, int end, int easing, int startY, int endY) {
 		auto convert = static_cast<EasingType>(easing);
-		auto startTime = start;
-		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(startTime, endTime, convert, spriteID, startY, endY);
-		sortedSpriteCommands.insert(std::move(command));
-		if (startTime < spriteStart) {
-			spriteStart = startTime;
-		}
-		if (endTime > spriteEnd) {
-			spriteEnd = endTime;
-		}
+		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(start, end, convert, startY, endY);
+		currentSpriteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteRotate(int start, int end, int easing, float startRotation, float endRotation) {
 		auto convert = static_cast<EasingType>(easing);
-		auto startTime = start;
-		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteRotateCommand>(startTime, endTime, convert, spriteID, startRotation, endRotation);
-		sortedSpriteCommands.insert(std::move(command));
-		if (startTime < spriteStart) {
-			spriteStart = startTime;
-		}
-		if (endTime > spriteEnd) {
-			spriteEnd = endTime;
-		}
+		std::unique_ptr<Command> command = std::make_unique<SpriteRotateCommand>(start, end, convert, startRotation, endRotation);
+		currentSpriteCommands.insert(std::move(command));
 	}
 	void Scripting::SpriteScale(int start, int end, int easing, float startScaleX, float startScaleY, float endScaleX, float endScaleY) {
 		auto convert = static_cast<EasingType>(easing);
-		auto startTime = start;
-		auto endTime = end;
-		std::unique_ptr<Command> command = std::make_unique<SpriteScaleCommand>(startTime, endTime, convert, spriteID, startScaleX, startScaleY, endScaleX, endScaleY);
-		sortedSpriteCommands.insert(std::move(command));
-		if (startTime < spriteStart) {
-			spriteStart = startTime;
-		}
-		if (endTime > spriteEnd) {
-			spriteEnd = endTime;
-		}
+		std::unique_ptr<Command> command = std::make_unique<SpriteScaleCommand>(start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY);
+		currentSpriteCommands.insert(std::move(command));
 	}
 }

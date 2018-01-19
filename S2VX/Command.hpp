@@ -15,12 +15,6 @@ namespace S2VX {
 		void validateColor(const glm::vec4& color);
 		void validateFade(float fade);
 		void validateScale(const glm::vec2& scale);
-		// I feel a bit bad having this accessible here since it's probably only used in Sprite commands,
-		// but because it's not like a data member that's copied across everything, I think I can live
-		// with this maybe maybe not. To be honest I don't know if inheritance is the best solution for
-		// this Command architecture. There seems to be cracks appearing here and there, but whatever,
-		// this is my best solution for now.
-		void validateSpriteID(int spriteID);
 	};
 	class CommandUniquePointerComparison {
 	public:

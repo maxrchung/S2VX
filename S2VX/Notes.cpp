@@ -12,7 +12,6 @@ namespace S2VX {
 			notes[active]->update(time);
 		}
 	}
-
 	void Notes::updateActives(int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (notes[*active]->getConfiguration().getEnd() <= time) {

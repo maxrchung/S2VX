@@ -11,12 +11,6 @@ namespace S2VX {
 					<< "End: " << std::to_string(end) << std::endl;
 			throw ScriptError(message.str());
 		}
-		else if (start < 0) {
-			throw ScriptError("Command start time must be greater than or equal to 0. Given: " + std::to_string(start));
-		}
-		else if (end < 0) {
-			throw ScriptError("Command end time must be greater than or equal to 0. Given: " + std::to_string(end));
-		}
 	}
 	void Command::validateColor(const glm::vec4& color) {
 		if (color.r < 0.0f || color.r > 1.0f || 
@@ -43,11 +37,6 @@ namespace S2VX {
 			message << "Command color must be between 0 and 1. Given: ("
 				<< std::to_string(scale.x) << ')';
 			throw ScriptError(message.str());
-		}
-	}
-	void Command::validateSpriteID(int spriteID) {
-		if (spriteID < 0) {
-			throw ScriptError("Invalid Sprite command called. SpriteBind() must be called before other Sprite commands.");
 		}
 	}
 	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
