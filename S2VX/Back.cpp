@@ -9,14 +9,14 @@ namespace S2VX {
 		glClearColor(color.r, color.g, color.b, color.a);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	void Back::update(int time) {
-		for (auto active : actives) {
-			auto command = commands[active];
-			auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
+	void Back::update(const int time) {
+		for (const auto active : actives) {
+			const auto command = commands[active];
+			const auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
 				case CommandType::BackColor: {
-					auto derived = static_cast<BackColorCommand*>(command);
-					auto easing = Easing(derived->easing, interpolation);
+					const auto derived = static_cast<BackColorCommand*>(command);
+					const auto easing = Easing(derived->easing, interpolation);
 					color = glm::mix(derived->startColor, derived->endColor, easing);
 					break;
 				}

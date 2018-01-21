@@ -4,7 +4,7 @@ namespace S2VX {
 	class Texture {
 	public:
 		// Cleanup imageTexture
-		Texture(const std::string& path);
+		explicit Texture(const std::string& path);
 		~Texture();
 		unsigned int getImageTexture() const { return imageTexture; }
 	private:

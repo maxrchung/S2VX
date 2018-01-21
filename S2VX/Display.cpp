@@ -10,10 +10,10 @@ namespace S2VX {
 		// It is not recommended to use GLFW_FLOATING, but this is an easy way to display window over task bar
 		//glfwWindowHint(GLFW_FLOATING, GL_TRUE);
 		glfwWindowHint(GLFW_DECORATED, GL_FALSE);
-		auto monitor = glfwGetPrimaryMonitor();
-		auto mode = glfwGetVideoMode(monitor);
-		auto monitorWidth = mode->width;
-		auto monitorHeight = mode->height;
+		const auto monitor = glfwGetPrimaryMonitor();
+		const auto mode = glfwGetVideoMode(monitor);
+		const auto monitorWidth = mode->width;
+		const auto monitorHeight = mode->height;
 		auto windowWidth = monitorHeight;
 		// Set screenWidth to be square and the shortest side
 		if (monitorWidth < monitorHeight) {
@@ -27,7 +27,7 @@ namespace S2VX {
 		}
 		glfwMakeContextCurrent(window);
 		// GLFW_DECORATED sets window position to top left corner, need to reset window to middle of screen
-		auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
+		const auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
 		// glad: load all OpenGL function pointers
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -41,7 +41,7 @@ namespace S2VX {
 		// glfw: terminate, clearing all previously allocated GLFW resources.
 		glfwTerminate();
 	}
-	bool Display::shouldClose() {
+	bool Display::shouldClose() const {
 		return glfwWindowShouldClose(window);
 	}
 }

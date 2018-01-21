@@ -28,7 +28,7 @@ namespace S2VX {
 #endif
 	typedef AH_FLOAT_TYPE AHFloat;
 
-	AHFloat Easing(EasingType type, AHFloat value);
+	AHFloat Easing(const EasingType type, const AHFloat value);
 
 #if defined __cplusplus
 	extern "C" {

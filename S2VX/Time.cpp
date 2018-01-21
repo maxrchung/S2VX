@@ -4,47 +4,47 @@ namespace S2VX {
 	Time::Time() {
 		Time(0);
 	}
-	Time::Time(int pMS)
+	Time::Time(const int pMS)
 		: ms{ pMS } {
-		int minutes = ms / 60000;
-		int minusMinutes = ms - minutes * 60000;
-		int seconds = minusMinutes / 1000;
-		int minusSeconds = minusMinutes - seconds * 1000;
+		const int minutes = ms / 60000;
+		const int minusMinutes = ms - minutes * 60000;
+		const int seconds = minusMinutes / 1000;
+		const int minusSeconds = minusMinutes - seconds * 1000;
 		char buffer[50];
 		sprintf(buffer, "%02d:%02d:%03d", minutes, seconds, minusSeconds);
 		format = buffer;
 	}
 	Time::Time(const std::string& pFormat)
 		: format{ pFormat } {
+		const std::regex regex{ R"(\d+)" };
 		std::smatch smatch;
-		std::regex regex{ R"(\d+)" };
 		std::regex_search(pFormat, smatch, regex);
-		int minutes = std::stoi(smatch[0]);
+		const int minutes = std::stoi(smatch[0]);
 
 		auto search = smatch.suffix().str();
 		std::regex_search(search, smatch, regex);
-		int seconds = std::stoi(smatch[0]);
+		const int seconds = std::stoi(smatch[0]);
 
 		search = smatch.suffix().str();
 		std::regex_search(search, smatch, regex);
-		int pMS = std::stoi(smatch[0]);
+		const int pMS = std::stoi(smatch[0]);
 		ms = minutes * 60000 + seconds * 1000 + pMS;
 	}
-	bool Time::operator<(const Time& rhs) {
+	bool Time::operator<(const Time& rhs) const {
 		return ms < rhs.ms;
 	}
-	bool Time::operator<=(const Time& rhs) {
+	bool Time::operator<=(const Time& rhs) const {
 		return ms <= rhs.ms;
 
 	}
-	bool Time::operator==(const Time& rhs) {
+	bool Time::operator==(const Time& rhs) const {
 		return ms == rhs.ms;
 
 	}
-	bool Time::operator>(const Time& rhs) {
+	bool Time::operator>(const Time& rhs) const {
 		return ms > rhs.ms;
 	}
-	bool Time::operator>=(const Time& rhs) {
+	bool Time::operator>=(const Time& rhs) const {
 		return ms >= rhs.ms;
 	}
 }

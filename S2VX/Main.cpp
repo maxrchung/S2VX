@@ -2,13 +2,13 @@
 #include "ScriptError.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <iostream>
-std::string addNewLine(const char* what) {
+std::string addWithNewLine(const char* what) {
 	std::string message(what);
 	if (message.size() > 0 && message[message.size() - 1] == '\n') {
-		return "";
+		return message;
 	}
 	else {
-		return "\n";
+		return message + "\n";
 	}
 }
 int main(int argc, char** argv) {
@@ -21,13 +21,13 @@ int main(int argc, char** argv) {
 		S2VX.run();
 	}
 	catch (const chaiscript::exception::eval_error &e) {
-		std::cout << "ChaiScript Exception" << std::endl << e.pretty_print() << addNewLine(e.pretty_print().c_str());
+		std::cout << "ChaiScript Exception" << std::endl << addWithNewLine(e.pretty_print().c_str());
 	}
 	catch (const S2VX::ScriptError &e) {
-		std::cout << "Script Error" << std::endl << e.what() << addNewLine(e.what());
+		std::cout << "Script Error" << std::endl << addWithNewLine(e.what());
 	}
 	catch (const std::exception &e) {
-		std::cout << "General Exception" << std::endl << e.what() << addNewLine(e.what());
+		std::cout << "General Exception" << std::endl << addWithNewLine(e.what());
 	}
 	std::cin.get();
 }

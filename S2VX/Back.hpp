@@ -4,9 +4,9 @@
 namespace S2VX {
 	class Back : public Element {
 	public:
-		Back(const std::vector<Command*>& commands);
+		explicit Back(const std::vector<Command*>& commands);
 		void draw(const Camera& camera);
-		void update(int time);
+		void update(const int time);
 	private:
 		glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	};

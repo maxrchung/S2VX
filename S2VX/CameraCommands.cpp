@@ -19,7 +19,7 @@ namespace S2VX {
 		validateZoom(pStartScale);
 		validateZoom(pEndScale);
 	}
-	void CameraZoomCommand::validateZoom(float scale) {
+	void CameraZoomCommand::validateZoom(const float scale) const {
 		if (scale < 1.0f) {
 			throw ScriptError("Command color must be greather than 1. Given: " + std::to_string(scale));
 		}

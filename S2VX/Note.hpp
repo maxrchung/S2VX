@@ -7,24 +7,23 @@
 namespace S2VX {
 	class Note {
 	public:
-		Note(const NoteConfiguration& pConfiguration, Shader* pSquareShader);
+		explicit Note(const NoteConfiguration& pConfiguration, Shader* const pSquareShader);
 		~Note();
-		NoteConfiguration getConfiguration() { return configuration; }
+		const NoteConfiguration& getConfiguration() { return configuration; }
 		void draw(const Camera& camera);
-		void update(int time);
+		void update(const int time);
 	private:
+		const NoteConfiguration configuration;
+		Shader* const squareShader;
 		// Interpolated distance
 		float activeScale;
 		float activeFade;
-		NoteConfiguration configuration;
-		std::unique_ptr<Shader> squareShader;
 		std::array<RectanglePoints, 4> lines;
 		unsigned int squareVertexArray;
 		unsigned int squareVertexBuffer;
 	};
-	class NoteUniquePointerComparison {
-	public:
+	struct NoteUniquePointerComparison {
 		// Sort by start time
-		bool operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs);
+		bool operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs) const;
 	};
 }

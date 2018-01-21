@@ -4,7 +4,7 @@ namespace S2VX {
 	SpriteBindCommand::SpriteBindCommand(const std::string& pPath)
 		: Command{ CommandType::SpriteBind, 0, 0 },
 		path{ pPath } {}
-	SpriteFadeCommand::SpriteFadeCommand(int start, int end, EasingType pEasing, float pStartFade, float pEndFade)
+	SpriteFadeCommand::SpriteFadeCommand(const int start, const int end, const EasingType pEasing, const float pStartFade, const float pEndFade)
 		: Command{ CommandType::SpriteFade, start, end },
 		easing{ pEasing },
 		startFade{ pStartFade },
@@ -12,22 +12,17 @@ namespace S2VX {
 		validateFade(startFade);
 		validateFade(endFade);
 	}
-	SpriteMoveXCommand::SpriteMoveXCommand(int start, int end, EasingType pEasing, int pStartX, int pEndX)
-		: Command{ CommandType::SpriteMoveX, start, end },
+	SpriteMoveCommand::SpriteMoveCommand(const int start, const int end, const EasingType pEasing, const int pStartX, const int pStartY, const int pEndX, const int pEndY)
+		: Command{ CommandType::SpriteMove, start, end },
 		easing{ pEasing },
-		startX{ pStartX },
-		endX{ pEndX } {}
-	SpriteMoveYCommand::SpriteMoveYCommand(int start, int end, EasingType pEasing, int pStartY, int pEndY)
-		: Command{ CommandType::SpriteMoveX, start, end },
-		easing{ pEasing },
-		startY{ pStartY },
-		endY{ pEndY } {}
-	SpriteRotateCommand::SpriteRotateCommand(int start, int end, EasingType pEasing, float pStartRotation, float pEndRotation)
+		startCoordinate{ pStartX, pStartY },
+		endCoordinate{ pEndX, pEndY } {}
+	SpriteRotateCommand::SpriteRotateCommand(const int start, const int end, const EasingType pEasing, const float pStartRotation, const float pEndRotation)
 		: Command{ CommandType::SpriteRotate, start, end },
 		easing{ pEasing },
 		startRotation{ pStartRotation },
 		endRotation{ pEndRotation } {}
-	SpriteScaleCommand::SpriteScaleCommand(int start, int end, EasingType pEasing, float pStartScaleX, float pStartScaleY, float pEndScaleX, float pEndScaleY)
+	SpriteScaleCommand::SpriteScaleCommand(const int start, const int end, const EasingType pEasing, const float pStartScaleX, const float pStartScaleY, const float pEndScaleX, const float pEndScaleY)
 		: Command{ CommandType::SpriteScale, start, end },
 		easing{ pEasing },
 		startScale{ glm::vec2{pStartScaleX, pStartScaleY} },

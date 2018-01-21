@@ -5,13 +5,14 @@
 namespace S2VX {
 	class RectanglePoints {
 	public:
-		RectanglePoints(float x, float y, RectangleOrientation pOrientation);
-		RectangleOrientation getOrientation() { return orientation; }
-		std::vector<float> getPoints() { return points; }
-		std::vector<float> getScaled(float pScale);
+		explicit RectanglePoints(const float pX, const float pY, const RectangleOrientation pOrientation);
+		RectangleOrientation getOrientation() const { return orientation; }
+		const std::vector<float>& getPoints() const { return points; }
+		std::vector<float> getScaled(const float pScale) const;
 	private:
-		RectangleOrientation orientation;
-		std::vector<float> points;
-		std::vector<float> scaled;
+		const float x;
+		const float y;
+		const RectangleOrientation orientation;
+		const std::vector<float> points;
 	};
 }

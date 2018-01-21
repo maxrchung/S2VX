@@ -1,6 +1,6 @@
 #include "BackCommands.hpp"
 namespace S2VX {
-	BackColorCommand::BackColorCommand(int start, int end, EasingType pEasing, float startR, float startG, float startA, float startB, float endR, float endG, float endB, float endA)
+	BackColorCommand::BackColorCommand(const int start, const int end, const EasingType pEasing, const float startR, const float startG, const float startA, const float startB, const float endR, const float endG, const float endB, const float endA)
 		: Command{ CommandType::BackColor, start, end },
 		easing{ pEasing },
 		startColor{ startR, startG, startB, startA },

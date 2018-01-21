@@ -16,7 +16,7 @@
 #include "ScriptError.hpp"
 
 namespace S2VX {
-	AHFloat Easing(EasingType type, AHFloat value) {
+	AHFloat Easing(const EasingType type, const AHFloat value) {
 		// Handles cases where start = end time
 		if (isnan(value)) {
 			return 1;

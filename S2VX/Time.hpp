@@ -4,13 +4,16 @@ namespace S2VX {
 	class Time {
 	public:
 		Time();
-		Time(int pMS);
-		Time(const std::string& pFormat);
-		bool operator<(const Time& rhs);
-		bool operator<=(const Time& rhs);
-		bool operator==(const Time& rhs);
-		bool operator>(const Time& rhs);
-		bool operator>=(const Time& rhs);
+		explicit Time(const int pMS);
+		explicit Time(const std::string& pFormat);
+		bool operator<(const Time& rhs) const;
+		bool operator<=(const Time& rhs) const;
+		bool operator==(const Time& rhs) const;
+		bool operator>(const Time& rhs) const;
+		bool operator>=(const Time& rhs) const;
+		const std::string& getFormat() { return format; }
+		int getMS() const { return ms; }
+	private:
 		int ms;
 		std::string format;
 	};

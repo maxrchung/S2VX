@@ -11,16 +11,16 @@ namespace S2VX {
 			CircularQueue(0);
 		}
 		// Seems like the simplest way to get templates to work is to put everything in the header
-		CircularQueue(int pMaxSize)
+		explicit CircularQueue(const int pMaxSize)
 			: maxSize{ pMaxSize }, elements{ std::vector<T>(pMaxSize) } {}
-		T peekFront() {
-			return elements[front];
-		}
-		T peekBack() {
+		const T& peekBack() {
 			return elements[back];
 		}
+		const T& peekFront() {
+			return elements[front];
+		}
 		void getSize() { return size; }
-		void push(T element) {
+		void push(const T& element) {
 			if (size == maxSize) {
 				throw std::overflow_error("Circular queue push overflow.");
 			}
@@ -36,10 +36,10 @@ namespace S2VX {
 			--size;
 		}
 	private:
-		std::vector<T> elements;
-		int front = 0;
+		const int maxSize;
 		int back = 0;
+		int front = 0;
 		int size = 0;
-		int maxSize;
+		std::vector<T> elements;
 	};
 }

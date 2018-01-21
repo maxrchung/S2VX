@@ -6,38 +6,31 @@
 namespace S2VX {
 	// Special command that only takes in path and spriteID; put into a lookup later to determine sprite path
 	struct SpriteBindCommand : Command {
-		SpriteBindCommand(const std::string& pPath);
-		std::string path;
+		explicit SpriteBindCommand(const std::string& pPath);
+		const std::string path;
 	};
 	struct SpriteFadeCommand : Command {
-		SpriteFadeCommand::SpriteFadeCommand(int start, int end, EasingType pEasing, float pStartFade, float pEndFade);
-		EasingType easing;
-		float startFade;
-		float endFade;
+		explicit SpriteFadeCommand::SpriteFadeCommand(const int start, const int end, const EasingType pEasing, const float pStartFade, const float pEndFade);
+		const EasingType easing;
+		const float startFade;
+		const float endFade;
 	};
-	struct SpriteMoveXCommand : Command {
-		SpriteMoveXCommand(int start, int end, EasingType pEasing, int pStartX, int pEndX);
-		EasingType easing;
-		int startX;
-		int endX;
-		int spriteID;
-	};
-	struct SpriteMoveYCommand : Command {
-		SpriteMoveYCommand(int start, int end, EasingType pEasing, int pStartY, int pEndY);
-		EasingType easing;
-		int startY;
-		int endY;
+	struct SpriteMoveCommand : Command {
+		explicit SpriteMoveCommand(const int start, const int end, const EasingType pEasing, const int pStartX, const int pStartY, const int pEndX, const int pEndY);
+		const EasingType easing;
+		const glm::vec2 startCoordinate;
+		const glm::vec2 endCoordinate;
 	};
 	struct SpriteRotateCommand : Command {
-		SpriteRotateCommand(int start, int end, EasingType pEasing, float pStartRotation, float pEndRotation);
-		EasingType easing;
-		float startRotation;
-		float endRotation;
+		explicit SpriteRotateCommand(const int start, const int end, const EasingType pEasing, const float pStartRotation, const float pEndRotation);
+		const EasingType easing;
+		const float startRotation;
+		const float endRotation;
 	};
 	struct SpriteScaleCommand : Command {
-		SpriteScaleCommand(int start, int end, EasingType pEasing, float pStartScaleX, float pStartScaleY, float pEndScaleX, float pEndScaleY);
-		EasingType easing;
-		glm::vec2 startScale;
-		glm::vec2 endScale;
+		explicit SpriteScaleCommand(const int start, const int end, const EasingType pEasing, const float pStartScaleX, const float pStartScaleY, const float pEndScaleX, const float pEndScaleY);
+		const EasingType easing;
+		const glm::vec2 startScale;
+		const glm::vec2 endScale;
 	};
 }

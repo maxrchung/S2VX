@@ -1,7 +1,8 @@
 #include "RectanglePoints.hpp"
 namespace S2VX {
-	RectanglePoints::RectanglePoints(float x, float y, RectangleOrientation pOrientation)
-		: points{
+	RectanglePoints::RectanglePoints(float pX, float pY, RectangleOrientation pOrientation)
+		: x{ pX }, y{ pY },
+		points{
 			// Top right triangle
 			x, y,	 1.0f,	 1.0f,
 			x, y,	 1.0f,	-1.0f,
@@ -10,17 +11,18 @@ namespace S2VX {
 			x, y,	 1.0f,	-1.0f,
 			x, y,	-1.0f,	 1.0f,
 			x, y,	-1.0f,	-1.0f
-		  }, scaled{ points }, orientation{ pOrientation } {}
-	std::vector<float> RectanglePoints::getScaled(float scale) {
-		for (int i = 0; i < static_cast<int>(points.size());) {
-			scaled[i] = points[i] * scale;
-			if (i % 4 == 1) {
-				i += 3;
-			}
-			else {
-				++i;
-			}
-		}
+		 }, orientation{ pOrientation } {}
+	std::vector<float> RectanglePoints::getScaled(const float scale) const {
+		std::vector<float> scaled = {
+			// Top right triangle
+			x * scale, y * scale,	 1.0f,	 1.0f,
+			x * scale, y * scale,	 1.0f,	-1.0f,
+			x * scale, y * scale,	-1.0f,	 1.0f,
+			// Bot left triangle
+			x * scale, y * scale,	 1.0f,	-1.0f,
+			x * scale, y * scale,	-1.0f,	 1.0f,
+			x * scale, y * scale,	-1.0f,	-1.0f
+		};
 		return scaled;
 	}
 }

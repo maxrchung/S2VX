@@ -5,20 +5,20 @@
 namespace S2VX {
 	struct GridFeatherCommand : Command {
 	public:
-		GridFeatherCommand(int start, int end, EasingType pEasing, float pStartFeather, float pEndFeather);
-		EasingType easing;
-		float startFeather;
-		float endFeather;
+		explicit GridFeatherCommand(const int start, const int end, const EasingType pEasing, const float pStartFeather, const float pEndFeather);
+		const EasingType easing;
+		const float startFeather;
+		const float endFeather;
 	private:
-		void validateFeather(float feather);
+		void validateFeather(float feather) const;
 	};
 	struct GridThicknessCommand : Command {
 	public:
-		GridThicknessCommand(int start, int end, EasingType pEasing, float pStartThickness, float pEndThickness);
-		EasingType easing;
-		float startThickness;
-		float endThickness;
+		explicit GridThicknessCommand(const int start, const int end, const EasingType pEasing, const float pStartThickness, const float pEndThickness);
+		const EasingType easing;
+		const float startThickness;
+		const float endThickness;
 	private:
-		void validateThickness(float thickness);
+		void validateThickness(float thickness) const;
 	};
 }

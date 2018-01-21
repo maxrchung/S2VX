@@ -5,10 +5,10 @@
 namespace S2VX {
 	class Notes : public Element {
 	public:
-		Notes(const std::vector<Note*>& pNotes);
+		explicit Notes(const std::vector<Note*>& pNotes);
 		void draw(const Camera& camera);
-		void update(int time);
-		void updateActives(int time);
+		void update(const int time);
+		void updateActives(const int time);
 	private:
 		std::vector<Note*> notes;
 	};

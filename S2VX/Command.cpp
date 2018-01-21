@@ -2,7 +2,7 @@
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
-	Command::Command(CommandType pCommandType, int pStart, int pEnd)
+	Command::Command(const CommandType pCommandType, const int pStart, const int pEnd)
 		: commandType{ pCommandType }, start{ pStart }, end{ pEnd } {
 		if (start > end) {
 			auto message = std::stringstream();
@@ -12,7 +12,7 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void Command::validateColor(const glm::vec4& color) {
+	void Command::validateColor(const glm::vec4& color) const {
 		if (color.r < 0.0f || color.r > 1.0f || 
 			color.g < 0.0f || color.g > 1.0f ||
 			color.b < 0.0f || color.b > 1.0f || 
@@ -26,20 +26,20 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void Command::validateFade(float fade) {
+	void Command::validateFade(float fade) const {
 		if (fade < 0.0f || fade > 1.0f) {
 			throw ScriptError("Command fade must be between 0 and 1. Given: " + std::to_string(fade));
 		}
 	}
-	void Command::validateScale(const glm::vec2& scale) {
+	void Command::validateScale(const glm::vec2& scale) const {
 		if (scale.x < 0.0f || scale.y < 0.0f) {
 			auto message = std::stringstream();
-			message << "Command color must be between 0 and 1. Given: ("
+			message << "Command scale must be between 0 and 1. Given: ("
 				<< std::to_string(scale.x) << ')';
 			throw ScriptError(message.str());
 		}
 	}
-	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) {
+	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) const {
 		if (lhs->start != rhs->start) {
 			return lhs->start < rhs->start;
 		}

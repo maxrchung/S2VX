@@ -22,7 +22,7 @@ namespace S2VX {
 			previous = now;
 			total += delta;
 			// Convert to milliseconds
-			auto milliseconds = static_cast<int>(total * 1000.0f);
+			const auto milliseconds = static_cast<int>(total * 1000.0f);
 			elements.update(milliseconds);
 			elements.draw();
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

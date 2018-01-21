@@ -7,12 +7,12 @@ namespace S2VX {
 			notes[active]->draw(camera);
 		}
 	}
-	void Notes::update(int time) {
-		for (auto active : actives) {
+	void Notes::update(const int time) {
+		for (const auto active : actives) {
 			notes[active]->update(time);
 		}
 	}
-	void Notes::updateActives(int time) {
+	void Notes::updateActives(const int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (notes[*active]->getConfiguration().getEnd() <= time) {
 				active = actives.erase(active);

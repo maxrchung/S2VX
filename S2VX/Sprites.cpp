@@ -7,8 +7,8 @@ namespace S2VX {
 			sprites[active]->draw(camera);
 		}
 	}
-	void Sprites::update(int time) {
-		for (auto active : actives) {
+	void Sprites::update(const int time) {
+		for (const auto active : actives) {
 			sprites[active]->updateActives(time);
 			sprites[active]->update(time);
 		}

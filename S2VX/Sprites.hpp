@@ -6,10 +6,10 @@
 namespace S2VX {
 	class Sprites : public Element {
 	public:
-		Sprites(const std::vector<Sprite*>& pSprites);
+		explicit Sprites(const std::vector<Sprite*>& pSprites);
 		void draw(const Camera& camera);
-		void update(int time);
-		void updateActives(int time);
+		void update(const int time);
+		void updateActives(const int time);
 	private:
 		std::vector<Sprite*> sprites;
 	};

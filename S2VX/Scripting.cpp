@@ -15,8 +15,7 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::NoteBind, this), "NoteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
 		chai.add(chaiscript::fun(&Scripting::SpriteFade, this), "SpriteFade");
-		chai.add(chaiscript::fun(&Scripting::SpriteMoveX, this), "SpriteMoveX");
-		chai.add(chaiscript::fun(&Scripting::SpriteMoveY, this), "SpriteMoveY");
+		chai.add(chaiscript::fun(&Scripting::SpriteMove, this), "SpriteMove");
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
 		chai.add(chaiscript::fun(&Scripting::SpriteScale, this), "SpriteScale");
 	}
@@ -31,77 +30,60 @@ namespace S2VX {
 		auto gridCommands = sortedCommandsToVector(sortedGridCommands);
 		auto notes = sortedNotesToVector();
 		auto sprites = sortedSpritesToVector();
-		auto elements = Elements(std::make_unique<Back>(backCommands),
-								 std::make_unique<Camera>(cameraCommands),
-								 std::make_unique<Grid>(gridCommands),
-								 std::make_unique<Notes>(notes),
-								 std::make_unique<Sprites>(sprites));
+		auto elements = Elements(backCommands,
+								 cameraCommands,
+								 gridCommands, lineShader.get(),
+								 notes,
+								 sprites);
 		return elements;
 	}
 	std::vector<Command*> Scripting::sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands) {
-		auto vector = std::vector<Command*>(sortedCommands.size());
-		int i = 0;
-		// This should be a little faster than just adding by push_back?
-		for (auto& command : sortedCommands) {
-			vector[i++] = command.get();
-		}
-		return vector;
+		auto commands = std::vector<Command*>(sortedCommands.size());
+		std::transform(sortedCommands.begin(), sortedCommands.end(), commands.begin(), [](auto& command) { return command.get(); });
+		return commands;
 	}
 	std::vector<Note*> Scripting::sortedNotesToVector() {
-		auto vector = std::vector<Note*>(sortedNotes.size());
-		int i = 0;
-		for (auto& command : sortedNotes) {
-			vector[i++] = command.get();
-		}
-		return vector;
+		auto notes = std::vector<Note*>(sortedNotes.size());
+		std::transform(sortedNotes.begin(), sortedNotes.end(), notes.begin(), [](auto& note) { return note.get(); });
+		return notes;
 	}
 	std::vector<Sprite*> Scripting::sortedSpritesToVector() {
-		auto vector = std::vector<Sprite*>(sortedSprites.size());
-		int i = 0;
-		sortedSprites.begin();
-		for (auto& sprite : sortedSprites) {
-			vector[i++] = sprite.get();
-		}
-		return vector;
+		auto sprites = std::vector<Sprite*>(sortedSprites.size());
+		std::transform(sortedSprites.begin(), sortedSprites.end(), sprites.begin(), [](auto& sprite) { return sprite.get(); });
+		return sprites;
 	}
 	void Scripting::addSprite() {
 		// Bind previous sprite if there are commands
 		if (!currentSpriteCommands.empty()) {
-			auto spriteCommands = sortedCommandsToVector(currentSpriteCommands);
+			const auto spriteCommands = sortedCommandsToVector(currentSpriteCommands);
 			sortedSprites.insert(std::make_unique<Sprite>(spriteCommands, currentTexture, imageShader.get()));
 		}
 	}
-	void Scripting::BackColor(int start, int end, int easing, float startR, float startG, float startB, float startA, float endR, float endG, float endB, float endA) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, startA, endR, endG, endB, endA);
-		sortedBackCommands.insert(std::move(command));
+	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float startA, const float endR, const float endG, const float endB, const float endA) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedBackCommands.insert(std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, startA, endR, endG, endB, endA));
 	}
-	void Scripting::CameraMove(int start, int end, int easing, int startX, int startY, int endX, int endY) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<CameraMoveCommand>(start, end, convert, startX, startY, endX, endY);
-		sortedCameraCommands.insert(std::move(command));
+	void Scripting::CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedCameraCommands.insert(std::make_unique<CameraMoveCommand>(start, end, convert, startX, startY, endX, endY));
 	}
-	void Scripting::CameraRotate(int start, int end, int easing, float startRotate, float endRotate) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<CameraRotateCommand>(start, end, convert, startRotate, endRotate);
-		sortedCameraCommands.insert(std::move(command));
+	void Scripting::CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedCameraCommands.insert(std::make_unique<CameraRotateCommand>(start, end, convert, startRotate, endRotate));
 	}
-	void Scripting::CameraZoom(int start, int end, int easing, float startScale, float endScale) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<CameraZoomCommand>(start, end, convert, startScale, endScale);
-		sortedCameraCommands.insert(std::move(command));
+	void Scripting::CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedCameraCommands.insert(std::make_unique<CameraZoomCommand>(start, end, convert, startScale, endScale));
 	}
-	void Scripting::GridFeather(int start, int end, int easing, float startFeather, float endFeather) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<GridFeatherCommand>(start, end, convert, startFeather, endFeather);
-		sortedGridCommands.insert(std::move(command));
+	void Scripting::GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedGridCommands.insert(std::make_unique<GridFeatherCommand>(start, end, convert, startFeather, endFeather));
 	}
-	void Scripting::GridThickness(int start, int end, int easing, float startThickness, float endThickness) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<GridThicknessCommand>(start, end, convert, startThickness, endThickness);
-		sortedGridCommands.insert(std::move(command));
+	void Scripting::GridThickness(const int start, const int end, const int easing, const float startThickness, const float endThickness) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedGridCommands.insert(std::make_unique<GridThicknessCommand>(start, end, convert, startThickness, endThickness));
 	}
-	void Scripting::NoteBind(int time, int x, int y) {
+	void Scripting::NoteBind(const int time, const int x, const int y) {
 		noteConfiguration.setEnd(time);
 		noteConfiguration.setPosition(glm::vec2(x, y));
 		sortedNotes.insert(std::make_unique<Note>(noteConfiguration, rectangleShader.get()));
@@ -124,29 +106,20 @@ namespace S2VX {
 		}
 		currentTexture = spriteTextures[path].get();
 	}
-	void Scripting::SpriteFade(int start, int end, int easing, float startFade, float endFade) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<SpriteFadeCommand>(start, end, convert, startFade, endFade);
-		currentSpriteCommands.insert(std::move(command));
+	void Scripting::SpriteFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
+		const auto convert = static_cast<EasingType>(easing);
+		currentSpriteCommands.insert(std::make_unique<SpriteFadeCommand>(start, end, convert, startFade, endFade));
 	}
-	void Scripting::SpriteMoveX(int start, int end, int easing, int startX, int endX) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(start, end, convert, startX, endX);
-		currentSpriteCommands.insert(std::move(command));
+	void Scripting::SpriteMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
+		const auto convert = static_cast<EasingType>(easing);
+		currentSpriteCommands.insert(std::make_unique<SpriteMoveCommand>(start, end, convert, startX, startY, endX, endY));
 	}
-	void Scripting::SpriteMoveY(int start, int end, int easing, int startY, int endY) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<SpriteMoveXCommand>(start, end, convert, startY, endY);
-		currentSpriteCommands.insert(std::move(command));
+	void Scripting::SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation) {
+		const auto convert = static_cast<EasingType>(easing);
+		currentSpriteCommands.insert(std::make_unique<SpriteRotateCommand>(start, end, convert, startRotation, endRotation));
 	}
-	void Scripting::SpriteRotate(int start, int end, int easing, float startRotation, float endRotation) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<SpriteRotateCommand>(start, end, convert, startRotation, endRotation);
-		currentSpriteCommands.insert(std::move(command));
-	}
-	void Scripting::SpriteScale(int start, int end, int easing, float startScaleX, float startScaleY, float endScaleX, float endScaleY) {
-		auto convert = static_cast<EasingType>(easing);
-		std::unique_ptr<Command> command = std::make_unique<SpriteScaleCommand>(start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY);
-		currentSpriteCommands.insert(std::move(command));
+	void Scripting::SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY) {
+		const auto convert = static_cast<EasingType>(easing);
+		currentSpriteCommands.insert(std::make_unique<SpriteScaleCommand>(start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY));
 	}
 }

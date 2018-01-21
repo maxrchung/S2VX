@@ -3,7 +3,7 @@
 namespace S2VX {
 	class S2VX {
 	public:
-		S2VX(const std::string& pScript);
+		explicit S2VX(const std::string& pScript);
 		~S2VX() {};
 		void run();
 	private:

@@ -4,24 +4,24 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	struct CameraMoveCommand : Command {
-		CameraMoveCommand(int start, int end, EasingType pEasing, int startX, int startY, int endX, int endY);
-		EasingType easing;
-		glm::vec2 startCoordinate;
-		glm::vec2 endCoordinate;
+		explicit CameraMoveCommand(const int start, const int end, const EasingType pEasing, const int startX, const int startY, const int endX, const int endY);
+		const EasingType easing;
+		const glm::vec2 startCoordinate;
+		const glm::vec2 endCoordinate;
 	};
 	struct CameraRotateCommand : Command {
-		CameraRotateCommand(int start, int end, EasingType pEasing, float pStartRotation, float pEndRotation);
-		EasingType easing;
-		float startRotation;
-		float endRotation;
+		explicit CameraRotateCommand(const int start, const int end, const EasingType pEasing, const float pStartRotation, const float pEndRotation);
+		const EasingType easing;
+		const float startRotation;
+		const float endRotation;
 	};
 	struct CameraZoomCommand : Command {
 	public:
-		CameraZoomCommand(int start, int end, EasingType pEasing, float pStartScale, float pEndScale);
-		EasingType easing;
-		float startScale;
-		float endScale;
+		explicit CameraZoomCommand(const int start, const int end, const EasingType pEasing, const float pStartScale, const float pEndScale);
+		const EasingType easing;
+		const float startScale;
+		const float endScale;
 	private:
-		void validateZoom(float scale);
+		void validateZoom(const float scale) const;
 	};
 }
