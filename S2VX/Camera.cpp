@@ -16,7 +16,7 @@ namespace S2VX {
 	}
 	void Camera::rotateZ(const float degrees) {
 		roll = glm::radians(degrees);
-		up = glm::vec3(cos(glm::radians(degrees + 90)), sin(glm::radians(degrees + 90)), 0.0f);
+		up = glm::vec3{ cos(glm::radians(degrees + 90)), sin(glm::radians(degrees + 90)), 0.0f };
 		updateMatrices();
 	}
 	void Camera::update(int time) {
@@ -28,7 +28,7 @@ namespace S2VX {
 					const auto derived = static_cast<CameraMoveCommand*>(command);
 					const auto easing = Easing(derived->easing, interpolation);
 					const auto pos = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
-					move(glm::vec3(pos, position.z));
+					move(glm::vec3{ pos, position.z });
 					break;
 				}
 				case CommandType::CameraRotate: {

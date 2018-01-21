@@ -12,23 +12,26 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void Command::validateColor(const glm::vec4& color) const {
+	void Command::validateColor(const glm::vec3& color) const {
 		if (color.r < 0.0f || color.r > 1.0f || 
 			color.g < 0.0f || color.g > 1.0f ||
-			color.b < 0.0f || color.b > 1.0f || 
-			color.a < 0.0f || color.a > 1.0f) {
+			color.b < 0.0f || color.b > 1.0f) {
 			auto message = std::stringstream();
 			message << "Command color must be between 0 and 1. Given: ("
 					<< std::to_string(color.r) << ',' 
 					<< std::to_string(color.g) << ',' 
-					<< std::to_string(color.b) << ','
-					<< std::to_string(color.a) << ')';
+					<< std::to_string(color.b) << ')';
 			throw ScriptError(message.str());
 		}
 	}
-	void Command::validateFade(float fade) const {
+	void Command::validateFade(const float fade) const {
 		if (fade < 0.0f || fade > 1.0f) {
 			throw ScriptError("Command fade must be between 0 and 1. Given: " + std::to_string(fade));
+		}
+	}
+	void Command::validateFeather(const float feather) const {
+		if (feather < 0.0f) {
+			throw ScriptError("Grid line feather must be greater than or equal to 0. Given: " + std::to_string(feather));
 		}
 	}
 	void Command::validateScale(const glm::vec2& scale) const {
@@ -37,6 +40,11 @@ namespace S2VX {
 			message << "Command scale must be between 0 and 1. Given: ("
 				<< std::to_string(scale.x) << ')';
 			throw ScriptError(message.str());
+		}
+	}
+	void Command::validateThickness(const float thickness) const {
+		if (thickness < 0.0f) {
+			throw ScriptError("Grid line thickness must be greater than equal to 0. Given: " + std::to_string(thickness));
 		}
 	}
 	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) const {

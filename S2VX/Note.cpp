@@ -32,29 +32,29 @@ namespace S2VX {
 			glEnableVertexAttribArray(1);
 			// Static square
 			squareShader->use();
-			squareShader->setFloat("fade", activeFade);
+			squareShader->setFloat("fade", fade);
 			squareShader->setFloat("feather", configuration.getFeather());
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2(lineWidth, 0.5f + lineWidth));
+				squareShader->setVec2("lengths", glm::vec2{ lineWidth, 0.5f + lineWidth });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2(0.5f + lineWidth, lineWidth));
+				squareShader->setVec2("lengths", glm::vec2{ (0.5f + lineWidth, lineWidth });
 			}
 			glm::mat4 model;
-			model = glm::translate(model, glm::vec3(configuration.getPosition(), 0.0f));
+			model = glm::translate(model, glm::vec3{ configuration.getPosition(), 0.0f });
 			squareShader->setMat4("model", model);
 			squareShader->setMat4("projection", camera.getProjection());
 			squareShader->setMat4("view", camera.getView());
 			glDrawArrays(GL_TRIANGLES, 0, points.size() / 4);
 			// Approaching square
 			// Goal is to keep line width the same, so we scale the point positions but not the widths
-			const auto scaled = line.getScaled(activeScale);
+			const auto scaled = line.getScaled(scale);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * scaled.size(), scaled.data(), GL_DYNAMIC_DRAW);
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2(lineWidth, 0.5f * activeScale + lineWidth));
+				squareShader->setVec2("lengths", glm::vec2{ lineWidth, 0.5f * scale + lineWidth });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2(0.5f * activeScale + lineWidth, lineWidth));
+				squareShader->setVec2("lengths", glm::vec2{ 0.5f * scale + lineWidth, lineWidth });
 			}
 			glDrawArrays(GL_TRIANGLES, 0, scaled.size() / 4);
 		}
@@ -66,21 +66,21 @@ namespace S2VX {
 		const auto fadeOut = end - configuration.getFadeOut();
 		const auto scaleInterpolation = static_cast<float>(time - configuration.getStart()) / (fadeOut - configuration.getStart());
 		if (time >= fadeOut) {
-			activeScale = 1.0f;
+			scale = 1.0f;
 		}
 		else {
-			activeScale = glm::mix(configuration.getDistance(), 1.0f, scaleInterpolation);
+			scale = glm::mix(configuration.getDistance(), 1.0f, scaleInterpolation);
 		}
 		if (time < fadeIn) {
 			const auto fadeInterpolation = static_cast<float>(time - start) / (fadeIn - start);
-			activeFade = glm::mix(0.0f, 1.0f, fadeInterpolation);
+			fade = glm::mix(0.0f, 1.0f, fadeInterpolation);
 		}
 		else if (time > fadeOut) {
 			const auto fadeInterpolation = static_cast<float>(time - fadeOut) / (end - fadeOut);
-			activeFade = glm::mix(1.0f, 0.0f, fadeInterpolation);
+			fade = glm::mix(1.0f, 0.0f, fadeInterpolation);
 		}
 		else {
-			activeFade = 1.0f;
+			fade = 1.0f;
 		}
 	}
 	bool NoteUniquePointerComparison::operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs) const {

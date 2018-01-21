@@ -14,12 +14,14 @@ namespace S2VX {
 	public:
 		// Initializing scripting
 		Scripting();
-		void BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float startA, const float endR, const float endG, const float endB, const float endA);
+		void BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY);
 		void CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate);
 		void CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale);
 		// Evaluates chaiscript
 		Elements evaluate(const std::string& path);
+		void GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
+		void GridFade(const int start, const int end, const int easing, const float startFade, const float endFade);
 		void GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
 		void GridThickness(const int start, const int end, const int easing, const float startThickness, const float endThickness);
 		void NoteBind(const int time, const int x, const int y);

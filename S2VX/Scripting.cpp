@@ -10,6 +10,8 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
 		chai.add(chaiscript::fun(&Scripting::CameraRotate, this), "CameraRotate");
 		chai.add(chaiscript::fun(&Scripting::CameraZoom, this), "CameraZoom");
+		chai.add(chaiscript::fun(&Scripting::GridColor, this), "GridColor");
+		chai.add(chaiscript::fun(&Scripting::GridFade, this), "GridFade");
 		chai.add(chaiscript::fun(&Scripting::GridFeather, this), "GridFeather");
 		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");
 		chai.add(chaiscript::fun(&Scripting::NoteBind, this), "NoteBind");
@@ -59,9 +61,9 @@ namespace S2VX {
 			sortedSprites.insert(std::make_unique<Sprite>(spriteCommands, currentTexture, imageShader.get()));
 		}
 	}
-	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float startA, const float endR, const float endG, const float endB, const float endA) {
+	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		sortedBackCommands.insert(std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, startA, endR, endG, endB, endA));
+		sortedBackCommands.insert(std::make_unique<BackColorCommand>(start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
 		const auto convert = static_cast<EasingType>(easing);
@@ -75,6 +77,14 @@ namespace S2VX {
 		const auto convert = static_cast<EasingType>(easing);
 		sortedCameraCommands.insert(std::make_unique<CameraZoomCommand>(start, end, convert, startScale, endScale));
 	}
+	void Scripting::GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedGridCommands.insert(std::make_unique<GridColorCommand>(start, end, convert, startR, startG, startB, endR, endG, endB));
+	}
+	void Scripting::GridFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
+		const auto convert = static_cast<EasingType>(easing);
+		sortedGridCommands.insert(std::make_unique<GridFadeCommand>(start, end, convert, startFade, endFade));
+	}
 	void Scripting::GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather) {
 		const auto convert = static_cast<EasingType>(easing);
 		sortedGridCommands.insert(std::make_unique<GridFeatherCommand>(start, end, convert, startFeather, endFeather));
@@ -85,7 +95,7 @@ namespace S2VX {
 	}
 	void Scripting::NoteBind(const int time, const int x, const int y) {
 		noteConfiguration.setEnd(time);
-		noteConfiguration.setPosition(glm::vec2(x, y));
+		noteConfiguration.setPosition(glm::vec2{ x, y });
 		sortedNotes.insert(std::make_unique<Note>(noteConfiguration, rectangleShader.get()));
 	}
 	void Scripting::reset() {

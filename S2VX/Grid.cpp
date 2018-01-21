@@ -15,10 +15,11 @@ namespace S2VX {
 	}
 	void Grid::draw(const Camera& camera) {
 		std::vector<float> linePoints;
-		const auto scale = camera.getScale();
+		// ceilf is needed to fix issues with lines disappearing at edges
+		const auto scale = ceilf(camera.getScale());
 		const auto posX = static_cast<int>(camera.getPosition().x);
 		const auto posY = static_cast<int>(camera.getPosition().y);
-		const auto corner = 0.5f + floorf(scale);
+		const auto corner = 0.5f + scale;
 		const auto range = static_cast<int>(scale) * 2 + 2;
 		for (auto i = 0; i < range; ++i) {
 			// Left X
@@ -60,7 +61,8 @@ namespace S2VX {
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 		lineShader->use();
-		lineShader->setFloat("fade", 1.0f);
+		lineShader->setVec3("color", color);
+		lineShader->setFloat("fade", fade);
 		lineShader->setFloat("feather", feather);
 		lineShader->setFloat("lineWidth", lineWidth);
 		lineShader->setMat4("projection", camera.getProjection());
@@ -72,6 +74,20 @@ namespace S2VX {
 			const auto command = commands[active];
 			const auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
+				case CommandType::GridColor: {
+					const auto derived = static_cast<GridColorCommand*>(command);
+					const auto easing = Easing(derived->easing, interpolation);
+					const auto pColor = glm::mix(derived->startColor, derived->endColor, easing);
+					color = pColor;
+					break;
+				}
+				case CommandType::GridFade: {
+					const auto derived = static_cast<GridFadeCommand*>(command);
+					const auto easing = Easing(derived->easing, interpolation);
+					const auto pFade = glm::mix(derived->startFade, derived->endFade, easing);
+					fade = pFade;
+					break;
+				}
 				case CommandType::GridFeather: {
 					const auto derived = static_cast<GridFeatherCommand*>(command);
 					const auto easing = Easing(derived->easing, interpolation);

@@ -12,9 +12,11 @@ namespace S2VX {
 		const int start;
 		const int end;
 	protected:
-		void validateColor(const glm::vec4& color) const;
-		void validateFade(float fade) const;
+		void validateColor(const glm::vec3& color) const;
+		void validateFade(const float fade) const;
+		void validateFeather(const float feather) const;
 		void validateScale(const glm::vec2& scale) const;
+		void validateThickness(const float thickness) const;
 	};
 	struct CommandUniquePointerComparison {
 		// Sort by start time then enum

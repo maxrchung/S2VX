@@ -14,10 +14,9 @@ namespace S2VX {
 		void update(const int time);
 	private:
 		const NoteConfiguration configuration;
+		float scale;
+		float fade;
 		Shader* const squareShader;
-		// Interpolated distance
-		float activeScale;
-		float activeFade;
 		std::array<RectanglePoints, 4> lines;
 		unsigned int squareVertexArray;
 		unsigned int squareVertexBuffer;

@@ -4,9 +4,9 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	struct BackColorCommand : Command {
-		explicit BackColorCommand(const int start, const int end, const EasingType pEasing, const float startR, const float startG, const float startA, const float startB, const float endR, const float endG, const float endB, const float endA);
+		explicit BackColorCommand(const int start, const int end, const EasingType pEasing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		const EasingType easing;
-		const glm::vec4 startColor;
-		const glm::vec4 endColor;
+		const glm::vec3 startColor;
+		const glm::vec3 endColor;
 	};
 }

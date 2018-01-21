@@ -23,15 +23,15 @@ namespace S2VX {
 		// Updates the view/projection matrices
 		// Might be costly to call this everytime camera changes - Need to probably monitor this
 		void updateMatrices();
-		const glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+		const glm::vec3 front = glm::vec3{ 0.0f, 0.0f, -1.0f };
 		const float fov = 90.0f;
 		float scale = 3.0f;
 		// z-axis rotation +x to +y
 		float roll = 0.0f;
 		glm::mat4 projection;
 		glm::mat4 view;
-		glm::vec3 position = glm::vec3(0.0f, 0.0f, 1.0f);
-		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 position = glm::vec3{ 0.0f, 0.0f, 1.0f };
+		glm::vec3 right = glm::vec3{ 1.0f, 0.0f, 0.0f };
+		glm::vec3 up = glm::vec3{ 0.0f, 1.0f, 0.0f };
 	};
 }

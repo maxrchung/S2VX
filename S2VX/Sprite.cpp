@@ -44,9 +44,9 @@ namespace S2VX {
 		glBindTexture(GL_TEXTURE_2D, texture->getImageTexture());
 		imageShader->use();
 		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-		model = glm::scale(model, glm::vec3(scale, 1.0f));
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3{ position.x, position.y, 0.0f });
+		model = glm::scale(model, glm::vec3{ scale, 1.0f });
+		model = glm::rotate(model, glm::radians(rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
 		imageShader->setMat4("model", model);
 		imageShader->setMat4("view", camera.getView());
 		imageShader->setMat4("projection", camera.getProjection());

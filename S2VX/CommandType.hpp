@@ -5,6 +5,8 @@ namespace S2VX {
 		CameraMove,
 		CameraRotate,
 		CameraZoom,
+		GridColor,
+		GridFade,
 		GridFeather,
 		GridThickness,
 		NoteBind,
