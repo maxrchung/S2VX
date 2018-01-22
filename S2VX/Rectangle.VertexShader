@@ -3,8 +3,8 @@ layout (location = 0) in vec2 pPosition;
 layout (location = 1) in vec2 pNormals;
 uniform vec2 lengths;
 uniform mat4 model;
-uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 view;
 out vec2 normals;
 void main() {
 	vec4 delta = vec4(pNormals.x * lengths.x, pNormals.y * lengths.y, 0.0f, 0.0f);

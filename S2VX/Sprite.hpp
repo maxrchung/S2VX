@@ -19,6 +19,7 @@ namespace S2VX {
 		void update(const int time);
 	private:
 		const Texture* const texture;
+		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
 		float fade = 1.0f;
 		float rotation = 0.0f;
 		glm::vec2 position = glm::vec2{ 0 };

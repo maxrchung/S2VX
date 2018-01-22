@@ -47,6 +47,7 @@ namespace S2VX {
 		model = glm::translate(model, glm::vec3{ position.x, position.y, 0.0f });
 		model = glm::scale(model, glm::vec3{ scale, 1.0f });
 		model = glm::rotate(model, glm::radians(rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
+		imageShader->setVec3("color", color);
 		imageShader->setMat4("model", model);
 		imageShader->setMat4("view", camera.getView());
 		imageShader->setMat4("projection", camera.getProjection());
@@ -59,6 +60,13 @@ namespace S2VX {
 			const auto command = commands[active];
 			const auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
 			switch (command->commandType) {
+				case CommandType::SpriteColor: {
+					const auto derived = static_cast<SpriteColorCommand*>(command);
+					const auto easing = Easing(derived->easing, interpolation);
+					const auto pColor = glm::mix(derived->startColor, derived->endColor, easing);
+					color = pColor;
+					break;
+				}
 				case CommandType::SpriteFade: {
 					const auto derived = static_cast<SpriteFadeCommand*>(command);
 					const auto easing = Easing(derived->easing, interpolation);

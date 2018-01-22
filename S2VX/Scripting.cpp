@@ -2,6 +2,7 @@
 #include "BackCommands.hpp"
 #include "CameraCommands.hpp"
 #include "GridCommands.hpp"
+#include "ScriptError.hpp"
 #include "SpriteCommands.hpp"
 namespace S2VX {
 	Scripting::Scripting() {
@@ -13,9 +14,17 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::GridColor, this), "GridColor");
 		chai.add(chaiscript::fun(&Scripting::GridFade, this), "GridFade");
 		chai.add(chaiscript::fun(&Scripting::GridFeather, this), "GridFeather");
-		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");
+		chai.add(chaiscript::fun(&Scripting::GridThickness, this), "GridThickness");;
+		chai.add(chaiscript::fun(&Scripting::NoteApproach, this), "NoteApproach");
 		chai.add(chaiscript::fun(&Scripting::NoteBind, this), "NoteBind");
+		chai.add(chaiscript::fun(&Scripting::NoteColor, this), "NoteColor");
+		chai.add(chaiscript::fun(&Scripting::NoteDistance, this), "NoteDistance");
+		chai.add(chaiscript::fun(&Scripting::NoteFadeIn, this), "NoteFadeIn");
+		chai.add(chaiscript::fun(&Scripting::NoteFadeOut, this), "NoteFadeOut");
+		chai.add(chaiscript::fun(&Scripting::NoteFeather, this), "NoteFeather");
+		chai.add(chaiscript::fun(&Scripting::NoteThickness, this), "NoteThickness");
 		chai.add(chaiscript::fun(&Scripting::SpriteBind, this), "SpriteBind");
+		chai.add(chaiscript::fun(&Scripting::SpriteColor, this), "SpriteColor");
 		chai.add(chaiscript::fun(&Scripting::SpriteFade, this), "SpriteFade");
 		chai.add(chaiscript::fun(&Scripting::SpriteMove, this), "SpriteMove");
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
@@ -55,10 +64,16 @@ namespace S2VX {
 		return sprites;
 	}
 	void Scripting::addSprite() {
-		// Bind previous sprite if there are commands
-		if (!currentSpriteCommands.empty()) {
-			const auto spriteCommands = sortedCommandsToVector(currentSpriteCommands);
-			sortedSprites.insert(std::make_unique<Sprite>(spriteCommands, currentTexture, imageShader.get()));
+		// Throw exception if a sprite was made with no commands
+		if (currentTexture) {
+			if (currentSpriteCommands.empty()) {
+				throw ScriptError("Sprite must have at least one command. Given: " + currentTexture->getPath());
+			}
+			// Only add sprite if texture has been set
+			else {
+				const auto spriteCommands = sortedCommandsToVector(currentSpriteCommands);
+				sortedSprites.insert(std::make_unique<Sprite>(spriteCommands, currentTexture, imageShader.get()));
+			}
 		}
 	}
 	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
@@ -93,10 +108,33 @@ namespace S2VX {
 		const auto convert = static_cast<EasingType>(easing);
 		sortedGridCommands.insert(std::make_unique<GridThicknessCommand>(start, end, convert, startThickness, endThickness));
 	}
+	void Scripting::NoteApproach(const int approach) {
+		noteConfiguration.setApproach(approach);
+	}
 	void Scripting::NoteBind(const int time, const int x, const int y) {
 		noteConfiguration.setEnd(time);
-		noteConfiguration.setPosition(glm::vec2{ x, y });
+		const auto position = glm::vec2{ x, y };
+		noteConfiguration.setPosition(position);
 		sortedNotes.insert(std::make_unique<Note>(noteConfiguration, rectangleShader.get()));
+	}
+	void Scripting::NoteColor(const int r, const int g, const int b) {
+		const auto color = glm::vec3{ r, g, b };
+		noteConfiguration.setColor(color);
+	}
+	void Scripting::NoteDistance(const float distance) {
+		noteConfiguration.setDistance(distance);
+	}
+	void Scripting::NoteFadeIn(const int fadeIn) {
+		noteConfiguration.setFadeIn(fadeIn);
+	}
+	void Scripting::NoteFadeOut(const int fadeOut) {
+		noteConfiguration.setFadeOut(fadeOut);
+	}
+	void Scripting::NoteFeather(const float feather) {
+		noteConfiguration.setFeather(feather);
+	}
+	void Scripting::NoteThickness(const float thickness) {
+		noteConfiguration.setThickness(thickness);
 	}
 	void Scripting::reset() {
 		currentSpriteCommands.clear();
@@ -115,6 +153,10 @@ namespace S2VX {
 			spriteTextures[path] = std::make_unique<Texture>(path);
 		}
 		currentTexture = spriteTextures[path].get();
+	}
+	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
+		const auto convert = static_cast<EasingType>(easing);
+		currentSpriteCommands.insert(std::make_unique<SpriteColorCommand>(start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::SpriteFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
 		const auto convert = static_cast<EasingType>(easing);

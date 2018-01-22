@@ -20,7 +20,7 @@ namespace S2VX {
 	void Note::draw(const Camera& camera) {
 		glBindVertexArray(squareVertexArray);
 		glBindBuffer(GL_ARRAY_BUFFER, squareVertexBuffer);
-		const auto lineWidth = configuration.getWidth();
+		const auto thickness = configuration.getThickness();
 		for (const auto& line : lines) {
 			const auto points = line.getPoints();
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), points.data(), GL_DYNAMIC_DRAW);
@@ -32,13 +32,14 @@ namespace S2VX {
 			glEnableVertexAttribArray(1);
 			// Static square
 			squareShader->use();
+			squareShader->setVec3("color", configuration.getColor());
 			squareShader->setFloat("fade", fade);
 			squareShader->setFloat("feather", configuration.getFeather());
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2{ lineWidth, 0.5f + lineWidth });
+				squareShader->setVec2("lengths", glm::vec2{ thickness, 0.5f + thickness });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2{ (0.5f + lineWidth, lineWidth });
+				squareShader->setVec2("lengths", glm::vec2{ 0.5f + thickness, thickness });
 			}
 			glm::mat4 model;
 			model = glm::translate(model, glm::vec3{ configuration.getPosition(), 0.0f });
@@ -51,10 +52,10 @@ namespace S2VX {
 			const auto scaled = line.getScaled(scale);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * scaled.size(), scaled.data(), GL_DYNAMIC_DRAW);
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2{ lineWidth, 0.5f * scale + lineWidth });
+				squareShader->setVec2("lengths", glm::vec2{ thickness, 0.5f * scale + thickness });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2{ 0.5f * scale + lineWidth, lineWidth });
+				squareShader->setVec2("lengths", glm::vec2{ 0.5f * scale + thickness, thickness });
 			}
 			glDrawArrays(GL_TRIANGLES, 0, scaled.size() / 4);
 		}

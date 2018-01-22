@@ -11,7 +11,7 @@ namespace S2VX {
 		void update(const int time);
 	private:
 		// https://blog.mapbox.com/drawing-antialiased-lines-with-opengl-8766f34192dc
-		float lineWidth = 0.1f;
+		float lineThickness = 0.1f;
 		float feather = 0.01f;
 		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
 		float fade = 1.0f;

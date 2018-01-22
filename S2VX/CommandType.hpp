@@ -12,6 +12,7 @@ namespace S2VX {
 		NoteBind,
 		NoteSlide,
 		SpriteBind,
+		SpriteColor,
 		SpriteFade,
 		SpriteMove,
 		SpriteRotate,

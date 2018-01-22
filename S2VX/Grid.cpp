@@ -64,7 +64,7 @@ namespace S2VX {
 		lineShader->setVec3("color", color);
 		lineShader->setFloat("fade", fade);
 		lineShader->setFloat("feather", feather);
-		lineShader->setFloat("lineWidth", lineWidth);
+		lineShader->setFloat("lineThickness", lineThickness);
 		lineShader->setMat4("projection", camera.getProjection());
 		lineShader->setMat4("view", camera.getView());
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
@@ -98,8 +98,8 @@ namespace S2VX {
 				case CommandType::GridThickness: {
 					const auto derived = static_cast<GridThicknessCommand*>(command);
 					const auto easing = Easing(derived->easing, interpolation);
-					const auto pLineWidth = glm::mix(derived->startThickness, derived->endThickness, easing);
-					lineWidth = pLineWidth;
+					const auto pLineThickness = glm::mix(derived->startThickness, derived->endThickness, easing);
+					lineThickness = pLineThickness;
 					break;
 				}
 			}

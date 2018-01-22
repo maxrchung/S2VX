@@ -44,7 +44,7 @@ namespace S2VX {
 	}
 	void Command::validateThickness(const float thickness) const {
 		if (thickness < 0.0f) {
-			throw ScriptError("Grid line thickness must be greater than equal to 0. Given: " + std::to_string(thickness));
+			throw ScriptError("Grid line thickness must be greater than or equal to 0. Given: " + std::to_string(thickness));
 		}
 	}
 	bool CommandUniquePointerComparison::operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) const {

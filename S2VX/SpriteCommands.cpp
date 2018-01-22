@@ -4,6 +4,14 @@ namespace S2VX {
 	SpriteBindCommand::SpriteBindCommand(const std::string& pPath)
 		: Command{ CommandType::SpriteBind, 0, 0 },
 		path{ pPath } {}
+	SpriteColorCommand::SpriteColorCommand(const int start, const int end, const EasingType pEasing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
+		: Command{ CommandType::SpriteColor, start, end },
+		easing{ pEasing },
+		startColor{ startR, startG, startB },
+		endColor{ endR, endG, endB } {
+		validateColor(startColor);
+		validateColor(endColor);
+	}
 	SpriteFadeCommand::SpriteFadeCommand(const int start, const int end, const EasingType pEasing, const float pStartFade, const float pEndFade)
 		: Command{ CommandType::SpriteFade, start, end },
 		easing{ pEasing },

@@ -4,7 +4,8 @@
 #include "ScriptError.hpp"
 namespace S2VX {
 	const unsigned char* Texture::blankData = reinterpret_cast<unsigned char*>("ÿÿÿýýýýÝ$’‹\\Ý\x1f");
-	Texture::Texture(const std::string& path) {
+	Texture::Texture(const std::string& pPath)
+		: path{ pPath } {
 		glGenTextures(1, &imageTexture);
 		glBindTexture(GL_TEXTURE_2D, imageTexture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

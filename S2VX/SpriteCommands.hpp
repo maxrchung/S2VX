@@ -9,6 +9,12 @@ namespace S2VX {
 		explicit SpriteBindCommand(const std::string& pPath);
 		const std::string path;
 	};
+	struct SpriteColorCommand : Command {
+		explicit SpriteColorCommand(const int start, const int end, const EasingType pEasing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
+		const EasingType easing;
+		const glm::vec3 startColor;
+		const glm::vec3 endColor;
+	};
 	struct SpriteFadeCommand : Command {
 		explicit SpriteFadeCommand::SpriteFadeCommand(const int start, const int end, const EasingType pEasing, const float pStartFade, const float pEndFade);
 		const EasingType easing;

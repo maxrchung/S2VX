@@ -1,13 +1,13 @@
 #version 330 core
 out vec4 fragmentColor;
 in vec2 normal;
-uniform float lineWidth;
+uniform float lineThickness;
 uniform float feather;
-uniform vec3 color;
 uniform float fade;
+uniform vec3 color;
 void main() {
-	float normalLength = length(normal) * lineWidth;
-	float featherPartial = lineWidth - feather;
+	float normalLength = length(normal) * lineThickness;
+	float featherPartial = lineThickness - feather;
 	float alpha = fade;
 	if (normalLength > featherPartial) {
 		float normalPartial = normalLength - featherPartial;
