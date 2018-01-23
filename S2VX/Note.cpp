@@ -74,14 +74,14 @@ namespace S2VX {
 		}
 		if (time < fadeIn) {
 			const auto fadeInterpolation = static_cast<float>(time - start) / (fadeIn - start);
-			fade = glm::mix(0.0f, 1.0f, fadeInterpolation);
+			fade = glm::mix(0.0f, configuration.getFade(), fadeInterpolation);
 		}
 		else if (time > fadeOut) {
 			const auto fadeInterpolation = static_cast<float>(time - fadeOut) / (end - fadeOut);
-			fade = glm::mix(1.0f, 0.0f, fadeInterpolation);
+			fade = glm::mix(1.0f, configuration.getFade(), fadeInterpolation);
 		}
 		else {
-			fade = 1.0f;
+			fade = configuration.getFade();
 		}
 	}
 	bool NoteUniquePointerComparison::operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs) const {

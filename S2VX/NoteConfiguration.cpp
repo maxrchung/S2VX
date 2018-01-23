@@ -25,6 +25,17 @@ namespace S2VX {
 		}
 		distance = pDistance;
 	}
+	void NoteConfiguration::setEnd(const int pEnd) {
+		validateTime(pEnd);
+		end = pEnd + fadeOut;
+		start = pEnd - approach;
+	}
+	void NoteConfiguration::setFade(const float pFade) {
+		if (pFade < 0.0f || pFade > 1.0f) {
+			throw ScriptError("Note fade must be between 0 and 1. Given: " + std::to_string(pFade));
+		}
+		fade = pFade;
+	}
 	void NoteConfiguration::setFadeIn(const int pFadeIn) {
 		validateTime(pFadeIn);
 		if (pFadeIn > approach) {
@@ -35,11 +46,6 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 		fadeIn = pFadeIn;
-	}
-	void NoteConfiguration::setEnd(const int pEnd) {
-		validateTime(pEnd);
-		end = pEnd + fadeOut;
-		start = pEnd - approach;
 	}
 	void NoteConfiguration::setFadeOut(const int pFadeOut) {
 		validateTime(pFadeOut);

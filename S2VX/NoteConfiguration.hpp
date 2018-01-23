@@ -6,6 +6,7 @@ namespace S2VX {
 		const glm::vec3& getColor() const { return color; }
 		const glm::vec2& getPosition() const { return position; }
 		float getDistance() const { return distance; }
+		float getFade() const { return fade; }
 		float getFeather() const { return feather; }
 		float getThickness() const { return thickness; }
 		int getApproach() const { return approach; }
@@ -18,6 +19,7 @@ namespace S2VX {
 		void setDistance(const float pDistance);
 		// Setting the end will also set the start based on approach
 		void setEnd(const int pEnd);
+		void setFade(const float pFade);
 		void setFadeIn(const int pFadeIn);
 		void setFadeOut(const int pFadeOut);
 		void setFeather(const float pFeather);
@@ -26,6 +28,7 @@ namespace S2VX {
 	private:
 		void validateTime(const int time);
 		float distance = 3.0f;
+		float fade = 0.8f;
 		float feather = 0.01f;
 		float thickness = 0.1f;
 		glm::vec2 position = glm::vec2{ 0.0f, 0.0f };

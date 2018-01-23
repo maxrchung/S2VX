@@ -21,24 +21,24 @@ SpriteFade(0, 10000, 15, 1, 0)
 SpriteColor(0, 5000, 2,1,1,0, 0,1,1)
 SpriteColor(6000,10000,3, 0,1,0, 0,0,0)
 
-//GridThickness(0, 4000, 1, 0.02f, 0.1f)
-//GridFeather(4000, 10000, 1, 0.01f, 0.09f)
-//GridFeather(10000, 13000, 1, 0.09f, 0.02f)
-//GridColor(0, 10000, 1, 1,0,0, 0,1,1)
-//GridFade(5000, 15000, 1, 0.5f, 0.1f)
-//
-//NoteThickness(0.1f);
-//
-//NoteBind(3000, 0, 0)
-//
-//NoteDistance(0)
-//NoteColor(0.2,1.0,0.1)
-//NoteThickness(0.05f)
-//NoteApproach(4000)
-//NoteFadeIn(3000)
-//NoteFadeOut(3000)
-//NoteBind(3000, 1, 1)
-//
-//NoteApproach(1000)
-//NoteDistance(2)
-//NoteBind(6000, -1, -1)
+GridThickness(0, 4000, 1, 0.02f, 0.1f)
+GridFeather(4000, 10000, 1, 0.01f, 0.09f)
+GridFeather(10000, 13000, 1, 0.09f, 0.02f)
+GridColor(0, 10000, 1, 1,0,0, 0,1,1)
+GridFade(5000, 15000, 1, 0.5f, 0.1f)
+
+NoteThickness(0.1f);
+
+NoteBind(3000, 0, 0)
+
+NoteDistance(0)
+NoteColor(0.2,1.0,0.1)
+NoteThickness(0.05f)
+NoteApproach(4000)
+NoteFadeIn(3000)
+NoteFadeOut(3000)
+NoteBind(3000, 1, 1)
+
+NoteApproach(1000)
+NoteDistance(2)
+NoteBind(6000, -1, -1)
