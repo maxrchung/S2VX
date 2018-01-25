@@ -1,15 +1,20 @@
 #pragma once
-#include "Command.hpp"
-#include "Element.hpp"
-#include "Elements.hpp"
-#include "EasingType.hpp"
-#include "Sprite.hpp"
-#include "Texture.hpp"
+#include "NoteConfiguration.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <memory>
 #include <set>
 #include <unordered_map>
+#include <vector>
 namespace S2VX {
+	class Command;
+	class CommandUniquePointerComparison;
+	class Shader;
+	class Elements;
+	class Note;
+	class NoteUniquePointerComparison;
+	class Sprite;
+	class SpriteUniquePointerComparison;
+	class Texture;
 	class Scripting {
 	public:
 		// Initializing scripting

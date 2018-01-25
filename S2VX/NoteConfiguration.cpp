@@ -11,7 +11,7 @@ namespace S2VX {
 			pColor.g < 0.0f || pColor.g > 1.0f ||
 			pColor.b < 0.0f || pColor.b > 1.0f) {
 			auto message = std::stringstream();
-			message << "Note color must be between 0 and 1. Given: ("
+			message << "Note color values must be >= 0 and <= 1. Given: ("
 				<< std::to_string(color.r) << ','
 				<< std::to_string(color.g) << ','
 				<< std::to_string(color.b) << ')';
@@ -21,7 +21,7 @@ namespace S2VX {
 	}
 	void NoteConfiguration::setDistance(const float pDistance) {
 		if (pDistance < 0.0f) {
-			throw ScriptError("Note distance must be greater than or equal to 0. Given: " + std::to_string(pDistance));
+			throw ScriptError("Note distance must be >= 0. Given: " + std::to_string(pDistance));
 		}
 		distance = pDistance;
 	}
@@ -32,7 +32,7 @@ namespace S2VX {
 	}
 	void NoteConfiguration::setFade(const float pFade) {
 		if (pFade < 0.0f || pFade > 1.0f) {
-			throw ScriptError("Note fade must be between 0 and 1. Given: " + std::to_string(pFade));
+			throw ScriptError("Note fade must be >= 0 and <= 1. Given: " + std::to_string(pFade));
 		}
 		fade = pFade;
 	}
@@ -40,7 +40,7 @@ namespace S2VX {
 		validateTime(pFadeIn);
 		if (pFadeIn > approach) {
 			auto message = std::stringstream();
-			message << "Note fade in time must be less than approach time. Given: " << std::endl
+			message << "Note fade in time must be <= approach time. Given: " << std::endl
 				<< "FadeIn: " << std::to_string(pFadeIn) << std::endl
 				<< "Approach: " << std::to_string(approach) << std::endl;
 			throw ScriptError(message.str());
@@ -53,20 +53,20 @@ namespace S2VX {
 	}
 	void NoteConfiguration::setFeather(const float pFeather) {
 		if (pFeather < 0.0f) {
-			throw ScriptError("Note line feather must be greater than or equal to 0. Given: " + std::to_string(pFeather));
+			throw ScriptError("Note line feather must be >= 0. Given: " + std::to_string(pFeather));
 		}
 		feather = pFeather;
 	}
 	void NoteConfiguration::setThickness(const float pThickness) {
 		if (thickness < 0.0f) {
-			throw ScriptError("Note line thickness must be greater than or equal to 0. Given: " + std::to_string(pThickness));
+			throw ScriptError("Note line thickness must be >= 0. Given: " + std::to_string(pThickness));
 		}
 		thickness = pThickness;
 	}
 	// I don't think notes should be placed at negative time :bigThink:
 	void NoteConfiguration::validateTime(const int time) {
 		if (time < 0) {
-			throw ScriptError("Note time must be greater than or equal to 0. Given: " + std::to_string(time));
+			throw ScriptError("Note time must be >= 0. Given: " + std::to_string(time));
 		}
 	}
 }

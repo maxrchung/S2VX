@@ -33,6 +33,5 @@ namespace S2VX {
 		BounceEaseOut,			//29
 		BounceEaseInOut,		//30
 		Count,					//31
-		None					//32
 	};
 }

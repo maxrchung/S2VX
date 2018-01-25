@@ -1,16 +1,13 @@
 #pragma once
-#include "Back.hpp"
-#include "Camera.hpp"
-#include "Grid.hpp"
-#include "Notes.hpp"
-#include "Sprites.hpp"
 #include <memory>
 namespace S2VX {
+	class BackCommand;
+	class 
 	// Structure for handling all elements together
 	// Responsible for updating/drawing in proper order
 	class Elements {
 	public:
-		explicit Elements(const std::vector<Command*>& backCommands,
+		explicit Elements(const std::vector<BackCommand*>& backCommands,
 						  const std::vector<Command*>& cameraCommands,
 						  const std::vector<Command*>& gridCommands, Shader* const lineShader,
 						  const std::vector<Note*>& pNotes,

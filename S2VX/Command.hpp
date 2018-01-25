@@ -1,25 +1,18 @@
 #pragma once
-#include "CommandType.hpp"
-#include <memory>
-#include <glm/glm.hpp>
+#include "EasingType.hpp"
 namespace S2VX {
-	// Plain old object that holds command info
-	struct Command {
+	// Base for all commands
+	class Command {
 	public:
-		explicit Command(const CommandType pCommandType, const int pStart, const int pEnd);
+		explicit Command(const int pStart, const int pEnd, const EasingType pEasing);
 		virtual ~Command() {};
-		const CommandType commandType;
-		const int start;
+		const EasingType getEasing() const { return easing; }
+		const int getEnd() const { return end; }
+		const int getStart() const { return start; }
+		virtual void update(const int time) = 0;
+	private:
+		const EasingType easing;
 		const int end;
-	protected:
-		void validateColor(const glm::vec3& color) const;
-		void validateFade(const float fade) const;
-		void validateFeather(const float feather) const;
-		void validateScale(const glm::vec2& scale) const;
-		void validateThickness(const float thickness) const;
-	};
-	struct CommandUniquePointerComparison {
-		// Sort by start time then enum
-		bool operator() (const std::unique_ptr<Command>& lhs, const std::unique_ptr<Command>& rhs) const;
+		const int start;
 	};
 }

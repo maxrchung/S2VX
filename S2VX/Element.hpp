@@ -1,9 +1,9 @@
 #pragma once
-#include "Command.hpp"
 #include <set>
 #include <vector>
 namespace S2VX {
 	class Camera;
+	class Command;
 	class Element {
 	public:
 		// Default constructor, e.g. for Notes and Sprites
@@ -12,16 +12,15 @@ namespace S2VX {
 		explicit Element(const std::vector<Command*>& pCommands);
 		virtual ~Element() {};
 		virtual void draw(const Camera& camera) = 0;
-		virtual void update(const int time) = 0;
 		// Updates list of active commands
-		// Virtual so that Notes/Sprites can take advantage of these functions
-		virtual void updateActives(const int time);
+		// Virtual so that Notes/Sprites can perform special update
+		virtual void update(const int time) = 0;
 	protected:
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		const std::vector<Command*> commands;
 		// Used to track current command in updateActives()
 		int nextActive = 0;
-		// Has to be ordered because some commands must be ran before others, e.g. Sprite creation/commands
+		// Using a set so that ordering is preserved
 		std::set<int> actives;
 	};
 }
