@@ -1,4 +1,5 @@
 #include "CameraZoomCommand.hpp"
+#include "Camera.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
 	CameraZoomCommand::CameraZoomCommand(Camera* const camera, int start, int end, EasingType easing, float pStartScale, float pEndScale)
@@ -13,6 +14,8 @@ namespace S2VX {
 			throw ScriptError("Camera zoom must be >= 1. Given: " + std::to_string(scale));
 		}
 	}
-	void CameraZoomCommand::update(const int time) {
+	void CameraZoomCommand::update(const float easing) {
+		const auto scale = glm::mix(startScale, endScale, easing);
+		camera->zoom(scale);
 	}
 }

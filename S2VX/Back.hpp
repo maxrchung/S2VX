@@ -6,7 +6,7 @@ namespace S2VX {
 	public:
 		explicit Back(const std::vector<Command*>& commands);
 		void draw(const Camera& camera);
-		void update(const int time);
+		void setColor(const glm::vec3& pColor) { color = pColor; }
 	private:
 		glm::vec3 color = glm::vec3{ 0.0f, 0.0f, 0.0f };
 	};

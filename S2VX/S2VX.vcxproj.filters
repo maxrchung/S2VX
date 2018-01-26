@@ -159,6 +159,12 @@
     <ClCompile Include="SpriteScaleCommand.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="NoteUniquePointerComparison.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteUniquePointerComparison.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -289,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="SpriteScaleCommand.hpp">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteUniquePointerComparison.hpp">
+      <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteUniquePointerComparison.hpp">
+      <Filter>Header Files\Element</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

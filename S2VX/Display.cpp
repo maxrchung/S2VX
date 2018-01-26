@@ -1,5 +1,7 @@
 #include "Display.hpp"
 #include "ScriptError.hpp"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 namespace S2VX {
 	Display::Display() {
 		// glfw: initialize and configure

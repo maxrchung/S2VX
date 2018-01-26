@@ -1,20 +1,21 @@
 #pragma once
+// Includes are necessary for unique_ptr to use destructor(?)
+#include "Command.hpp"
+#include "CommandUniquePointerComparison.hpp"
+#include "Note.hpp"
 #include "NoteConfiguration.hpp"
+#include "NoteUniquePointerComparison.hpp"
+#include "Shader.hpp"
+#include "Sprite.hpp"
+#include "SpriteUniquePointerComparison.hpp"
+#include "Texture.hpp"
 #include <chaiscript/chaiscript.hpp>
 #include <memory>
 #include <set>
 #include <unordered_map>
 #include <vector>
 namespace S2VX {
-	class Command;
-	class CommandUniquePointerComparison;
-	class Shader;
 	class Elements;
-	class Note;
-	class NoteUniquePointerComparison;
-	class Sprite;
-	class SpriteUniquePointerComparison;
-	class Texture;
 	class Scripting {
 	public:
 		// Initializing scripting

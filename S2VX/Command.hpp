@@ -9,7 +9,7 @@ namespace S2VX {
 		const EasingType getEasing() const { return easing; }
 		const int getEnd() const { return end; }
 		const int getStart() const { return start; }
-		virtual void update(const int time) = 0;
+		virtual void update(const float easing) = 0;
 	private:
 		const EasingType easing;
 		const int end;

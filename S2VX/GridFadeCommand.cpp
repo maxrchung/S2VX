@@ -1,4 +1,5 @@
 #include "GridFadeCommand.hpp"
+#include "Grid.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
 	GridFadeCommand::GridFadeCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartFade, const float pEndFade)
@@ -13,6 +14,8 @@ namespace S2VX {
 			throw ScriptError("Grid fade must be >= 0 and <= 1. Given: " + std::to_string(fade));
 		}
 	}
-	void GridFadeCommand::update(const int time) {
+	void GridFadeCommand::update(const float easing) {
+		const auto fade = glm::mix(startFade, endFade, easing);
+		grid->setFade(fade);
 	}
 }

@@ -1,5 +1,6 @@
 #include "Element.hpp"
 #include "Command.hpp"
+#include "Easing.hpp"
 namespace S2VX {
 	Element::Element(const std::vector<Command*>& pCommands)
 		: commands{ pCommands } {
@@ -16,9 +17,11 @@ namespace S2VX {
 		while (nextActive != commands.size() && commands[nextActive]->getStart() <= time) {
 			actives.insert(nextActive++);
 		}
-		for (auto active : actives) {
+		for (const auto active : actives) {
 			const auto command = commands[active];
-			command->update(time);
+			const auto interpolation = static_cast<float>(time - command->getStart()) / (command->getEnd() - command->getStart());
+			const auto easing = Easing(command->getEasing(), interpolation);
+			command->update(easing);
 		}
 	}
 }

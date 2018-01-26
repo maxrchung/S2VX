@@ -11,9 +11,9 @@
 //
 
 #define _USE_MATH_DEFINES // Microsoft Kappa
-#include <math.h>
 #include "Easing.hpp"
 #include "ScriptError.hpp"
+#include <math.h>
 
 namespace S2VX {
 	AHFloat Easing(const EasingType type, const AHFloat value) {

@@ -1,4 +1,5 @@
 #include "Sprites.hpp"
+#include "Sprite.hpp"
 namespace S2VX {
 	Sprites::Sprites(const std::vector<Sprite*>& pSprites)
 		: sprites{ pSprites } {}
@@ -8,12 +9,6 @@ namespace S2VX {
 		}
 	}
 	void Sprites::update(const int time) {
-		for (const auto active : actives) {
-			sprites[active]->updateActives(time);
-			sprites[active]->update(time);
-		}
-	}
-	void Sprites::updateActives(int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (sprites[*active]->getEnd() <= time) {
 				active = actives.erase(active);
@@ -24,6 +19,9 @@ namespace S2VX {
 		}
 		while (nextActive != sprites.size() && sprites[nextActive]->getStart() <= time) {
 			actives.insert(nextActive++);
+		}
+		for (const auto active : actives) {
+			sprites[active]->update(time);
 		}
 	}
 }

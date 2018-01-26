@@ -1,7 +1,8 @@
 #include "S2VX.hpp"
 #include "Display.hpp"
-#include "Element.hpp"
+#include "Elements.hpp"
 #include "Scripting.hpp"
+#include <GLFW/glfw3.h>
 namespace S2VX {
 	S2VX::S2VX(const std::string& pScript)
 		: script{ pScript } {

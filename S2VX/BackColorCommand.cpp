@@ -1,4 +1,5 @@
 #include "BackColorCommand.hpp"
+#include "Back.hpp"
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
@@ -21,10 +22,8 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void BackColorCommand::update(const int time) {
-		const auto interpolation = static_cast<float>(time - getStart()) / (getEnd() - getStart());
-		const auto easing = Easing(getEasing(), interpolation);
-		color = glm::mix(derived->startColor, derived->endColor, easing);
-
+	void BackColorCommand::update(const float easing) {
+		auto color = glm::mix(startColor, endColor, easing);
+		back->setColor(color);
 	}
 }

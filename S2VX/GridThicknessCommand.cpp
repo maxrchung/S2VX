@@ -1,4 +1,5 @@
 #include "GridThicknessCommand.hpp"
+#include "Grid.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
 	GridThicknessCommand::GridThicknessCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartThickness, const float pEndThickness)
@@ -13,6 +14,8 @@ namespace S2VX {
 			throw ScriptError("Grid line thickness must be >= 0. Given: " + std::to_string(thickness));
 		}
 	}
-	void GridThicknessCommand::update(const int time) {
+	void GridThicknessCommand::update(const float easing) {
+		const auto thickness = glm::mix(startThickness, endThickness, easing);
+		grid->setThickness(thickness);
 	}
 }

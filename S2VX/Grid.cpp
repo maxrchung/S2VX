@@ -1,8 +1,7 @@
 #include "Grid.hpp"
 #include "Camera.hpp"
-#include "GridCommands.hpp"
-#include "Easing.hpp"
-#include <GLFW/glfw3.h>
+#include "Shader.hpp"
+#include <glad/glad.h>
 namespace S2VX {
 	Grid::Grid(const std::vector<Command*>& commands, Shader* const pLineShader)
 		: Element{ commands }, lineShader{ pLineShader } {
@@ -64,45 +63,9 @@ namespace S2VX {
 		lineShader->setVec3("color", color);
 		lineShader->setFloat("fade", fade);
 		lineShader->setFloat("feather", feather);
-		lineShader->setFloat("lineThickness", lineThickness);
+		lineShader->setFloat("thickness", thickness);
 		lineShader->setMat4("projection", camera.getProjection());
 		lineShader->setMat4("view", camera.getView());
 		glDrawArrays(GL_TRIANGLES, 0, linePoints.size() / 4);
-	}
-	void Grid::update(int time) {
-		for (const auto active : actives) {
-			const auto command = commands[active];
-			const auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
-			switch (command->commandType) {
-				case CommandType::GridColor: {
-					const auto derived = static_cast<GridColorCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto pColor = glm::mix(derived->startColor, derived->endColor, easing);
-					color = pColor;
-					break;
-				}
-				case CommandType::GridFade: {
-					const auto derived = static_cast<GridFadeCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto pFade = glm::mix(derived->startFade, derived->endFade, easing);
-					fade = pFade;
-					break;
-				}
-				case CommandType::GridFeather: {
-					const auto derived = static_cast<GridFeatherCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto pFeather = glm::mix(derived->startFeather, derived->endFeather, easing);
-					feather = pFeather;
-					break;
-				}
-				case CommandType::GridThickness: {
-					const auto derived = static_cast<GridThicknessCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto pLineThickness = glm::mix(derived->startThickness, derived->endThickness, easing);
-					lineThickness = pLineThickness;
-					break;
-				}
-			}
-		}
 	}
 }

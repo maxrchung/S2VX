@@ -1,4 +1,5 @@
 #include "GridFeatherCommand.hpp"
+#include "Grid.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
 	GridFeatherCommand::GridFeatherCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartFeather, const float pEndFeather)
@@ -13,6 +14,8 @@ namespace S2VX {
 			throw ScriptError("Grid line feather must be >= 0. Given: " + std::to_string(feather));
 		}
 	}
-	void GridFeatherCommand::update(const int time) {
+	void GridFeatherCommand::update(const float easing) {
+		const auto feather = glm::mix(startFeather, endFeather, easing);
+		grid->setFeather(feather);
 	}
 }

@@ -1,4 +1,9 @@
 #include "Elements.hpp"
+#include "Back.hpp"
+#include "Camera.hpp"
+#include "Grid.hpp"
+#include "Notes.hpp"
+#include "Sprites.hpp"
 namespace S2VX {
 	Elements::Elements(const std::vector<Command*>& backCommands,
 					   const std::vector<Command*>& cameraCommands,
@@ -19,7 +24,6 @@ namespace S2VX {
 	}
 	void Elements::update(const int time) {
 		for (const auto element : all) {
-			element->updateActives(time);
 			element->update(time);
 		}
 	}

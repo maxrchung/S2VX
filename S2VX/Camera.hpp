@@ -15,7 +15,6 @@ namespace S2VX {
 		void move(const glm::vec3& pPosition);
 		// Global roll CCW in degrees
 		void rotateZ(const float pRoll);
-		void update(const int time);
 		// Sets the scaling of the camera
 		// Parameter is the number of squares to stretch the screen
 		void zoom(const float pScale);

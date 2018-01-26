@@ -1,4 +1,5 @@
 #include "GridColorCommand.hpp"
+#include "Grid.hpp"
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
@@ -21,6 +22,8 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void GridColorCommand::update(const int time) {
+	void GridColorCommand::update(const float easing) {
+		auto color = glm::mix(startColor, endColor, easing);
+		grid->setColor(color);
 	}
 }

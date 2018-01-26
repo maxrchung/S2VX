@@ -1,4 +1,5 @@
 #include "Notes.hpp"
+#include "Note.hpp"
 namespace S2VX {
 	Notes::Notes(const std::vector<Note*>& pNotes)
 		: notes{ pNotes } {}

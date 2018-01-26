@@ -1,5 +1,6 @@
 #include "SpriteColorCommand.hpp"
 #include "ScriptError.hpp"
+#include "Sprite.hpp"
 #include <sstream>
 namespace S2VX {
 	SpriteColorCommand::SpriteColorCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
@@ -21,6 +22,8 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void SpriteColorCommand::update(const int time) {
+	void SpriteColorCommand::update(const float easing) {
+		const auto color = glm::mix(startColor, endColor, easing);
+		sprite->setColor(color);
 	}
 }

@@ -3,12 +3,12 @@
 #include <glm/glm.hpp>
 namespace S2VX {
 	class Sprite;
-	class SpriteCommand : Command {
+	class SpriteCommand : public Command {
 	public:
 		explicit SpriteCommand(Sprite* const pSprite, const int start, const int end, const EasingType easing);
 		virtual ~SpriteCommand() {};
-		virtual void update(const int time) = 0;
-	private:
+		virtual void update(const float easing) = 0;
+	protected:
 		Sprite* const sprite;
 	};
 }

@@ -1,13 +1,23 @@
 #pragma once
+// Includes necessary for unique_ptr to access destructor(?)
+#include "Back.hpp"
+#include "Camera.hpp"
+#include "Grid.hpp"
+#include "Notes.hpp"
+#include "Sprites.hpp"
 #include <memory>
+#include <vector>
 namespace S2VX {
-	class BackCommand;
-	class 
+	class Command;
+	class Element;
+	class Note;
+	class Shader;
+	class Sprite;
 	// Structure for handling all elements together
 	// Responsible for updating/drawing in proper order
 	class Elements {
 	public:
-		explicit Elements(const std::vector<BackCommand*>& backCommands,
+		explicit Elements(const std::vector<Command*>& backCommands,
 						  const std::vector<Command*>& cameraCommands,
 						  const std::vector<Command*>& gridCommands, Shader* const lineShader,
 						  const std::vector<Note*>& pNotes,

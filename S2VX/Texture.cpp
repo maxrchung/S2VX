@@ -1,7 +1,7 @@
 #include "Texture.hpp"
+#include "ScriptError.hpp"
 #include <glad/glad.h>
 #include <stb_image.h>
-#include "ScriptError.hpp"
 namespace S2VX {
 	const unsigned char* Texture::blankData = reinterpret_cast<unsigned char*>("ÿÿÿýýýýÝ$’‹\\Ý\x1f");
 	Texture::Texture(const std::string& pPath)

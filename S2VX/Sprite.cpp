@@ -1,6 +1,6 @@
 #include "Sprite.hpp"
-#include "Easing.hpp"
-#include "SpriteCommands.hpp"
+#include "Command.hpp"
+#include "Shader.hpp"
 #include "Texture.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,11 +10,11 @@ namespace S2VX {
 		int pStart = std::numeric_limits<int>::max();
 		int pEnd = std::numeric_limits<int>::lowest();
 		for (const auto command : commands) {
-			if (command->start < pStart) {
-				pStart = command->start;
+			if (command->getStart() < pStart) {
+				pStart = command->getStart();
 			}
-			if (command->end > pEnd) {
-				pEnd = command->end;
+			if (command->getEnd() > pEnd) {
+				pEnd = command->getEnd();
 			}
 		}
 		start = pStart;
@@ -55,51 +55,5 @@ namespace S2VX {
 		glBindVertexArray(imageVertexArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-	void Sprite::update(const int time) {
-		for (const auto active : actives) {
-			const auto command = commands[active];
-			const auto interpolation = static_cast<float>(time - command->start) / (command->end - command->start);
-			switch (command->commandType) {
-				case CommandType::SpriteColor: {
-					const auto derived = static_cast<SpriteColorCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto pColor = glm::mix(derived->startColor, derived->endColor, easing);
-					color = pColor;
-					break;
-				}
-				case CommandType::SpriteFade: {
-					const auto derived = static_cast<SpriteFadeCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto fade = glm::mix(derived->startFade, derived->endFade, easing);
-					setFade(fade);
-					break;
-				}
-				case CommandType::SpriteMove: {
-					const auto derived = static_cast<SpriteMoveCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					// Need to cast to float or else glm::mix will return an int
-					const auto coordinate = glm::mix(derived->startCoordinate, derived->endCoordinate, easing);
-					setPosition(coordinate);
-					break;
-				}
-				case CommandType::SpriteRotate: {
-					const auto derived = static_cast<SpriteRotateCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto rotation = glm::mix(derived->startRotation, derived->endRotation, easing);
-					setRotation(rotation);
-					break;
-				}
-				case CommandType::SpriteScale: {
-					const auto derived = static_cast<SpriteScaleCommand*>(command);
-					const auto easing = Easing(derived->easing, interpolation);
-					const auto scale = glm::mix(derived->startScale, derived->endScale, easing);
-					setScale(scale);
-					break;
-				}
-			}
-		}
-	}
-	bool SpriteUniquePointerComparison::operator() (const std::unique_ptr<Sprite>& lhs, const std::unique_ptr<Sprite>& rhs) const {
-		return lhs->getStart() < rhs->getStart();
-	}
+
 }

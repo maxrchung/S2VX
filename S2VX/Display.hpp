@@ -1,7 +1,5 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <memory>
+struct GLFWwindow;
 namespace S2VX {
 	class Display {
 	public:

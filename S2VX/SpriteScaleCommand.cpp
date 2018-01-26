@@ -1,5 +1,6 @@
 #include "SpriteScaleCommand.hpp"
 #include "ScriptError.hpp"
+#include "Sprite.hpp"
 #include <sstream>
 namespace S2VX {
 	SpriteScaleCommand::SpriteScaleCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float pStartScaleX, const float pStartScaleY, const float pEndScaleX, const float pEndScaleY)
@@ -17,6 +18,8 @@ namespace S2VX {
 			throw ScriptError(message.str());
 		}
 	}
-	void SpriteScaleCommand::update(const int time) {
+	void SpriteScaleCommand::update(const float easing) {
+		const auto scale = glm::mix(startScale, endScale, easing);
+		sprite->setScale(scale);
 	}
 }

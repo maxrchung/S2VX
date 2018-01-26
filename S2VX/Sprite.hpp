@@ -1,8 +1,9 @@
 #pragma once
 #include "Camera.hpp"
-#include "Shader.hpp"
 #include <glm/glm.hpp>
+#include <memory>
 namespace S2VX {
+	class Shader;
 	class Texture;
 	class Sprite : public Element{
 	public:
@@ -12,11 +13,11 @@ namespace S2VX {
 		void draw(const Camera& camera);
 		int getEnd() const { return end; }
 		int getStart() const { return start; }
+		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }
 		void setPosition(const glm::vec2 pPosition) { position = pPosition; }
 		void setRotation(const float pRotation) { rotation = pRotation; }
 		void setScale(const glm::vec2& pScale) { scale = pScale; }
-		void update(const int time);
 	private:
 		const Texture* const texture;
 		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
@@ -41,9 +42,5 @@ namespace S2VX {
 		unsigned int imageVertexArray;
 		unsigned int imageVertexBuffer;
 		unsigned int imageElementBuffer;
-	};
-	struct SpriteUniquePointerComparison {
-		// Sort by start time
-		bool operator() (const std::unique_ptr<Sprite>& lhs, const std::unique_ptr<Sprite>& rhs) const;
 	};
 }

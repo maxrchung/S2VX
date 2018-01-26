@@ -1,8 +1,8 @@
 #pragma once
 #include "Element.hpp"
-#include "Note.hpp"
 #include <set>
 namespace S2VX {
+	class Note;
 	class Notes : public Element {
 	public:
 		explicit Notes(const std::vector<Note*>& pNotes);

@@ -1,15 +1,17 @@
 #include "Note.hpp"
+#include "Camera.hpp"
+#include "Shader.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
 	Note::Note(const NoteConfiguration& pConfiguration, Shader* pSquareShader)
 		: configuration{ pConfiguration }, squareShader{ pSquareShader },
 		lines{
-		RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
-		RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),
-		RectanglePoints(-0.5f, 0.0f, RectangleOrientation::Vertical),
-		RectanglePoints(0.0f, 0.5f, RectangleOrientation::Horizontal),
-	} {
+			RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
+			RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),
+			RectanglePoints(-0.5f, 0.0f, RectangleOrientation::Vertical),
+			RectanglePoints(0.0f, 0.5f, RectangleOrientation::Horizontal),
+		} {
 		glGenVertexArrays(1, &squareVertexArray);
 		glGenBuffers(1, &squareVertexBuffer);
 	}
@@ -83,8 +85,5 @@ namespace S2VX {
 		else {
 			fade = configuration.getFade();
 		}
-	}
-	bool NoteUniquePointerComparison::operator() (const std::unique_ptr<Note>& lhs, const std::unique_ptr<Note>& rhs) const {
-		return lhs->getConfiguration().getStart() < rhs->getConfiguration().getStart();
 	}
 }

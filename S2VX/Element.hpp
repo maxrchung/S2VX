@@ -14,7 +14,7 @@ namespace S2VX {
 		virtual void draw(const Camera& camera) = 0;
 		// Updates list of active commands
 		// Virtual so that Notes/Sprites can perform special update
-		virtual void update(const int time) = 0;
+		virtual void update(const int time);
 	protected:
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		const std::vector<Command*> commands;
