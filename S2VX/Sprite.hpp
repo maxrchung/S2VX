@@ -7,6 +7,7 @@ namespace S2VX {
 	class Texture;
 	class Sprite : public Element{
 	public:
+		explicit Sprite() {};
 		explicit Sprite(const std::vector<Command*> pCommands, const Texture* const pTexture, Shader* const pImageShader);
 		// Cleanup OpenGL objects
 		~Sprite();
@@ -19,7 +20,7 @@ namespace S2VX {
 		void setRotation(const float pRotation) { rotation = pRotation; }
 		void setScale(const glm::vec2& pScale) { scale = pScale; }
 	private:
-		const Texture* const texture;
+		const Texture* const texture = nullptr;
 		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
 		float fade = 1.0f;
 		float rotation = 0.0f;
@@ -27,7 +28,7 @@ namespace S2VX {
 		glm::vec2 scale = glm::vec2{ 1.0f, 1.0f };
 		int start;
 		int end;
-		Shader* const imageShader;
+		Shader* const imageShader = nullptr;
 		static constexpr float corners[16] = {
 			// Position			// Texture
 			 0.5f,	 0.5f,		1.0f,	1.0f, // TR

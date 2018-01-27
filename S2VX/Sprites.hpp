@@ -4,6 +4,7 @@ namespace S2VX {
 	class Sprite;
 	class Sprites : public Element {
 	public:
+		explicit Sprites() {};
 		explicit Sprites(const std::vector<Sprite*>& pSprites);
 		void draw(const Camera& camera);
 		void update(const int time);

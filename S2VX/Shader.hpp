@@ -5,7 +5,7 @@
 namespace S2VX {
 	class Shader {
 	public:
-		Shader();
+		Shader::Shader() {}
 		explicit Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = "");
 		~Shader();
 		void setBool(const std::string &name, const bool value) const;
