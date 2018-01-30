@@ -1,12 +1,20 @@
 #include "Sprites.hpp"
-#include "Sprite.hpp"
+#include "ScriptError.hpp"
+#include <algorithm>
 namespace S2VX {
-	Sprites::Sprites(const std::vector<Sprite*>& pSprites)
-		: sprites{ pSprites } {}
 	void Sprites::draw(const Camera& camera) {
 		for (auto active : actives) {
 			sprites[active]->draw(camera);
 		}
+	}
+	void Sprites::addSprite(std::unique_ptr<Sprite>&& sprite) {
+		sprites.push_back(std::move(sprite));
+	}
+	Sprite* const Sprites::getLastSprite() {
+		if (sprites.empty()) {
+			throw ScriptError("SpriteBind must be called before other sprite command.");
+		}
+		return sprites.back().get();
 	}
 	void Sprites::update(const int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
@@ -23,5 +31,11 @@ namespace S2VX {
 		for (const auto active : actives) {
 			sprites[active]->update(time);
 		}
+	}
+	void Sprites::sort() {
+		for (auto& sprite : sprites) {
+			sprite->sort();
+		}
+		std::sort(sprites.begin(), sprites.end(), comparison);
 	}
 }

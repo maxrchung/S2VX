@@ -1,21 +1,9 @@
 #pragma once
 // Includes are necessary for unique_ptr to use destructor(?)
-#include "Command.hpp"
-#include "CommandUniquePointerComparison.hpp"
-#include "Note.hpp"
-#include "NoteConfiguration.hpp"
-#include "NoteUniquePointerComparison.hpp"
-#include "Shader.hpp"
-#include "Sprite.hpp"
-#include "SpriteUniquePointerComparison.hpp"
-#include "Texture.hpp"
+#include "Elements.hpp"
 #include <chaiscript/chaiscript.hpp>
-#include <memory>
-#include <set>
-#include <unordered_map>
-#include <vector>
 namespace S2VX {
-	class Elements;
+	// This class is responsible for hooking up with chai and creating their corresponding Commands and Elements
 	class Scripting {
 	public:
 		// Initializing scripting
@@ -25,7 +13,7 @@ namespace S2VX {
 		void CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate);
 		void CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale);
 		// Evaluates chaiscript
-		Elements evaluate(const std::string& path);
+		Elements& evaluate(const std::string& path);
 		void GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void GridFade(const int start, const int end, const int easing, const float startFade, const float endFade);
 		void GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
@@ -45,28 +33,7 @@ namespace S2VX {
 		void SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation);
 		void SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY);
 	private:
-		// Converts sortedCommands to vector form
-		std::vector<Command*> sortedCommandsToVector(const std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison>& sortedCommands);
-		std::vector<Note*> sortedNotesToVector();
-		std::vector<Sprite*> sortedSpritesToVector();
-		// Adds current sprite to sprites multiset
-		void addSprite();
-		void reset();
 		chaiscript::ChaiScript chai;
-		NoteConfiguration noteConfiguration;
-		// Keeps track of the current Sprite's commands
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> currentSpriteCommands;
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedBackCommands;
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedCameraCommands;
-		std::multiset<std::unique_ptr<Command>, CommandUniquePointerComparison> sortedGridCommands;
-		std::multiset<std::unique_ptr<Note>, NoteUniquePointerComparison> sortedNotes;
-		std::multiset<std::unique_ptr<Sprite>, SpriteUniquePointerComparison> sortedSprites;
-		std::unique_ptr<Shader> imageShader = std::make_unique<Shader>("Image.VertexShader", "Image.FragmentShader");
-		std::unique_ptr<Shader> lineShader = std::make_unique<Shader>("Line.VertexShader", "Line.FragmentShader");
-		std::unique_ptr<Shader> rectangleShader = std::make_unique<Shader>("Rectangle.VertexShader", "Rectangle.FragmentShader");
-		// Pointer because destructor cleans up OpenGL objects
-		std::unordered_map<std::string, std::unique_ptr<Texture>> spriteTextures;
-		// Keeps track of the current Sprite's Texture
-		const Texture* currentTexture = nullptr;
+		Elements elements;
 	};
 }

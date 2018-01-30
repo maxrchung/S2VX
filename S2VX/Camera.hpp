@@ -4,8 +4,7 @@
 namespace S2VX {
 	class Camera : public Element {
 	public:
-		explicit Camera() {};
-		explicit Camera(const std::vector<Command*>& pCommands);
+		explicit Camera();
 		const glm::vec3& getPosition() const { return position; }
 		const glm::mat4& getProjection() const { return projection; }
 		const glm::mat4& getView() const { return view; }

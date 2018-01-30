@@ -165,6 +165,9 @@
     <ClCompile Include="SpriteUniquePointerComparison.cpp">
       <Filter>Source Files\Element</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteRotateCommand.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.hpp">
@@ -287,12 +290,6 @@
     <ClInclude Include="SpriteMoveCommand.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRotateCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteRotateCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteScaleCommand.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
@@ -301,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="SpriteUniquePointerComparison.hpp">
       <Filter>Header Files\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRotateCommand.hpp">
+      <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

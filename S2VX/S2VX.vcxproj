@@ -161,6 +161,7 @@
     <ClCompile Include="SpriteCommand.cpp" />
     <ClCompile Include="SpriteFadeCommand.cpp" />
     <ClCompile Include="SpriteMoveCommand.cpp" />
+    <ClCompile Include="SpriteRotateCommand.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="SpriteScaleCommand.cpp" />
     <ClCompile Include="SpriteUniquePointerComparison.cpp" />
@@ -181,7 +182,6 @@
     <ClInclude Include="GridFeatherCommand.hpp" />
     <ClInclude Include="GridThicknessCommand.hpp" />
     <ClInclude Include="NoteUniquePointerComparison.hpp" />
-    <ClInclude Include="SpriteRotateCommand.cpp" />
     <ClInclude Include="Line.FragmentShader" />
     <ClInclude Include="Back.hpp" />
     <ClInclude Include="BackCommand.hpp" />

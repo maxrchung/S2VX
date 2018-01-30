@@ -3,8 +3,8 @@
 #include "Shader.hpp"
 #include <glad/glad.h>
 namespace S2VX {
-	Grid::Grid(const std::vector<Command*>& commands, Shader* const pLineShader)
-		: Element{ commands }, lineShader{ pLineShader } {
+	Grid::Grid(Shader* const pLineShader)
+		: lineShader{ pLineShader } {
 		glGenVertexArrays(1, &linesVertexArray);
 		glGenBuffers(1, &linesVertexBuffer);
 	}

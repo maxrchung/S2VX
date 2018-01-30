@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera.hpp"
+#include "Element.hpp"
 #include <glm/glm.hpp>
 #include <memory>
 namespace S2VX {
@@ -7,27 +7,28 @@ namespace S2VX {
 	class Texture;
 	class Sprite : public Element{
 	public:
-		explicit Sprite() {};
-		explicit Sprite(const std::vector<Command*> pCommands, const Texture* const pTexture, Shader* const pImageShader);
+		explicit Sprite(const Texture* const pTexture, Shader* const pImageShader);
 		// Cleanup OpenGL objects
 		~Sprite();
+		const int getEnd() const { return start; }
+		const int getStart() const { return end; }
 		void draw(const Camera& camera);
-		int getEnd() const { return end; }
-		int getStart() const { return start; }
 		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }
 		void setPosition(const glm::vec2 pPosition) { position = pPosition; }
 		void setRotation(const float pRotation) { rotation = pRotation; }
 		void setScale(const glm::vec2& pScale) { scale = pScale; }
+		// Sprite has a custom sort because to set its start and end values
+		void sort();
 	private:
+		int start;
+		int end;
 		const Texture* const texture = nullptr;
 		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
 		float fade = 1.0f;
 		float rotation = 0.0f;
 		glm::vec2 position = glm::vec2{ 0 };
 		glm::vec2 scale = glm::vec2{ 1.0f, 1.0f };
-		int start;
-		int end;
 		Shader* const imageShader = nullptr;
 		static constexpr float corners[16] = {
 			// Position			// Texture

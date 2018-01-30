@@ -1,8 +1,8 @@
 #include "Notes.hpp"
-#include "Note.hpp"
 namespace S2VX {
-	Notes::Notes(const std::vector<Note*>& pNotes)
-		: notes{ pNotes } {}
+	void Notes::addNote(std::unique_ptr<Note>&& note) {
+		notes.push_back(std::move(note));
+	}
 	void Notes::draw(const Camera& camera) {
 		for (auto active : actives) {
 			notes[active]->draw(camera);
@@ -25,5 +25,8 @@ namespace S2VX {
 		while (nextActive != notes.size() && notes[nextActive]->getConfiguration().getStart() <= time) {
 			actives.insert(nextActive++);
 		}
+	}
+	void Notes::sort() {
+		std::sort(notes.begin(), notes.end(), comparison);
 	}
 }

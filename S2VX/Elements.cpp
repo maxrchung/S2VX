@@ -1,26 +1,23 @@
 #include "Elements.hpp"
-#include "Back.hpp"
-#include "Camera.hpp"
-#include "Grid.hpp"
-#include "Notes.hpp"
-#include "Sprites.hpp"
+#include <algorithm>
 namespace S2VX {
-	Elements::Elements(const std::vector<Command*>& backCommands,
-					   const std::vector<Command*>& cameraCommands,
-					   const std::vector<Command*>& gridCommands, Shader* const lineShader,
-					   const std::vector<Note*>& pNotes,
-					   const std::vector<Sprite*>& pSprites)
-		: back{ std::make_unique<Back>(backCommands) },
-		camera{ std::make_unique<Camera>(cameraCommands) },
-		grid{ std::make_unique<Grid>(gridCommands, lineShader) },
-		notes{ std::make_unique<Notes>(pNotes) },
-		sprites{ std::make_unique<Sprites>(pSprites) },
+	Elements::Elements() 
+		: back{ std::make_unique<Back>() },
+		camera{ std::make_unique<Camera>() },
+		grid{ std::make_unique<Grid>(lineShader.get()) },
+		notes{ std::make_unique<Notes>() },
+		sprites{ std::make_unique<Sprites>() },
 		all{ camera.get(), back.get(), sprites.get(), grid.get(), notes.get() } {}
 	void Elements::draw() {
 		back->draw(*camera.get());
 		sprites->draw(*camera.get());
 		grid->draw(*camera.get());
 		notes->draw(*camera.get());
+	}
+	void Elements::sort() {
+		for (auto& element : all) {
+			element->sort();
+		}
 	}
 	void Elements::update(const int time) {
 		for (const auto element : all) {

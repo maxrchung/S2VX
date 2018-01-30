@@ -1,14 +1,19 @@
 #pragma once
 #include "Element.hpp"
+#include "Sprite.hpp"
+#include "SpriteUniquePointerComparison.hpp"
 namespace S2VX {
-	class Sprite;
 	class Sprites : public Element {
 	public:
 		explicit Sprites() {};
-		explicit Sprites(const std::vector<Sprite*>& pSprites);
+		void addSprite(std::unique_ptr<Sprite>&& sprite);
+		// Used during Scripting to set last sprite
+		Sprite* const getLastSprite();
 		void draw(const Camera& camera);
 		void update(const int time);
+		void sort();
 	private:
-		std::vector<Sprite*> sprites;
+		SpriteUniquePointerComparison comparison;
+		std::vector<std::unique_ptr<Sprite>> sprites;
 	};
 }

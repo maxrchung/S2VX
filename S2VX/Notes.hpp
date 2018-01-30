@@ -1,16 +1,18 @@
 #pragma once
 #include "Element.hpp"
-#include <set>
+#include "Note.hpp"
+#include "NoteUniquePointerComparison.hpp"
 namespace S2VX {
-	class Note;
 	class Notes : public Element {
 	public:
 		explicit Notes() {};
-		explicit Notes(const std::vector<Note*>& pNotes);
+		void addNote(std::unique_ptr<Note>&& note);
 		void draw(const Camera& camera);
 		void update(const int time);
 		void updateActives(const int time);
+		void sort();
 	private:
-		std::vector<Note*> notes;
+		NoteUniquePointerComparison comparison;
+		std::vector<std::unique_ptr<Note>> notes;
 	};
 }

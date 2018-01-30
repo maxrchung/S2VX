@@ -1,8 +1,7 @@
 #include "Camera.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
-	Camera::Camera(const std::vector<Command*>& pCommands)
-		: Element{ pCommands } {
+	Camera::Camera() {
 		updateMatrices();
 		zoom(scale);
 		// Near plane cannot be 0

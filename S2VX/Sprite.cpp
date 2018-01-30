@@ -1,24 +1,14 @@
 #include "Sprite.hpp"
+#include "Camera.hpp"
 #include "Command.hpp"
 #include "Shader.hpp"
 #include "Texture.hpp"
+#include <algorithm>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
-	Sprite::Sprite(const std::vector<Command*> pCommands, const Texture* const pTexture, Shader* const pImageShader)
-		: Element{ pCommands }, texture{ pTexture }, imageShader{ pImageShader } {
-		int pStart = std::numeric_limits<int>::max();
-		int pEnd = std::numeric_limits<int>::lowest();
-		for (const auto command : commands) {
-			if (command->getStart() < pStart) {
-				pStart = command->getStart();
-			}
-			if (command->getEnd() > pEnd) {
-				pEnd = command->getEnd();
-			}
-		}
-		start = pStart;
-		end = pEnd;
+	Sprite::Sprite(const Texture* const pTexture, Shader* const pImageShader)
+		: texture{ pTexture }, imageShader{ pImageShader } {
 		glGenVertexArrays(1, &imageVertexArray);
 		glGenBuffers(1, &imageVertexBuffer);
 		glGenBuffers(1, &imageElementBuffer);
@@ -55,5 +45,20 @@ namespace S2VX {
 		glBindVertexArray(imageVertexArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-
+	void Sprite::sort() {
+		// Set start and ends for each sprite
+		int pStart = std::numeric_limits<int>::max();
+		int pEnd = std::numeric_limits<int>::lowest();
+		for (auto& command : commands) {
+			if (command->getStart() < pStart) {
+				pStart = command->getStart();
+			}
+			else if (command->getEnd() > pEnd) {
+				pEnd = command->getEnd();
+			}
+		}
+		start = pStart;
+		end = pEnd;
+		std::sort(commands.begin(), commands.end(), comparison);
+	}
 }

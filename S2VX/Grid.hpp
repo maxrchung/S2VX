@@ -5,8 +5,7 @@ namespace S2VX {
 	class Shader;
 	class Grid : public Element {
 	public:
-		explicit Grid() {};
-		explicit Grid(const std::vector<Command*>& commands, Shader* const lineShader);
+		explicit Grid(Shader* const lineShader);
 		~Grid();
 		void draw(const Camera& camera);
 		void setColor(const glm::vec3& pColor) { color = pColor; }
