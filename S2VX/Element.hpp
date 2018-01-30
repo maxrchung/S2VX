@@ -8,7 +8,7 @@ namespace S2VX {
 	class Camera;
 	class Element {
 	public:
-		Element() {};
+		Element();
 		virtual ~Element() {};
 		virtual void draw(const Camera& camera) = 0;
 		// Updates list of active commands
@@ -22,7 +22,7 @@ namespace S2VX {
 		// Deciding to use raw pointers because ownership is handled in Scripting class
 		std::vector<std::unique_ptr<Command>> commands;
 		// Used to track current command in updateActives()
-		int nextActive = 0;
+		int nextActive;
 		// Using a set so that ordering is preserved
 		std::set<int> actives;
 	};

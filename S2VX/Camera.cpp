@@ -1,7 +1,14 @@
 #include "Camera.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
-	Camera::Camera() {
+	Camera::Camera() 
+		: fov{ 90.0f },
+		front{ glm::vec3{ 0.0f, 0.0f, -1.0f } },
+		position{ glm::vec3{ 0.0f, 0.0f, 1.0f } },
+		right{ glm::vec3{ 1.0f, 0.0f, 0.0f } },
+		roll{ 0.0f },
+		scale{ 3.0f },
+		up{ glm::vec3{ 0.0f, 1.0f, 0.0f } } {
 		updateMatrices();
 		zoom(scale);
 		// Near plane cannot be 0

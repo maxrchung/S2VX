@@ -23,13 +23,13 @@ namespace S2VX {
 	private:
 		int start;
 		int end;
-		const Texture* const texture = nullptr;
-		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
-		float fade = 1.0f;
-		float rotation = 0.0f;
-		glm::vec2 position = glm::vec2{ 0 };
-		glm::vec2 scale = glm::vec2{ 1.0f, 1.0f };
-		Shader* const imageShader = nullptr;
+		const Texture* const texture;
+		glm::vec3 color;
+		float fade;
+		float rotation;
+		glm::vec2 position;
+		glm::vec2 scale;
+		Shader* const imageShader;
 		static constexpr float corners[16] = {
 			// Position			// Texture
 			 0.5f,	 0.5f,		1.0f,	1.0f, // TR

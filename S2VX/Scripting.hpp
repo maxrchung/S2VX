@@ -13,7 +13,7 @@ namespace S2VX {
 		void CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate);
 		void CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale);
 		// Evaluates chaiscript
-		Elements& evaluate(const std::string& path);
+		Elements* const evaluate(const std::string& path);
 		void GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void GridFade(const int start, const int end, const int easing, const float startFade, const float endFade);
 		void GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
@@ -34,6 +34,6 @@ namespace S2VX {
 		void SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY);
 	private:
 		chaiscript::ChaiScript chai;
-		Elements elements;
+		std::unique_ptr<Elements> elements;
 	};
 }

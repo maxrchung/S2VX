@@ -5,7 +5,7 @@
 namespace S2VX {
 	class Sprites : public Element {
 	public:
-		explicit Sprites() {};
+		Sprites() {};
 		void addSprite(std::unique_ptr<Sprite>&& sprite);
 		// Used during Scripting to set last sprite
 		Sprite* const getLastSprite();

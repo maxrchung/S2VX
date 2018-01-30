@@ -3,6 +3,7 @@
 namespace S2VX {
 	class NoteConfiguration {
 	public:
+		NoteConfiguration();
 		const glm::vec3& getColor() const { return color; }
 		const glm::vec2& getPosition() const { return position; }
 		float getDistance() const { return distance; }
@@ -27,16 +28,16 @@ namespace S2VX {
 		void setThickness(const float pThickness);
 	private:
 		void validateTime(const int time);
-		float distance = 3.0f;
-		float fade = 0.8f;
-		float feather = 0.01f;
-		float thickness = 0.1f;
-		glm::vec2 position = glm::vec2{ 0.0f, 0.0f };
-		glm::vec3 color = glm::vec3{ 1.0f, 1.0f, 1.0f };
-		int approach = 2000;
+		float distance;
+		float fade;
+		float feather;
+		float thickness;
+		glm::vec2 position;
+		glm::vec3 color;
+		int approach;
 		int end;
-		int fadeIn = 500;
-		int fadeOut = 100;
+		int fadeIn;
+		int fadeOut;
 		int start;
 	};
 }

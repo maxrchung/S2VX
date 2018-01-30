@@ -5,7 +5,7 @@
 namespace S2VX {
 	class Notes : public Element {
 	public:
-		explicit Notes() {};
+		Notes() {};
 		void addNote(std::unique_ptr<Note>&& note);
 		void draw(const Camera& camera);
 		void update(const int time);

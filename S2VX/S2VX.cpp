@@ -10,7 +10,7 @@ namespace S2VX {
 	void S2VX::run() {
 		Display display;
 		Scripting scripting;
-		auto& elements = scripting.evaluate(script);
+		auto elements = scripting.evaluate(script);
 		auto now = static_cast<float>(glfwGetTime());
 		auto previous = now;
 		auto delta = 0.0f;
@@ -24,8 +24,8 @@ namespace S2VX {
 			total += delta;
 			// Convert to milliseconds
 			const auto milliseconds = static_cast<int>(total * 1000.0f);
-			elements.update(milliseconds);
-			elements.draw();
+			elements->update(milliseconds);
+			elements->draw();
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			glfwSwapBuffers(display.getWindow());
 			glfwPollEvents();

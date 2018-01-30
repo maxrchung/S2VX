@@ -2,6 +2,16 @@
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
+	NoteConfiguration::NoteConfiguration()
+		: approach{ 2000 },
+		color{ glm::vec3{ 1.0f, 1.0f, 1.0f } },
+		distance{ 3.0f },
+		fade{ 0.8f },
+		fadeIn{ 500 },
+		fadeOut{ 100 },
+		feather{ 0.01f },
+		position{ glm::vec2{ 0.0f, 0.0f }},
+		thickness{ 0.1f } {}
 	void NoteConfiguration::setApproach(const int pApproach) {
 		validateTime(pApproach);
 		approach = pApproach;

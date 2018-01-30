@@ -19,14 +19,13 @@ namespace S2VX {
 	// Structure for holding and handling all elements returned from Scripting evaluate()
 	class Elements {
 	public:
-		explicit Elements();
+		Elements();
 		Back* const getBack() { return back.get(); }
 		Camera* const getCamera() { return camera.get(); }
 		Grid* const getGrid() { return grid.get(); }
 		Notes* const getNotes() { return notes.get(); }
 		NoteConfiguration& getNoteConfiguration() { return noteConfiguration; }
 		Sprites* const getSprites() { return sprites.get(); }
-		Shader* const getLineShader() { return lineShader.get(); }
 		Shader* const getRectangleShader() { return rectangleShader.get(); }
 		Shader* const getImageShader() { return imageShader.get(); }
 		std::unordered_map<std::string, std::unique_ptr<Texture>>& getTextures() { return textures; }
@@ -45,9 +44,9 @@ namespace S2VX {
 		// Tracks current note config
 		NoteConfiguration noteConfiguration;
 		// Tracks loaded textures
-		std::unique_ptr<Shader> lineShader = std::make_unique<Shader>("Line.VertexShader", "Line.FragmentShader");
-		std::unique_ptr<Shader> rectangleShader = std::make_unique<Shader>("Rectangle.VertexShader", "Rectangle.FragmentShader");
-		std::unique_ptr<Shader> imageShader = std::make_unique<Shader>("Image.VertexShader", "Image.FragmentShader");
+		std::unique_ptr<Shader> lineShader;
+		std::unique_ptr<Shader> rectangleShader;
+		std::unique_ptr<Shader> imageShader;
 		std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
 	};
 }

@@ -4,7 +4,11 @@
 #include <glad/glad.h>
 namespace S2VX {
 	Grid::Grid(Shader* const pLineShader)
-		: lineShader{ pLineShader } {
+		: color{ glm::vec3{ 1.0f, 1.0f, 1.0f } },
+		fade{ 1.0f },
+		feather{ 0.01f },
+		lineShader{ pLineShader },
+		thickness{ 0.1f } {
 		glGenVertexArrays(1, &linesVertexArray);
 		glGenBuffers(1, &linesVertexBuffer);
 	}

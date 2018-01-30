@@ -2,6 +2,8 @@
 #include "Easing.hpp"
 #include <algorithm>
 namespace S2VX {
+	Element::Element()
+		: nextActive{ 0 } {}
 	void Element::addCommand(std::unique_ptr<Command>&& command) {
 		commands.push_back(std::move(command));
 	}

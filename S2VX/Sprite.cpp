@@ -8,7 +8,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
 	Sprite::Sprite(const Texture* const pTexture, Shader* const pImageShader)
-		: texture{ pTexture }, imageShader{ pImageShader } {
+		: color{ glm::vec3{ 1.0f, 1.0f, 1.0f }},
+		fade{ 1.0f },
+		imageShader{ pImageShader },
+		position{ glm::vec2{ 0.0f, 0.0f }},
+		rotation{ 0.0f },
+		scale{ glm::vec2{ 1.0f, 1.0f} },
+		texture{ pTexture } {
 		glGenVertexArrays(1, &imageVertexArray);
 		glGenBuffers(1, &imageVertexBuffer);
 		glGenBuffers(1, &imageElementBuffer);
