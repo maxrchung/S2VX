@@ -117,7 +117,7 @@ namespace S2VX {
 		if (textures.find(path) == textures.end()) {
 			textures[path] = std::make_unique<Texture>(path);
 		}
-		elements->getSprites()->addSprite(std::make_unique<Sprite>(textures[path].get(), elements->getRectangleShader()));
+		elements->getSprites()->addSprite(std::make_unique<Sprite>(textures[path].get(), elements->getImageShader()));
 	}
 	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);

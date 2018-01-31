@@ -10,8 +10,8 @@ namespace S2VX {
 		explicit Sprite(const Texture* const pTexture, Shader* const pImageShader);
 		// Cleanup OpenGL objects
 		~Sprite();
-		const int getEnd() const { return start; }
-		const int getStart() const { return end; }
+		const int getEnd() const { return end; }
+		const int getStart() const { return start; }
 		void draw(const Camera& camera);
 		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }

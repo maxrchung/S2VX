@@ -9,7 +9,6 @@ namespace S2VX {
 		void addNote(std::unique_ptr<Note>&& note);
 		void draw(const Camera& camera);
 		void update(const int time);
-		void updateActives(const int time);
 		void sort();
 	private:
 		NoteUniquePointerComparison comparison;
