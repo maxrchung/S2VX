@@ -10,6 +10,10 @@ namespace S2VX {
 		validateSpriteScale(startScale);
 		validateSpriteScale(endScale);
 	}
+	void SpriteScaleCommand::update(const float easing) {
+		const auto scale = glm::mix(startScale, endScale, easing);
+		sprite->setScale(scale);
+	}
 	void SpriteScaleCommand::validateSpriteScale(const glm::vec2& scale) const {
 		if (scale.x < 0.0f || scale.y < 0.0f) {
 			auto message = std::stringstream();
@@ -17,9 +21,5 @@ namespace S2VX {
 				<< std::to_string(scale.x) << ')';
 			throw ScriptError(message.str());
 		}
-	}
-	void SpriteScaleCommand::update(const float easing) {
-		const auto scale = glm::mix(startScale, endScale, easing);
-		sprite->setScale(scale);
 	}
 }

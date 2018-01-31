@@ -6,7 +6,6 @@ namespace S2VX {
 	class SpriteCommand : public Command {
 	public:
 		explicit SpriteCommand(Sprite* const pSprite, const int start, const int end, const EasingType easing);
-		virtual ~SpriteCommand() {};
 		virtual void update(const float easing) = 0;
 	protected:
 		Sprite* const sprite;

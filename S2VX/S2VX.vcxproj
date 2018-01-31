@@ -177,6 +177,7 @@
     <ClInclude Include="CameraZoomCommand.hpp" />
     <ClInclude Include="CircularQueue.hpp" />
     <ClInclude Include="CommandUniquePointerComparison.hpp" />
+    <ClInclude Include="CursorCommand.hpp" />
     <ClInclude Include="GridColorCommand.hpp" />
     <ClInclude Include="GridFadeCommand.hpp" />
     <ClInclude Include="GridFeatherCommand.hpp" />

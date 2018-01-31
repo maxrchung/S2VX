@@ -9,13 +9,13 @@ namespace S2VX {
 		validateSpriteFade(startFade);
 		validateSpriteFade(endFade);
 	}
+	void SpriteFadeCommand::update(const float easing) {
+		const auto fade = glm::mix(startFade, endFade, easing);
+		sprite->setFade(fade);
+	}
 	void SpriteFadeCommand::validateSpriteFade(const float fade) const {
 		if (fade < 0.0f || fade > 1.0f) {
 			throw ScriptError("Sprite fade must be >= 0 and <= 1. Given: " + std::to_string(fade));
 		}
-	}
-	void SpriteFadeCommand::update(const float easing) {
-		const auto fade = glm::mix(startFade, endFade, easing);
-		sprite->setFade(fade);
 	}
 }

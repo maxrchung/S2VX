@@ -302,6 +302,9 @@
     <ClInclude Include="SpriteRotateCommand.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
+    <ClInclude Include="CursorCommand.hpp">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.chai">
