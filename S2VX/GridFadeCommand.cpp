@@ -2,7 +2,7 @@
 #include "Grid.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
-	GridFadeCommand::GridFadeCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartFade, const float pEndFade)
+	GridFadeCommand::GridFadeCommand(Grid& grid, const int start, const int end, const EasingType easing, const float pStartFade, const float pEndFade)
 		: GridCommand{ grid, start, end, easing },
 		startFade{ pStartFade },
 		endFade{ pEndFade } {
@@ -16,6 +16,6 @@ namespace S2VX {
 	}
 	void GridFadeCommand::update(const float easing) {
 		const auto fade = glm::mix(startFade, endFade, easing);
-		grid->setFade(fade);
+		grid.setFade(fade);
 	}
 }

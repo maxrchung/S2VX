@@ -3,7 +3,7 @@
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
-	CursorColorCommand::CursorColorCommand(Cursor* cursor, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
+	CursorColorCommand::CursorColorCommand(Cursor& cursor, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
 		: CursorCommand{ cursor, start, end, easing },
 		endColor{ glm::vec3{ endR, endG, endB } },
 		startColor{ glm::vec3{ startR, startG, startB } } {
@@ -12,7 +12,7 @@ namespace S2VX {
 	}
 	void CursorColorCommand::update(const float easing) {
 		const auto color = glm::mix(startColor, endColor, easing);
-		cursor->setColor(color);
+		cursor.setColor(color);
 	}
 	void CursorColorCommand::validateCursorColor(const glm::vec3& color) {
 		if (color.r < 0.0f || color.r > 1.0f ||

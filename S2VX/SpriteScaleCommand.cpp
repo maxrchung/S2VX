@@ -3,7 +3,7 @@
 #include "Sprite.hpp"
 #include <sstream>
 namespace S2VX {
-	SpriteScaleCommand::SpriteScaleCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float pStartScaleX, const float pStartScaleY, const float pEndScaleX, const float pEndScaleY)
+	SpriteScaleCommand::SpriteScaleCommand(Sprite& sprite, const int start, const int end, const EasingType easing, const float pStartScaleX, const float pStartScaleY, const float pEndScaleX, const float pEndScaleY)
 		: SpriteCommand{ sprite, start, end, easing },
 		startScale{ glm::vec2{ pStartScaleX, pStartScaleY } },
 		endScale{ glm::vec2{ pEndScaleX, pEndScaleY } } {
@@ -12,7 +12,7 @@ namespace S2VX {
 	}
 	void SpriteScaleCommand::update(const float easing) {
 		const auto scale = glm::mix(startScale, endScale, easing);
-		sprite->setScale(scale);
+		sprite.setScale(scale);
 	}
 	void SpriteScaleCommand::validateSpriteScale(const glm::vec2& scale) const {
 		if (scale.x < 0.0f || scale.y < 0.0f) {

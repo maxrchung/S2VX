@@ -3,7 +3,7 @@
 #include "Sprite.hpp"
 #include <sstream>
 namespace S2VX {
-	SpriteColorCommand::SpriteColorCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
+	SpriteColorCommand::SpriteColorCommand(Sprite& sprite, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
 		: SpriteCommand{ sprite, start, end, easing },
 		startColor{ startR, startG, startB },
 		endColor{ endR, endG, endB } {
@@ -24,6 +24,6 @@ namespace S2VX {
 	}
 	void SpriteColorCommand::update(const float easing) {
 		const auto color = glm::mix(startColor, endColor, easing);
-		sprite->setColor(color);
+		sprite.setColor(color);
 	}
 }

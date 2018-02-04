@@ -2,7 +2,7 @@
 #include "Grid.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
-	GridFeatherCommand::GridFeatherCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartFeather, const float pEndFeather)
+	GridFeatherCommand::GridFeatherCommand(Grid& grid, const int start, const int end, const EasingType easing, const float pStartFeather, const float pEndFeather)
 		: GridCommand{ grid, start, end, easing },
 		startFeather{ pStartFeather },
 		endFeather{ pEndFeather } {
@@ -16,6 +16,6 @@ namespace S2VX {
 	}
 	void GridFeatherCommand::update(const float easing) {
 		const auto feather = glm::mix(startFeather, endFeather, easing);
-		grid->setFeather(feather);
+		grid.setFeather(feather);
 	}
 }

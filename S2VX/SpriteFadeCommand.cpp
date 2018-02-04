@@ -2,7 +2,7 @@
 #include "ScriptError.hpp"
 #include "Sprite.hpp"
 namespace S2VX {
-	SpriteFadeCommand::SpriteFadeCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float pStartFade, const float pEndFade)
+	SpriteFadeCommand::SpriteFadeCommand(Sprite& sprite, const int start, const int end, const EasingType easing, const float pStartFade, const float pEndFade)
 		: SpriteCommand{ sprite, start, end, easing },
 		startFade{ pStartFade },
 		endFade{ pEndFade } {
@@ -11,7 +11,7 @@ namespace S2VX {
 	}
 	void SpriteFadeCommand::update(const float easing) {
 		const auto fade = glm::mix(startFade, endFade, easing);
-		sprite->setFade(fade);
+		sprite.setFade(fade);
 	}
 	void SpriteFadeCommand::validateSpriteFade(const float fade) const {
 		if (fade < 0.0f || fade > 1.0f) {

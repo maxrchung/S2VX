@@ -3,7 +3,7 @@
 namespace S2VX {
 	class GridThicknessCommand : public GridCommand {
 	public:
-		explicit GridThicknessCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float pStartThickness, const float pEndThickness);
+		explicit GridThicknessCommand(Grid& grid, const int start, const int end, const EasingType easing, const float pStartThickness, const float pEndThickness);
 		void update(const float easing);
 	private:
 		void validateGridThickness(const float thickness) const;

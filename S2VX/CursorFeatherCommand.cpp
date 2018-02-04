@@ -2,7 +2,7 @@
 #include "Cursor.hpp"
 #include "ScriptError.hpp"
 namespace S2VX {
-	CursorFeatherCommand::CursorFeatherCommand(Cursor* cursor, const int start, const int end, const EasingType easing, const float pStartFeather, const float pEndFeather)
+	CursorFeatherCommand::CursorFeatherCommand(Cursor& cursor, const int start, const int end, const EasingType easing, const float pStartFeather, const float pEndFeather)
 		: CursorCommand{ cursor, start, end, easing },
 		endFeather{ pEndFeather },
 		startFeather{ pStartFeather } {
@@ -11,7 +11,7 @@ namespace S2VX {
 	}
 	void CursorFeatherCommand::update(const float easing) {
 		const auto feather = glm::mix(startFeather, endFeather, easing);
-		cursor->setFeather(feather);
+		cursor.setFeather(feather);
 	}
 	void CursorFeatherCommand::validateCursorFeather(const float feather) {
 		if (feather < 0.0f) {

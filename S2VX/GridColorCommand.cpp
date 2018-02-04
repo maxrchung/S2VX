@@ -3,7 +3,7 @@
 #include "ScriptError.hpp"
 #include <sstream>
 namespace S2VX {
-	GridColorCommand::GridColorCommand(Grid* const grid, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
+	GridColorCommand::GridColorCommand(Grid& grid, const int start, const int end, const EasingType easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB)
 		: GridCommand{ grid, start, end, easing },
 		startColor{ startR, startG, startB },
 		endColor{ endR, endG, endB } {
@@ -24,6 +24,6 @@ namespace S2VX {
 	}
 	void GridColorCommand::update(const float easing) {
 		auto color = glm::mix(startColor, endColor, easing);
-		grid->setColor(color);
+		grid.setColor(color);
 	}
 }
