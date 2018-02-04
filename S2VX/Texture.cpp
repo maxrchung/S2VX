@@ -3,9 +3,9 @@
 #include <glad/glad.h>
 #include <stb_image.h>
 namespace S2VX {
+	// I copied this manually after loading blank.png :blobsweats:
 	const unsigned char* Texture::blankData = reinterpret_cast<unsigned char*>("ÿÿÿýýýýÝ$’‹\\Ý\x1f");
-	Texture::Texture(const std::string& pPath)
-		: path{ pPath } {
+	Texture::Texture(const std::string& path) {
 		glGenTextures(1, &imageTexture);
 		glBindTexture(GL_TEXTURE_2D, imageTexture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -37,5 +37,16 @@ namespace S2VX {
 	}
 	Texture::~Texture() {
 		glDeleteTextures(1, &imageTexture);
+	}
+	Texture::Texture(Texture&& other) 
+		: imageTexture{ other.imageTexture } {
+		imageTexture = 0;
+	}
+	Texture& Texture::operator=(Texture&& other) {
+		if (this != &other) {
+			imageTexture = other.imageTexture;
+			other.imageTexture = 0;
+		}
+		return *this;
 	}
 }

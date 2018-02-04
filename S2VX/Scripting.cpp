@@ -140,9 +140,9 @@ namespace S2VX {
 		auto& textures = elements->getTextures();
 		// Add texture if it is not in map
 		if (textures.find(path) == textures.end()) {
-			textures[path] = std::make_unique<Texture>(path);
+			textures[path] = Texture(path);
 		}
-		elements->getSprites()->addSprite(std::make_unique<Sprite>(*elements->getCamera(), *textures[path].get(), *elements->getImageShader()));
+		elements->getSprites()->addSprite(std::make_unique<Sprite>(*elements->getCamera(), textures[path], *elements->getImageShader()));
 	}
 	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);

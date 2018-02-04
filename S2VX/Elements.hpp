@@ -31,7 +31,7 @@ namespace S2VX {
 		Sprites* const getSprites() { return sprites.get(); }
 		Shader* const getRectangleShader() { return rectangleShader.get(); }
 		Shader* const getImageShader() { return imageShader.get(); }
-		std::unordered_map<std::string, std::unique_ptr<Texture>>& getTextures() { return textures; }
+		std::unordered_map<std::string, Texture>& getTextures() { return textures; }
 		void draw();
 		void update(const int time);
 		// Sorts Commands/Elements into order by start time
@@ -54,6 +54,6 @@ namespace S2VX {
 		std::vector<Element*> all;
 		// Tracks current note config
 		NoteConfiguration noteConfiguration;
-		std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
+		std::unordered_map<std::string, Texture> textures;
 	};
 }
