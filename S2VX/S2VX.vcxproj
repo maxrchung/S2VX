@@ -137,6 +137,12 @@
     <ClCompile Include="CameraZoomCommand.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandUniquePointerComparison.cpp" />
+    <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="CursorColorCommand.cpp" />
+    <ClCompile Include="CursorCommand.cpp" />
+    <ClCompile Include="CursorFadeCommand.cpp" />
+    <ClCompile Include="CursorFeatherCommand.cpp" />
+    <ClCompile Include="CursorScaleCommand.cpp" />
     <ClCompile Include="GridColorCommand.cpp" />
     <ClCompile Include="GridCommand.cpp" />
     <ClCompile Include="GridFadeCommand.cpp" />
@@ -177,7 +183,12 @@
     <ClInclude Include="CameraZoomCommand.hpp" />
     <ClInclude Include="CircularQueue.hpp" />
     <ClInclude Include="CommandUniquePointerComparison.hpp" />
+    <ClInclude Include="Cursor.hpp" />
+    <ClInclude Include="CursorColorCommand.hpp" />
     <ClInclude Include="CursorCommand.hpp" />
+    <ClInclude Include="CursorFadeCommand.hpp" />
+    <ClInclude Include="CursorFeatherCommand.hpp" />
+    <ClInclude Include="CursorScaleCommand.hpp" />
     <ClInclude Include="GridColorCommand.hpp" />
     <ClInclude Include="GridFadeCommand.hpp" />
     <ClInclude Include="GridFeatherCommand.hpp" />
@@ -218,6 +229,8 @@
     <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Cursor.FragmentShader" />
+    <None Include="Cursor.VertexShader" />
     <None Include="Line.VertexShader" />
     <None Include="Image.FragmentShader" />
     <None Include="Image.VertexShader" />

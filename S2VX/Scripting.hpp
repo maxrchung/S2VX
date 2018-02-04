@@ -7,11 +7,15 @@ namespace S2VX {
 	class Scripting {
 	public:
 		// Initializing scripting
-		Scripting();
+		Scripting(const Display& pDisplay);
 		void BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY);
 		void CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate);
 		void CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale);
+		void CursorColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
+		void CursorFade(const int start, const int end, const int easing, const float startFade, const float endFade);
+		void CursorFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
+		void CursorScale(const int start, const int end, int easing, const float startScale, const float endScale);
 		// Evaluates chaiscript
 		Elements* const evaluate(const std::string& path);
 		void GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
@@ -33,6 +37,7 @@ namespace S2VX {
 		void SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation);
 		void SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY);
 	private:
+		const Display& display;
 		chaiscript::ChaiScript chai;
 		std::unique_ptr<Elements> elements;
 	};

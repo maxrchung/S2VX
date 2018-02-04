@@ -9,7 +9,7 @@ namespace S2VX {
 		void addSprite(std::unique_ptr<Sprite>&& sprite);
 		// Used during Scripting to set last sprite
 		Sprite* const getLastSprite();
-		void draw(const Camera& camera);
+		void draw();
 		void update(const int time);
 		void sort();
 	private:

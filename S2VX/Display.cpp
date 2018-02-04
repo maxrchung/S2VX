@@ -16,25 +16,26 @@ namespace S2VX {
 		const auto mode = glfwGetVideoMode(monitor);
 		const auto monitorWidth = mode->width;
 		const auto monitorHeight = mode->height;
-		auto windowWidth = monitorHeight;
+		width = monitorHeight;
 		// Set screenWidth to be square and the shortest side
 		if (monitorWidth < monitorHeight) {
-			windowWidth = monitorWidth;
+			width = monitorWidth;
 		}
 		// glfw window creation
-		window = glfwCreateWindow(windowWidth, windowWidth, "S2VX", NULL, NULL);
+		window = glfwCreateWindow(width, width, "S2VX", NULL, NULL);
 		if (window == NULL) {
 			throw ScriptError("Failed to create GLFW window.");
 			glfwTerminate();
 		}
 		glfwMakeContextCurrent(window);
 		// GLFW_DECORATED sets window position to top left corner, need to reset window to middle of screen
-		const auto midX = monitorWidth / 2.0f - windowWidth / 2.0f;
+		const auto midX = monitorWidth / 2.0f - width / 2.0f;
 		glfwSetWindowPos(window, static_cast<int>(midX), 0);
 		// glad: load all OpenGL function pointers
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			throw ScriptError("Failed to initialize GLAD.");
 		}
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}

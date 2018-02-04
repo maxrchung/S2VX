@@ -9,7 +9,7 @@ namespace S2VX {
 	}
 	void S2VX::run() {
 		Display display;
-		Scripting scripting;
+		Scripting scripting(display);
 		auto elements = scripting.evaluate(script);
 		auto now = static_cast<float>(glfwGetTime());
 		auto previous = now;

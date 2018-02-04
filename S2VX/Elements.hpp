@@ -2,6 +2,7 @@
 // Includes necessary for unique_ptr to access destructor(?)
 #include "Back.hpp"
 #include "Camera.hpp"
+#include "Cursor.hpp"
 #include "Grid.hpp"
 #include "NoteConfiguration.hpp"
 #include "Notes.hpp"
@@ -13,15 +14,17 @@
 #include <vector>
 namespace S2VX {
 	class Command;
+	class Display;
 	class Element;
 	class Note;
 	class Sprite;
 	// Structure for holding and handling all elements returned from Scripting evaluate()
 	class Elements {
 	public:
-		Elements();
+		Elements(const Display& display);
 		Back* const getBack() { return back.get(); }
 		Camera* const getCamera() { return camera.get(); }
+		Cursor* const getCursor() { return cursor.get(); }
 		Grid* const getGrid() { return grid.get(); }
 		Notes* const getNotes() { return notes.get(); }
 		NoteConfiguration& getNoteConfiguration() { return noteConfiguration; }
@@ -34,8 +37,16 @@ namespace S2VX {
 		// Sorts Commands/Elements into order by start time
 		void sort();
 	private:
-		std::unique_ptr<Back> back;
+		// Shaders need to be loaded before elements
+		std::unique_ptr<Shader> cursorShader;
+		std::unique_ptr<Shader> lineShader;
+		std::unique_ptr<Shader> rectangleShader;
+		std::unique_ptr<Shader> imageShader;
+		// Camera needs to be before some elements
 		std::unique_ptr<Camera> camera;
+		// Tracks loaded textures
+		std::unique_ptr<Back> back;
+		std::unique_ptr<Cursor> cursor;
 		std::unique_ptr<Grid> grid;
 		std::unique_ptr<Notes> notes;
 		std::unique_ptr<Sprites> sprites;
@@ -43,10 +54,6 @@ namespace S2VX {
 		std::vector<Element*> all;
 		// Tracks current note config
 		NoteConfiguration noteConfiguration;
-		// Tracks loaded textures
-		std::unique_ptr<Shader> lineShader;
-		std::unique_ptr<Shader> rectangleShader;
-		std::unique_ptr<Shader> imageShader;
 		std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
 	};
 }

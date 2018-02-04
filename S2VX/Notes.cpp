@@ -3,9 +3,9 @@ namespace S2VX {
 	void Notes::addNote(std::unique_ptr<Note>&& note) {
 		notes.push_back(std::move(note));
 	}
-	void Notes::draw(const Camera& camera) {
+	void Notes::draw() {
 		for (auto active : actives) {
-			notes[active]->draw(camera);
+			notes[active]->draw();
 		}
 	}
 	void Notes::update(const int time) {

@@ -3,6 +3,10 @@
 #include "CameraMoveCommand.hpp"
 #include "CameraRotateCommand.hpp"
 #include "CameraZoomCommand.hpp"
+#include "CursorColorCommand.hpp"
+#include "CursorFadeCommand.hpp"
+#include "CursorFeatherCommand.hpp"
+#include "CursorScaleCommand.hpp"
 #include "Elements.hpp"
 #include "GridColorCommand.hpp"
 #include "GridFadeCommand.hpp"
@@ -17,12 +21,17 @@
 #include "SpriteScaleCommand.hpp"
 #include "Texture.hpp"
 namespace S2VX {
-	Scripting::Scripting() {
+	Scripting::Scripting(const Display& pDisplay)
+		: display{ pDisplay } {
 		chai.add(chaiscript::var(this), "S2VX");
 		chai.add(chaiscript::fun(&Scripting::BackColor, this), "BackColor");
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
 		chai.add(chaiscript::fun(&Scripting::CameraRotate, this), "CameraRotate");
 		chai.add(chaiscript::fun(&Scripting::CameraZoom, this), "CameraZoom");
+		chai.add(chaiscript::fun(&Scripting::CursorColor, this), "CursorColor");
+		chai.add(chaiscript::fun(&Scripting::CursorFade, this), "CursorFade");
+		chai.add(chaiscript::fun(&Scripting::CursorFeather, this), "CursorFeather");
+		chai.add(chaiscript::fun(&Scripting::CursorScale, this), "CursorScale");
 		chai.add(chaiscript::fun(&Scripting::GridColor, this), "GridColor");
 		chai.add(chaiscript::fun(&Scripting::GridFade, this), "GridFade");
 		chai.add(chaiscript::fun(&Scripting::GridFeather, this), "GridFeather");
@@ -45,7 +54,7 @@ namespace S2VX {
 	Elements* const Scripting::evaluate(const std::string& path) {
 		// Create and manipulate a new Elements object
 		// Choosing to use unique pointer so Shaders aren't destroyed during copy
-		elements = std::make_unique<Elements>();
+		elements = std::make_unique<Elements>(display);
 		chai.use(path);
 		elements->sort();
 		return elements.get();
@@ -65,6 +74,22 @@ namespace S2VX {
 	void Scripting::CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale) {
 		const auto convert = static_cast<EasingType>(easing);
 		elements->getCamera()->addCommand(std::make_unique<CameraZoomCommand>(elements->getCamera(), start, end, convert, startScale, endScale));
+	}
+	void Scripting::CursorColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
+		const auto convert = static_cast<EasingType>(easing);
+		elements->getCursor()->addCommand(std::make_unique<CursorColorCommand>(elements->getCursor(), start, end, convert, startR, startG, startB, endR, endG, endB));
+	}
+	void Scripting::CursorFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
+		const auto convert = static_cast<EasingType>(easing);
+		elements->getCursor()->addCommand(std::make_unique<CursorFadeCommand>(elements->getCursor(), start, end, convert, startFade, endFade));
+	}
+	void Scripting::CursorFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather) {
+		const auto convert = static_cast<EasingType>(easing);
+		elements->getCursor()->addCommand(std::make_unique<CursorFeatherCommand>(elements->getCursor(), start, end, convert, startFeather, endFeather));
+	}
+	void Scripting::CursorScale(const int start, const int end, int easing, const float startScale, const float endScale) {
+		const auto convert = static_cast<EasingType>(easing);
+		elements->getCursor()->addCommand(std::make_unique<CursorScaleCommand>(elements->getCursor(), start, end, convert, startScale, endScale));
 	}
 	void Scripting::GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
@@ -90,7 +115,7 @@ namespace S2VX {
 		noteConfiguration.setEnd(time);
 		const auto position = glm::vec2{ x, y };
 		noteConfiguration.setPosition(position);
-		elements->getNotes()->addNote(std::make_unique<Note>(noteConfiguration, elements->getRectangleShader()));
+		elements->getNotes()->addNote(std::make_unique<Note>(*elements->getCamera(), noteConfiguration, *elements->getRectangleShader()));
 	}
 	void Scripting::NoteColor(const int r, const int g, const int b) {
 		const auto color = glm::vec3{ r, g, b };
@@ -117,7 +142,7 @@ namespace S2VX {
 		if (textures.find(path) == textures.end()) {
 			textures[path] = std::make_unique<Texture>(path);
 		}
-		elements->getSprites()->addSprite(std::make_unique<Sprite>(textures[path].get(), elements->getImageShader()));
+		elements->getSprites()->addSprite(std::make_unique<Sprite>(*elements->getCamera(), *textures[path].get(), *elements->getImageShader()));
 	}
 	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);

@@ -8,9 +8,8 @@ namespace S2VX {
 		const glm::vec3& getPosition() const { return position; }
 		const glm::mat4& getProjection() const { return projection; }
 		const glm::mat4& getView() const { return view; }
+		float getRoll() const { return roll; }
 		float getScale() const { return scale; }
-		// Camera doesn't need to draw
-		void draw(const Camera& camera) {};
 		// Reposition camera
 		void move(const glm::vec3& pPosition);
 		// Global roll CCW in degrees

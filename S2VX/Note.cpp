@@ -4,24 +4,26 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
-	Note::Note(const NoteConfiguration& pConfiguration, Shader* pSquareShader)
-		: configuration{ pConfiguration }, squareShader{ pSquareShader },
+	Note::Note(Camera& pCamera, const NoteConfiguration& pConfiguration, Shader& pShader)
+		: camera{ pCamera },
+		configuration{ pConfiguration }, 
+		shader{ pShader },
 		lines{
 			RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
 			RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),
 			RectanglePoints(-0.5f, 0.0f, RectangleOrientation::Vertical),
 			RectanglePoints(0.0f, 0.5f, RectangleOrientation::Horizontal),
 		} {
-		glGenVertexArrays(1, &squareVertexArray);
-		glGenBuffers(1, &squareVertexBuffer);
+		glGenVertexArrays(1, &vertexArray);
+		glGenBuffers(1, &vertexBuffer);
 	}
 	Note::~Note() {
-		glDeleteVertexArrays(1, &squareVertexArray);
-		glDeleteBuffers(1, &squareVertexBuffer);
+		glDeleteVertexArrays(1, &vertexArray);
+		glDeleteBuffers(1, &vertexBuffer);
 	}
-	void Note::draw(const Camera& camera) {
-		glBindVertexArray(squareVertexArray);
-		glBindBuffer(GL_ARRAY_BUFFER, squareVertexBuffer);
+	void Note::draw() {
+		glBindVertexArray(vertexArray);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 		const auto thickness = configuration.getThickness();
 		for (const auto& line : lines) {
 			const auto points = line.getPoints();
@@ -33,31 +35,31 @@ namespace S2VX {
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 			glEnableVertexAttribArray(1);
 			// Static square
-			squareShader->use();
-			squareShader->setVec3("color", configuration.getColor());
-			squareShader->setFloat("fade", fade);
-			squareShader->setFloat("feather", configuration.getFeather());
+			shader.use();
+			shader.setVec3("color", configuration.getColor());
+			shader.setFloat("fade", fade);
+			shader.setFloat("feather", configuration.getFeather());
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2{ thickness, 0.5f + thickness });
+				shader.setVec2("thickness", glm::vec2{ thickness, 0.5f + thickness });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2{ 0.5f + thickness, thickness });
+				shader.setVec2("thickness", glm::vec2{ 0.5f + thickness, thickness });
 			}
 			glm::mat4 model;
 			model = glm::translate(model, glm::vec3{ configuration.getPosition(), 0.0f });
-			squareShader->setMat4("model", model);
-			squareShader->setMat4("projection", camera.getProjection());
-			squareShader->setMat4("view", camera.getView());
+			shader.setMat4("model", model);
+			shader.setMat4("projection", camera.getProjection());
+			shader.setMat4("view", camera.getView());
 			glDrawArrays(GL_TRIANGLES, 0, points.size() / 4);
 			// Approaching square
 			// Goal is to keep line width the same, so we scale the point positions but not the widths
 			const auto scaled = line.getScaled(scale);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * scaled.size(), scaled.data(), GL_DYNAMIC_DRAW);
 			if (line.getOrientation() == RectangleOrientation::Vertical) {
-				squareShader->setVec2("lengths", glm::vec2{ thickness, 0.5f * scale + thickness });
+				shader.setVec2("thickness", glm::vec2{ thickness, 0.5f * scale + thickness });
 			}
 			else {
-				squareShader->setVec2("lengths", glm::vec2{ 0.5f * scale + thickness, thickness });
+				shader.setVec2("thickness", glm::vec2{ 0.5f * scale + thickness, thickness });
 			}
 			glDrawArrays(GL_TRIANGLES, 0, scaled.size() / 4);
 		}

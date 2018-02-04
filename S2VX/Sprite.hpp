@@ -7,12 +7,12 @@ namespace S2VX {
 	class Texture;
 	class Sprite : public Element{
 	public:
-		explicit Sprite(const Texture* const pTexture, Shader* const pImageShader);
+		explicit Sprite(Camera& pCamera, const Texture& pTexture, Shader& pShader);
 		// Cleanup OpenGL objects
 		~Sprite();
 		const int getEnd() const { return end; }
 		const int getStart() const { return start; }
-		void draw(const Camera& camera);
+		void draw();
 		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }
 		void setPosition(const glm::vec2 pPosition) { position = pPosition; }
@@ -21,15 +21,16 @@ namespace S2VX {
 		// Sprite has a custom sort because to set its start and end values
 		void sort();
 	private:
-		int start;
-		int end;
-		const Texture* const texture;
-		glm::vec3 color;
+		Camera& camera;
+		const Texture& texture;
 		float fade;
 		float rotation;
 		glm::vec2 position;
 		glm::vec2 scale;
-		Shader* const imageShader;
+		glm::vec3 color;
+		int start;
+		int end;
+		Shader& shader;
 		static constexpr float corners[16] = {
 			// Position			// Texture
 			 0.5f,	 0.5f,		1.0f,	1.0f, // TR
@@ -41,8 +42,8 @@ namespace S2VX {
 			0, 1, 3,
 			1, 2, 3
 		};
-		unsigned int imageVertexArray;
-		unsigned int imageVertexBuffer;
-		unsigned int imageElementBuffer;
+		unsigned int vertexArray;
+		unsigned int vertexBuffer;
+		unsigned int elementBuffer;
 	};
 }

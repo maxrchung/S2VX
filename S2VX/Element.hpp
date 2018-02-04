@@ -10,7 +10,6 @@ namespace S2VX {
 	public:
 		Element();
 		virtual ~Element() {};
-		virtual void draw(const Camera& camera) = 0;
 		// Updates list of active commands
 		// Virtual so that Notes/Sprites can perform special update
 		virtual void update(const int time);

@@ -7,7 +7,7 @@ namespace S2VX {
 	public:
 		Notes() {};
 		void addNote(std::unique_ptr<Note>&& note);
-		void draw(const Camera& camera);
+		void draw();
 		void update(const int time);
 		void sort();
 	private:

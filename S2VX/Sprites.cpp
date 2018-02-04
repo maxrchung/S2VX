@@ -2,9 +2,9 @@
 #include "ScriptError.hpp"
 #include <algorithm>
 namespace S2VX {
-	void Sprites::draw(const Camera& camera) {
+	void Sprites::draw() {
 		for (auto active : actives) {
-			sprites[active]->draw(camera);
+			sprites[active]->draw();
 		}
 	}
 	void Sprites::addSprite(std::unique_ptr<Sprite>&& sprite) {

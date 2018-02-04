@@ -9,18 +9,19 @@ namespace S2VX {
 	class Shader;
 	class Note {
 	public:
-		explicit Note(const NoteConfiguration& pConfiguration, Shader* const pSquareShader);
+		explicit Note(Camera& pCamera, const NoteConfiguration& pConfiguration, Shader& pShader);
 		~Note();
 		const NoteConfiguration& getConfiguration() { return configuration; }
-		void draw(const Camera& camera);
+		void draw();
 		void update(const int time);
 	private:
+		Camera& camera;
 		const NoteConfiguration configuration;
+		const std::array<RectanglePoints, 4> lines;
 		float scale;
 		float fade;
-		Shader* const squareShader;
-		std::array<RectanglePoints, 4> lines;
-		unsigned int squareVertexArray;
-		unsigned int squareVertexBuffer;
+		Shader& shader;
+		unsigned int vertexArray;
+		unsigned int vertexBuffer;
 	};
 }

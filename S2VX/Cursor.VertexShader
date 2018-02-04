@@ -2,13 +2,11 @@
 layout (location = 0) in vec2 pPosition;
 layout (location = 1) in vec2 pNormal;
 uniform mat4 model;
-uniform mat4 projection;
-uniform mat4 view;
-uniform vec2 thickness;
+uniform float thickness;
 out vec2 normal;
 void main() {
-	vec4 delta = vec4(pNormal.x * thickness.x, pNormal.y * thickness.y, 0.0f, 0.0f);
+	vec4 delta = vec4(pNormal.x * thickness, pNormal.y * thickness, 0.0f, 0.0f);
 	vec4 pos = vec4(pPosition, 0.0f, 1.0f);
-	gl_Position = projection * view * model * (pos + delta);
+	gl_Position = model * (pos + delta);
 	normal = pNormal;
 }

@@ -40,6 +40,48 @@
     <Filter Include="Source Files\Element">
       <UniqueIdentifier>{fb73121e-c156-4e70-b556-4231bb1f3919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Command\Back">
+      <UniqueIdentifier>{1138cd55-ae13-47eb-8b4b-9d3c7a1d4415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Command\Camera">
+      <UniqueIdentifier>{08614903-2dff-4752-af19-bfda646de761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Command\Cursor">
+      <UniqueIdentifier>{91bdabb7-d340-4a0a-a461-db07c3e82e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Command\Grid">
+      <UniqueIdentifier>{e124f6b2-2cc7-4c49-a8bf-9b9885631f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Command\Sprite">
+      <UniqueIdentifier>{63cb2a26-ff90-4d91-ad68-de7bdde791d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Command\Back">
+      <UniqueIdentifier>{3c2428e9-53a8-47db-a25c-01be1942f0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Command\Camera">
+      <UniqueIdentifier>{b254c17b-9c13-40ec-a5a7-7003736c45be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Command\Cursor">
+      <UniqueIdentifier>{c2f9024f-0c8a-49dd-8aa8-93f33cb6af09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Command\Grid">
+      <UniqueIdentifier>{77213615-1e41-4c64-a61c-42de2f886eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Command\Sprite">
+      <UniqueIdentifier>{31bfa97e-dd0c-4212-8004-e5550809ce81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Element\Sprites">
+      <UniqueIdentifier>{c3b76a30-d10f-443f-99d7-43bb3bc829f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Element\Notes">
+      <UniqueIdentifier>{ef630d01-6b34-492f-9c96-b2137f34dd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Element\Notes">
+      <UniqueIdentifier>{2c6d2b43-0feb-40ee-8581-806c3383fdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Element\Sprites">
+      <UniqueIdentifier>{38045616-7c16-48ee-8261-fe7388426bdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="S2VX.cpp">
@@ -81,20 +123,8 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Notes.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="NoteConfiguration.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Back.cpp">
       <Filter>Source Files\Element</Filter>
@@ -102,71 +132,101 @@
     <ClCompile Include="RectanglePoints.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Note.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="BackCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
     <ClCompile Include="CommandUniquePointerComparison.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="BackColorCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="BackCommand.cpp">
+      <Filter>Source Files\Command\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraCommand.cpp">
+      <Filter>Source Files\Command\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CameraMoveCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CameraRotateCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CameraZoomCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorCommand.cpp">
+      <Filter>Source Files\Command\Cursor</Filter>
     </ClCompile>
     <ClCompile Include="GridColorCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCommand.cpp">
+      <Filter>Source Files\Command\Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridFadeCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridFeatherCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridThicknessCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Grid</Filter>
     </ClCompile>
     <ClCompile Include="SpriteColorCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteCommand.cpp">
+      <Filter>Source Files\Command\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SpriteFadeCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SpriteMoveCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteScaleCommand.cpp">
-      <Filter>Source Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="NoteUniquePointerComparison.cpp">
-      <Filter>Source Files\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteUniquePointerComparison.cpp">
-      <Filter>Source Files\Element</Filter>
+      <Filter>Source Files\Command\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SpriteRotateCommand.cpp">
-      <Filter>Source Files\Command</Filter>
+      <Filter>Source Files\Command\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteScaleCommand.cpp">
+      <Filter>Source Files\Command\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Note.cpp">
+      <Filter>Source Files\Element\Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteConfiguration.cpp">
+      <Filter>Source Files\Element\Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="Notes.cpp">
+      <Filter>Source Files\Element\Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteUniquePointerComparison.cpp">
+      <Filter>Source Files\Element\Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteUniquePointerComparison.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Source Files\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorColorCommand.cpp">
+      <Filter>Source Files\Command\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorFadeCommand.cpp">
+      <Filter>Source Files\Command\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorFeatherCommand.cpp">
+      <Filter>Source Files\Command\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorScaleCommand.cpp">
+      <Filter>Source Files\Command\Cursor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,25 +266,13 @@
     <ClInclude Include="Shader.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.hpp">
-      <Filter>Header Files\Element</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Back.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
     <ClInclude Include="ScriptError.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Notes.hpp">
-      <Filter>Header Files\Element</Filter>
-    </ClInclude>
     <ClInclude Include="CircularQueue.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="NoteConfiguration.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Line.FragmentShader">
@@ -236,74 +284,101 @@
     <ClInclude Include="RectanglePoints.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Note.hpp">
+    <ClInclude Include="Cursor.hpp">
       <Filter>Header Files\Element</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.hpp">
-      <Filter>Header Files\Element</Filter>
+    <ClInclude Include="BackColorCommand.hpp">
+      <Filter>Header Files\Command\Back</Filter>
     </ClInclude>
     <ClInclude Include="BackCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Back</Filter>
     </ClInclude>
     <ClInclude Include="CameraCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMoveCommand.hpp">
+      <Filter>Header Files\Command\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraRotateCommand.hpp">
+      <Filter>Header Files\Command\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraZoomCommand.hpp">
+      <Filter>Header Files\Command\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorCommand.hpp">
+      <Filter>Header Files\Command\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="GridColorCommand.hpp">
+      <Filter>Header Files\Command\Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+    <ClInclude Include="GridFadeCommand.hpp">
+      <Filter>Header Files\Command\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridFeatherCommand.hpp">
+      <Filter>Header Files\Command\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridThicknessCommand.hpp">
+      <Filter>Header Files\Command\Grid</Filter>
     </ClInclude>
     <ClInclude Include="CommandUniquePointerComparison.hpp">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="BackColorCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraMoveCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraRotateCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraZoomCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="GridColorCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="GridFadeCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="GridFeatherCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="GridThicknessCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteColorCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteCommand.hpp">
+      <Filter>Header Files\Command\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SpriteFadeCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SpriteMoveCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteScaleCommand.hpp">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="NoteUniquePointerComparison.hpp">
-      <Filter>Header Files\Element</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteUniquePointerComparison.hpp">
-      <Filter>Header Files\Element</Filter>
+      <Filter>Header Files\Command\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SpriteRotateCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+      <Filter>Header Files\Command\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="CursorCommand.hpp">
-      <Filter>Header Files\Command</Filter>
+    <ClInclude Include="SpriteScaleCommand.hpp">
+      <Filter>Header Files\Command\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Note.hpp">
+      <Filter>Header Files\Element\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteConfiguration.hpp">
+      <Filter>Header Files\Element\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="Notes.hpp">
+      <Filter>Header Files\Element\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteUniquePointerComparison.hpp">
+      <Filter>Header Files\Element\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteUniquePointerComparison.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorColorCommand.hpp">
+      <Filter>Header Files\Command\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorFadeCommand.hpp">
+      <Filter>Header Files\Command\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorFeatherCommand.hpp">
+      <Filter>Header Files\Command\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorScaleCommand.hpp">
+      <Filter>Header Files\Command\Cursor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +398,12 @@
       <Filter>Shaders\Vertex</Filter>
     </None>
     <None Include="Rectangle.FragmentShader">
+      <Filter>Shaders\Fragment</Filter>
+    </None>
+    <None Include="Cursor.VertexShader">
+      <Filter>Shaders\Vertex</Filter>
+    </None>
+    <None Include="Cursor.FragmentShader">
       <Filter>Shaders\Fragment</Filter>
     </None>
   </ItemGroup>
