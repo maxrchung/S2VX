@@ -82,6 +82,17 @@ namespace S2VX {
 	Shader::~Shader() {
 		glDeleteProgram(program);
 	}
+	Shader::Shader(Shader&& other)
+		: program{ other.program } {
+		program = 0;
+	}
+	Shader& Shader::operator=(Shader&& other) {
+		if (this != &other) {
+			program = other.program;
+			other.program = 0;
+		}
+		return *this;
+	}
 	void Shader::checkCompileErrors(const GLuint shader, const std::string& type) {
 		GLint success;
 		GLchar infoLog[1024];

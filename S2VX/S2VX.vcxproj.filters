@@ -201,9 +201,6 @@
     <ClCompile Include="NoteUniquePointerComparison.cpp">
       <Filter>Source Files\Element\Notes</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteUniquePointerComparison.cpp">
-      <Filter>Source Files\Element\Sprites</Filter>
-    </ClCompile>
     <ClCompile Include="Sprites.cpp">
       <Filter>Source Files\Element\Sprites</Filter>
     </ClCompile>
@@ -227,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="CursorScaleCommand.cpp">
       <Filter>Source Files\Command\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComparison.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,9 +362,6 @@
     <ClInclude Include="Sprites.hpp">
       <Filter>Header Files\Element\Sprites</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteUniquePointerComparison.hpp">
-      <Filter>Header Files\Element\Sprites</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.hpp">
       <Filter>Header Files\Element\Sprites</Filter>
     </ClInclude>
@@ -379,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="CursorScaleCommand.hpp">
       <Filter>Header Files\Command\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComparison.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

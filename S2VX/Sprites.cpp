@@ -4,37 +4,37 @@
 namespace S2VX {
 	void Sprites::draw() {
 		for (auto active : actives) {
-			sprites[active]->draw();
+			sprites[active].draw();
 		}
 	}
-	void Sprites::addSprite(std::unique_ptr<Sprite>&& sprite) {
+	void Sprites::addSprite(Sprite&& sprite) {
 		sprites.push_back(std::move(sprite));
 	}
-	Sprite* const Sprites::getLastSprite() {
+	Sprite& Sprites::getLastSprite() {
 		if (sprites.empty()) {
 			throw ScriptError("SpriteBind must be called before other sprite command.");
 		}
-		return sprites.back().get();
+		return sprites.back();
 	}
 	void Sprites::update(const int time) {
 		for (auto active = actives.begin(); active != actives.end(); ) {
-			if (sprites[*active]->getEnd() <= time) {
+			if (sprites[*active].getEnd() <= time) {
 				active = actives.erase(active);
 			}
 			else {
 				++active;
 			}
 		}
-		while (nextActive != sprites.size() && sprites[nextActive]->getStart() <= time) {
+		while (nextActive != sprites.size() && sprites[nextActive].getStart() <= time) {
 			actives.insert(nextActive++);
 		}
 		for (const auto active : actives) {
-			sprites[active]->update(time);
+			sprites[active].update(time);
 		}
 	}
 	void Sprites::sort() {
 		for (auto& sprite : sprites) {
-			sprite->sort();
+			sprite.sort();
 		}
 		std::sort(sprites.begin(), sprites.end(), comparison);
 	}

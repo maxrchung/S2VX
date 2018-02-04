@@ -10,6 +10,8 @@ namespace S2VX {
 		explicit Sprite(Camera& pCamera, const Texture& pTexture, Shader& pShader);
 		// Cleanup OpenGL objects
 		~Sprite();
+		Sprite(Sprite&& other);
+		Sprite& operator=(Sprite&& other);
 		const int getEnd() const { return end; }
 		const int getStart() const { return start; }
 		void draw();
@@ -21,6 +23,8 @@ namespace S2VX {
 		// Sprite has a custom sort because to set its start and end values
 		void sort();
 	private:
+		Sprite(const Sprite&) = delete;
+		Sprite& operator=(const Sprite&) = delete;
 		Camera& camera;
 		const Texture& texture;
 		float fade;
@@ -42,8 +46,8 @@ namespace S2VX {
 			0, 1, 3,
 			1, 2, 3
 		};
+		unsigned int elementBuffer;
 		unsigned int vertexArray;
 		unsigned int vertexBuffer;
-		unsigned int elementBuffer;
 	};
 }

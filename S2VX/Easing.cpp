@@ -16,10 +16,17 @@
 #include <math.h>
 
 namespace S2VX {
-	AHFloat Easing(const EasingType type, const AHFloat value) {
+	AHFloat Easing(const EasingType type, AHFloat value) {
 		// Handles cases where start = end time
 		if (isnan(value)) {
 			return 1;
+		}
+		// Clamp boundaries
+		else if (value > 1.0f) {
+			value = 1.0f;
+		}
+		else if (value < 0.0f) {
+			value = 0.0f;
 		}
 		switch (type) {
 			case EasingType::LinearInterpolation:

@@ -7,18 +7,22 @@ namespace S2VX {
 	public:
 		explicit Grid(Camera& pCamera, Shader& pShader);
 		~Grid();
+		Grid(Grid&& other);
+		Grid& operator=(Grid&& other);
 		void draw();
 		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }
 		void setFeather(const float pFeather) { feather = pFeather; }
 		void setThickness(const float pThickness) { thickness = pThickness; }
 	private:
-		Camera & camera;
+		Grid(const Grid&) = delete;
+		Grid& operator=(const Grid&) = delete;
+		Camera& camera;
 		// https://blog.mapbox.com/drawing-antialiased-lines-with-opengl-8766f34192dc
-		float thickness;
-		float feather;
-		glm::vec3 color;
 		float fade;
+		float feather;
+		float thickness;
+		glm::vec3 color;
 		Shader& shader;
 		unsigned int vertexArray;
 		unsigned int vertexBuffer;

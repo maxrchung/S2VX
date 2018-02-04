@@ -29,8 +29,8 @@ namespace S2VX {
 		Notes* const getNotes() { return notes.get(); }
 		NoteConfiguration& getNoteConfiguration() { return noteConfiguration; }
 		Sprites* const getSprites() { return sprites.get(); }
-		Shader* const getRectangleShader() { return rectangleShader.get(); }
-		Shader* const getImageShader() { return imageShader.get(); }
+		Shader& getRectangleShader() { return rectangleShader; }
+		Shader& getImageShader() { return imageShader; }
 		std::unordered_map<std::string, Texture>& getTextures() { return textures; }
 		void draw();
 		void update(const int time);
@@ -38,10 +38,10 @@ namespace S2VX {
 		void sort();
 	private:
 		// Shaders need to be loaded before elements
-		std::unique_ptr<Shader> cursorShader;
-		std::unique_ptr<Shader> lineShader;
-		std::unique_ptr<Shader> rectangleShader;
-		std::unique_ptr<Shader> imageShader;
+		Shader cursorShader;
+		Shader lineShader;
+		Shader rectangleShader;
+		Shader imageShader;
 		// Camera needs to be before some elements
 		std::unique_ptr<Camera> camera;
 		// Tracks loaded textures

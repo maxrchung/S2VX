@@ -3,14 +3,14 @@
 #include <algorithm>
 namespace S2VX {
 	Elements::Elements(const Display& display) 
-		: cursorShader{ std::make_unique<Shader>("Cursor.VertexShader", "Cursor.FragmentShader") },
-		imageShader{ std::make_unique<Shader>("Image.VertexShader", "Image.FragmentShader") },
-		lineShader{ std::make_unique<Shader>("Line.VertexShader", "Line.FragmentShader") },
-		rectangleShader{ std::make_unique<Shader>("Rectangle.VertexShader", "Rectangle.FragmentShader") },
+		: cursorShader{ "Cursor.VertexShader", "Cursor.FragmentShader" },
+		imageShader{ "Image.VertexShader", "Image.FragmentShader" },
+		lineShader{ "Line.VertexShader", "Line.FragmentShader" },
+		rectangleShader{ "Rectangle.VertexShader", "Rectangle.FragmentShader" },
 		back{ std::make_unique<Back>() },
 		camera{ std::make_unique<Camera>() },
-		cursor{ std::make_unique<Cursor>(*camera.get(), display, *cursorShader.get()) },
-		grid{ std::make_unique<Grid>(*camera.get(), *lineShader.get()) },
+		cursor{ std::make_unique<Cursor>(*camera.get(), display, cursorShader) },
+		grid{ std::make_unique<Grid>(*camera.get(), lineShader) },
 		notes{ std::make_unique<Notes>() },
 		sprites{ std::make_unique<Sprites>() },
 		all{ camera.get(), back.get(), sprites.get(), grid.get(), notes.get(), cursor.get() } {}

@@ -8,6 +8,8 @@ namespace S2VX {
 		Shader::Shader() {}
 		explicit Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = "");
 		~Shader();
+		Shader(Shader&& other);
+		Shader& operator=(Shader&& other);
 		void setBool(const std::string &name, const bool value) const;
 		void setInt(const std::string &name, const int value) const;
 		void setFloat(const std::string &name, const float value) const;
@@ -23,6 +25,8 @@ namespace S2VX {
 		// Use shader
 		void use();
 	private:
+		Shader(const Shader&) = delete;
+		Shader& operator=(const Shader&) = delete;
 		// Checks for compilation/linker errors
 		void checkCompileErrors(const GLuint shader, const std::string& type);
 		unsigned int program;

@@ -115,7 +115,7 @@ namespace S2VX {
 		noteConfiguration.setEnd(time);
 		const auto position = glm::vec2{ x, y };
 		noteConfiguration.setPosition(position);
-		elements->getNotes()->addNote(std::make_unique<Note>(*elements->getCamera(), noteConfiguration, *elements->getRectangleShader()));
+		elements->getNotes()->addNote(std::make_unique<Note>(*elements->getCamera(), noteConfiguration, elements->getRectangleShader()));
 	}
 	void Scripting::NoteColor(const int r, const int g, const int b) {
 		const auto color = glm::vec3{ r, g, b };
@@ -142,26 +142,26 @@ namespace S2VX {
 		if (textures.find(path) == textures.end()) {
 			textures[path] = Texture(path);
 		}
-		elements->getSprites()->addSprite(std::make_unique<Sprite>(*elements->getCamera(), textures[path], *elements->getImageShader()));
+		elements->getSprites()->addSprite(Sprite(*elements->getCamera(), textures[path], elements->getImageShader()));
 	}
 	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites()->getLastSprite()->addCommand(std::make_unique<SpriteColorCommand>(*elements->getSprites()->getLastSprite(), start, end, convert, startR, startG, startB, endR, endG, endB));
+		elements->getSprites()->getLastSprite().addCommand(std::make_unique<SpriteColorCommand>(elements->getSprites()->getLastSprite(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::SpriteFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites()->getLastSprite()->addCommand(std::make_unique<SpriteFadeCommand>(*elements->getSprites()->getLastSprite(), start, end, convert, startFade, endFade));
+		elements->getSprites()->getLastSprite().addCommand(std::make_unique<SpriteFadeCommand>(elements->getSprites()->getLastSprite(), start, end, convert, startFade, endFade));
 	}
 	void Scripting::SpriteMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites()->getLastSprite()->addCommand(std::make_unique<SpriteMoveCommand>(*elements->getSprites()->getLastSprite(), start, end, convert, startX, startY, endX, endY));
+		elements->getSprites()->getLastSprite().addCommand(std::make_unique<SpriteMoveCommand>(elements->getSprites()->getLastSprite(), start, end, convert, startX, startY, endX, endY));
 	}
 	void Scripting::SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites()->getLastSprite()->addCommand(std::make_unique<SpriteRotateCommand>(*elements->getSprites()->getLastSprite(), start, end, convert, startRotation, endRotation));
+		elements->getSprites()->getLastSprite().addCommand(std::make_unique<SpriteRotateCommand>(elements->getSprites()->getLastSprite(), start, end, convert, startRotation, endRotation));
 	}
 	void Scripting::SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites()->getLastSprite()->addCommand(std::make_unique<SpriteScaleCommand>(*elements->getSprites()->getLastSprite(), start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY));
+		elements->getSprites()->getLastSprite().addCommand(std::make_unique<SpriteScaleCommand>(elements->getSprites()->getLastSprite(), start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY));
 	}
 }

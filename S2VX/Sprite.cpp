@@ -36,6 +36,42 @@ namespace S2VX {
 		glDeleteBuffers(1, &vertexBuffer);
 		glDeleteBuffers(1, &elementBuffer);
 	}
+	Sprite::Sprite(Sprite&& other) 
+		: camera{ other.camera },
+		color{ other.color },
+		elementBuffer{ other.elementBuffer },
+		end{ other.end },
+		fade{ other.fade },
+		position{ other.position },
+		rotation{ other.rotation },
+		scale{ other.scale },
+		shader{ other.shader },
+		start{ other.start },
+		texture{ other.texture },
+		vertexArray{ other.vertexArray },
+		vertexBuffer{ other.vertexBuffer } {
+		other.elementBuffer = 0;
+		other.vertexArray = 0;
+		other.vertexBuffer = 0;
+	}
+	Sprite& Sprite::operator=(Sprite&& other) {
+		if (this != &other) {
+			color = other.color;
+			elementBuffer = other.elementBuffer;
+			end = other.end;
+			fade = other.fade;
+			position = other.position;
+			rotation = other.rotation;
+			scale = other.scale;
+			start = other.start;
+			vertexArray = other.vertexArray;
+			vertexBuffer = other.vertexBuffer;
+			other.elementBuffer = 0;
+			other.vertexArray = 0;
+			other.vertexBuffer = 0;
+		}
+		return *this;
+	}
 	void Sprite::draw() {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture.getImageTexture());

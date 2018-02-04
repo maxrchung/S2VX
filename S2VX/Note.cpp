@@ -4,22 +4,42 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 namespace S2VX {
+	const std::array<RectanglePoints, 4>  Note::lines = { RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
+		RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),
+		RectanglePoints(-0.5f, 0.0f, RectangleOrientation::Vertical),
+		RectanglePoints(0.0f, 0.5f, RectangleOrientation::Horizontal) };
 	Note::Note(Camera& pCamera, const NoteConfiguration& pConfiguration, Shader& pShader)
 		: camera{ pCamera },
 		configuration{ pConfiguration }, 
-		shader{ pShader },
-		lines{
-			RectanglePoints(0.5f, 0.0f, RectangleOrientation::Vertical),
-			RectanglePoints(0.0f, -0.5f, RectangleOrientation::Horizontal),
-			RectanglePoints(-0.5f, 0.0f, RectangleOrientation::Vertical),
-			RectanglePoints(0.0f, 0.5f, RectangleOrientation::Horizontal),
-		} {
+		shader{ pShader } {
 		glGenVertexArrays(1, &vertexArray);
 		glGenBuffers(1, &vertexBuffer);
 	}
 	Note::~Note() {
 		glDeleteVertexArrays(1, &vertexArray);
 		glDeleteBuffers(1, &vertexBuffer);
+	}
+	Note::Note(Note&& other) 
+		: camera{ other.camera },
+		configuration{ other.configuration },
+		fade{ other.fade },
+		scale{ other.scale },
+		shader{ other.shader },
+		vertexArray{ other.vertexArray },
+		vertexBuffer{ other.vertexBuffer } {
+		other.vertexArray = 0;
+		other.vertexBuffer = 0;
+	}
+	Note& Note::operator=(Note&& other) {
+		if (this != &other) {
+			fade = other.fade;
+			scale = other.scale;
+			vertexArray = other.vertexArray;
+			vertexBuffer = other.vertexBuffer;
+			other.vertexArray = 0;
+			other.vertexBuffer = 0;
+		}
+		return *this;
 	}
 	void Note::draw() {
 		glBindVertexArray(vertexArray);

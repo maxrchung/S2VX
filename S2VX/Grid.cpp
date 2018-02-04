@@ -13,6 +13,31 @@ namespace S2VX {
 		glGenVertexArrays(1, &vertexArray);
 		glGenBuffers(1, &vertexBuffer);
 	}
+	Grid::Grid(Grid&& other) 
+		: camera{ other.camera },
+		color{ other.color },
+		fade{ other.fade },
+		feather{ other.feather },
+		shader{ other.shader },
+		thickness{ other.thickness },
+		vertexArray{ other.vertexArray },
+		vertexBuffer{ other.vertexBuffer } {
+		other.vertexArray = 0;
+		other.vertexBuffer = 0;
+	}
+	Grid& Grid::operator=(Grid&& other) {
+		if (this != &other) {
+			color = other.color;
+			fade = other.fade;
+			feather = other.feather;
+			thickness = other.thickness;
+			vertexArray = other.vertexArray;
+			vertexBuffer = other.vertexBuffer;
+			other.vertexArray = 0;
+			other.vertexBuffer = 0;
+		}
+		return *this;
+	}
 	Grid::~Grid() {
 		glDeleteVertexArrays(1, &vertexArray);
 		glDeleteBuffers(1, &vertexBuffer);

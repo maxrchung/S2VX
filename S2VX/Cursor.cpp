@@ -7,10 +7,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 namespace S2VX {
+	const RectanglePoints Cursor::cursor = RectanglePoints{ 0.0f, 0.0f, RectangleOrientation::Horizontal };
 	Cursor::Cursor(const Camera& pCamera, const Display& pDisplay, Shader& pShader)
 		: camera{ pCamera },
 		color{ glm::vec3{ 1.0f, 1.0f, 1.0f }},
-		cursor{ RectanglePoints{ 0.0f, 0.0f, RectangleOrientation::Horizontal } },
 		fade{ 1.0f },
 		feather{ 0.005f },
 		scale{ 0.05f },
@@ -31,6 +31,32 @@ namespace S2VX {
 	Cursor::~Cursor() {
 		glDeleteVertexArrays(1, &vertexArray);
 		glDeleteBuffers(1, &vertexBuffer);
+	}
+	Cursor::Cursor(Cursor&& other) 
+		: camera{ other.camera },
+		display{ other.display },
+		fade{ other.fade },
+		feather{ other.feather },
+		scale{ other.scale },
+		color{ other.color },
+		shader{ other.shader },
+		vertexArray{ other.vertexArray },
+		vertexBuffer{ other.vertexBuffer } {
+		other.vertexArray = 0;
+		other.vertexBuffer = 0;
+	}
+	Cursor& Cursor::operator=(Cursor&& other) {
+		if (this != &other) {
+			fade = other.fade;
+			feather = other.feather;
+			scale = other.scale;
+			color = other.color;
+			vertexArray = other.vertexArray;
+			vertexBuffer = other.vertexBuffer;
+			other.vertexArray = 0;
+			other.vertexBuffer = 0;
+		}
+		return *this;
 	}
 	void Cursor::draw() {
 		shader.use();
