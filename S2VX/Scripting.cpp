@@ -115,7 +115,7 @@ namespace S2VX {
 		noteConfiguration.setEnd(time);
 		const auto position = glm::vec2{ x, y };
 		noteConfiguration.setPosition(position);
-		elements->getNotes()->addNote(std::make_unique<Note>(*elements->getCamera(), noteConfiguration, elements->getRectangleShader()));
+		elements->getNotes()->addNote(Note(*elements->getCamera(), noteConfiguration, elements->getRectangleShader()));
 	}
 	void Scripting::NoteColor(const int r, const int g, const int b) {
 		const auto color = glm::vec3{ r, g, b };

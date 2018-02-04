@@ -8,14 +8,9 @@ namespace S2VX {
 		commands.push_back(std::move(command));
 	}
 	void Element::update(const int time) {
-		for (auto active = actives.begin(); active != actives.end(); ) {
-			if (commands[*active]->getEnd() <= time) {
-				active = actives.erase(active);
-			}
-			else {
-				++active;
-			}
-		}
+		// Add new active commands
+		// Run active commands
+		// Remove active commands - This is done last so command end will always trigger
 		while (nextActive != commands.size() && commands[nextActive]->getStart() <= time) {
 			actives.insert(nextActive++);
 		}
@@ -24,6 +19,14 @@ namespace S2VX {
 			const auto interpolation = static_cast<float>(time - command->getStart()) / (command->getEnd() - command->getStart());
 			const auto easing = Easing(command->getEasing(), interpolation);
 			command->update(easing);
+		}
+		for (auto active = actives.begin(); active != actives.end(); ) {
+			if (commands[*active]->getEnd() <= time) {
+				active = actives.erase(active);
+			}
+			else {
+				++active;
+			}
 		}
 	}
 	void Element::sort() {

@@ -151,7 +151,7 @@
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="NoteConfiguration.cpp" />
     <ClCompile Include="Notes.cpp" />
-    <ClCompile Include="NoteUniquePointerComparison.cpp" />
+    <ClCompile Include="NoteComparison.cpp" />
     <ClCompile Include="RectanglePoints.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Easing.cpp" />
@@ -193,7 +193,7 @@
     <ClInclude Include="GridFadeCommand.hpp" />
     <ClInclude Include="GridFeatherCommand.hpp" />
     <ClInclude Include="GridThicknessCommand.hpp" />
-    <ClInclude Include="NoteUniquePointerComparison.hpp" />
+    <ClInclude Include="NoteComparison.hpp" />
     <ClInclude Include="Line.FragmentShader" />
     <ClInclude Include="Back.hpp" />
     <ClInclude Include="BackCommand.hpp" />

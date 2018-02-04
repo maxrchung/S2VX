@@ -198,9 +198,6 @@
     <ClCompile Include="Notes.cpp">
       <Filter>Source Files\Element\Notes</Filter>
     </ClCompile>
-    <ClCompile Include="NoteUniquePointerComparison.cpp">
-      <Filter>Source Files\Element\Notes</Filter>
-    </ClCompile>
     <ClCompile Include="Sprites.cpp">
       <Filter>Source Files\Element\Sprites</Filter>
     </ClCompile>
@@ -227,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="SpriteComparison.cpp">
       <Filter>Source Files\Element\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteComparison.cpp">
+      <Filter>Source Files\Element\Notes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -353,9 +353,6 @@
     <ClInclude Include="Notes.hpp">
       <Filter>Header Files\Element\Notes</Filter>
     </ClInclude>
-    <ClInclude Include="NoteUniquePointerComparison.hpp">
-      <Filter>Header Files\Element\Notes</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite.hpp">
       <Filter>Header Files\Element\Sprites</Filter>
     </ClInclude>
@@ -379,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="SpriteComparison.hpp">
       <Filter>Header Files\Element\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteComparison.hpp">
+      <Filter>Header Files\Element\Notes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

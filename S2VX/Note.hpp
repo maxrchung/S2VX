@@ -13,7 +13,7 @@ namespace S2VX {
 		~Note();
 		Note(Note&& other);
 		Note& operator=(Note&& other);
-		const NoteConfiguration& getConfiguration() { return configuration; }
+		const NoteConfiguration& getConfiguration() const { return configuration; }
 		void draw();
 		void update(const int time);
 	private:

@@ -17,6 +17,9 @@ namespace S2VX {
 		return sprites.back();
 	}
 	void Sprites::update(const int time) {
+		while (nextActive != sprites.size() && sprites[nextActive].getStart() <= time) {
+			actives.insert(nextActive++);
+		}
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (sprites[*active].getEnd() <= time) {
 				active = actives.erase(active);
@@ -24,9 +27,6 @@ namespace S2VX {
 			else {
 				++active;
 			}
-		}
-		while (nextActive != sprites.size() && sprites[nextActive].getStart() <= time) {
-			actives.insert(nextActive++);
 		}
 		for (const auto active : actives) {
 			sprites[active].update(time);
