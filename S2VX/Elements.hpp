@@ -22,6 +22,8 @@ namespace S2VX {
 	class Elements {
 	public:
 		Elements(const Display& display);
+		Elements(Elements&& other);
+		Elements& operator=(Elements&& other);
 		Back& getBack() { return back; }
 		Camera& getCamera() { return camera; }
 		Cursor& getCursor() { return cursor; }
@@ -37,6 +39,8 @@ namespace S2VX {
 		// Sorts Commands/Elements into order by start time
 		void sort();
 	private:
+		Elements(const Elements&) = delete;
+		Elements& operator=(const Elements&) = delete;
 		// Shaders need to be loaded before elements
 		Shader cursorShader;
 		Shader lineShader;

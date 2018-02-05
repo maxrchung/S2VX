@@ -22,7 +22,7 @@
 #include "Texture.hpp"
 namespace S2VX {
 	Scripting::Scripting(const Display& pDisplay)
-		: display{ pDisplay } {
+		: display{ pDisplay }, elements{ display } {
 		chai.add(chaiscript::var(this), "S2VX");
 		chai.add(chaiscript::fun(&Scripting::BackColor, this), "BackColor");
 		chai.add(chaiscript::fun(&Scripting::CameraMove, this), "CameraMove");
@@ -51,117 +51,117 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
 		chai.add(chaiscript::fun(&Scripting::SpriteScale, this), "SpriteScale");
 	}
-	Elements* const Scripting::evaluate(const std::string& path) {
+	Elements Scripting::evaluate(const std::string& path) {
 		// Create and manipulate a new Elements object
 		// Choosing to use unique pointer so Shaders aren't destroyed during copy
-		elements = std::make_unique<Elements>(display);
+		elements = Elements(display);
 		chai.use(path);
-		elements->sort();
-		return elements.get();
+		elements.sort();
+		return std::move(elements);
 	}
 	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getBack().addCommand(std::make_unique<BackColorCommand>(elements->getBack(), start, end, convert, startR, startG, startB, endR, endG, endB));
+		elements.getBack().addCommand(std::make_unique<BackColorCommand>(elements.getBack(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCamera().addCommand(std::make_unique<CameraMoveCommand>(elements->getCamera(), start, end, convert, startX, startY, endX, endY));
+		elements.getCamera().addCommand(std::make_unique<CameraMoveCommand>(elements.getCamera(), start, end, convert, startX, startY, endX, endY));
 	}
 	void Scripting::CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCamera().addCommand(std::make_unique<CameraRotateCommand>(elements->getCamera(), start, end, convert, startRotate, endRotate));
+		elements.getCamera().addCommand(std::make_unique<CameraRotateCommand>(elements.getCamera(), start, end, convert, startRotate, endRotate));
 	}
 	void Scripting::CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCamera().addCommand(std::make_unique<CameraZoomCommand>(elements->getCamera(), start, end, convert, startScale, endScale));
+		elements.getCamera().addCommand(std::make_unique<CameraZoomCommand>(elements.getCamera(), start, end, convert, startScale, endScale));
 	}
 	void Scripting::CursorColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCursor().addCommand(std::make_unique<CursorColorCommand>(elements->getCursor(), start, end, convert, startR, startG, startB, endR, endG, endB));
+		elements.getCursor().addCommand(std::make_unique<CursorColorCommand>(elements.getCursor(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::CursorFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCursor().addCommand(std::make_unique<CursorFadeCommand>(elements->getCursor(), start, end, convert, startFade, endFade));
+		elements.getCursor().addCommand(std::make_unique<CursorFadeCommand>(elements.getCursor(), start, end, convert, startFade, endFade));
 	}
 	void Scripting::CursorFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCursor().addCommand(std::make_unique<CursorFeatherCommand>(elements->getCursor(), start, end, convert, startFeather, endFeather));
+		elements.getCursor().addCommand(std::make_unique<CursorFeatherCommand>(elements.getCursor(), start, end, convert, startFeather, endFeather));
 	}
 	void Scripting::CursorScale(const int start, const int end, int easing, const float startScale, const float endScale) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getCursor().addCommand(std::make_unique<CursorScaleCommand>(elements->getCursor(), start, end, convert, startScale, endScale));
+		elements.getCursor().addCommand(std::make_unique<CursorScaleCommand>(elements.getCursor(), start, end, convert, startScale, endScale));
 	}
 	void Scripting::GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getGrid().addCommand(std::make_unique<GridColorCommand>(elements->getGrid(), start, end, convert, startR, startG, startB, endR, endG, endB));
+		elements.getGrid().addCommand(std::make_unique<GridColorCommand>(elements.getGrid(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::GridFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getGrid().addCommand(std::make_unique<GridFadeCommand>(elements->getGrid(), start, end, convert, startFade, endFade));
+		elements.getGrid().addCommand(std::make_unique<GridFadeCommand>(elements.getGrid(), start, end, convert, startFade, endFade));
 	}
 	void Scripting::GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getGrid().addCommand(std::make_unique<GridFeatherCommand>(elements->getGrid(), start, end, convert, startFeather, endFeather));
+		elements.getGrid().addCommand(std::make_unique<GridFeatherCommand>(elements.getGrid(), start, end, convert, startFeather, endFeather));
 	}
 	void Scripting::GridThickness(const int start, const int end, const int easing, const float startThickness, const float endThickness) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getGrid().addCommand(std::make_unique<GridThicknessCommand>(elements->getGrid(), start, end, convert, startThickness, endThickness));
+		elements.getGrid().addCommand(std::make_unique<GridThicknessCommand>(elements.getGrid(), start, end, convert, startThickness, endThickness));
 	}
 	void Scripting::NoteApproach(const int approach) {
-		elements->getNoteConfiguration().setApproach(approach);
+		elements.getNoteConfiguration().setApproach(approach);
 	}
 	void Scripting::NoteBind(const int time, const int x, const int y) {
-		auto noteConfiguration = elements->getNoteConfiguration();
+		auto noteConfiguration = elements.getNoteConfiguration();
 		noteConfiguration.setEnd(time);
 		const auto position = glm::vec2{ x, y };
 		noteConfiguration.setPosition(position);
-		elements->getNotes().addNote(Note(elements->getCamera(), noteConfiguration, elements->getRectangleShader()));
+		elements.getNotes().addNote(Note(elements.getCamera(), noteConfiguration, elements.getRectangleShader()));
 	}
 	void Scripting::NoteColor(const int r, const int g, const int b) {
 		const auto color = glm::vec3{ r, g, b };
-		elements->getNoteConfiguration().setColor(color);
+		elements.getNoteConfiguration().setColor(color);
 	}
 	void Scripting::NoteDistance(const float distance) {
-		elements->getNoteConfiguration().setDistance(distance);
+		elements.getNoteConfiguration().setDistance(distance);
 	}
 	void Scripting::NoteFadeIn(const int fadeIn) {
-		elements->getNoteConfiguration().setFadeIn(fadeIn);
+		elements.getNoteConfiguration().setFadeIn(fadeIn);
 	}
 	void Scripting::NoteFadeOut(const int fadeOut) {
-		elements->getNoteConfiguration().setFadeOut(fadeOut);
+		elements.getNoteConfiguration().setFadeOut(fadeOut);
 	}
 	void Scripting::NoteFeather(const float feather) {
-		elements->getNoteConfiguration().setFeather(feather);
+		elements.getNoteConfiguration().setFeather(feather);
 	}
 	void Scripting::NoteThickness(const float thickness) {
-		elements->getNoteConfiguration().setThickness(thickness);
+		elements.getNoteConfiguration().setThickness(thickness);
 	}
 	void Scripting::SpriteBind(const std::string& path) {
-		auto& textures = elements->getTextures();
+		auto& textures = elements.getTextures();
 		// Add texture if it is not in map
 		if (textures.find(path) == textures.end()) {
 			textures[path] = Texture(path);
 		}
-		elements->getSprites().addSprite(std::make_unique<Sprite>(elements->getCamera(), textures[path], elements->getImageShader()));
+		elements.getSprites().addSprite(std::make_unique<Sprite>(elements.getCamera(), textures[path], elements.getImageShader()));
 	}
 	void Scripting::SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites().getLastSprite()->addCommand(std::make_unique<SpriteColorCommand>(elements->getSprites().getLastSprite(), start, end, convert, startR, startG, startB, endR, endG, endB));
+		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteColorCommand>(elements.getSprites().getLastSprite(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
 	void Scripting::SpriteFade(const int start, const int end, const int easing, const float startFade, const float endFade) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites().getLastSprite()->addCommand(std::make_unique<SpriteFadeCommand>(elements->getSprites().getLastSprite(), start, end, convert, startFade, endFade));
+		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteFadeCommand>(elements.getSprites().getLastSprite(), start, end, convert, startFade, endFade));
 	}
 	void Scripting::SpriteMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites().getLastSprite()->addCommand(std::make_unique<SpriteMoveCommand>(elements->getSprites().getLastSprite(), start, end, convert, startX, startY, endX, endY));
+		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteMoveCommand>(elements.getSprites().getLastSprite(), start, end, convert, startX, startY, endX, endY));
 	}
 	void Scripting::SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites().getLastSprite()->addCommand(std::make_unique<SpriteRotateCommand>(elements->getSprites().getLastSprite(), start, end, convert, startRotation, endRotation));
+		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteRotateCommand>(elements.getSprites().getLastSprite(), start, end, convert, startRotation, endRotation));
 	}
 	void Scripting::SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY) {
 		const auto convert = static_cast<EasingType>(easing);
-		elements->getSprites().getLastSprite()->addCommand(std::make_unique<SpriteScaleCommand>(elements->getSprites().getLastSprite(), start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY));
+		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteScaleCommand>(elements.getSprites().getLastSprite(), start, end, convert, startScaleX, startScaleY, endScaleX, endScaleY));
 	}
 }

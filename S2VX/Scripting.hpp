@@ -17,7 +17,7 @@ namespace S2VX {
 		void CursorFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
 		void CursorScale(const int start, const int end, int easing, const float startScale, const float endScale);
 		// Evaluates chaiscript
-		Elements* const evaluate(const std::string& path);
+		Elements evaluate(const std::string& path);
 		void GridColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void GridFade(const int start, const int end, const int easing, const float startFade, const float endFade);
 		void GridFeather(const int start, const int end, const int easing, const float startFeather, const float endFeather);
@@ -39,6 +39,6 @@ namespace S2VX {
 	private:
 		const Display& display;
 		chaiscript::ChaiScript chai;
-		std::unique_ptr<Elements> elements;
+		Elements elements;
 	};
 }
