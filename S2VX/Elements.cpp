@@ -6,16 +6,17 @@ namespace S2VX {
 		: back{ Back() },
 		camera{ Camera() },
 		cursor{ Cursor(camera, display, cursorShader) },
-		cursorShader{ "Cursor.VertexShader", "Cursor.FragmentShader" },
+		cursorShader{ R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Cursor.VertexShader)", R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Cursor.FragmentShader)" },
 		grid{ Grid(camera, lineShader) },
-		imageShader{ "Image.VertexShader", "Image.FragmentShader" },
-		lineShader{ "Line.VertexShader", "Line.FragmentShader" },
+		imageShader{ R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Image.VertexShader)", R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Image.FragmentShader)" },
+		lineShader{ R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Line.VertexShader)", R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Line.FragmentShader)" },
 		notes{ Notes() },
-		rectangleShader{ "Rectangle.VertexShader", "Rectangle.FragmentShader" },
+		rectangleShader{ R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Rectangle.VertexShader)", R"(C:\Users\Wax Chug da Gwad\Desktop\S2VX\S2VX\Rectangle.FragmentShader)" },
 		sprites{ Sprites() },
 		all{ &camera, &back, &sprites, &grid, &notes, &cursor } {}
 	Elements::Elements(Elements&& other)
 		: back{ std::move(other.back) },
+		camera{ std::move(other.camera) },
 		cursor{ std::move(other.cursor) },
 		grid{ std::move(other.grid) },
 		noteConfiguration{ other.noteConfiguration },
@@ -26,6 +27,7 @@ namespace S2VX {
 	Elements& Elements::operator=(Elements&& other) {
 		if (this != &other) {
 			back = std::move(other.back);
+			camera = std::move(other.camera);
 			cursor = std::move(other.cursor);
 			grid = std::move(other.grid);
 			noteConfiguration = other.noteConfiguration;

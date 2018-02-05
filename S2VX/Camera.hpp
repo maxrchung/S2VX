@@ -23,8 +23,8 @@ namespace S2VX {
 		// Updates the view/projection matrices
 		// Might be costly to call this everytime camera changes - Need to probably monitor this
 		void updateMatrices();
-		const glm::vec3 front;
-		const float fov;
+		glm::vec3 front;
+		float fov;
 		float scale;
 		// z-axis rotation +x to +y
 		float roll;
