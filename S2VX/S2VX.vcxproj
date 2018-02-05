@@ -170,7 +170,7 @@
     <ClCompile Include="SpriteRotateCommand.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="SpriteScaleCommand.cpp" />
-    <ClCompile Include="SpriteComparison.cpp" />
+    <ClCompile Include="SpriteUniquePointerComparison.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -224,7 +224,7 @@
     <ClInclude Include="SpriteRotateCommand.hpp" />
     <ClInclude Include="Sprites.hpp" />
     <ClInclude Include="SpriteScaleCommand.hpp" />
-    <ClInclude Include="SpriteComparison.hpp" />
+    <ClInclude Include="SpriteUniquePointerComparison.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Time.hpp" />
   </ItemGroup>

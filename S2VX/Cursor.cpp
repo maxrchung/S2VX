@@ -32,8 +32,9 @@ namespace S2VX {
 		glDeleteVertexArrays(1, &vertexArray);
 		glDeleteBuffers(1, &vertexBuffer);
 	}
-	Cursor::Cursor(Cursor&& other) 
-		: camera{ other.camera },
+	Cursor::Cursor(Cursor&& other)
+		: Element(std::move(other)),
+		camera{ other.camera },
 		display{ other.display },
 		fade{ other.fade },
 		feather{ other.feather },
@@ -47,6 +48,7 @@ namespace S2VX {
 	}
 	Cursor& Cursor::operator=(Cursor&& other) {
 		if (this != &other) {
+			Element::operator=(std::move(other));
 			fade = other.fade;
 			feather = other.feather;
 			scale = other.scale;

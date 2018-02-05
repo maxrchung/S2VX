@@ -22,13 +22,13 @@ namespace S2VX {
 	class Elements {
 	public:
 		Elements(const Display& display);
-		Back* const getBack() { return back.get(); }
-		Camera* const getCamera() { return camera.get(); }
-		Cursor* const getCursor() { return cursor.get(); }
-		Grid* const getGrid() { return grid.get(); }
-		Notes* const getNotes() { return notes.get(); }
+		Back& getBack() { return back; }
+		Camera& getCamera() { return camera; }
+		Cursor& getCursor() { return cursor; }
+		Grid& getGrid() { return grid; }
+		Notes& getNotes() { return notes; }
 		NoteConfiguration& getNoteConfiguration() { return noteConfiguration; }
-		Sprites* const getSprites() { return sprites.get(); }
+		Sprites& getSprites() { return sprites; }
 		Shader& getRectangleShader() { return rectangleShader; }
 		Shader& getImageShader() { return imageShader; }
 		std::unordered_map<std::string, Texture>& getTextures() { return textures; }
@@ -42,14 +42,14 @@ namespace S2VX {
 		Shader lineShader;
 		Shader rectangleShader;
 		Shader imageShader;
-		// Camera needs to be before some elements
-		std::unique_ptr<Camera> camera;
+		// Camera needs to be initialized before some elements
+		Camera camera;
 		// Tracks loaded textures
-		std::unique_ptr<Back> back;
-		std::unique_ptr<Cursor> cursor;
-		std::unique_ptr<Grid> grid;
-		std::unique_ptr<Notes> notes;
-		std::unique_ptr<Sprites> sprites;
+		Back back;
+		Cursor cursor;
+		Grid grid;
+		Notes notes;
+		Sprites sprites;
 		// Holds everything
 		std::vector<Element*> all;
 		// Tracks current note config

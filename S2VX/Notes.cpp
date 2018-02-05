@@ -1,5 +1,6 @@
 #include "Notes.hpp"
 namespace S2VX {
+	const NoteComparison Notes::noteComparison;
 	void Notes::addNote(Note&& note) {
 		notes.push_back(std::move(note));
 	}
@@ -12,6 +13,9 @@ namespace S2VX {
 		while (nextActive != notes.size() && notes[nextActive].getConfiguration().getStart() <= time) {
 			actives.insert(nextActive++);
 		}
+		for (const auto active : actives) {
+			notes[active].update(time);
+		}
 		for (auto active = actives.begin(); active != actives.end(); ) {
 			if (notes[*active].getConfiguration().getEnd() <= time) {
 				active = actives.erase(active);
@@ -20,11 +24,8 @@ namespace S2VX {
 				++active;
 			}
 		}
-		for (const auto active : actives) {
-			notes[active].update(time);
-		}
 	}
 	void Notes::sort() {
-		std::sort(notes.begin(), notes.end(), comparison);
+		std::sort(notes.begin(), notes.end(), noteComparison);
 	}
 }

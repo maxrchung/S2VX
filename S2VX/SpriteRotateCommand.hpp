@@ -3,7 +3,7 @@
 namespace S2VX {
 	class SpriteRotateCommand : public SpriteCommand {
 	public:
-		explicit SpriteRotateCommand(Sprite& sprite, const int start, const int end, const EasingType easing, const float pStartRotation, const float pEndRotation);
+		explicit SpriteRotateCommand(Sprite* const sprite, const int start, const int end, const EasingType easing, const float pStartRotation, const float pEndRotation);
 		void update(const float easing);
 	private:
 		const float endRotation;

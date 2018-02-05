@@ -222,11 +222,11 @@
     <ClCompile Include="CursorScaleCommand.cpp">
       <Filter>Source Files\Command\Cursor</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteComparison.cpp">
-      <Filter>Source Files\Element\Sprites</Filter>
-    </ClCompile>
     <ClCompile Include="NoteComparison.cpp">
       <Filter>Source Files\Element\Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteUniquePointerComparison.cpp">
+      <Filter>Source Files\Element\Sprites</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,11 +374,11 @@
     <ClInclude Include="CursorScaleCommand.hpp">
       <Filter>Header Files\Command\Cursor</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteComparison.hpp">
-      <Filter>Header Files\Element\Sprites</Filter>
-    </ClInclude>
     <ClInclude Include="NoteComparison.hpp">
       <Filter>Header Files\Element\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteUniquePointerComparison.hpp">
+      <Filter>Header Files\Element\Sprites</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

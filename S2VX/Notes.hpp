@@ -11,7 +11,7 @@ namespace S2VX {
 		void update(const int time);
 		void sort();
 	private:
-		NoteComparison comparison;
+		static const NoteComparison noteComparison;
 		std::vector<Note> notes;
 	};
 }

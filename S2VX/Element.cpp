@@ -2,6 +2,7 @@
 #include "Easing.hpp"
 #include <algorithm>
 namespace S2VX {
+	const CommandUniquePointerComparison Element::commandComparison;
 	Element::Element()
 		: nextActive{ 0 } {}
 	void Element::addCommand(std::unique_ptr<Command>&& command) {
@@ -30,6 +31,6 @@ namespace S2VX {
 		}
 	}
 	void Element::sort() {
-		std::sort(commands.begin(), commands.end(), comparison);
+		std::sort(commands.begin(), commands.end(), commandComparison);
 	}
 }

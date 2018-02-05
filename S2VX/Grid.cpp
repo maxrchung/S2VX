@@ -13,8 +13,13 @@ namespace S2VX {
 		glGenVertexArrays(1, &vertexArray);
 		glGenBuffers(1, &vertexBuffer);
 	}
-	Grid::Grid(Grid&& other) 
-		: camera{ other.camera },
+	Grid::~Grid() {
+		glDeleteVertexArrays(1, &vertexArray);
+		glDeleteBuffers(1, &vertexBuffer);
+	}
+	Grid::Grid(Grid&& other)
+		: Element(std::move(other)),
+		camera{ other.camera },
 		color{ other.color },
 		fade{ other.fade },
 		feather{ other.feather },
@@ -27,6 +32,7 @@ namespace S2VX {
 	}
 	Grid& Grid::operator=(Grid&& other) {
 		if (this != &other) {
+			Element::operator=(std::move(other));
 			color = other.color;
 			fade = other.fade;
 			feather = other.feather;
@@ -37,10 +43,6 @@ namespace S2VX {
 			other.vertexBuffer = 0;
 		}
 		return *this;
-	}
-	Grid::~Grid() {
-		glDeleteVertexArrays(1, &vertexArray);
-		glDeleteBuffers(1, &vertexBuffer);
 	}
 	void Grid::draw() {
 		std::vector<float> linePoints;

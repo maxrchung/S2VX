@@ -37,7 +37,8 @@ namespace S2VX {
 		glDeleteBuffers(1, &elementBuffer);
 	}
 	Sprite::Sprite(Sprite&& other) 
-		: camera{ other.camera },
+		: Element(std::move(other)),
+		camera{ other.camera },
 		color{ other.color },
 		elementBuffer{ other.elementBuffer },
 		end{ other.end },
@@ -56,6 +57,7 @@ namespace S2VX {
 	}
 	Sprite& Sprite::operator=(Sprite&& other) {
 		if (this != &other) {
+			Element::operator=(std::move(other));
 			color = other.color;
 			elementBuffer = other.elementBuffer;
 			end = other.end;
@@ -96,12 +98,12 @@ namespace S2VX {
 			if (command->getStart() < pStart) {
 				pStart = command->getStart();
 			}
-			else if (command->getEnd() > pEnd) {
+			if (command->getEnd() > pEnd) {
 				pEnd = command->getEnd();
 			}
 		}
 		start = pStart;
 		end = pEnd;
-		std::sort(commands.begin(), commands.end(), comparison);
+		std::sort(commands.begin(), commands.end(), commandComparison);
 	}
 }

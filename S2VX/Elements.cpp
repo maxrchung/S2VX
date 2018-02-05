@@ -7,22 +7,20 @@ namespace S2VX {
 		imageShader{ "Image.VertexShader", "Image.FragmentShader" },
 		lineShader{ "Line.VertexShader", "Line.FragmentShader" },
 		rectangleShader{ "Rectangle.VertexShader", "Rectangle.FragmentShader" },
-		back{ std::make_unique<Back>() },
-		camera{ std::make_unique<Camera>() },
-		cursor{ std::make_unique<Cursor>(*camera.get(), display, cursorShader) },
-		grid{ std::make_unique<Grid>(*camera.get(), lineShader) },
-		notes{ std::make_unique<Notes>() },
-		sprites{ std::make_unique<Sprites>() },
-		all{ camera.get(), back.get(), sprites.get(), grid.get(), notes.get(), cursor.get() } {}
+		back{ Back() },
+		camera{ Camera() },
+		cursor{ Cursor(camera, display, cursorShader) },
+		grid{ Grid(camera, lineShader) },
+		notes{ Notes() },
+		sprites{ Sprites() },
+		all{ &camera, &back, &sprites, &grid, &notes, &cursor } {}
 	void Elements::draw() {
-		back->draw();
-		sprites->draw();
-		grid->draw();
-		notes->draw();
-		cursor->draw();
+		for (const auto element : all) {
+			element->draw();
+		}
 	}
 	void Elements::sort() {
-		for (auto& element : all) {
+		for (const auto element : all) {
 			element->sort();
 		}
 	}

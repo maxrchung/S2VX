@@ -5,7 +5,7 @@
 namespace S2VX {
 	class Shader;
 	class Texture;
-	class Sprite : public Element{
+	class Sprite : public Element {
 	public:
 		explicit Sprite(Camera& pCamera, const Texture& pTexture, Shader& pShader);
 		// Cleanup OpenGL objects
