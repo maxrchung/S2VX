@@ -9,5 +9,6 @@ namespace S2VX {
 		const auto position = glm::mix(startCoordinate, endCoordinate, easing);
 		const auto cameraPosition = camera.getPosition();
 		camera.move(glm::vec3{ position, cameraPosition.z });
+
 	}
 }

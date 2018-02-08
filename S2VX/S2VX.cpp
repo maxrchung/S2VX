@@ -1,4 +1,4 @@
-#include "S2VX.hpp"
+  #include "S2VX.hpp"
 #include "Display.hpp"
 #include "Elements.hpp"
 #include "Scripting.hpp"
@@ -10,7 +10,7 @@ namespace S2VX {
 	void S2VX::run() {
 		Display display;
 		Scripting scripting(display);
-		auto elements = scripting.evaluate(script);
+		auto& elements = scripting.evaluate(script);
 		auto now = static_cast<float>(glfwGetTime());
 		auto previous = now;
 		auto delta = 0.0f;

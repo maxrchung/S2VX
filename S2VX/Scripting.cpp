@@ -51,13 +51,13 @@ namespace S2VX {
 		chai.add(chaiscript::fun(&Scripting::SpriteRotate, this), "SpriteRotate");
 		chai.add(chaiscript::fun(&Scripting::SpriteScale, this), "SpriteScale");
 	}
-	Elements Scripting::evaluate(const std::string& path) {
+	Elements& Scripting::evaluate(const std::string& path) {
 		// Create and manipulate a new Elements object
 		// Choosing to use unique pointer so Shaders aren't destroyed during copy
 		elements = Elements(display);
 		chai.use(path);
 		elements.sort();
-		return std::move(elements);
+		return elements;
 	}
 	void Scripting::BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB) {
 		const auto convert = static_cast<EasingType>(easing);

@@ -14,6 +14,7 @@ namespace S2VX {
 		Element& operator=(const Element&) = default;
 		Element(Element&&) = default;
 		Element& operator=(Element&&) = default;
+		const std::vector<std::unique_ptr<Command>>& getCommands() const { return commands; };
 		virtual void draw() = 0;
 		// Updates list of active commands
 		// Virtual so that Notes/Sprites can perform special update

@@ -9,6 +9,7 @@ namespace S2VX {
 		void addSprite(std::unique_ptr<Sprite>&& sprite);
 		// Used during Scripting to set last sprite
 		Sprite* const getLastSprite();
+		std::vector<std::unique_ptr<Sprite>>& getSprites() { return sprites; }
 		void draw();
 		void update(const int time);
 		void sort();

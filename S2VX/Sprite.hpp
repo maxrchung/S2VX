@@ -14,6 +14,7 @@ namespace S2VX {
 		Sprite& operator=(Sprite&& other);
 		const int getEnd() const { return end; }
 		const int getStart() const { return start; }
+		const Texture& getTexture() const { return texture; }
 		void draw();
 		void setColor(const glm::vec3& pColor) { color = pColor; }
 		void setFade(const float pFade) { fade = pFade; }

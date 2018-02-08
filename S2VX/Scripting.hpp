@@ -9,7 +9,7 @@ namespace S2VX {
 		// Initializing scripting
 		Scripting(const Display& pDisplay);
 		// Evaluates chaiscript
-		Elements evaluate(const std::string& path);
+		Elements& evaluate(const std::string& path);
 	private:
 		void BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY);

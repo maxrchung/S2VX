@@ -5,7 +5,8 @@
 namespace S2VX {
 	// I copied this manually after loading blank.png :blobsweats:
 	const unsigned char* Texture::blankData = reinterpret_cast<unsigned char*>("ÿÿÿýýýýÝ$’‹\\Ý\x1f");
-	Texture::Texture(const std::string& path) {
+	Texture::Texture(const std::string& pPath) 
+		: path{ pPath } {
 		glGenTextures(1, &imageTexture);
 		glBindTexture(GL_TEXTURE_2D, imageTexture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -39,12 +40,14 @@ namespace S2VX {
 		glDeleteTextures(1, &imageTexture);
 	}
 	Texture::Texture(Texture&& other) 
-		: imageTexture{ other.imageTexture } {
+		: imageTexture{ other.imageTexture },
+		path{ other.path } {
 		imageTexture = 0;
 	}
 	Texture& Texture::operator=(Texture&& other) {
 		if (this != &other) {
 			imageTexture = other.imageTexture;
+			path = other.path;
 			other.imageTexture = 0;
 		}
 		return *this;
