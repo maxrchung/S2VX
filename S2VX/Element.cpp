@@ -8,6 +8,10 @@ namespace S2VX {
 	void Element::addCommand(std::unique_ptr<Command>&& command) {
 		commands.push_back(std::move(command));
 	}
+	void Element::reset() {
+		nextActive = 0;
+		actives.clear();
+	}
 	void Element::update(const int time) {
 		// Add new active commands
 		// Run active commands

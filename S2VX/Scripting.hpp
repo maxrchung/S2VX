@@ -12,7 +12,7 @@ namespace S2VX {
 		Elements& evaluate(const std::string& path);
 	private:
 		void BackColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
-		void CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY);
+		void CameraMove(const int start, const int end, const int easing, const float startX, const float startY, const float endX, const float endY);
 		void CameraRotate(const int start, const int end, const int easing, const float startRotate, const float endRotate);
 		void CameraZoom(const int start, const int end, const int easing, const float startScale, const float endScale);
 		void CursorColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
@@ -34,7 +34,7 @@ namespace S2VX {
 		void SpriteBind(const std::string& path);
 		void SpriteColor(const int start, const int end, const int easing, const float startR, const float startG, const float startB, const float endR, const float endG, const float endB);
 		void SpriteFade(const int start, const int end, const int easing, const float startFade, const float endFade);
-		void SpriteMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY);
+		void SpriteMove(const int start, const int end, const int easing, const float startX, const float startY, const float endX, const float endY);
 		void SpriteRotate(const int start, const int end, const int easing, const float startRotation, const float endRotation);
 		void SpriteScale(const int start, const int end, const int easing, const float startScaleX, const float startScaleY, const float endScaleX, const float endScaleY);
 		const Display& display;

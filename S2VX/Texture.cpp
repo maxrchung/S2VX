@@ -31,7 +31,7 @@ namespace S2VX {
 				glGenerateMipmap(GL_TEXTURE_2D);
 			}
 			else {
-				throw ScriptError("Unable to load texture from given path. Given: " + path);
+				//throw ScriptError("Unable to load texture from given path. Given: " + path);
 			}
 			stbi_image_free(data);
 		}

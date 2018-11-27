@@ -63,7 +63,7 @@ namespace S2VX {
 		const auto convert = static_cast<EasingType>(easing);
 		elements.getBack().addCommand(std::make_unique<BackColorCommand>(elements.getBack(), start, end, convert, startR, startG, startB, endR, endG, endB));
 	}
-	void Scripting::CameraMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
+	void Scripting::CameraMove(const int start, const int end, const int easing, const float startX, const float startY, const float endX, const float endY) {
 		const auto convert = static_cast<EasingType>(easing);
 		elements.getCamera().addCommand(std::make_unique<CameraMoveCommand>(elements.getCamera(), start, end, convert, startX, startY, endX, endY));
 	}
@@ -152,7 +152,7 @@ namespace S2VX {
 		const auto convert = static_cast<EasingType>(easing);
 		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteFadeCommand>(elements.getSprites().getLastSprite(), start, end, convert, startFade, endFade));
 	}
-	void Scripting::SpriteMove(const int start, const int end, const int easing, const int startX, const int startY, const int endX, const int endY) {
+	void Scripting::SpriteMove(const int start, const int end, const int easing, const float startX, const float startY, const float endX, const float endY) {
 		const auto convert = static_cast<EasingType>(easing);
 		elements.getSprites().getLastSprite()->addCommand(std::make_unique<SpriteMoveCommand>(elements.getSprites().getLastSprite(), start, end, convert, startX, startY, endX, endY));
 	}
