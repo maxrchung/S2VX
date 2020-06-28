@@ -17,7 +17,6 @@ namespace S2VX.Game
 
         protected S2VXGameBase()
         {
-            // Ensure game and tests scale with window size and screen DPI.
             base.Content.Add(Content = new SquareContainer());
         }
 

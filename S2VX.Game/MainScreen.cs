@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
-using osuTK;
 using osuTK.Graphics;
 
 namespace S2VX.Game
@@ -14,16 +14,67 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load()
         {
-            InternalChildren = new Drawable[]
+            var elements = new List<Drawable>
             {
                 new Box
                 {
-                    Colour = Color4.Violet,
-                    RelativeSizeAxes = Axes.Both,
-                    X = 0.5f,
-                    Y = 0.5f,
+                    Colour = Color4.CornflowerBlue,
+                    RelativeSizeAxes = Axes.Both
                 }
             };
+
+            for (float i = 0.05f; i <= 0.5f; i += 0.1f)
+            {
+                elements.Add(new Box
+                {
+                    Colour = Color4.White,
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Y = i,
+                    Width = 1.5f,
+                    Height = 0.005f
+                });
+
+                elements.Add(new Box
+                {
+                    Colour = Color4.White,
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Y = -i,
+                    Width = 1.5f,
+                    Height = 0.005f
+                });
+
+                elements.Add(new Box
+                {
+                    Colour = Color4.White,
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    X = i,
+                    Width = 0.005f,
+                    Height = 1.5f
+                });
+
+                elements.Add(new Box
+                {
+                    Colour = Color4.White,
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    X = -i,
+                    Width = 0.005f,
+                    Height = 1.5f
+                });
+            }
+
+            InternalChildren = elements;
         }
     }
 }
