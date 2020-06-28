@@ -18,11 +18,7 @@ namespace S2VX.Game
         protected S2VXGameBase()
         {
             // Ensure game and tests scale with window size and screen DPI.
-            base.Content.Add(Content = new DrawSizePreservingFillContainer
-            {
-                // You may want to change TargetDrawSize to your "default" resolution, which will decide how things scale and position when using absolute coordinates.
-                TargetDrawSize = new Vector2(1366, 768)
-            });
+            base.Content.Add(Content = new SquareContainer());
         }
 
         [BackgroundDependencyLoader]

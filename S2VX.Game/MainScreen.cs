@@ -1,8 +1,10 @@
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
+using osuTK;
 using osuTK.Graphics;
 
 namespace S2VX.Game
@@ -18,18 +20,8 @@ namespace S2VX.Game
                 {
                     Colour = Color4.Violet,
                     RelativeSizeAxes = Axes.Both,
-                },
-                new SpriteText
-                {
-                    Y = 20,
-                    Text = "Main Screen",
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    Font = FontUsage.Default.With(size: 40)
-                },
-                new SpinningBox
-                {
-                    Anchor = Anchor.Centre,
+                    X = 0.5f,
+                    Y = 0.5f,
                 }
             };
         }

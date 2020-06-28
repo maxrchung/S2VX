@@ -1,6 +1,8 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
+using osuTK;
 
 namespace S2VX.Game
 {
@@ -18,8 +20,6 @@ namespace S2VX.Game
 
         protected override void LoadComplete()
         {
-            base.LoadComplete();
-
             screenStack.Push(new MainScreen());
         }
     }
