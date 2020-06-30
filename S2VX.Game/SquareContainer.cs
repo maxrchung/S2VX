@@ -2,9 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osuTK;
 
-namespace osu.Framework.Graphics.Containers
+namespace S2VX.Game
 {
     public class SquareContainer : Container
     {
