@@ -12,6 +12,9 @@ namespace S2VX.Game
 {
     public class MainScreen : Screen
     {
+        [Cached]
+        protected readonly Camera Camera = new Camera();
+
         [BackgroundDependencyLoader]
         private void load()
         {
