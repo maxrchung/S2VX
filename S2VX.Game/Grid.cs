@@ -16,34 +16,9 @@ namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
+        public float LineThickness = 0.005f;
+
         private Camera camera = new Camera();
-
-        private GridAlphaCommand alpha = new GridAlphaCommand
-        {
-            StartTime = 0,
-            EndTime = 30000,
-            StartAlpha = 1.0f,
-            EndAlpha = 0.1f,
-            Easing = Easing.InOutQuad
-        };
-
-        private GridColorCommand color = new GridColorCommand
-        {
-            StartTime = 0,
-            EndTime = 10000,
-            StartColor = Color4.Coral,
-            EndColor = Color4.Black,
-            Easing = Easing.InSine
-        };
-
-        private GridThicknessCommand thickness = new GridThicknessCommand
-        {
-            StartTime = 0,
-            EndTime = 10000,
-            StartThickness = 0.05f,
-            EndThickness = 0,
-            Easing = Easing.None
-        };
 
         [BackgroundDependencyLoader]
         private void load(Camera camera)
@@ -54,22 +29,6 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            if (Time.Current <= alpha.EndTime)
-            {
-                Alpha = alpha.Apply(Time.Current);
-            }
-
-            if (Time.Current <= color.EndTime)
-            {
-                Colour = color.Apply(Time.Current);
-            }
-
-            var lineThickness = 0.005f;
-            if (Time.Current <= thickness.EndTime)
-            {
-                lineThickness = thickness.Apply(Time.Current);
-            }
-
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
@@ -87,6 +46,7 @@ namespace S2VX.Game
             var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
 
             var grid = new List<Drawable>();
+
             for (var i = scale / 2; i <= edge; i += scale)
             {
                 var up = rotationY * i + offset;
@@ -98,31 +58,32 @@ namespace S2VX.Game
                 {
                     Position = up,
                     Width = lineLength,
-                    Height = lineThickness,
+                    Height = LineThickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = down,
                     Width = lineLength,
-                    Height = lineThickness,
+                    Height = LineThickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = right,
-                    Width = lineThickness,
+                    Width = LineThickness,
                     Height = lineLength,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = left,
-                    Width = lineThickness,
+                    Width = LineThickness,
                     Height = lineLength,
                     Rotation = rotation
                 });
             }
+
             grid.Add(new RelativeBox
             {
                 Position = offset,
