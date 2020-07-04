@@ -26,6 +26,15 @@ namespace S2VX.Game
             Easing = Easing.None
         };
 
+        private CameraScaleCommand scale = new CameraScaleCommand
+        {
+            StartTime = 0,
+            EndTime = 60000,
+            StartScale = 0.1f,
+            EndScale = 1.0f,
+            Easing = Easing.None
+        };
+
         protected override void Update()
         {
             if (Time.Current <= move.EndTime)
@@ -35,6 +44,11 @@ namespace S2VX.Game
             if (Time.Current <= rotate.EndTime)
             {
                 Rotation = rotate.Apply(Time.Current);
+            }
+            if (Time.Current <= scale.EndTime)
+            {
+                var newScale = scale.Apply(Time.Current);
+                Scale = new Vector2(newScale);
             }
         }
     }
