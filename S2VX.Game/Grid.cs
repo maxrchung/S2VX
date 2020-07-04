@@ -13,29 +13,41 @@ namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
-        private Camera camera = new Camera();
-
-        private GridMoveCommand command = new GridMoveCommand
+        private GridMoveCommand move = new GridMoveCommand
         {
             StartTime = 0,
             EndTime = 10000,
             StartPosition = new Vector2(0, 0),
-            EndPosition = new Vector2(5, 5),
+            EndPosition = new Vector2(0, 0),
+            Easing = Easing.None
+        };
+
+        private GridRotateCommand rotate = new GridRotateCommand
+        {
+            StartTime = 0,
+            EndTime = 10000,
+            StartRotation = 0.0f,
+            EndRotation = 90.0f,
             Easing = Easing.None
         };
 
         [BackgroundDependencyLoader]
-        private void load(Camera camera)
+        private void load()
         {
             RelativeSizeAxes = Axes.Both;
-            this.camera = camera;
         }
 
         protected override void Update()
         {
-            var position = command.Apply(Time.Current);
+            var position = move.Apply(Time.Current);
+            var rotation = rotate.Apply(Time.Current);
 
-            var cellWidth = 0.02f;
+            var color = Color4.White;
+            var cellWidth = 0.1f;
+            var edge = 1.0f;
+            var lineWidth = edge * 2;
+            var lineHeight = 0.005f;
+
             // https://stackoverflow.com/a/25641937/13183186
             var offset = new Vector2(
                 position.X - (float)Math.Truncate(position.X),
@@ -43,36 +55,48 @@ namespace S2VX.Game
             );
             offset = Vector2.Multiply(offset, cellWidth);
 
+            var rotationX = Utils.Rotate(new Vector2(1, 0), rotation);
+            var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
+
             var grid = new List<Drawable>();
-            for (float i = cellWidth / 2; i <= 0.75f; i += cellWidth)
+            for (float i = cellWidth / 2; i <= edge; i += cellWidth)
             {
+                var up = rotationY * i + offset;
+                var down = -rotationY * i + offset;
+                var right = rotationX * i + offset;
+                var left = -rotationX * i + offset;
+
                 grid.Add(new RelativeBox
                 {
-                    Colour = Color4.White,
-                    Y = i + offset.Y,
-                    Width = 1.5f,
-                    Height = 0.005f
+                    Colour = color,
+                    Position = up,
+                    Width = lineWidth,
+                    Height = lineHeight,
+                    Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = Color4.White,
-                    Y = -i + offset.Y,
-                    Width = 1.5f,
-                    Height = 0.005f
+                    Colour = color,
+                    Position = down,
+                    Width = lineWidth,
+                    Height = lineHeight,
+                    Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = Color4.White,
-                    X = i + offset.X,
-                    Width = 0.005f,
-                    Height = 1.5f
+                    Colour = color,
+                    Position = right,
+                    Width = lineHeight,
+                    Height = lineWidth,
+                    Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = Color4.White,
-                    X = -i + offset.X,
-                    Width = 0.005f,
-                    Height = 1.5f
+                    Colour = color,
+                    Position = left,
+                    Width = lineHeight,
+                    Height = lineWidth,
+                    Rotation = rotation
                 });
             }
             InternalChildren = grid;
