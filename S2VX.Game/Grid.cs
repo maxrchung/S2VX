@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -13,53 +14,45 @@ namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
-        private GridMoveCommand move = new GridMoveCommand
-        {
-            StartTime = 0,
-            EndTime = 10000,
-            StartPosition = new Vector2(0, 0),
-            EndPosition = new Vector2(0, 0),
-            Easing = Easing.None
-        };
-
-        private GridRotateCommand rotate = new GridRotateCommand
-        {
-            StartTime = 0,
-            EndTime = 10000,
-            StartRotation = 0.0f,
-            EndRotation = 90.0f,
-            Easing = Easing.None
-        };
+        private Camera camera = new Camera();
 
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(Camera camera)
         {
             RelativeSizeAxes = Axes.Both;
+            this.camera = camera;
         }
 
         protected override void Update()
         {
-            var position = move.Apply(Time.Current);
-            var rotation = rotate.Apply(Time.Current);
-
             var color = Color4.White;
             var cellWidth = 0.1f;
             var edge = 1.0f;
             var lineWidth = edge * 2;
             var lineHeight = 0.005f;
 
-            // https://stackoverflow.com/a/25641937/13183186
-            var offset = new Vector2(
-                position.X - (float)Math.Truncate(position.X),
-                position.Y - (float)Math.Truncate(position.Y)
+            var position = camera.Position;
+            var rotation = camera.Rotation;
+
+            var closest = new Vector2(
+                (float)Math.Round(position.X),
+                (float)Math.Round(position.Y)
             );
-            offset = Vector2.Multiply(offset, cellWidth);
+            var offset = Utils.Rotate((closest - position) * cellWidth, rotation);
 
             var rotationX = Utils.Rotate(new Vector2(1, 0), rotation);
             var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
 
             var grid = new List<Drawable>();
-            for (float i = cellWidth / 2; i <= edge; i += cellWidth)
+            grid.Add(new RelativeBox
+            {
+                Colour = color,
+                Position = offset,
+                Width = 0.01f,
+                Height = 0.01f,
+                Rotation = rotation
+            });
+            for (var i = cellWidth / 2; i <= edge; i += cellWidth)
             {
                 var up = rotationY * i + offset;
                 var down = -rotationY * i + offset;
@@ -99,7 +92,19 @@ namespace S2VX.Game
                     Rotation = rotation
                 });
             }
+
+            grid.Add(new RelativeBox
+            {
+                Colour = Color4.Red,
+                Position = Vector2.Zero,
+                Width = 0.01f,
+                Height = 0.01f,
+                Rotation = rotation
+            });
+
             InternalChildren = grid;
+
+            base.Update();
         }
     }
 }
