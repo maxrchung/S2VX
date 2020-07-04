@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
+using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game
 {
@@ -17,80 +18,95 @@ namespace S2VX.Game
         public Easing Easing { get; set; } = Easing.None;
     }
 
-    public class CameraMoveCommand : Command
+    public abstract class CameraCommand : Command
+    {
+        public Camera Camera = new Camera();
+    }
+
+    public class CameraMoveCommand : CameraCommand
     {
         public Vector2 StartPosition { get; set; } = Vector2.Zero;
         public Vector2 EndPosition { get; set; } = Vector2.Zero;
-        public Vector2 Apply(double time)
+        public void Apply(double time)
         {
             var position = Interpolation.ValueAt(time, StartPosition, EndPosition, StartTime, EndTime, Easing);
-            return position;
+            Camera.Position = position;
         }
     }
 
-    public class CameraRotateCommand : Command
+    public class CameraRotateCommand : CameraCommand
     {
         public float StartRotation { get; set; } = 0;
         public float EndRotation { get; set; } = 0;
-        public float Apply(double time)
+        public void Apply(double time)
         {
             var rotation = Interpolation.ValueAt(time, StartRotation, EndRotation, StartTime, EndTime, Easing);
-            return rotation;
+            Camera.Rotation = rotation;
         }
     }
 
-    public class CameraScaleCommand : Command
+    public class CameraScaleCommand : CameraCommand
     {
-        public float StartScale { get; set; } = 0.1f;
-        public float EndScale { get; set; } = 0.1f;
-        public float Apply(double time)
+        public Vector2 StartScale { get; set; } = new Vector2(0.1f);
+        public Vector2 EndScale { get; set; } = new Vector2(0.1f);
+        public void Apply(double time)
         {
             var scale = Interpolation.ValueAt(time, StartScale, EndScale, StartTime, EndTime, Easing);
-            return scale;
+            Camera.Scale = scale;
         }
     }
 
-    public class GridAlphaCommand : Command
+    public abstract class GridCommand : Command
+    {
+        public Grid Grid = new Grid();
+    }
+
+    public class GridAlphaCommand : GridCommand
     {
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
-        public float Apply(double time)
+        public void Apply(double time)
         {
             var alpha = Interpolation.ValueAt(time, StartAlpha, EndAlpha, StartTime, EndTime, Easing);
-            return alpha;
+            
         }
     }
 
-    public class GridColorCommand : Command
+    public class GridColorCommand : GridCommand
     {
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
-        public Color4 Apply(double time)
+        public void Apply(double time)
         {
             var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
-            return color;
+            Grid.Colour = color;
         }
     }
 
-    public class GridThicknessCommand : Command
+    public class GridThicknessCommand : GridCommand
     {
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
-        public float Apply(double time)
+        public void Apply(double time)
         {
-            var alpha = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
-            return alpha;
+            var lineThickness = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
+            Grid.LineThickness = lineThickness;
         }
     }
 
-    public class BackColorCommand : Command
+    public abstract class BackgroundCommand : Command
+    {
+        public Background Background = new Background();
+    }
+
+    public class BackgroundColorCommand : BackgroundCommand
     {
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
-        public Color4 Apply(double time)
+        public void Apply(double time)
         {
             var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
-            return color;
+            background.Colour = color;
         }
     }
 }
