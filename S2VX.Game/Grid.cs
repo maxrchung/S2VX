@@ -15,6 +15,14 @@ namespace S2VX.Game
     public class Grid : CompositeDrawable
     {
         private Camera camera = new Camera();
+        private GridAlphaCommand alpha = new GridAlphaCommand
+        {
+            StartTime = 0,
+            EndTime = 60000,
+            StartAlpha = 1.0f,
+            EndAlpha = 0.0f,
+            Easing = Easing.None
+        };
 
         [BackgroundDependencyLoader]
         private void load(Camera camera)
@@ -25,6 +33,11 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            if (Time.Current <= alpha.EndTime)
+            {
+                Alpha = alpha.Apply(Time.Current);
+            }
+
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
@@ -100,8 +113,6 @@ namespace S2VX.Game
             });
 
             InternalChildren = grid;
-
-            base.Update();
         }
     }
 }

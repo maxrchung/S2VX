@@ -31,7 +31,7 @@ namespace S2VX.Game
             StartTime = 0,
             EndTime = 60000,
             StartScale = 0.1f,
-            EndScale = 1.0f,
+            EndScale = 0.1f,
             Easing = Easing.None
         };
 

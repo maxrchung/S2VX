@@ -5,6 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
 using osuTK;
+using osuTK.Graphics;
 
 namespace S2VX.Game
 {
@@ -46,12 +47,23 @@ namespace S2VX.Game
 
     public class CameraScaleCommand : Command
     {
-        public float StartScale { get; set; } = 1;
-        public float EndScale { get; set; } = 1;
+        public float StartScale { get; set; } = 0.1f;
+        public float EndScale { get; set; } = 0.1f;
         public float Apply(double time)
         {
             var scale = StartScale + (EndScale - StartScale) * ApplyEasing(time);
             return scale;
+        }
+    }
+
+    public class GridAlphaCommand : Command
+    {
+        public float StartAlpha { get; set; } = 1;
+        public float EndAlpha { get; set; } = 1;
+        public float Apply(double time)
+        {
+            var alpha = StartAlpha + (EndAlpha - StartAlpha) * ApplyEasing(time);
+            return alpha;
         }
     }
 }
