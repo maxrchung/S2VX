@@ -12,11 +12,15 @@ namespace S2VX.Game
 {
     public class MainScreen : Screen
     {
+        [Cached]
+        private Camera camera = new Camera();
+
         [BackgroundDependencyLoader]
         private void load()
         {
             InternalChildren = new Drawable[]
             {
+                camera,
                 new Box
                 {
                     Colour = Color4.CornflowerBlue,
