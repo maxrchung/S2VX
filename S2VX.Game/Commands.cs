@@ -22,20 +22,19 @@ namespace S2VX.Game
         }
     }
 
-    public class GridMoveCommand : Command
+    public class CameraMoveCommand : Command
     {
         public Vector2 StartPosition { get; set; }
         public Vector2 EndPosition { get; set; }
         public Vector2 Apply(double time)
         {
-            var position = StartPosition + Vector2.Multiply(EndPosition - StartPosition, ApplyEasing(time));
+            var position = StartPosition + (EndPosition - StartPosition) * ApplyEasing(time);
             return position;
         }
     }
 
-    public class GridRotateCommand : Command
+    public class CameraRotateCommand : Command
     {
-        public Vector2 Origin { get; set; }
         public float StartRotation { get; set; }
         public float EndRotation { get; set; }
         public float Apply(double time)
