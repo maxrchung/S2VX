@@ -44,14 +44,6 @@ namespace S2VX.Game
             var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
 
             var grid = new List<Drawable>();
-            grid.Add(new RelativeBox
-            {
-                Colour = color,
-                Position = offset,
-                Width = 0.01f,
-                Height = 0.01f,
-                Rotation = rotation
-            });
             for (var i = cellWidth / 2; i <= edge; i += cellWidth)
             {
                 var up = rotationY * i + offset;
@@ -92,7 +84,14 @@ namespace S2VX.Game
                     Rotation = rotation
                 });
             }
-
+            grid.Add(new RelativeBox
+            {
+                Colour = Color4.Green,
+                Position = offset,
+                Width = 0.01f,
+                Height = 0.01f,
+                Rotation = rotation
+            });
             grid.Add(new RelativeBox
             {
                 Colour = Color4.Red,
