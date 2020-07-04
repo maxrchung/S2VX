@@ -4,23 +4,35 @@ using System.Diagnostics;
 using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
+using SixLabors.ImageSharp;
 
 namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
         private Camera camera = new Camera();
+
         private GridAlphaCommand alpha = new GridAlphaCommand
         {
             StartTime = 0,
-            EndTime = 60000,
+            EndTime = 30000,
             StartAlpha = 1.0f,
-            EndAlpha = 0.0f,
+            EndAlpha = 0.5f,
+            Easing = Easing.None
+        };
+
+        private GridColorCommand color = new GridColorCommand
+        {
+            StartTime = 0,
+            EndTime = 10000,
+            StartColor = Color4.Coral,
+            EndColor = Color4.Black,
             Easing = Easing.None
         };
 
@@ -38,11 +50,15 @@ namespace S2VX.Game
                 Alpha = alpha.Apply(Time.Current);
             }
 
+            if (Time.Current <= color.EndTime)
+            {
+                Colour = color.Apply(Time.Current);
+            }
+
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
 
-            var color = Color4.White;
             var edge = 1.0f;
             var lineWidth = edge * 2;
             var lineHeight = 0.005f;
@@ -66,7 +82,6 @@ namespace S2VX.Game
 
                 grid.Add(new RelativeBox
                 {
-                    Colour = color,
                     Position = up,
                     Width = lineWidth,
                     Height = lineHeight,
@@ -74,7 +89,6 @@ namespace S2VX.Game
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = color,
                     Position = down,
                     Width = lineWidth,
                     Height = lineHeight,
@@ -82,7 +96,6 @@ namespace S2VX.Game
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = color,
                     Position = right,
                     Width = lineHeight,
                     Height = lineWidth,
@@ -90,7 +103,6 @@ namespace S2VX.Game
                 });
                 grid.Add(new RelativeBox
                 {
-                    Colour = color,
                     Position = left,
                     Width = lineHeight,
                     Height = lineWidth,
@@ -99,14 +111,12 @@ namespace S2VX.Game
             }
             grid.Add(new RelativeBox
             {
-                Colour = Color4.Green,
                 Position = offset,
                 Width = 0.01f,
                 Height = 0.01f,
             });
             grid.Add(new RelativeBox
             {
-                Colour = Color4.Red,
                 Position = Vector2.Zero,
                 Width = 0.01f,
                 Height = 0.01f,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
@@ -14,13 +15,6 @@ namespace S2VX.Game
         public double StartTime { get; set; } = 0;
         public double EndTime { get; set; } = 0;
         public Easing Easing { get; set; } = Easing.None;
-        protected float ApplyEasing(double time)
-        {
-            var fraction = (time - StartTime) / EndTime;
-            var easing = new DefaultEasingFunction(Easing);
-            var value = (float)easing.ApplyEasing(fraction);
-            return value;
-        }
     }
 
     public class CameraMoveCommand : Command
@@ -29,7 +23,7 @@ namespace S2VX.Game
         public Vector2 EndPosition { get; set; } = Vector2.Zero;
         public Vector2 Apply(double time)
         {
-            var position = StartPosition + (EndPosition - StartPosition) * ApplyEasing(time);
+            var position = Interpolation.ValueAt(time, StartPosition, EndPosition, StartTime, EndTime, Easing);
             return position;
         }
     }
@@ -40,7 +34,7 @@ namespace S2VX.Game
         public float EndRotation { get; set; } = 0;
         public float Apply(double time)
         {
-            var rotation = StartRotation + (EndRotation - StartRotation) * ApplyEasing(time);
+            var rotation = Interpolation.ValueAt(time, StartRotation, EndRotation, StartTime, EndTime, Easing);
             return rotation;
         }
     }
@@ -51,7 +45,7 @@ namespace S2VX.Game
         public float EndScale { get; set; } = 0.1f;
         public float Apply(double time)
         {
-            var scale = StartScale + (EndScale - StartScale) * ApplyEasing(time);
+            var scale = Interpolation.ValueAt(time, StartScale, EndScale, StartTime, EndTime, Easing);
             return scale;
         }
     }
@@ -62,8 +56,19 @@ namespace S2VX.Game
         public float EndAlpha { get; set; } = 1;
         public float Apply(double time)
         {
-            var alpha = StartAlpha + (EndAlpha - StartAlpha) * ApplyEasing(time);
+            var alpha = Interpolation.ValueAt(time, StartAlpha, EndAlpha, StartTime, EndTime, Easing);
             return alpha;
+        }
+    }
+
+    public class GridColorCommand : Command
+    {
+        public Color4 StartColor { get; set; } = Color4.White;
+        public Color4 EndColor { get; set; } = Color4.White;
+        public Color4 Apply(double time)
+        {
+            var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
+            return color;
         }
     }
 }
