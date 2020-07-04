@@ -36,6 +36,15 @@ namespace S2VX.Game
             Easing = Easing.InSine
         };
 
+        private GridThicknessCommand thickness = new GridThicknessCommand
+        {
+            StartTime = 0,
+            EndTime = 10000,
+            StartThickness = 0.05f,
+            EndThickness = 0,
+            Easing = Easing.None
+        };
+
         [BackgroundDependencyLoader]
         private void load(Camera camera)
         {
@@ -55,13 +64,18 @@ namespace S2VX.Game
                 Colour = color.Apply(Time.Current);
             }
 
+            var lineThickness = 0.005f;
+            if (Time.Current <= thickness.EndTime)
+            {
+                lineThickness = thickness.Apply(Time.Current);
+            }
+
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
 
             var edge = 1.0f;
-            var lineWidth = edge * 2;
-            var lineHeight = 0.005f;
+            var lineLength = edge * 2;
 
             var closest = new Vector2(
                 (float)Math.Round(position.X),
@@ -83,29 +97,29 @@ namespace S2VX.Game
                 grid.Add(new RelativeBox
                 {
                     Position = up,
-                    Width = lineWidth,
-                    Height = lineHeight,
+                    Width = lineLength,
+                    Height = lineThickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = down,
-                    Width = lineWidth,
-                    Height = lineHeight,
+                    Width = lineLength,
+                    Height = lineThickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = right,
-                    Width = lineHeight,
-                    Height = lineWidth,
+                    Width = lineThickness,
+                    Height = lineLength,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = left,
-                    Width = lineHeight,
-                    Height = lineWidth,
+                    Width = lineThickness,
+                    Height = lineLength,
                     Rotation = rotation
                 });
             }

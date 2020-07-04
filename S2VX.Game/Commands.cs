@@ -72,6 +72,17 @@ namespace S2VX.Game
         }
     }
 
+    public class GridThicknessCommand : Command
+    {
+        public float StartThickness { get; set; } = 0.005f;
+        public float EndThickness { get; set; } = 0.005f;
+        public float Apply(double time)
+        {
+            var alpha = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
+            return alpha;
+        }
+    }
+
     public class BackColorCommand : Command
     {
         public Color4 StartColor { get; set; } = Color4.White;
