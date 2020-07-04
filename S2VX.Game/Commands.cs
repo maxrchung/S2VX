@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
 using osuTK;
@@ -16,6 +17,7 @@ namespace S2VX.Game
         public double StartTime { get; set; } = 0;
         public double EndTime { get; set; } = 0;
         public Easing Easing { get; set; } = Easing.None;
+        public abstract void Apply(double time);
     }
 
     public abstract class CameraCommand : Command
@@ -27,7 +29,7 @@ namespace S2VX.Game
     {
         public Vector2 StartPosition { get; set; } = Vector2.Zero;
         public Vector2 EndPosition { get; set; } = Vector2.Zero;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var position = Interpolation.ValueAt(time, StartPosition, EndPosition, StartTime, EndTime, Easing);
             Camera.Position = position;
@@ -38,7 +40,7 @@ namespace S2VX.Game
     {
         public float StartRotation { get; set; } = 0;
         public float EndRotation { get; set; } = 0;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var rotation = Interpolation.ValueAt(time, StartRotation, EndRotation, StartTime, EndTime, Easing);
             Camera.Rotation = rotation;
@@ -49,7 +51,7 @@ namespace S2VX.Game
     {
         public Vector2 StartScale { get; set; } = new Vector2(0.1f);
         public Vector2 EndScale { get; set; } = new Vector2(0.1f);
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var scale = Interpolation.ValueAt(time, StartScale, EndScale, StartTime, EndTime, Easing);
             Camera.Scale = scale;
@@ -65,10 +67,10 @@ namespace S2VX.Game
     {
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var alpha = Interpolation.ValueAt(time, StartAlpha, EndAlpha, StartTime, EndTime, Easing);
-            
+            Grid.Alpha = alpha;
         }
     }
 
@@ -76,7 +78,7 @@ namespace S2VX.Game
     {
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
             Grid.Colour = color;
@@ -87,7 +89,7 @@ namespace S2VX.Game
     {
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var lineThickness = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
             Grid.LineThickness = lineThickness;
@@ -96,17 +98,17 @@ namespace S2VX.Game
 
     public abstract class BackgroundCommand : Command
     {
-        public Background Background = new Background();
+        public Box Background = new Box();
     }
 
     public class BackgroundColorCommand : BackgroundCommand
     {
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
-        public void Apply(double time)
+        public override void Apply(double time)
         {
             var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
-            background.Colour = color;
+            Background.Colour = color;
         }
     }
 }
