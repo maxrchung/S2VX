@@ -71,4 +71,15 @@ namespace S2VX.Game
             return color;
         }
     }
+
+    public class BackColorCommand : Command
+    {
+        public Color4 StartColor { get; set; } = Color4.White;
+        public Color4 EndColor { get; set; } = Color4.White;
+        public Color4 Apply(double time)
+        {
+            var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
+            return color;
+        }
+    }
 }

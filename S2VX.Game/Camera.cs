@@ -14,7 +14,7 @@ namespace S2VX.Game
             EndTime = 60000,
             StartPosition = new Vector2(0,0),
             EndPosition = new Vector2(5,5),
-            Easing = Easing.None
+            Easing = Easing.OutElastic
         };
 
         private CameraRotateCommand rotate = new CameraRotateCommand
@@ -23,16 +23,16 @@ namespace S2VX.Game
             EndTime = 60000,
             StartRotation = 0.0f,
             EndRotation = 360.0f,
-            Easing = Easing.None
+            Easing = Easing.InQuart
         };
 
         private CameraScaleCommand scale = new CameraScaleCommand
         {
             StartTime = 0,
             EndTime = 60000,
-            StartScale = 0.1f,
-            EndScale = 0.1f,
-            Easing = Easing.None
+            StartScale = 0.6f,
+            EndScale = 0.01f,
+            Easing = Easing.InOutBounce
         };
 
         protected override void Update()

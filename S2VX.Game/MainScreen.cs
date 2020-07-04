@@ -15,19 +15,39 @@ namespace S2VX.Game
         [Cached]
         private Camera camera = new Camera();
 
+        private Box background = new Box();
+
+        private BackColorCommand color = new BackColorCommand
+        {
+            StartTime = 0,
+            EndTime = 20000,
+            StartColor = Color4.HotPink,
+            EndColor = Color4.DodgerBlue,
+            Easing = Easing.OutPow10
+        };
+
         [BackgroundDependencyLoader]
         private void load()
         {
+            background = new Box
+            {
+                Colour = Color4.CornflowerBlue,
+                RelativeSizeAxes = Axes.Both
+            };
             InternalChildren = new Drawable[]
             {
                 camera,
-                new Box
-                {
-                    Colour = Color4.CornflowerBlue,
-                    RelativeSizeAxes = Axes.Both
-                },
+                background,
                 new Grid()
             };
+        }
+
+        protected override void Update()
+        {
+            if (Time.Current <= color.EndTime)
+            {
+                background.Colour = color.Apply(Time.Current);
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ namespace S2VX.Game
             StartTime = 0,
             EndTime = 30000,
             StartAlpha = 1.0f,
-            EndAlpha = 0.5f,
-            Easing = Easing.None
+            EndAlpha = 0.1f,
+            Easing = Easing.InOutQuad
         };
 
         private GridColorCommand color = new GridColorCommand
@@ -33,7 +33,7 @@ namespace S2VX.Game
             EndTime = 10000,
             StartColor = Color4.Coral,
             EndColor = Color4.Black,
-            Easing = Easing.None
+            Easing = Easing.InSine
         };
 
         [BackgroundDependencyLoader]
