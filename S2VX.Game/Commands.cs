@@ -12,12 +12,17 @@ using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game
 {
-    public abstract class Command
+    public abstract class Command : IComparable<Command>
     {
         public double StartTime { get; set; } = 0;
         public double EndTime { get; set; } = 0;
         public Easing Easing { get; set; } = Easing.None;
         public abstract void Apply(double time);
+
+        public int CompareTo(Command other)
+        {
+            return StartTime.CompareTo(other.StartTime);
+        }
     }
 
     public abstract class CameraCommand : Command

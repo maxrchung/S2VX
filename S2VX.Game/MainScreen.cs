@@ -25,6 +25,8 @@ namespace S2VX.Game
         private Grid grid = new Grid();
 
         private List<Command> commands = new List<Command>();
+        private int nextActive = 0;
+        private HashSet<Command> actives = new HashSet<Command>();
 
         [BackgroundDependencyLoader]
         private void load()
@@ -42,9 +44,18 @@ namespace S2VX.Game
             {
                 Camera = camera,
                 StartTime = 0,
-                EndTime = 60000,
+                EndTime = 10000,
                 StartRotation = 0.0f,
                 EndRotation = 360.0f,
+                Easing = Easing.InQuart
+            });
+            commands.Add(new CameraRotateCommand
+            {
+                Camera = camera,
+                StartTime = 10000,
+                EndTime = 20000,
+                StartRotation = 0.0f,
+                EndRotation = -360.0f,
                 Easing = Easing.InQuart
             });
             commands.Add(new CameraScaleCommand
@@ -89,9 +100,10 @@ namespace S2VX.Game
                 StartTime = 0,
                 EndTime = 10000,
                 StartThickness = 0.05f,
-                EndThickness = 0,
+                EndThickness = 0.001f,
                 Easing = Easing.None
             });
+            commands.Sort();
 
             InternalChildren = new Drawable[]
             {
@@ -103,6 +115,27 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            var time = Time.Current;
+            // Add new active commands
+            while (nextActive != commands.Count && commands[nextActive].StartTime <= time)
+            {
+                actives.Add(commands[nextActive++]);
+            }
+
+            var newActives = new HashSet<Command>();
+            foreach (var active in actives)
+            {
+                // Run active commands
+                active.Apply(time);
+
+                // Remove finished commands by replacing actives
+                // This is done last so command end will always trigger(?) - Note from 2 years ago
+                if (active.EndTime >= time)
+                {
+                    newActives.Add(active);
+                }
+            }
+            actives = newActives;
         }
     }
 }
