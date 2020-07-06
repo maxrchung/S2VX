@@ -18,8 +18,9 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load(Camera camera)
         {
-            RelativeSizeAxes = Axes.Both;
             this.camera = camera;
+            RelativeSizeAxes = Axes.Both;
+            AlwaysPresent = true;
         }
 
         protected override void Update()
