@@ -116,4 +116,19 @@ namespace S2VX.Game
             Background.Colour = color;
         }
     }
+
+    public abstract class NotesCommand : Command
+    {
+        public Notes Notes = new Notes();
+    }
+
+    public class NotesShowCommand : NotesCommand
+    {
+        public float StartShow { get; set; } = 100.0f;
+        public float EndShow { get; set; } = 100.0f;
+        public override void Apply(double time) {
+            var show = Interpolation.ValueAt(time, StartShow, EndShow, StartTime, EndTime, Easing);
+            Notes.ShowTime = show;
+        }
+    }
 }

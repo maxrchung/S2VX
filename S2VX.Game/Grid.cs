@@ -18,6 +18,8 @@ namespace S2VX.Game
     {
         public float LineThickness = 0.005f;
 
+        private float lineLength = 2.0f;
+
         private Camera camera = new Camera();
 
         [BackgroundDependencyLoader]
@@ -33,21 +35,18 @@ namespace S2VX.Game
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
 
-            var edge = 1.0f;
-            var lineLength = edge * 2;
-
             var closest = new Vector2(
                 (float)Math.Round(position.X),
                 (float)Math.Round(position.Y)
             );
-            var offset = Utils.Rotate((closest - position) * scale, rotation);
+            var offset = Utils.Rotate(closest - position, rotation) * scale;
 
             var rotationX = Utils.Rotate(new Vector2(1, 0), rotation);
             var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
 
             var grid = new List<Drawable>();
 
-            for (var i = scale / 2; i <= edge; i += scale)
+            for (var i = scale / 2; i <= lineLength / 2; i += scale)
             {
                 var up = rotationY * i + offset;
                 var down = -rotationY * i + offset;
