@@ -100,7 +100,7 @@ namespace S2VX.Game
                 StartTime = 0,
                 EndTime = 10000,
                 StartThickness = 0.05f,
-                EndThickness = 0.001f,
+                EndThickness = 0.01f,
                 Easing = Easing.None
             });
             commands.Sort();
@@ -130,10 +130,13 @@ namespace S2VX.Game
                 active.Apply(time);
 
                 // Remove finished commands
-                // This is done last so command end will always trigger(?) - Note from 2 years ago
                 if (active.EndTime >= time)
                 {
                     newActives.Add(active);
+                } else
+                {
+                    // Ensure command end will always trigger
+                    active.Apply(time);
                 }
             }
             actives = newActives;
