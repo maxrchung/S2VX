@@ -103,6 +103,33 @@ namespace S2VX.Game
                 EndThickness = 0.01f,
                 Easing = Easing.None
             });
+            commands.Add(new NotesFadeInTimeCommand
+            {
+                Notes = notes,
+                EndFadeInTime = 1000.0f
+            });
+            commands.Add(new NotesShowTimeCommand
+            {
+                Notes = notes,
+                EndShowTime = 1000.0f
+            });
+            commands.Add(new NotesFadeOutTimeCommand
+            {
+                Notes = notes,
+                EndFadeOutTime = 1000.0f
+            });
+            commands.Add(new NotesColorCommand
+            {
+                Notes = notes,
+                StartColor = Color4.Crimson,
+                EndColor = Color4.Crimson
+            });
+            commands.Add(new NotesAlphaCommand
+            {
+                Notes = notes,
+                EndAlpha = 1
+            });
+
             commands.Sort();
 
             InternalChildren = new Drawable[]
@@ -118,7 +145,7 @@ namespace S2VX.Game
         {
             var time = Time.Current;
             // Add new active commands
-            while (nextActive != commands.Count && commands[nextActive].StartTime <= time)
+            while (nextActive < commands.Count && commands[nextActive].StartTime <= time)
             {
                 actives.Add(commands[nextActive++]);
             }

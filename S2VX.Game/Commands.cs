@@ -117,14 +117,57 @@ namespace S2VX.Game
         public Notes Notes = new Notes();
     }
 
-    public class NotesShowTimeCommand : NotesCommand
+    public class NotesFadeInTimeCommand : NotesCommand
     {
-        public float StartShow { get; set; } = 100.0f;
-        public float EndShow { get; set; } = 100.0f;
+        public float StartFadeInTime { get; set; } = 100.0f;
+        public float EndFadeInTime { get; set; } = 100.0f;
         public override void Apply(double time)
         {
-            var show = Interpolation.ValueAt(time, StartShow, EndShow, StartTime, EndTime, Easing);
-            Notes.ShowTime = show;
+            var fadeInTime = Interpolation.ValueAt(time, StartFadeInTime, EndFadeInTime, StartTime, EndTime, Easing);
+            Notes.FadeInTime = fadeInTime;
+        }
+    }
+
+    public class NotesShowTimeCommand : NotesCommand
+    {
+        public float StartShowTime { get; set; } = 100.0f;
+        public float EndShowTime { get; set; } = 100.0f;
+        public override void Apply(double time)
+        {
+            var showTime = Interpolation.ValueAt(time, StartShowTime, EndShowTime, StartTime, EndTime, Easing);
+            Notes.ShowTime = showTime;
+        }
+    }
+
+    public class NotesFadeOutTimeCommand : NotesCommand
+    {
+        public float StartFadeOutTime { get; set; } = 100.0f;
+        public float EndFadeOutTime { get; set; } = 100.0f;
+        public override void Apply(double time)
+        {
+            var fadeOutTime = Interpolation.ValueAt(time, StartFadeOutTime, EndFadeOutTime, StartTime, EndTime, Easing);
+            Notes.FadeOutTime = fadeOutTime;
+        }
+    }
+
+    public class NotesAlphaCommand : NotesCommand
+    {
+        public float StartAlpha { get; set; } = 1;
+        public float EndAlpha { get; set; } = 1;
+        public override void Apply(double time)
+        {
+            var alpha = Interpolation.ValueAt(time, StartAlpha, EndAlpha, StartTime, EndTime, Easing);
+            Notes.Alpha = alpha;
+        }
+    }
+    public class NotesColorCommand : NotesCommand
+    {
+        public Color4 StartColor { get; set; } = Color4.White;
+        public Color4 EndColor { get; set; } = Color4.White;
+        public override void Apply(double time)
+        {
+            var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
+            Notes.Colour = color;
         }
     }
 }

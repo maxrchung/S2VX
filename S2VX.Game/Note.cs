@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Utils;
 using osuTK;
 
 namespace S2VX.Game
@@ -22,20 +23,36 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            var time = Time.Current;
+            var endFadeOut = EndTime + notes.FadeOutTime;
+
+            if (time >= endFadeOut)
+            {
+                Alpha = 0;
+                // Return early to save some calculations
+                return;
+            }
+
+            Colour = notes.Colour;
             Rotation = camera.Rotation;
             Size = camera.Scale;
             Position = Utils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
 
-            var time = Time.Current;
             var startTime = EndTime - notes.ShowTime;
-            if (time >= startTime)
+            if (time >= EndTime)
+            {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+                Alpha = alpha;
+            }
+            else if (time >= startTime)
             {
                 Alpha = 1;
             }
-
-            if (time >= EndTime)
+            else
             {
-                Alpha = 0;
+                var startFadeIn = startTime - notes.FadeInTime;
+                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
+                Alpha = alpha;
             }
         }
     }

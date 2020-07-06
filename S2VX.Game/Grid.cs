@@ -11,7 +11,7 @@ namespace S2VX.Game
     {
         public float LineThickness = 0.005f;
 
-        private float lineLength = 2.0f;
+        private float lineLength = 2;
 
         private Camera camera = new Camera();
 
@@ -25,6 +25,11 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            if (Alpha <= 0 || LineThickness <= 0)
+            {
+                return;
+            }
+
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;

@@ -8,7 +8,11 @@ namespace S2VX.Game
 {
     public class Notes : CompositeDrawable
     {
+        // Notes fade in, show for a period of time, then fade out
+        // The note should be hit at the very end of the show time
+        public float FadeInTime = 100;
         public float ShowTime = 1000;
+        public float FadeOutTime = 100;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -22,7 +26,6 @@ namespace S2VX.Game
                     Coordinates = new Vector2(3, 3)
                 }
             };
-
             InternalChildren = notes;
         }
     }
