@@ -117,7 +117,7 @@ namespace S2VX.Game
         public Notes Notes = new Notes();
     }
 
-    public class NotesShowCommand : NotesCommand
+    public class NotesShowTimeCommand : NotesCommand
     {
         public float StartShow { get; set; } = 100.0f;
         public float EndShow { get; set; } = 100.0f;
