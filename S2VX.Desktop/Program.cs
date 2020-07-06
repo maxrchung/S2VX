@@ -1,5 +1,5 @@
-﻿using osu.Framework.Platform;
-using osu.Framework;
+﻿using osu.Framework;
+using osu.Framework.Platform;
 using S2VX.Game;
 
 namespace S2VX.Desktop

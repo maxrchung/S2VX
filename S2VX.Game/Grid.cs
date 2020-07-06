@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Transforms;
-using osu.Framework.Utils;
 using osuTK;
-using osuTK.Graphics;
-using SixLabors.ImageSharp;
 
 namespace S2VX.Game
 {

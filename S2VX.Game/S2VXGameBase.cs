@@ -2,7 +2,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
-using osuTK;
 using S2VX.Resources;
 
 namespace S2VX.Game

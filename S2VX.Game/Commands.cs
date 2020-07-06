@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Transforms;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
-using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game
 {
@@ -126,7 +121,8 @@ namespace S2VX.Game
     {
         public float StartShow { get; set; } = 100.0f;
         public float EndShow { get; set; } = 100.0f;
-        public override void Apply(double time) {
+        public override void Apply(double time)
+        {
             var show = Interpolation.ValueAt(time, StartShow, EndShow, StartTime, EndTime, Easing);
             Notes.ShowTime = show;
         }
