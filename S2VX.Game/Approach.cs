@@ -1,16 +1,25 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 
 namespace S2VX.Game
 {
-    public class Note : RelativeBox
+    public class Approach : CompositeDrawable
     {
         public float EndTime = 0;
         public Vector2 Coordinates = Vector2.Zero;
 
         private Camera camera = new Camera();
         private Notes notes = new Notes();
+
+        private RelativeBox[] lines = new RelativeBox[]
+        {
+            new RelativeBox(),
+            new RelativeBox(),
+            new RelativeBox(),
+            new RelativeBox()
+        };
 
         [BackgroundDependencyLoader]
         private void load(Camera camera, Notes notes)

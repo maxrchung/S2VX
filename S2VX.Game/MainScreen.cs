@@ -24,6 +24,9 @@ namespace S2VX.Game
         [Cached]
         private Notes notes = new Notes();
 
+        [Cached]
+        private Approaches approaches = new Approaches();
+
         private List<Command> commands = new List<Command>();
         private int nextActive = 0;
         private HashSet<Command> actives = new HashSet<Command>();
@@ -137,7 +140,8 @@ namespace S2VX.Game
                 camera,
                 background,
                 notes,
-                grid
+                grid,
+                approaches
             };
         }
 

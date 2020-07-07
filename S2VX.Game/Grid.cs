@@ -9,7 +9,7 @@ namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
-        public float LineThickness = 0.005f;
+        public float Thickness = 0.005f;
 
         private float lineLength = 2;
 
@@ -25,7 +25,7 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            if (Alpha <= 0 || LineThickness <= 0)
+            if (Alpha <= 0 || Thickness <= 0)
             {
                 return;
             }
@@ -56,27 +56,27 @@ namespace S2VX.Game
                 {
                     Position = up,
                     Width = lineLength,
-                    Height = LineThickness,
+                    Height = Thickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = down,
                     Width = lineLength,
-                    Height = LineThickness,
+                    Height = Thickness,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = right,
-                    Width = LineThickness,
+                    Width = Thickness,
                     Height = lineLength,
                     Rotation = rotation
                 });
                 grid.Add(new RelativeBox
                 {
                     Position = left,
-                    Width = LineThickness,
+                    Width = Thickness,
                     Height = lineLength,
                     Rotation = rotation
                 });

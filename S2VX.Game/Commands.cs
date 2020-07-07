@@ -91,8 +91,8 @@ namespace S2VX.Game
         public float EndThickness { get; set; } = 0.005f;
         public override void Apply(double time)
         {
-            var lineThickness = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
-            Grid.LineThickness = lineThickness;
+            var thickness = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
+            Grid.Thickness = thickness;
         }
     }
 
@@ -168,6 +168,33 @@ namespace S2VX.Game
         {
             var color = Interpolation.ValueAt(time, StartColor, EndColor, StartTime, EndTime, Easing);
             Notes.Colour = color;
+        }
+    }
+
+    public abstract class ApproachesCommand : Command
+    {
+        public Approaches Approaches = new Approaches();
+    }
+
+    public class ApproachesDistanceCommand : ApproachesCommand
+    {
+        public float StartDistance { get; set; } = 0.5f;
+        public float EndDistance { get; set; } = 0.5f;
+        public override void Apply(double time)
+        {
+            var distance = Interpolation.ValueAt(time, StartDistance, EndDistance, StartTime, EndTime, Easing);
+            Approaches.Distance = distance;
+        }
+    }
+
+    public class ApproachesThicknessCommand : ApproachesCommand
+    {
+        public float StartThickness { get; set; } = 0.005f;
+        public float EndThickness { get; set; } = 0.005f;
+        public override void Apply(double time)
+        {
+            var thickness = Interpolation.ValueAt(time, StartThickness, EndThickness, StartTime, EndTime, Easing);
+            Approaches.Thickness = thickness;
         }
     }
 }
