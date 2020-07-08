@@ -11,11 +11,15 @@ namespace S2VX.Game
         public float Distance = 0.5f;
         public float Thickness = 0.005f;
 
+        private Notes notes = new Notes();
+
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(Notes notes)
         {
+            this.notes = notes;
+
             RelativeSizeAxes = Axes.Both;
-            var notes = new List<Drawable>()
+            var approaches = new List<Drawable>()
             {
                 new Approach
                 {
@@ -23,7 +27,13 @@ namespace S2VX.Game
                     Coordinates = new Vector2(3, 3)
                 }
             };
-            InternalChildren = notes;
+            InternalChildren = approaches;
+        }
+
+        protected override void Update()
+        {
+            Alpha = notes.Alpha;
+            Colour = notes.Colour;
         }
     }
 }

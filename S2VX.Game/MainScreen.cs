@@ -132,6 +132,16 @@ namespace S2VX.Game
                 Notes = notes,
                 EndAlpha = 1
             });
+            commands.Add(new ApproachesDistanceCommand
+            {
+                Approaches = approaches,
+                EndDistance = 1.0f
+            });
+            commands.Add(new ApproachesThicknessCommand
+            {
+                Approaches = approaches,
+                EndThickness = 0.01f
+            });
 
             commands.Sort();
 
