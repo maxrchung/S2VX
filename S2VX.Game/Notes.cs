@@ -10,9 +10,9 @@ namespace S2VX.Game
     {
         // Notes fade in, show for a period of time, then fade out
         // The note should be hit at the very end of the show time
-        public float FadeInTime = 100;
-        public float ShowTime = 1000;
-        public float FadeOutTime = 100;
+        public float FadeInTime { get; set; } = 100;
+        public float ShowTime { get; set; } = 1000;
+        public float FadeOutTime { get; set; } = 100;
 
         [BackgroundDependencyLoader]
         private void load()

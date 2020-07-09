@@ -9,11 +9,11 @@ namespace S2VX.Game
 {
     public class Grid : CompositeDrawable
     {
-        public float Thickness = 0.005f;
+        public float Thickness { get; set; } = 0.005f;
 
-        private float lineLength = 2;
+        private float lineLength { get; set; } = 2;
 
-        private Camera camera = new Camera();
+        private Camera camera { get; set; } = new Camera();
 
         [BackgroundDependencyLoader]
         private void load(Camera camera)

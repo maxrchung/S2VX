@@ -17,21 +17,21 @@ namespace S2VX.Game
     public class Story : CompositeDrawable
     {
         [Cached]
-        public Camera Camera = new Camera();
+        public Camera Camera { get; } = new Camera();
 
-        public Box Background = new Box
+        public Box Background { get; } = new Box
         {
             Colour = Color4.CornflowerBlue,
             RelativeSizeAxes = Axes.Both
         };
 
-        public Grid Grid = new Grid();
+        public Grid Grid { get; } = new Grid();
 
         [Cached]
-        public Notes Notes = new Notes();
+        public Notes Notes { get; } = new Notes();
 
         [Cached]
-        public Approaches Approaches = new Approaches();
+        public Approaches Approaches { get; } = new Approaches();
 
         private List<Command> commands = new List<Command>();
         private int nextActive = 0;
