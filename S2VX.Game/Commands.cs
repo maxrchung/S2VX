@@ -7,8 +7,29 @@ using osuTK.Graphics;
 
 namespace S2VX.Game
 {
+    public enum Commands
+    {
+        None,
+        CameraMove,
+        CameraRotate,
+        CameraScale,
+        GridAlpha,
+        GridColor,
+        GridThickness,
+        BackgroundColor,
+        NotesFadeInTime,
+        NotesShowTime,
+        NotesFadeOutTime,
+        NotesAlpha,
+        NotesColor,
+        Approaches,
+        ApproachesDistance,
+        ApproachesThickness
+    }
+
     public abstract class Command : IComparable<Command>
     {
+        public Commands Type = Commands.None;
         public double StartTime { get; set; } = 0;
         public double EndTime { get; set; } = 0;
         public Easing Easing { get; set; } = Easing.None;
@@ -17,6 +38,11 @@ namespace S2VX.Game
         public int CompareTo(Command other)
         {
             return StartTime.CompareTo(other.StartTime);
+        }
+
+        public static Command Load(string data, Camera camera, Notes notes, Approaches approaches)
+        {
+            var data =
         }
     }
 
@@ -27,6 +53,7 @@ namespace S2VX.Game
 
     public class CameraMoveCommand : CameraCommand
     {
+        public Commands Type = Commands.CameraMove;
         public Vector2 StartPosition { get; set; } = Vector2.Zero;
         public Vector2 EndPosition { get; set; } = Vector2.Zero;
         public override void Apply(double time)
@@ -38,6 +65,7 @@ namespace S2VX.Game
 
     public class CameraRotateCommand : CameraCommand
     {
+        public Commands Type = Commands.CameraRotate;
         public float StartRotation { get; set; } = 0;
         public float EndRotation { get; set; } = 0;
         public override void Apply(double time)
@@ -49,6 +77,7 @@ namespace S2VX.Game
 
     public class CameraScaleCommand : CameraCommand
     {
+        public Commands Type = Commands.CameraScale;
         public Vector2 StartScale { get; set; } = new Vector2(0.1f);
         public Vector2 EndScale { get; set; } = new Vector2(0.1f);
         public override void Apply(double time)
@@ -65,6 +94,7 @@ namespace S2VX.Game
 
     public class GridAlphaCommand : GridCommand
     {
+        public Commands Type = Commands.GridAlpha;
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
         public override void Apply(double time)
@@ -76,6 +106,7 @@ namespace S2VX.Game
 
     public class GridColorCommand : GridCommand
     {
+        public Commands Type = Commands.GridColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time)
@@ -87,6 +118,7 @@ namespace S2VX.Game
 
     public class GridThicknessCommand : GridCommand
     {
+        public Commands Type = Commands.GridThickness;
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
         public override void Apply(double time)
@@ -103,6 +135,7 @@ namespace S2VX.Game
 
     public class BackgroundColorCommand : BackgroundCommand
     {
+        public Commands Type = Commands.BackgroundColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time)
@@ -119,6 +152,7 @@ namespace S2VX.Game
 
     public class NotesFadeInTimeCommand : NotesCommand
     {
+        public Commands Type = Commands.NotesFadeInTime;
         public float StartFadeInTime { get; set; } = 100.0f;
         public float EndFadeInTime { get; set; } = 100.0f;
         public override void Apply(double time)
@@ -130,6 +164,7 @@ namespace S2VX.Game
 
     public class NotesShowTimeCommand : NotesCommand
     {
+        public Commands Type = Commands.NotesShowTime;
         public float StartShowTime { get; set; } = 100.0f;
         public float EndShowTime { get; set; } = 100.0f;
         public override void Apply(double time)
@@ -141,6 +176,7 @@ namespace S2VX.Game
 
     public class NotesFadeOutTimeCommand : NotesCommand
     {
+        public Commands Type = Commands.NotesFadeOutTime;
         public float StartFadeOutTime { get; set; } = 100.0f;
         public float EndFadeOutTime { get; set; } = 100.0f;
         public override void Apply(double time)
@@ -152,6 +188,7 @@ namespace S2VX.Game
 
     public class NotesAlphaCommand : NotesCommand
     {
+        public Commands Type = Commands.NotesAlpha;
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
         public override void Apply(double time)
@@ -162,6 +199,7 @@ namespace S2VX.Game
     }
     public class NotesColorCommand : NotesCommand
     {
+        public Commands Type = Commands.NotesColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time)
@@ -178,6 +216,7 @@ namespace S2VX.Game
 
     public class ApproachesDistanceCommand : ApproachesCommand
     {
+        public Commands Type = Commands.ApproachesDistance;
         public float StartDistance { get; set; } = 0.5f;
         public float EndDistance { get; set; } = 0.5f;
         public override void Apply(double time)
@@ -189,6 +228,7 @@ namespace S2VX.Game
 
     public class ApproachesThicknessCommand : ApproachesCommand
     {
+        public Commands Type = Commands.ApproachesThickness;
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
         public override void Apply(double time)

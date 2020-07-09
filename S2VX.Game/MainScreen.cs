@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Logging;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
@@ -34,6 +38,11 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load()
         {
+            var dir = Directory.GetCurrentDirectory();
+            var story = File.ReadAllText(@"..\..\..\story.json");
+            var command = JsonConvert.DeserializeObject<CameraMoveCommand>(story);
+
+
             commands.Add(new CameraMoveCommand
             {
                 Camera = camera,
@@ -174,7 +183,8 @@ namespace S2VX.Game
                 if (active.EndTime >= time)
                 {
                     newActives.Add(active);
-                } else
+                }
+                else
                 {
                     // Ensure command end will always trigger
                     active.Apply(time);

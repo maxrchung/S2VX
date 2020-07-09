@@ -8,6 +8,9 @@
     <Version>0.0.0</Version>
     <FileVersion>0.0.0</FileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Label="Project References">
     <ProjectReference Include="..\S2VX.Game\S2VX.Game.csproj" />
   </ItemGroup>
