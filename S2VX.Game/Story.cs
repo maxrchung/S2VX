@@ -44,39 +44,8 @@ namespace S2VX.Game
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story);
             foreach (var serializedCommand in serializedCommands)
             {
-                var serial = serializedCommand.ToString();
-                Command command = null;
-                switch (Enum.Parse(typeof(Commands), serializedCommand["Type"].ToString()))
-                {
-                    case Commands.CameraMove:
-                        command = JsonConvert.DeserializeObject<CameraMoveCommand>(serial); break;
-                    case Commands.CameraRotate:
-                        command = JsonConvert.DeserializeObject<CameraRotateCommand>(serial); break;
-                    case Commands.CameraScale:
-                        command = JsonConvert.DeserializeObject<CameraScaleCommand>(serial); break;
-                    case Commands.GridAlpha:
-                        command = JsonConvert.DeserializeObject<GridAlphaCommand>(serial); break;
-                    case Commands.GridColor:
-                        command = JsonConvert.DeserializeObject<GridColorCommand>(serial); break;
-                    case Commands.GridThickness:
-                        command = JsonConvert.DeserializeObject<GridThicknessCommand>(serial); break;
-                    case Commands.BackgroundColor:
-                        command = JsonConvert.DeserializeObject<BackgroundColorCommand>(serial); break;
-                    case Commands.NotesAlpha:
-                        command = JsonConvert.DeserializeObject<NotesAlphaCommand>(serial); break;
-                    case Commands.NotesColor:
-                        command = JsonConvert.DeserializeObject<NotesColorCommand>(serial); break;
-                    case Commands.NotesFadeInTime:
-                        command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(serial); break;
-                    case Commands.NotesShowTime:
-                        command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(serial); break;
-                    case Commands.NotesFadeOutTime:
-                        command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(serial); break;
-                    case Commands.ApproachesDistance:
-                        command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(serial); break;
-                    case Commands.ApproachesThickness:
-                        command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(serial); break;
-                }
+                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
+                var command = Command.Load(type, serializedCommand.ToString(), this);
                 if (command != null)
                 {
                     commands.Add(command);

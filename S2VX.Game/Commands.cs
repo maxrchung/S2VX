@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Utils;
@@ -38,6 +39,29 @@ namespace S2VX.Game
         public int CompareTo(Command other)
         {
             return StartTime.CompareTo(other.StartTime);
+        }
+
+        public static Command Load(Commands type, string data, Story story)
+        {
+            Command command = null;
+            switch (type)
+            {
+                case Commands.CameraMove: command = JsonConvert.DeserializeObject<CameraMoveCommand>(data); break;
+                case Commands.CameraRotate: command = JsonConvert.DeserializeObject<CameraRotateCommand>(data); break;
+                case Commands.CameraScale: command = JsonConvert.DeserializeObject<CameraScaleCommand>(data); break;
+                case Commands.GridAlpha: command = JsonConvert.DeserializeObject<GridAlphaCommand>(data); break;
+                case Commands.GridColor: command = JsonConvert.DeserializeObject<GridColorCommand>(data); break;
+                case Commands.GridThickness: command = JsonConvert.DeserializeObject<GridThicknessCommand>(data); break;
+                case Commands.BackgroundColor: command = JsonConvert.DeserializeObject<BackgroundColorCommand>(data); break;
+                case Commands.NotesAlpha: command = JsonConvert.DeserializeObject<NotesAlphaCommand>(data); break;
+                case Commands.NotesColor: command = JsonConvert.DeserializeObject<NotesColorCommand>(data); break;
+                case Commands.NotesFadeInTime: command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(data); break;
+                case Commands.NotesShowTime: command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(data); break;
+                case Commands.NotesFadeOutTime: command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(data); break;
+                case Commands.ApproachesDistance: command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(data); break;
+                case Commands.ApproachesThickness: command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data); break;
+            }
+            return command;
         }
     }
 
