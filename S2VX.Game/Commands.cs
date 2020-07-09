@@ -30,7 +30,7 @@ namespace S2VX.Game
 
     public abstract class Command : IComparable<Command>
     {
-        public Commands Type = Commands.None;
+        public abstract Commands Type { get; set; }
         public double StartTime { get; set; } = 0;
         public double EndTime { get; set; } = 0;
         public Easing Easing { get; set; } = Easing.None;
@@ -68,7 +68,7 @@ namespace S2VX.Game
 
     public class CameraMoveCommand : Command
     {
-        public Commands Type = Commands.CameraMove;
+        public override Commands Type { get; set; } = Commands.CameraMove;
         public Vector2 StartPosition { get; set; } = Vector2.Zero;
         public Vector2 EndPosition { get; set; } = Vector2.Zero;
         public override void Apply(double time, Story story)
@@ -80,7 +80,7 @@ namespace S2VX.Game
 
     public class CameraRotateCommand : Command
     {
-        public Commands Type = Commands.CameraRotate;
+        public override Commands Type { get; set; } = Commands.CameraRotate;
         public float StartRotation { get; set; } = 0;
         public float EndRotation { get; set; } = 0;
         public override void Apply(double time, Story story)
@@ -92,7 +92,7 @@ namespace S2VX.Game
 
     public class CameraScaleCommand : Command
     {
-        public Commands Type = Commands.CameraScale;
+        public override Commands Type { get; set; } = Commands.CameraScale;
         public Vector2 StartScale { get; set; } = new Vector2(0.1f);
         public Vector2 EndScale { get; set; } = new Vector2(0.1f);
         public override void Apply(double time, Story story)
@@ -109,7 +109,7 @@ namespace S2VX.Game
 
     public class GridAlphaCommand : Command
     {
-        public Commands Type = Commands.GridAlpha;
+        public override Commands Type { get; set; } = Commands.GridAlpha;
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
         public override void Apply(double time, Story story)
@@ -121,7 +121,7 @@ namespace S2VX.Game
 
     public class GridColorCommand : Command
     {
-        public Commands Type = Commands.GridColor;
+        public override Commands Type { get; set; } = Commands.GridColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time, Story story)
@@ -133,7 +133,7 @@ namespace S2VX.Game
 
     public class GridThicknessCommand : Command
     {
-        public Commands Type = Commands.GridThickness;
+        public override Commands Type { get; set; } = Commands.GridThickness;
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
         public override void Apply(double time, Story story)
@@ -145,7 +145,7 @@ namespace S2VX.Game
 
     public class BackgroundColorCommand : Command
     {
-        public Commands Type = Commands.BackgroundColor;
+        public override Commands Type { get; set; } = Commands.BackgroundColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time, Story story)
@@ -157,7 +157,7 @@ namespace S2VX.Game
 
     public class NotesFadeInTimeCommand : Command
     {
-        public Commands Type = Commands.NotesFadeInTime;
+        public override Commands Type { get; set; } = Commands.NotesFadeInTime;
         public float StartFadeInTime { get; set; } = 100.0f;
         public float EndFadeInTime { get; set; } = 100.0f;
         public override void Apply(double time, Story story)
@@ -169,7 +169,7 @@ namespace S2VX.Game
 
     public class NotesShowTimeCommand : Command
     {
-        public Commands Type = Commands.NotesShowTime;
+        public override Commands Type { get; set; } = Commands.NotesShowTime;
         public float StartShowTime { get; set; } = 100.0f;
         public float EndShowTime { get; set; } = 100.0f;
         public override void Apply(double time, Story story)
@@ -181,7 +181,7 @@ namespace S2VX.Game
 
     public class NotesFadeOutTimeCommand : Command
     {
-        public Commands Type = Commands.NotesFadeOutTime;
+        public override Commands Type { get; set; } = Commands.NotesFadeOutTime;
         public float StartFadeOutTime { get; set; } = 100.0f;
         public float EndFadeOutTime { get; set; } = 100.0f;
         public override void Apply(double time, Story story)
@@ -193,7 +193,7 @@ namespace S2VX.Game
 
     public class NotesAlphaCommand : Command
     {
-        public Commands Type = Commands.NotesAlpha;
+        public override Commands Type { get; set; } = Commands.NotesAlpha;
         public float StartAlpha { get; set; } = 1;
         public float EndAlpha { get; set; } = 1;
         public override void Apply(double time, Story story)
@@ -204,7 +204,7 @@ namespace S2VX.Game
     }
     public class NotesColorCommand : Command
     {
-        public Commands Type = Commands.NotesColor;
+        public override Commands Type { get; set; } = Commands.NotesColor;
         public Color4 StartColor { get; set; } = Color4.White;
         public Color4 EndColor { get; set; } = Color4.White;
         public override void Apply(double time, Story story)
@@ -216,7 +216,7 @@ namespace S2VX.Game
 
     public class ApproachesDistanceCommand : Command
     {
-        public Commands Type = Commands.ApproachesDistance;
+        public override Commands Type { get; set; } = Commands.ApproachesDistance;
         public float StartDistance { get; set; } = 0.5f;
         public float EndDistance { get; set; } = 0.5f;
         public override void Apply(double time, Story story)
@@ -228,7 +228,7 @@ namespace S2VX.Game
 
     public class ApproachesThicknessCommand : Command
     {
-        public Commands Type = Commands.ApproachesThickness;
+        public override Commands Type { get; set; } = Commands.ApproachesThickness;
         public float StartThickness { get; set; } = 0.005f;
         public float EndThickness { get; set; } = 0.005f;
         public override void Apply(double time, Story story)
