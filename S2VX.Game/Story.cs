@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -16,21 +17,21 @@ namespace S2VX.Game
     public class Story : CompositeDrawable
     {
         [Cached]
-        private Camera camera = new Camera();
+        public Camera Camera = new Camera();
 
-        private Box background = new Box
+        public Box Background = new Box
         {
             Colour = Color4.CornflowerBlue,
             RelativeSizeAxes = Axes.Both
         };
 
-        private Grid grid = new Grid();
+        public Grid Grid = new Grid();
 
         [Cached]
-        private Notes notes = new Notes();
+        public Notes Notes = new Notes();
 
         [Cached]
-        private Approaches approaches = new Approaches();
+        public Approaches Approaches = new Approaches();
 
         private List<Command> commands = new List<Command>();
         private int nextActive = 0;
@@ -39,19 +40,58 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load()
         {
-            var dir = Directory.GetCurrentDirectory();
             var story = File.ReadAllText(@"..\..\..\story.json");
-            var command = JsonConvert.DeserializeObject<CameraMoveCommand>(story);
+            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story);
+            foreach (var serializedCommand in serializedCommands)
+            {
+                var serial = serializedCommand.ToString();
+                Command command = null;
+                switch (Enum.Parse(typeof(Commands), serializedCommand["Type"].ToString()))
+                {
+                    case Commands.CameraMove:
+                        command = JsonConvert.DeserializeObject<CameraMoveCommand>(serial); break;
+                    case Commands.CameraRotate:
+                        command = JsonConvert.DeserializeObject<CameraRotateCommand>(serial); break;
+                    case Commands.CameraScale:
+                        command = JsonConvert.DeserializeObject<CameraScaleCommand>(serial); break;
+                    case Commands.GridAlpha:
+                        command = JsonConvert.DeserializeObject<GridAlphaCommand>(serial); break;
+                    case Commands.GridColor:
+                        command = JsonConvert.DeserializeObject<GridColorCommand>(serial); break;
+                    case Commands.GridThickness:
+                        command = JsonConvert.DeserializeObject<GridThicknessCommand>(serial); break;
+                    case Commands.BackgroundColor:
+                        command = JsonConvert.DeserializeObject<BackgroundColorCommand>(serial); break;
+                    case Commands.NotesAlpha:
+                        command = JsonConvert.DeserializeObject<NotesAlphaCommand>(serial); break;
+                    case Commands.NotesColor:
+                        command = JsonConvert.DeserializeObject<NotesColorCommand>(serial); break;
+                    case Commands.NotesFadeInTime:
+                        command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(serial); break;
+                    case Commands.NotesShowTime:
+                        command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(serial); break;
+                    case Commands.NotesFadeOutTime:
+                        command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(serial); break;
+                    case Commands.ApproachesDistance:
+                        command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(serial); break;
+                    case Commands.ApproachesThickness:
+                        command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(serial); break;
+                }
+                if (command != null)
+                {
+                    commands.Add(command);
+                }
+            }
             commands.Sort();
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
             {
-                camera,
-                background,
-                notes,
-                grid,
-                approaches
+                Camera,
+                Background,
+                Notes,
+                Grid,
+                Approaches
             };
         }
 
@@ -68,7 +108,7 @@ namespace S2VX.Game
             foreach (var active in actives)
             {
                 // Run active commands
-                active.Apply(time);
+                active.Apply(time, this);
 
                 // Remove finished commands
                 if (active.EndTime >= time)
@@ -78,7 +118,7 @@ namespace S2VX.Game
                 else
                 {
                     // Ensure command end will always trigger
-                    active.Apply(time);
+                    active.Apply(time, this);
                 }
             }
             actives = newActives;
