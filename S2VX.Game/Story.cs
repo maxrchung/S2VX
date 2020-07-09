@@ -19,10 +19,9 @@ namespace S2VX.Game
         [Cached]
         public Camera Camera { get; } = new Camera();
 
-        public Box Background { get; } = new Box
+        public RelativeBox Background = new RelativeBox
         {
-            Colour = Color4.CornflowerBlue,
-            RelativeSizeAxes = Axes.Both
+            Colour = Color4.Black,
         };
 
         public Grid Grid { get; } = new Grid();
