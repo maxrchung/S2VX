@@ -11,7 +11,7 @@ namespace S2VX.Game.Tests.Visual
 
         public TestSceneMainScreen()
         {
-            Add(new ScreenStack(new MainScreen()) { RelativeSizeAxes = Axes.Both });
+            Add(new ScreenStack(new Story()) { RelativeSizeAxes = Axes.Both });
         }
     }
 }

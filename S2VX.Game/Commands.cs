@@ -40,10 +40,7 @@ namespace S2VX.Game
             return StartTime.CompareTo(other.StartTime);
         }
 
-        public static Command Load(string data, Camera camera, Notes notes, Approaches approaches)
-        {
-            var data =
-        }
+
     }
 
     public abstract class CameraCommand : Command
