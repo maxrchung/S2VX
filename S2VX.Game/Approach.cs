@@ -9,14 +9,14 @@ namespace S2VX.Game
 {
     public class Approach : CompositeDrawable
     {
-        public float EndTime = 0;
-        public Vector2 Coordinates = Vector2.Zero;
+        public float EndTime { get; set; } = 0;
+        public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
-        private Camera camera = new Camera();
-        private Notes notes = new Notes();
-        private Approaches approaches = new Approaches();
+        private Camera camera { get; set; } = new Camera();
+        private Notes notes { get; set; } = new Notes();
+        private Approaches approaches { get; set; } = new Approaches();
 
-        private RelativeBox[] lines = new RelativeBox[4]
+        private RelativeBox[] lines { get; set; } = new RelativeBox[4]
         {
             new RelativeBox(), // up
             new RelativeBox(), // down

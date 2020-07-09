@@ -11,7 +11,7 @@ namespace S2VX.Game
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
-        private Notes notes = new Notes();
+        private Notes notes { get; set; } = new Notes();
 
         [BackgroundDependencyLoader]
         private void load(Notes notes)

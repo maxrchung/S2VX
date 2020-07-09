@@ -6,11 +6,11 @@ namespace S2VX.Game
 {
     public class Note : RelativeBox
     {
-        public float EndTime = 0;
-        public Vector2 Coordinates = Vector2.Zero;
+        public float EndTime { get; set; } = 0;
+        public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
-        private Camera camera = new Camera();
-        private Notes notes = new Notes();
+        private Camera camera { get; set; } = new Camera();
+        private Notes notes { get; set; } = new Notes();
 
         [BackgroundDependencyLoader]
         private void load(Camera camera, Notes notes)

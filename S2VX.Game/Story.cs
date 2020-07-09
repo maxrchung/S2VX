@@ -32,9 +32,9 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
-        private List<Command> commands = new List<Command>();
-        private int nextActive = 0;
-        private HashSet<Command> actives = new HashSet<Command>();
+        private List<Command> commands { get; set; } = new List<Command>();
+        private int nextActive { get; set; } = 0;
+        private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
         [BackgroundDependencyLoader]
         private void load()
