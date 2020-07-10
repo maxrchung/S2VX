@@ -8,6 +8,8 @@ namespace S2VX.Game
 {
     public class Notes : CompositeDrawable
     {
+        public List<Note> Children = new List<Note>();
+
         // Notes fade in, show for a period of time, then fade out
         // The note should be hit at the very end of the show time
         public float FadeInTime { get; set; } = 100;
@@ -18,15 +20,7 @@ namespace S2VX.Game
         private void load()
         {
             RelativeSizeAxes = Axes.Both;
-            var notes = new List<Drawable>()
-            {
-                new Note
-                {
-                    EndTime = 5000,
-                    Coordinates = new Vector2(3, 3)
-                }
-            };
-            InternalChildren = notes;
+            InternalChildren = Children;
         }
     }
 }

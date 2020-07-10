@@ -39,18 +39,21 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load()
         {
-            var story = File.ReadAllText(@"..\..\..\story.json");
-            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story);
+            var text = File.ReadAllText(@"..\..\..\story.json");
+            var story = JObject.Parse(text);
+            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
             {
                 var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
                 var command = Command.Load(type, serializedCommand.ToString(), this);
-                if (command != null)
-                {
-                    commands.Add(command);
-                }
+                commands.Add(command);
             }
             commands.Sort();
+
+            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
+            Notes.Children = notes;
+            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
+            Approaches.Children = approaches;
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]

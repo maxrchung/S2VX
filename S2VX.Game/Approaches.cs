@@ -8,6 +8,7 @@ namespace S2VX.Game
 {
     public class Approaches : CompositeDrawable
     {
+        public List<Approach> Children = new List<Approach>();
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
@@ -19,15 +20,7 @@ namespace S2VX.Game
             this.notes = notes;
 
             RelativeSizeAxes = Axes.Both;
-            var approaches = new List<Drawable>()
-            {
-                new Approach
-                {
-                    EndTime = 5000,
-                    Coordinates = new Vector2(3, 3)
-                }
-            };
-            InternalChildren = approaches;
+            InternalChildren = Children;
         }
 
         protected override void Update()

@@ -1,40 +1,51 @@
-﻿[
-  {
-    "Type": "BackgroundColor",
-    "StartTime": 0,
-    "EndTime": 10000,
-    "StartColor": {
-      "R": 1,
-      "G": 0,
-      "B": 0,
-      "A": 1
-    },
-    "EndColor": {
-      "R": 1,
-      "G": 1,
-      "B": 0,
-      "A": 1
+﻿{
+  "Notes": [
+    {
+      "EndTime": 5000,
+      "Coordinates": {
+        "X": 3,
+        "Y": 3
+      }
     }
-  },
-  {
-    "Type": "CameraMove",
-    "StartTime": 0,
-    "EndTime": 10000,
-    "StartPosition": {
-      "X": 1,
-      "Y": 1
+  ],
+  "Commands": [
+    {
+      "Type": "BackgroundColor",
+      "StartTime": 0,
+      "EndTime": 10000,
+      "StartColor": {
+        "R": 1,
+        "G": 0,
+        "B": 0,
+        "A": 1
+      },
+      "EndColor": {
+        "R": 1,
+        "G": 1,
+        "B": 0,
+        "A": 1
+      }
     },
-    "EndPosition": {
-      "X": 2,
-      "Y": 3
+    {
+      "Type": "CameraMove",
+      "StartTime": 0,
+      "EndTime": 10000,
+      "StartPosition": {
+        "X": 1,
+        "Y": 1
+      },
+      "EndPosition": {
+        "X": 2,
+        "Y": 3
+      }
+    },
+    {
+      "Type": "CameraRotate",
+      "StartTime": 0,
+      "EndTime": 10000,
+      "StartRotation": 45,
+      "EndRotation": -45,
+      "Easing": 15
     }
-  },
-  {
-    "Type": "CameraRotate",
-    "StartTime": 0,
-    "EndTime": 10000,
-    "StartRotation": 45,
-    "EndRotation": -45,
-    "Easing": 15
-  }
-]
+  ]
+}
