@@ -7,6 +7,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
 using osuTK;
@@ -16,19 +17,18 @@ namespace S2VX.Game
 {
     public class Story : CompositeDrawable
     {
+        public double GameTime { get; set; } = 0;
+        public bool IsPlaying { get; set; } = true;
+
         [Cached]
         public Camera Camera { get; } = new Camera();
-
         public RelativeBox Background = new RelativeBox
         {
             Colour = Color4.Black,
         };
-
         public Grid Grid { get; } = new Grid();
-
         [Cached]
         public Notes Notes { get; } = new Notes();
-
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
@@ -68,9 +68,13 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            var time = Time.Current;
+            if (IsPlaying)
+            {
+                GameTime += Time.Elapsed;
+            }
+
             // Add new active commands
-            while (nextActive < commands.Count && commands[nextActive].StartTime <= time)
+            while (nextActive < commands.Count && commands[nextActive].StartTime <= GameTime)
             {
                 actives.Add(commands[nextActive++]);
             }
@@ -79,17 +83,17 @@ namespace S2VX.Game
             foreach (var active in actives)
             {
                 // Run active commands
-                active.Apply(time, this);
+                active.Apply(GameTime, this);
 
                 // Remove finished commands
-                if (active.EndTime >= time)
+                if (active.EndTime >= GameTime)
                 {
                     newActives.Add(active);
                 }
                 else
                 {
                     // Ensure command end will always trigger
-                    active.Apply(time, this);
+                    active.Apply(GameTime, this);
                 }
             }
             actives = newActives;

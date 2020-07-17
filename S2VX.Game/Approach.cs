@@ -12,6 +12,7 @@ namespace S2VX.Game
         public float EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
+        private Story story { get; set; } = new Story();
         private Camera camera { get; set; } = new Camera();
         private Notes notes { get; set; } = new Notes();
         private Approaches approaches { get; set; } = new Approaches();
@@ -25,8 +26,9 @@ namespace S2VX.Game
         };
 
         [BackgroundDependencyLoader]
-        private void load(Camera camera, Notes notes, Approaches approaches)
+        private void load(Story story, Camera camera, Notes notes, Approaches approaches)
         {
+            this.story = story;
             this.camera = camera;
             this.notes = notes;
             this.approaches = approaches;
@@ -38,7 +40,7 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            var time = Time.Current;
+            var time = story.GameTime;
             var endFadeOut = EndTime + notes.FadeOutTime;
 
             if (time >= endFadeOut)
