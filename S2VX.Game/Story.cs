@@ -27,6 +27,7 @@ namespace S2VX.Game
             Colour = Color4.Black,
         };
         public Grid Grid { get; } = new Grid();
+        public Timeline Timeline = new Timeline();
         [Cached]
         public Notes Notes { get; } = new Notes();
         [Cached]
@@ -62,6 +63,7 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
+                Timeline,
                 Approaches
             };
         }
