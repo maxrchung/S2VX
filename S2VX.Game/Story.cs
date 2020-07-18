@@ -4,6 +4,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -36,10 +38,14 @@ namespace S2VX.Game
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
+        public Track Track = null;
+        
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(AudioManager audioManager)
         {
-            var text = File.ReadAllText(@"..\..\..\story.json");
+            Track = audioManager.Tracks.Get("");
+
+            var text = File.ReadAllText(@"Stories/Camellia_MEGALOVANIA_Remix/story.json");
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
