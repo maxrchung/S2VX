@@ -39,6 +39,13 @@ namespace S2VX.Game
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
         public Track Track = null;
+
+        public void Restart()
+        {
+            GameTime = 0;
+            nextActive = 0;
+            actives.Clear();
+        }
         
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)

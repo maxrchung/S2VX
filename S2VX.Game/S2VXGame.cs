@@ -27,7 +27,7 @@ namespace S2VX.Game
                     Story.IsPlaying = !Story.IsPlaying;
                     break;
                 case Key.X:
-                    Story.GameTime = 0;
+                    Story.Restart();
                     break;
             }
 
