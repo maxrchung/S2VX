@@ -20,7 +20,8 @@ namespace S2VX.Game
         private const float timeline_width = 1.0f;
         private const float slider_height = 0.5f;
 
-        protected override void Update()
+        [BackgroundDependencyLoader]
+        private void load()
         {
             RelativeSizeAxes = Axes.Both;
 
@@ -43,25 +44,21 @@ namespace S2VX.Game
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.Black.Opacity(0.9f),
                         },
-                        new Box
+                        new RelativeBox
                         {
                             Name = "Timeline",
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                             Height = timeline_height / 10,
                             Width = timeline_width / 1.5f,
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
                         },
-                        new Box
+                        new RelativeBox
                         {
                             Name = "Slider",
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                             Height = slider_height,
                             Width = timeline_width / 600,
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
                         }
                     }
                 }
