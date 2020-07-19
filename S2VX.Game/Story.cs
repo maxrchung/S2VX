@@ -7,6 +7,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
@@ -35,12 +36,12 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
+        private DrawableTrack track = null;
+
         private List<Command> commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
-        public Track Track = null;
-       
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
         {
@@ -70,8 +71,9 @@ namespace S2VX.Game
                 Approaches
             };
 
-            Track = audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3");
-            Track.Start();
+            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            track.Start();
+            track.VolumeTo(0.1);
         }
 
         protected override bool OnKeyDown(KeyDownEvent e)
@@ -80,23 +82,18 @@ namespace S2VX.Game
             {
                 case Key.Space:
                     if (IsPlaying)
-                    {
-                        Track.Stop();
-                        IsPlaying = false;
-                    } else
-                    {
-                        Track.Start();
-                        IsPlaying = true;
-                    }
+                        track.Stop();
+                    else
+                        track.Start();
+                    IsPlaying = !IsPlaying;
                     break;
                 case Key.X:
                     GameTime = 0;
                     nextActive = 0;
                     actives.Clear();
-                    Track.Restart();
+                    track.Restart();
                     break;
             }
-
             return true;
         }
 
