@@ -14,6 +14,7 @@ using osu.Framework.Logging;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
+using osuTK.Input;
 
 namespace S2VX.Game
 {
@@ -40,19 +41,28 @@ namespace S2VX.Game
 
         public Track Track = null;
 
-        public void Restart()
+        protected override bool OnKeyDown(KeyDownEvent e)
         {
-            GameTime = 0;
-            nextActive = 0;
-            actives.Clear();
+            switch (e.Key)
+            {
+                case Key.Space:
+                    IsPlaying = !IsPlaying;
+                    break;
+                case Key.X:
+                    GameTime = 0;
+                    nextActive = 0;
+                    actives.Clear();
+                    break;
+            }
+
+            return true;
         }
-        
+
+       
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
         {
-            Track = audioManager.Tracks.Get("");
-
-            var text = File.ReadAllText(@"Stories/Camellia_MEGALOVANIA_Remix/story.json");
+            var text = File.ReadAllText(@"../../../story.json");
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
