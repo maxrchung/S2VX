@@ -1,5 +1,3 @@
-using osu.Framework.Graphics;
-using osu.Framework.Screens;
 using osu.Framework.Testing;
 
 namespace S2VX.Game.Tests.Visual
