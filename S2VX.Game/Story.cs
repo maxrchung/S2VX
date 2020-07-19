@@ -40,24 +40,6 @@ namespace S2VX.Game
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
         public Track Track = null;
-
-        protected override bool OnKeyDown(KeyDownEvent e)
-        {
-            switch (e.Key)
-            {
-                case Key.Space:
-                    IsPlaying = !IsPlaying;
-                    break;
-                case Key.X:
-                    GameTime = 0;
-                    nextActive = 0;
-                    actives.Clear();
-                    break;
-            }
-
-            return true;
-        }
-
        
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
@@ -87,6 +69,35 @@ namespace S2VX.Game
                 Grid,
                 Approaches
             };
+
+            Track = audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3");
+            Track.Start();
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space:
+                    if (IsPlaying)
+                    {
+                        Track.Stop();
+                        IsPlaying = false;
+                    } else
+                    {
+                        Track.Start();
+                        IsPlaying = true;
+                    }
+                    break;
+                case Key.X:
+                    GameTime = 0;
+                    nextActive = 0;
+                    actives.Clear();
+                    Track.Restart();
+                    break;
+            }
+
+            return true;
         }
 
         protected override void Update()
