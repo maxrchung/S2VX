@@ -18,20 +18,5 @@ namespace S2VX.Game
         {
             Child = Story;
         }
-
-        protected override bool OnKeyDown(KeyDownEvent e)
-        {
-            switch (e.Key)
-            {
-                case Key.Space:
-                    Story.IsPlaying = !Story.IsPlaying;
-                    break;
-                case Key.X:
-                    Story.GameTime = 0;
-                    break;
-            }
-
-            return true;
-        }
     }
 }

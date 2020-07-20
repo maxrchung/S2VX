@@ -4,7 +4,10 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
@@ -12,6 +15,7 @@ using osu.Framework.Logging;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
+using osuTK.Input;
 
 namespace S2VX.Game
 {
@@ -32,14 +36,16 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
+        private DrawableTrack track = null;
+
         private List<Command> commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(AudioManager audioManager)
         {
-            var text = File.ReadAllText(@"..\..\..\story.json");
+            var text = File.ReadAllText(@"../../../story.json");
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
@@ -64,6 +70,31 @@ namespace S2VX.Game
                 Grid,
                 Approaches
             };
+
+            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            track.Start();
+            track.VolumeTo(0.1);
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space:
+                    if (IsPlaying)
+                        track.Stop();
+                    else
+                        track.Start();
+                    IsPlaying = !IsPlaying;
+                    break;
+                case Key.X:
+                    GameTime = 0;
+                    nextActive = 0;
+                    actives.Clear();
+                    track.Restart();
+                    break;
+            }
+            return true;
         }
 
         protected override void Update()
