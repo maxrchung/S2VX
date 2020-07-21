@@ -10,7 +10,8 @@ using osuTK.Graphics;
 using SixLabors.ImageSharp;
 using osuTK;
 using SixLabors.ImageSharp.Processing;
-
+using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Text;
 
 namespace S2VX.Game
 {
@@ -24,7 +25,6 @@ namespace S2VX.Game
         private void load()
         {
             RelativeSizeAxes = Axes.Both;
-
             InternalChildren = new Drawable[]
             {
                 new Container
@@ -44,22 +44,38 @@ namespace S2VX.Game
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.Black.Opacity(0.9f),
                         },
-                        new RelativeBox
+                        new Container
                         {
                             Name = "Timeline",
                             RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
                             Colour = Color4.White,
-                            Height = timeline_height / 10,
                             Width = timeline_width / 1.5f,
+
+                            Children = new Drawable[]
+                            {
+                                new RelativeBox
+                                {
+                                    Name = "Line",
+                                    Colour = Color4.White,
+                                    Height = timeline_height / 10,
+
+                                },
+                                new TimelineSlider
+                                {
+                                    Name = "Slider",
+                                    Colour = Color4.White,
+                                    Height = slider_height,
+                                    Width = timeline_width / 200, //600
+                                }
+                            }
+
                         },
-                        new RelativeBox
-                        {
-                            Name = "Slider",
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.White,
-                            Height = slider_height,
-                            Width = timeline_width / 600,
-                        }
+                        //new Clock
+                        //{
+
+                        //}
                     }
                 }
             };
