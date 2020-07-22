@@ -12,6 +12,7 @@ namespace S2VX.Game
     {
         [Resolved]
         private Story Story { get; set; }
+        private float lineWidthUnit = 2f / 3f;
 
         public TimelineSlider()
         {
@@ -24,7 +25,10 @@ namespace S2VX.Game
 
         protected override void OnDrag(DragEvent e)
         {
-            X += e.Delta.X;
+            var newX = X + ToLocalSpace(e.ScreenSpaceMousePosition).X;
+            var lineWidth = lineWidthUnit * Story.DrawWidth;
+            newX = Math.Clamp(newX, 0, lineWidth);
+            X = newX;
         }
     }
 }
