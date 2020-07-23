@@ -12,14 +12,25 @@ using osuTK;
 using SixLabors.ImageSharp.Processing;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Text;
+using System.Linq;
 
 namespace S2VX.Game
 {
     public class Timeline : CompositeDrawable
     {
+        [Cached]
+        private TimelineSlider TimelineSlider = new TimelineSlider
+        {
+            Name = "Slider",
+            Colour = Color4.White,
+            Height = slider_height,
+            Width = timeline_width / 150, //600
+        };
+
         private const float timeline_height = 0.075f;
         private const float timeline_width = 1.0f;
         private const float slider_height = 0.5f;
+        private Container LineContainer { get; set; }
 
         [BackgroundDependencyLoader]
         private void load()
@@ -27,7 +38,7 @@ namespace S2VX.Game
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
             {
-                new Container
+                LineContainer = new Container
                 {
                     Name = "Timeline content",
                     RelativeSizeAxes = Axes.Both,
@@ -38,11 +49,9 @@ namespace S2VX.Game
 
                     Children = new Drawable[]
                     {
-                        new Box
+                        new TimelineBar
                         {
                             Name = "Bar",
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.Black.Opacity(0.9f),
                         },
                         new Container
                         {
@@ -62,15 +71,8 @@ namespace S2VX.Game
                                     Height = timeline_height / 10,
 
                                 },
-                                new TimelineSlider
-                                {
-                                    Name = "Slider",
-                                    Colour = Color4.White,
-                                    Height = slider_height,
-                                    Width = timeline_width / 200, //600
-                                }
+                                TimelineSlider
                             }
-
                         },
                         //new Clock
                         //{
