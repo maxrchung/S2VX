@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
@@ -10,6 +11,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
@@ -68,12 +70,38 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
-                Approaches
+                Approaches,
+                new BasicMenu(Direction.Horizontal, true)
+                {
+                    Width = 1,
+                    Height = 0.05f,
+                    RelativeSizeAxes = Axes.Both,
+                    Items = new[]
+                    {
+                        new MenuItem("File")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Open", Open),
+                                new MenuItem("Save"),
+                                new MenuItem("Save As", Save)
+                            }
+                        },
+                        new MenuItem("Edit")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Undo"),
+                                new MenuItem("Redo")
+                            }
+                        }
+                    }
+                }
             };
 
             track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             track.Start();
-            track.VolumeTo(0.1);
+            track.VolumeTo(0.01);
         }
 
         protected override bool OnKeyDown(KeyDownEvent e)
@@ -128,6 +156,20 @@ namespace S2VX.Game
                 }
             }
             actives = newActives;
+        }
+
+        private void Open()
+        {
+            var dialog = new CommonOpenFileDialog();
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                Console.WriteLine("Open");
+            }
+        }
+
+        private void Save()
+        {
+            Console.WriteLine("Save");
         }
     }
 }
