@@ -24,7 +24,7 @@ namespace S2VX.Game
     public class Story : CompositeDrawable
     {
         public double GameTime { get; set; } = 0;
-        public bool IsPlaying { get; set; } = true;
+        public bool IsPlaying { get; set; } = false;
 
         [Cached]
         public Camera Camera { get; } = new Camera();
@@ -47,21 +47,10 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
         {
-            var text = File.ReadAllText(@"../../../story.json");
-            var story = JObject.Parse(text);
-            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
-            foreach (var serializedCommand in serializedCommands)
-            {
-                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.Load(type, serializedCommand.ToString(), this);
-                commands.Add(command);
-            }
-            commands.Sort();
+            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            track.VolumeTo(0.05f);
 
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
-            Notes.Children = notes;
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
-            Approaches.Children = approaches;
+            load(@"../../../story.json");
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
@@ -82,26 +71,13 @@ namespace S2VX.Game
                         {
                             Items = new[]
                             {
-                                new MenuItem("Open", Open),
-                                new MenuItem("Save"),
-                                new MenuItem("Save As", Save)
-                            }
-                        },
-                        new MenuItem("Edit")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Undo"),
-                                new MenuItem("Redo")
+                                new MenuItem("Open", open),
+                                new MenuItem("Save As", save)
                             }
                         }
                     }
                 }
             };
-
-            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            track.Start();
-            track.VolumeTo(0.01);
         }
 
         protected override bool OnKeyDown(KeyDownEvent e)
@@ -109,20 +85,30 @@ namespace S2VX.Game
             switch (e.Key)
             {
                 case Key.Space:
-                    if (IsPlaying)
-                        track.Stop();
-                    else
-                        track.Start();
-                    IsPlaying = !IsPlaying;
+                    Play(!IsPlaying);
                     break;
                 case Key.X:
-                    GameTime = 0;
-                    nextActive = 0;
-                    actives.Clear();
-                    track.Restart();
+                    Restart();
                     break;
             }
             return true;
+        }
+
+        private void Play(bool isPlaying)
+        {
+            if (isPlaying)
+                track.Start();
+            else
+                track.Stop();
+            IsPlaying = isPlaying;
+        }
+
+        private void Restart()
+        {
+            GameTime = 0;
+            nextActive = 0;
+            actives.Clear();
+            track.Restart();
         }
 
         protected override void Update()
@@ -158,18 +144,52 @@ namespace S2VX.Game
             actives = newActives;
         }
 
-        private void Open()
+        private void load(string path)
         {
+            var text = File.ReadAllText(path);
+            var story = JObject.Parse(text);
+            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
+            foreach (var serializedCommand in serializedCommands)
+            {
+                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
+                var command = Command.Load(type, serializedCommand.ToString(), this);
+                commands.Add(command);
+            }
+            commands.Sort();
+
+            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
+            Notes.Children = notes;
+            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
+            Approaches.Children = approaches;
+
+            Play(false);
+            Restart();
+        }
+
+        private void open()
+        {
+            Play(false);
             var dialog = new CommonOpenFileDialog();
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                Console.WriteLine("Open");
+                load(dialog.FileName);
+            } else
+            {
+                Play(true);
             }
         }
 
-        private void Save()
+        private void save()
         {
-            Console.WriteLine("Save");
+            Play(false);
+            var dialog = new CommonSaveFileDialog();
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                Console.WriteLine("Save");
+            } else
+            {
+                Play(true);
+            }
         }
     }
 }
