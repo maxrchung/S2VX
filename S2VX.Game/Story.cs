@@ -170,6 +170,8 @@ namespace S2VX.Game
         {
             Play(false);
             var dialog = new CommonOpenFileDialog();
+            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
+            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 load(dialog.FileName);
@@ -183,6 +185,8 @@ namespace S2VX.Game
         {
             Play(false);
             var dialog = new CommonSaveFileDialog();
+            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
+            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 Console.WriteLine("Save");
