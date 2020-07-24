@@ -37,7 +37,7 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
-        private DrawableTrack track = null;
+        public DrawableTrack Track = null;
 
         private List<Command> commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
@@ -73,9 +73,9 @@ namespace S2VX.Game
                 Approaches
             };
 
-            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            track.Start();
-            track.VolumeTo(0.1);
+            Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track.Start();
+            Track.VolumeTo(0.1);
         }
 
         protected override bool OnKeyDown(KeyDownEvent e)
@@ -84,16 +84,16 @@ namespace S2VX.Game
             {
                 case Key.Space:
                     if (IsPlaying)
-                        track.Stop();
+                        Track.Stop();
                     else
-                        track.Start();
+                        Track.Start();
                     IsPlaying = !IsPlaying;
                     break;
                 case Key.X:
                     GameTime = 0;
                     nextActive = 0;
                     actives.Clear();
-                    track.Restart();
+                    Track.Restart();
                     break;
             }
             return true;
