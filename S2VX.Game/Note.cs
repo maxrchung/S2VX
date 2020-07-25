@@ -9,16 +9,16 @@ namespace S2VX.Game
         public float EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
+        [Resolved]
         private Story story { get; set; } = new Story();
+        [Resolved]
         private Camera camera { get; set; } = new Camera();
+        [Resolved]
         private Notes notes { get; set; } = new Notes();
 
         [BackgroundDependencyLoader]
-        private void load(Story story, Camera camera, Notes notes)
+        private void load()
         {
-            this.story = story;
-            this.camera = camera;
-            this.notes = notes;
             Alpha = 0;
             AlwaysPresent = true;
         }

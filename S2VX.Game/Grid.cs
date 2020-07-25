@@ -13,12 +13,12 @@ namespace S2VX.Game
 
         private float lineLength { get; set; } = 2;
 
+        [Resolved]
         private Camera camera { get; set; } = new Camera();
 
         [BackgroundDependencyLoader]
-        private void load(Camera camera)
+        private void load()
         {
-            this.camera = camera;
             RelativeSizeAxes = Axes.Both;
             AlwaysPresent = true;
         }

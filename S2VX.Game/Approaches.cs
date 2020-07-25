@@ -12,13 +12,12 @@ namespace S2VX.Game
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
+        [Resolved]
         private Notes notes { get; set; } = new Notes();
 
         [BackgroundDependencyLoader]
-        private void load(Notes notes)
+        private void load()
         {
-            this.notes = notes;
-
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Children;
         }
