@@ -33,12 +33,13 @@ namespace S2VX.Game
             Colour = Color4.Black,
         };
         public Grid Grid { get; } = new Grid();
+        public Timeline Timeline = new Timeline();
         [Cached]
         public Notes Notes { get; } = new Notes();
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
-        private DrawableTrack track = null;
+        public DrawableTrack Track = null;
 
         private List<Command> commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
@@ -49,8 +50,8 @@ namespace S2VX.Game
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
         {
-            track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            track.VolumeTo(0.05f);
+            Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track.VolumeTo(0.05f);
 
             Open(@"../../../story.json");
 
@@ -61,16 +62,17 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
-                Approaches
+                Approaches,
+                Timeline
             };
         }
 
         public void Play(bool isPlaying)
         {
             if (isPlaying)
-                track.Start();
+                Track.Start();
             else
-                track.Stop();
+                Track.Stop();
             IsPlaying = isPlaying;
         }
 
@@ -79,11 +81,19 @@ namespace S2VX.Game
             GameTime = 0;
             nextActive = 0;
             actives.Clear();
-            track.Restart();
+            Track.Restart();
             if (!IsPlaying)
             {
                 Play(false);
             }
+        }
+
+        public void Seek(double time)
+        {
+            nextActive = 0;
+            actives.Clear();
+            GameTime = time;
+            Track.Seek(time);
         }
 
         public void Open(string path)
@@ -146,7 +156,7 @@ namespace S2VX.Game
                 else
                 {
                     // Ensure command end will always trigger
-                    active.Apply(GameTime, this);
+                    active.Apply(active.EndTime, this);
                 }
             }
             actives = newActives;
