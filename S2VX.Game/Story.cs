@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
@@ -10,6 +11,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
@@ -22,7 +24,7 @@ namespace S2VX.Game
     public class Story : CompositeDrawable
     {
         public double GameTime { get; set; } = 0;
-        public bool IsPlaying { get; set; } = true;
+        public bool IsPlaying { get; set; } = false;
 
         [Cached]
         public Camera Camera { get; } = new Camera();
@@ -43,16 +45,66 @@ namespace S2VX.Game
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
+        private static readonly JsonConverter[] converters = { new Vector2Converter(), new NoteConverter() };
+
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
         {
-            var text = File.ReadAllText(@"../../../story.json");
+            Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track.VolumeTo(0.05f);
+
+            Open(@"../../../story.json");
+
+            RelativeSizeAxes = Axes.Both;
+            InternalChildren = new Drawable[]
+            {
+                Camera,
+                Background,
+                Notes,
+                Grid,
+                Approaches,
+                Timeline
+            };
+        }
+
+        public void Play(bool isPlaying)
+        {
+            if (isPlaying)
+                Track.Start();
+            else
+                Track.Stop();
+            IsPlaying = isPlaying;
+        }
+
+        public void Restart()
+        {
+            GameTime = 0;
+            nextActive = 0;
+            actives.Clear();
+            Track.Restart();
+            if (!IsPlaying)
+            {
+                Play(false);
+            }
+        }
+
+        public void Seek(double time)
+        {
+            nextActive = 0;
+            actives.Clear();
+            GameTime = time;
+            Track.Seek(time);
+        }
+
+        public void Open(string path)
+        {
+            var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
             {
                 var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.Load(type, serializedCommand.ToString(), this);
+                var command = Command.Load(type, serializedCommand.ToString());
                 commands.Add(command);
             }
             commands.Sort();
@@ -62,41 +114,19 @@ namespace S2VX.Game
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
             Approaches.Children = approaches;
 
-            RelativeSizeAxes = Axes.Both;
-            InternalChildren = new Drawable[]
-            {
-                Camera,
-                Background,
-                Notes,
-                Grid,
-                Timeline,
-                Approaches
-            };
-
-            Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Track.Start();
-            Track.VolumeTo(0.1);
+            Restart();
+            Play(false);
         }
 
-        protected override bool OnKeyDown(KeyDownEvent e)
+        public void Save(string path)
         {
-            switch (e.Key)
+            var obj = new
             {
-                case Key.Space:
-                    if (IsPlaying)
-                        Track.Stop();
-                    else
-                        Track.Start();
-                    IsPlaying = !IsPlaying;
-                    break;
-                case Key.X:
-                    GameTime = 0;
-                    nextActive = 0;
-                    actives.Clear();
-                    Track.Restart();
-                    break;
-            }
-            return true;
+                Commands = commands,
+                Notes = Notes.Children
+            };
+            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
+            File.WriteAllText(path, serialized);
         }
 
         protected override void Update()
@@ -126,7 +156,7 @@ namespace S2VX.Game
                 else
                 {
                     // Ensure command end will always trigger
-                    active.Apply(GameTime, this);
+                    active.Apply(active.EndTime, this);
                 }
             }
             actives = newActives;

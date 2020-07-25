@@ -48,8 +48,7 @@ namespace S2VX.Game
             if (newX >= 0 && newX <= lineWidth)
             {
                 TimelineSlider.X = newX;
-                Story.GameTime = newTime;
-                Story.Track.Seek(newTime);
+                Story.Seek(newTime);
             }
 
             return true;
@@ -64,16 +63,15 @@ namespace S2VX.Game
                 var (newX, lineWidth, newTime) = getNewValues(ToLocalSpace(e.ScreenSpaceMousePosition).X);
                 newX = Math.Clamp(newX, 0, lineWidth);
                 TimelineSlider.X = newX;
-                Story.GameTime = Math.Clamp(newTime, 0, Story.Track.Length);
 
                 if (Story.IsPlaying)
                 {
-                    Story.Track.Stop();
-                    Story.IsPlaying = false;
+                    Story.Play(false);
                     switchToPlaying = true;
                 }
 
-                Story.Track.Seek(newTime);
+                var clampedTime = Math.Clamp(newTime, 0, Story.Track.Length);
+                Story.Seek(clampedTime);
                 delayDrag = true;
             }
         }

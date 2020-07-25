@@ -1,5 +1,5 @@
-﻿using osu.Framework;
-using osu.Framework.Platform;
+﻿using System;
+using osu.Framework;
 using S2VX.Game;
 
 namespace S2VX.Desktop
@@ -8,10 +8,17 @@ namespace S2VX.Desktop
     {
         public static void Main()
         {
-            using (GameHost host = Host.GetSuitableHost(@"S2VX"))
-            using (osu.Framework.Game game = new S2VXGame())
+            using (var host = Host.GetSuitableHost(@"S2VX"))
+            using (var game = new S2VXGame())
             {
-                host.Run(game);
+                try
+                {
+                    host.Run(game);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
     }

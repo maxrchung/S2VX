@@ -1,13 +1,4 @@
 ﻿{
-  "Notes": [
-    {
-      "EndTime": 5000,
-      "Coordinates": {
-        "X": 3,
-        "Y": 3
-      }
-    }
-  ],
   "Commands": [
     {
       "Type": "BackgroundColor",
@@ -48,34 +39,13 @@
       "Easing": 15
     }
   ],
-  "Editor": [
+  "Notes": [
     {
-      "Type": "Timing",
-      "StartTime": 0,
-      "EndTime": 5500,
-      "StartBPM": 180,
-      "EndBPM":  200,
-    },
-    {
-      "Type": "CameraMove",
-      "StartTime": 0,
-      "EndTime": 10000,
-      "StartPosition": {
-        "X": 1,
-        "Y": 1
-      },
-      "EndPosition": {
-        "X": 2,
+      "EndTime": 5000,
+      "Coordinates": {
+        "X": 3,
         "Y": 3
       }
-    },
-    {
-      "Type": "CameraRotate",
-      "StartTime": 0,
-      "EndTime": 10000,
-      "StartRotation": 45,
-      "EndRotation": -45,
-      "Easing": 15
     }
   ]
 }
