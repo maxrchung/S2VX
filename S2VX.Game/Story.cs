@@ -50,7 +50,7 @@ namespace S2VX.Game
             track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             track.VolumeTo(0.05f);
 
-            load(@"../../../story.json");
+            open(@"../../../story.json");
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
@@ -109,6 +109,10 @@ namespace S2VX.Game
             nextActive = 0;
             actives.Clear();
             track.Restart();
+            if (!IsPlaying)
+            {
+                Play(false);
+            }
         }
 
         protected override void Update()
@@ -144,7 +148,7 @@ namespace S2VX.Game
             actives = newActives;
         }
 
-        private void load(string path)
+        private void open(string path)
         {
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
@@ -162,8 +166,8 @@ namespace S2VX.Game
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
             Approaches.Children = approaches;
 
-            Play(false);
             Restart();
+            Play(false);
         }
 
         private void open()
@@ -174,11 +178,16 @@ namespace S2VX.Game
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                load(dialog.FileName);
+                open(dialog.FileName);
             } else
             {
                 Play(true);
             }
+        }
+
+        private void save(string path)
+        {
+            var serializedCommands = JsonConvert.SerializeObject(commands);
         }
 
         private void save()
@@ -189,7 +198,7 @@ namespace S2VX.Game
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                Console.WriteLine("Save");
+                save(dialog.FileName);
             } else
             {
                 Play(true);
