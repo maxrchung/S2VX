@@ -158,7 +158,7 @@ namespace S2VX.Game
             foreach (var serializedCommand in serializedCommands)
             {
                 var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.Load(type, serializedCommand.ToString(), this);
+                var command = Command.Load(type, serializedCommand.ToString());
                 commands.Add(command);
             }
             commands.Sort();

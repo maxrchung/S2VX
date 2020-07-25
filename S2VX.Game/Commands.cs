@@ -41,7 +41,7 @@ namespace S2VX.Game
             return StartTime.CompareTo(other.StartTime);
         }
 
-        public static Command Load(Commands type, string data, Story story)
+        public static Command Load(Commands type, string data)
         {
             Command command = null;
             switch (type)
