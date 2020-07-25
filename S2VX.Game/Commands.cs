@@ -65,7 +65,6 @@ namespace S2VX.Game
         }
     }
 
-
     public class CameraMoveCommand : Command
     {
         public override Commands Type { get; set; } = Commands.CameraMove;

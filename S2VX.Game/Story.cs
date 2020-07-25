@@ -52,7 +52,7 @@ namespace S2VX.Game
             track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             track.VolumeTo(0.05f);
 
-            open(@"../../../story.json");
+            Open(@"../../../story.json");
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
@@ -61,42 +61,11 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
-                Approaches,
-                new BasicMenu(Direction.Horizontal, true)
-                {
-                    Width = 1,
-                    Height = 0.05f,
-                    RelativeSizeAxes = Axes.Both,
-                    Items = new[]
-                    {
-                        new MenuItem("File")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Open", open),
-                                new MenuItem("Save As", save)
-                            }
-                        }
-                    }
-                }
+                Approaches
             };
         }
 
-        protected override bool OnKeyDown(KeyDownEvent e)
-        {
-            switch (e.Key)
-            {
-                case Key.Space:
-                    Play(!IsPlaying);
-                    break;
-                case Key.X:
-                    Restart();
-                    break;
-            }
-            return true;
-        }
-
-        private void Play(bool isPlaying)
+        public void Play(bool isPlaying)
         {
             if (isPlaying)
                 track.Start();
@@ -105,7 +74,7 @@ namespace S2VX.Game
             IsPlaying = isPlaying;
         }
 
-        private void Restart()
+        public void Restart()
         {
             GameTime = 0;
             nextActive = 0;
@@ -115,6 +84,39 @@ namespace S2VX.Game
             {
                 Play(false);
             }
+        }
+
+        public void Open(string path)
+        {
+            var text = File.ReadAllText(path);
+            var story = JObject.Parse(text);
+            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
+            foreach (var serializedCommand in serializedCommands)
+            {
+                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
+                var command = Command.Load(type, serializedCommand.ToString());
+                commands.Add(command);
+            }
+            commands.Sort();
+
+            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
+            Notes.Children = notes;
+            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
+            Approaches.Children = approaches;
+
+            Restart();
+            Play(false);
+        }
+
+        public void Save(string path)
+        {
+            var obj = new
+            {
+                Commands = commands,
+                Notes = Notes.Children
+            };
+            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
+            File.WriteAllText(path, serialized);
         }
 
         protected override void Update()
@@ -148,71 +150,6 @@ namespace S2VX.Game
                 }
             }
             actives = newActives;
-        }
-
-        private void open(string path)
-        {
-            var text = File.ReadAllText(path);
-            var story = JObject.Parse(text);
-            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
-            foreach (var serializedCommand in serializedCommands)
-            {
-                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.Load(type, serializedCommand.ToString());
-                commands.Add(command);
-            }
-            commands.Sort();
-
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
-            Notes.Children = notes;
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
-            Approaches.Children = approaches;
-
-            Restart();
-            Play(false);
-        }
-
-        private void open()
-        {
-            Play(false);
-            var dialog = new CommonOpenFileDialog();
-            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
-            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                open(dialog.FileName);
-            }
-            else
-            {
-                Play(true);
-            }
-        }
-
-        private void save(string path)
-        {
-            var obj = new
-            {
-                Commands = commands,
-                Notes = Notes.Children
-            };
-            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
-            File.WriteAllText(path, serialized);
-        }
-
-        private void save()
-        {
-            Play(false);
-            var dialog = new CommonSaveFileDialog();
-            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
-            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                save(dialog.FileName);
-            }
-            else
-            {
-                Play(true);
-            }
         }
     }
 }
