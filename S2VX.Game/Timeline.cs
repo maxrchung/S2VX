@@ -20,7 +20,7 @@ namespace S2VX.Game
     public class Timeline : CompositeDrawable
     {
         [Resolved]
-        private Story Story { get; set; } = new Story();
+        private Story story { get; set; } = new Story();
 
         private Container bar { get; set; } = new Container();
 
@@ -43,13 +43,13 @@ namespace S2VX.Game
             var xPosDelta = (DrawWidth - bar.DrawWidth) / 2;
             var newX = mousePosX - xPosDelta;
             var xLengthRatio = newX / bar.DrawWidth;
-            var newTime = xLengthRatio * Story.Track.Length;
+            var newTime = xLengthRatio * story.Track.Length;
 
             var clampedX = Math.Clamp(newX, 0, bar.DrawWidth);
             slider.X = clampedX;
 
-            var clampedTime = Math.Clamp(newTime, 0, Story.Track.Length);
-            Story.Seek(clampedTime);
+            var clampedTime = Math.Clamp(newTime, 0, story.Track.Length);
+            story.Seek(clampedTime);
         }
 
         private const float timelineHeight = 0.075f;
@@ -93,9 +93,9 @@ namespace S2VX.Game
         protected override bool OnMouseDown(MouseDownEvent e)
         {
             updateSlider(e.ScreenSpaceMousePosition);
-            if (Story.IsPlaying)
+            if (story.IsPlaying)
             {
-                Story.Play(false);
+                story.Play(false);
                 switchToPlaying = true;
             }
             else
@@ -120,14 +120,14 @@ namespace S2VX.Game
         {
             if (switchToPlaying)
             {
-                Story.Play(true);
+                story.Play(true);
             }
         }
 
         protected override void Update()
         {
             delayDrag = false;
-            var songRatio = Story.GameTime / Story.Track.Length;
+            var songRatio = story.GameTime / story.Track.Length;
             var newX = songRatio * bar.DrawWidth;
             slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
         }
