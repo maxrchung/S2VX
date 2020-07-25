@@ -20,8 +20,6 @@ namespace S2VX.Game
 
         private float lineWidthUnit { get; set; } = 2 / 3f;
 
-        private double trackLength => Story.Track.Length;
-
         private bool switchToPlaying { get; set; } = false;
 
         private bool delayDrag { get; set; } = false;
@@ -32,7 +30,7 @@ namespace S2VX.Game
             var newX = mousePosX - xPosDelta;
             var lineWidth = lineWidthUnit * Story.DrawWidth;
             var xLengthRatio = newX / lineWidth;
-            var newTime = xLengthRatio * trackLength;
+            var newTime = xLengthRatio * Story.Track.Length;
             return (newX, lineWidth, newTime);
         }
 
@@ -66,7 +64,7 @@ namespace S2VX.Game
                 var (newX, lineWidth, newTime) = getNewValues(ToLocalSpace(e.ScreenSpaceMousePosition).X);
                 newX = Math.Clamp(newX, 0, lineWidth);
                 TimelineSlider.X = newX;
-                Story.GameTime = Math.Clamp(newTime, 0, trackLength);
+                Story.GameTime = Math.Clamp(newTime, 0, Story.Track.Length);
 
                 if (Story.IsPlaying)
                 {
@@ -94,7 +92,7 @@ namespace S2VX.Game
         {
             delayDrag = false;
             var curTime = Story.GameTime;
-            var songRatio = curTime / trackLength;
+            var songRatio = curTime / Story.Track.Length;
             var lineWidth = lineWidthUnit * Story.DrawWidth;
             var newX = songRatio * lineWidth;
             TimelineSlider.X = (float)Math.Clamp(newX, 0, lineWidth);
