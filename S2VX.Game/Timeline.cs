@@ -19,9 +19,8 @@ namespace S2VX.Game
     public class Timeline : CompositeDrawable
     {
         [Cached]
-        private RelativeBox TimelineSlider = new RelativeBox
+        private RelativeBox timelineSlider = new RelativeBox
         {
-            Name = "Slider",
             Colour = Color4.White,
             Height = 0.5f,
             Width = timelineWidth / 150,
@@ -40,7 +39,6 @@ namespace S2VX.Game
             {
                 new Container
                 {
-                    Name = "Timeline content",
                     RelativeSizeAxes = Axes.Both,
                     Height = timelineHeight,
                     Width = timelineWidth,
@@ -49,13 +47,9 @@ namespace S2VX.Game
 
                     Children = new Drawable[]
                     {
-                        new TimelineBar
-                        {
-                            Name = "Bar",
-                        },
+                        new TimelineBar(),
                         new Container
                         {
-                            Name = "Timeline",
                             RelativeSizeAxes = Axes.Both,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -66,12 +60,11 @@ namespace S2VX.Game
                             {
                                 new RelativeBox
                                 {
-                                    Name = "Line",
                                     Colour = Color4.White,
                                     Height = timelineHeight / 10,
 
                                 },
-                                TimelineSlider
+                                timelineSlider
                             }
                         },
                     }
