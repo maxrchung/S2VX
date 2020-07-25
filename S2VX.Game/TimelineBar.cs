@@ -14,16 +14,27 @@ namespace S2VX.Game
     public class TimelineBar : Box
     {
         [Resolved]
-        private Story Story { get; set; }
+        private Story Story { get; set; } = new Story();
         [Resolved]
-        private TimelineSlider TimelineSlider { get; set; }
-        private float lineWidthUnit = 2f / 3f;
+        private RelativeBox TimelineSlider { get; set; } = new RelativeBox();
+
+        private float lineWidthUnit { get; set; } = 2 / 3f;
 
         private double trackLength => Story.Track.Length;
 
-        private bool switchToPlaying = false;
+        private bool switchToPlaying { get; set; } = false;
 
-        private bool delayDrag = false;
+        private bool delayDrag { get; set; } = false;
+
+        private (float newX, float lineWidth, double newTime) getNewValues(float mousePosX)
+        {
+            var xPosDelta = (DrawWidth - (DrawWidth / 1.5f)) / 2;
+            var newX = mousePosX - xPosDelta;
+            var lineWidth = lineWidthUnit * Story.DrawWidth;
+            var xLengthRatio = newX / lineWidth;
+            var newTime = xLengthRatio * trackLength;
+            return (newX, lineWidth, newTime);
+        }
 
         [BackgroundDependencyLoader]
         private void load()
@@ -34,15 +45,11 @@ namespace S2VX.Game
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            var xPosDelta = (DrawWidth - (DrawWidth / 1.5f)) / 2;
-            var newX = ToLocalSpace(e.ScreenSpaceMousePosition).X - xPosDelta;
-            var lineWidth = lineWidthUnit * Story.DrawWidth;
+            var (newX, lineWidth, newTime) = getNewValues(ToLocalSpace(e.ScreenSpaceMousePosition).X);
 
             if (newX >= 0 && newX <= lineWidth)
             {
-                var xLengthRatio = newX / lineWidth;
                 TimelineSlider.X = newX;
-                var newTime = xLengthRatio * trackLength;
                 Story.GameTime = newTime;
                 Story.Track.Seek(newTime);
             }
@@ -56,13 +63,9 @@ namespace S2VX.Game
         {
             if (!delayDrag)
             {
-                var xPosDelta = (DrawWidth - (DrawWidth / 1.5f)) / 2;
-                var newX = X + ToLocalSpace(e.ScreenSpaceMousePosition).X - xPosDelta;
-                var lineWidth = lineWidthUnit * Story.DrawWidth;
-                var xLengthRatio = newX / lineWidth;
+                var (newX, lineWidth, newTime) = getNewValues(ToLocalSpace(e.ScreenSpaceMousePosition).X);
                 newX = Math.Clamp(newX, 0, lineWidth);
                 TimelineSlider.X = newX;
-                var newTime = xLengthRatio * trackLength;
                 Story.GameTime = Math.Clamp(newTime, 0, trackLength);
 
                 if (Story.IsPlaying)

@@ -1,36 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osuTK.Graphics;
-using SixLabors.ImageSharp;
-using osuTK;
-using SixLabors.ImageSharp.Processing;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Text;
-using System.Linq;
+using osuTK;
+using osuTK.Graphics;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game
 {
     public class Timeline : CompositeDrawable
     {
         [Cached]
-        private TimelineSlider TimelineSlider = new TimelineSlider
+        private RelativeBox TimelineSlider = new RelativeBox
         {
             Name = "Slider",
             Colour = Color4.White,
-            Height = slider_height,
-            Width = timeline_width / 150, //600
+            Height = 0.5f,
+            Width = timelineWidth / 150,
+            Anchor = Anchor.CentreLeft,
+            RelativePositionAxes = Axes.None,
         };
 
-        private const float timeline_height = 0.075f;
-        private const float timeline_width = 1.0f;
-        private const float slider_height = 0.5f;
-        private Container LineContainer { get; set; }
+        private const float timelineHeight  = 0.075f;
+        private const float timelineWidth = 1.0f;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -38,12 +38,12 @@ namespace S2VX.Game
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
             {
-                LineContainer = new Container
+                new Container
                 {
                     Name = "Timeline content",
                     RelativeSizeAxes = Axes.Both,
-                    Height = timeline_height,
-                    Width = timeline_width,
+                    Height = timelineHeight,
+                    Width = timelineWidth,
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
 
@@ -60,7 +60,7 @@ namespace S2VX.Game
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             Colour = Color4.White,
-                            Width = timeline_width / 1.5f,
+                            Width = timelineWidth / 1.5f,
 
                             Children = new Drawable[]
                             {
@@ -68,16 +68,12 @@ namespace S2VX.Game
                                 {
                                     Name = "Line",
                                     Colour = Color4.White,
-                                    Height = timeline_height / 10,
+                                    Height = timelineHeight / 10,
 
                                 },
                                 TimelineSlider
                             }
                         },
-                        //new Clock
-                        //{
-
-                        //}
                     }
                 }
             };
