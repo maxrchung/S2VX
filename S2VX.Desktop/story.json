@@ -1,13 +1,4 @@
 ﻿{
-  "Notes": [
-    {
-      "EndTime": 5000,
-      "Coordinates": {
-        "X": 3,
-        "Y": 3
-      }
-    }
-  ],
   "Commands": [
     {
       "Type": "BackgroundColor",
@@ -48,13 +39,22 @@
       "Easing": 15
     }
   ],
+  "Notes": [
+    {
+      "EndTime": 5000,
+      "Coordinates": {
+        "X": 3,
+        "Y": 3
+      }
+    }
+  ],
   "Editor": [
     {
       "Type": "Timing",
       "StartTime": 0,
       "EndTime": 5500,
       "StartBPM": 180,
-      "EndBPM":  200,
+      "EndBPM": 200
     },
     {
       "Type": "CameraMove",

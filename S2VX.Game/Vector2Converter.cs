@@ -13,11 +13,11 @@ namespace S2VX.Game
     // Special converter for serialization since we only care about the X and Y values of Vector2
     public class Vector2Converter : JsonConverter<Vector2>
     {
-        public override void WriteJson(JsonWriter writer, Vector2 value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, Vector2 vector2, JsonSerializer serializer)
         {
             var obj = new JObject();
-            obj.Add("X", value.X);
-            obj.Add("Y", value.Y);
+            obj.Add("X", vector2.X);
+            obj.Add("Y", vector2.Y);
             obj.WriteTo(writer);
         }
 

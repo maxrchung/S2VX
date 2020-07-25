@@ -44,7 +44,7 @@ namespace S2VX.Game
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
-        private static readonly JsonConverter[] converters = { new Vector2Converter() };
+        private static readonly JsonConverter[] converters = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
@@ -189,7 +189,13 @@ namespace S2VX.Game
 
         private void save(string path)
         {
-            var serializedCommands = JsonConvert.SerializeObject(commands, Formatting.Indented, converters);
+            var obj = new
+            {
+                Commands = commands,
+                Notes = Notes.Children
+            };
+            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
+            File.WriteAllText(path, serialized);
         }
 
         private void save()
