@@ -21,6 +21,10 @@ namespace S2VX.Game
 
         private double trackLength => Story.Track.Length;
 
+        private bool switchToPlaying = false;
+
+        private bool delayDrag = false;
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -50,33 +54,42 @@ namespace S2VX.Game
 
         protected override void OnDrag(DragEvent e)
         {
-            var xPosDelta = (DrawWidth - (DrawWidth / 1.5f)) / 2;
-            var newX = X + ToLocalSpace(e.ScreenSpaceMousePosition).X - xPosDelta;
-            var lineWidth = lineWidthUnit * Story.DrawWidth;
-            var xLengthRatio = newX / lineWidth;
-            newX = Math.Clamp(newX, 0, lineWidth);
-            TimelineSlider.X = newX;
-            var newTime = xLengthRatio * trackLength;
-            Story.GameTime = Math.Clamp(newTime, 0, trackLength);
-
-            if (Story.IsPlaying)
+            if (!delayDrag)
             {
-                Story.Track.Stop();
-            }
+                var xPosDelta = (DrawWidth - (DrawWidth / 1.5f)) / 2;
+                var newX = X + ToLocalSpace(e.ScreenSpaceMousePosition).X - xPosDelta;
+                var lineWidth = lineWidthUnit * Story.DrawWidth;
+                var xLengthRatio = newX / lineWidth;
+                newX = Math.Clamp(newX, 0, lineWidth);
+                TimelineSlider.X = newX;
+                var newTime = xLengthRatio * trackLength;
+                Story.GameTime = Math.Clamp(newTime, 0, trackLength);
 
-            Story.Track.Seek(newTime);
+                if (Story.IsPlaying)
+                {
+                    Story.Track.Stop();
+                    Story.IsPlaying = false;
+                    switchToPlaying = true;
+                }
+
+                Story.Track.Seek(newTime);
+                delayDrag = true;
+            }
         }
 
         protected override void OnDragEnd(DragEndEvent e)
         {
-            if (Story.IsPlaying)
+            if (switchToPlaying)
             {
                 Story.Track.Start();
+                Story.IsPlaying = true;
+                switchToPlaying = false;
             }
         }
 
         protected override void Update()
         {
+            delayDrag = false;
             var curTime = Story.GameTime;
             var songRatio = curTime / trackLength;
             var lineWidth = lineWidthUnit * Story.DrawWidth;
