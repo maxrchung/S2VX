@@ -181,7 +181,8 @@ namespace S2VX.Game
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 open(dialog.FileName);
-            } else
+            }
+            else
             {
                 Play(true);
             }
@@ -207,7 +208,8 @@ namespace S2VX.Game
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 save(dialog.FileName);
-            } else
+            }
+            else
             {
                 Play(true);
             }
