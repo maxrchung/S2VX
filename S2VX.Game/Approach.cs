@@ -12,9 +12,13 @@ namespace S2VX.Game
         public float EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
+        [Resolved]
         private Story story { get; set; } = new Story();
+        [Resolved]
         private Camera camera { get; set; } = new Camera();
+        [Resolved]
         private Notes notes { get; set; } = new Notes();
+        [Resolved]
         private Approaches approaches { get; set; } = new Approaches();
 
         private RelativeBox[] lines { get; set; } = new RelativeBox[4]
@@ -26,12 +30,8 @@ namespace S2VX.Game
         };
 
         [BackgroundDependencyLoader]
-        private void load(Story story, Camera camera, Notes notes, Approaches approaches)
+        private void load()
         {
-            this.story = story;
-            this.camera = camera;
-            this.notes = notes;
-            this.approaches = approaches;
             Alpha = 0;
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;

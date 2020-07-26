@@ -8,6 +8,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Input.Events;
 using osu.Framework.Text;
 using osuTK;
 using osuTK.Graphics;
@@ -18,65 +19,117 @@ namespace S2VX.Game
 {
     public class Timeline : CompositeDrawable
     {
-        [Cached]
-        private RelativeBox TimelineSlider = new RelativeBox
+        [Resolved]
+        private Story story { get; set; } = new Story();
+
+        private Container bar { get; set; } = new Container();
+
+        private RelativeBox slider { get; set; } = new RelativeBox
         {
-            Name = "Slider",
             Colour = Color4.White,
             Height = 0.5f,
             Width = timelineWidth / 150,
             Anchor = Anchor.CentreLeft,
-            RelativePositionAxes = Axes.None,
+            RelativePositionAxes = Axes.None
         };
 
-        private const float timelineHeight  = 0.075f;
+        private bool switchToPlaying { get; set; } = false;
+
+        private bool delayDrag { get; set; } = false;
+
+        private void updateSlider(Vector2 mousePosition)
+        {
+            var mousePosX = ToLocalSpace(mousePosition).X;
+            var xPosDelta = (DrawWidth - bar.DrawWidth) / 2;
+            var newX = mousePosX - xPosDelta;
+            var xLengthRatio = newX / bar.DrawWidth;
+            var newTime = xLengthRatio * story.Track.Length;
+
+            var clampedX = Math.Clamp(newX, 0, bar.DrawWidth);
+            slider.X = clampedX;
+
+            var clampedTime = Math.Clamp(newTime, 0, story.Track.Length);
+            story.Seek(clampedTime);
+        }
+
+        private const float timelineHeight = 0.075f;
         private const float timelineWidth = 1.0f;
 
         [BackgroundDependencyLoader]
         private void load()
         {
             RelativeSizeAxes = Axes.Both;
+            Height = timelineHeight;
+            Width = timelineWidth;
+            Anchor = Anchor.BottomCentre;
+            Origin = Anchor.BottomCentre;
+
             InternalChildren = new Drawable[]
             {
-                new Container
+                new RelativeBox
                 {
-                    Name = "Timeline content",
+                    Colour = Color4.Black.Opacity(0.9f)
+                },
+                bar = new Container
+                {
                     RelativeSizeAxes = Axes.Both,
-                    Height = timelineHeight,
-                    Width = timelineWidth,
-                    Anchor = Anchor.BottomCentre,
-                    Origin = Anchor.BottomCentre,
-
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Colour = Color4.White,
+                    Width = timelineWidth / 1.5f,
                     Children = new Drawable[]
                     {
-                        new TimelineBar
+                        new RelativeBox
                         {
-                            Name = "Bar",
-                        },
-                        new Container
-                        {
-                            Name = "Timeline",
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
                             Colour = Color4.White,
-                            Width = timelineWidth / 1.5f,
-
-                            Children = new Drawable[]
-                            {
-                                new RelativeBox
-                                {
-                                    Name = "Line",
-                                    Colour = Color4.White,
-                                    Height = timelineHeight / 10,
-
-                                },
-                                TimelineSlider
-                            }
+                            Height = timelineHeight / 10
                         },
+                        slider
                     }
-                }
+                },
             };
+        }
+
+        protected override bool OnMouseDown(MouseDownEvent e)
+        {
+            updateSlider(e.ScreenSpaceMousePosition);
+            if (story.IsPlaying)
+            {
+                story.Play(false);
+                switchToPlaying = true;
+            }
+            else
+            {
+                switchToPlaying = false;
+            }
+            return true;
+        }
+
+        protected override bool OnDragStart(DragStartEvent e) => true;
+
+        protected override void OnDrag(DragEvent e)
+        {
+            if (!delayDrag)
+            {
+                updateSlider(e.ScreenSpaceMousePosition);
+                delayDrag = true;
+            }
+        }
+
+        protected override void OnDragEnd(DragEndEvent e)
+        {
+            if (switchToPlaying)
+            {
+                story.Play(true);
+            }
+        }
+
+        protected override void Update()
+        {
+            delayDrag = false;
+            var songRatio = story.GameTime / story.Track.Length;
+            var newX = songRatio * bar.DrawWidth;
+            slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
         }
     }
 }
