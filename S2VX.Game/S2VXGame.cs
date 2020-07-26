@@ -27,13 +27,13 @@ namespace S2VX.Game
                     Height = 0.05f,
                     RelativeSizeAxes = Axes.Both,
                     Items = new[]
-    {
+                    {
                         new MenuItem("File")
                         {
                             Items = new[]
                             {
-                                new MenuItem("Open", open),
-                                new MenuItem("Save As", save)
+                                new MenuItem("Open... (Ctrl+O)", open),
+                                new MenuItem("Save... (Ctrl+S)", save)
                             }
                         }
                     }
@@ -51,12 +51,27 @@ namespace S2VX.Game
                 case Key.X:
                     Story.Restart();
                     break;
+                case Key.O:
+                    if (e.ControlPressed)
+                    {
+                        open();
+                    }
+                    break;
+                case Key.S:
+                    if (e.ControlPressed)
+                    {
+                        save();
+                    }
+                    break;
             }
             return true;
         }
 
         private void open()
         {
+            // The dialog runs synchronously so the game time will skip forward
+            // after cancelling. To counteract this, we can always force the
+            // game to pause.
             Story.Play(false);
             var dialog = new CommonOpenFileDialog();
             dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
@@ -64,10 +79,6 @@ namespace S2VX.Game
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 Story.Open(dialog.FileName);
-            }
-            else
-            {
-                Story.Play(true);
             }
         }
 
@@ -80,10 +91,6 @@ namespace S2VX.Game
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 Story.Save(dialog.FileName);
-            }
-            else
-            {
-                Story.Play(true);
             }
         }
     }
