@@ -98,6 +98,7 @@ namespace S2VX.Game
 
         protected override bool OnDragStart(DragStartEvent e)
         {
+            // Pause if we start a drag
             if (story.IsPlaying)
             {
                 story.Play(false);
