@@ -93,6 +93,12 @@ namespace S2VX.Game
         protected override bool OnMouseDown(MouseDownEvent e)
         {
             updateSlider(e.ScreenSpaceMousePosition);
+            return true;
+        }
+
+        protected override bool OnDragStart(DragStartEvent e)
+        {
+            // Pause if we start a drag
             if (story.IsPlaying)
             {
                 story.Play(false);
@@ -104,8 +110,6 @@ namespace S2VX.Game
             }
             return true;
         }
-
-        protected override bool OnDragStart(DragStartEvent e) => true;
 
         protected override void OnDrag(DragEvent e)
         {

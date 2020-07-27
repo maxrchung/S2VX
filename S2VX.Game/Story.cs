@@ -69,9 +69,13 @@ namespace S2VX.Game
         public void Play(bool isPlaying)
         {
             if (isPlaying)
+            {
                 Track.Start();
+            }
             else
+            {
                 Track.Stop();
+            }
             IsPlaying = isPlaying;
         }
 
