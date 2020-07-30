@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
+using osuTK;
+using osuTK.Graphics;
 using osuTK.Input;
 
 namespace S2VX.Game
@@ -14,6 +19,8 @@ namespace S2VX.Game
     {
         [Cached]
         public Story Story { get; } = new Story();
+
+        private BindableInt sliderCurrent { get; set; } = new BindableInt(1) { MinValue = 0, MaxValue = 2, Default = 1 };
 
         [BackgroundDependencyLoader]
         private void load()
@@ -37,7 +44,45 @@ namespace S2VX.Game
                             }
                         }
                     }
-                }
+                },
+
+                new FillFlowContainer()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    RelativePositionAxes = Axes.Both,
+                    Width = 0.5f,
+                    Height = 0.5f,
+                    Spacing = new Vector2(0),
+                    Children = new Drawable[]
+                    {
+                        new BasicButton
+                        {
+                            BackgroundColour = Color4.White,
+                            Text = "+",
+                            Width = 200,
+                            Height = 200,
+                        },
+                        new BasicDropdown<int>
+                        {
+                            Width = 200,
+                            Items = new List<int>
+                            {
+                                1, 2, 3
+                            }
+                        },
+                        //new BasicPasswordTextBox(),
+                        //new BasicRearrangeableListContainer<int>(),
+                        //new BasicSliderBar<int>()
+                        //{
+                        //    Current = sliderCurrent
+                        //},
+                        //new BasicTextBox(),
+                    }
+                },
+
+                new Timeline()
             };
         }
 

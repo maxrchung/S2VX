@@ -61,8 +61,7 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
-                Approaches,
-                new Timeline()
+                Approaches
             };
         }
 
