@@ -14,6 +14,7 @@ namespace S2VX.Game
             RelativeSizeAxes = Axes.Both;
             Origin = Anchor.Centre;
             Anchor = Anchor.Centre;
+            Masking = true;
         }
 
         protected override void Update()
