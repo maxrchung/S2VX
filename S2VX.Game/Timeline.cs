@@ -37,6 +37,12 @@ namespace S2VX.Game
 
         private SpriteText clock { get; set; } = new SpriteText();
 
+        public float TextSize
+        {
+            get => clock.Font.Size;
+            set => clock.Font = clock.Font.With(size: value);
+        }
+
         private bool switchToPlaying { get; set; } = false;
 
         private bool delayDrag { get; set; } = false;
@@ -82,7 +88,8 @@ namespace S2VX.Game
                     Colour = Color4.White,
                     Text = "00:00:00",
                     X = .05f,
-                    Y = -.11f,
+                    Y = -.15f,
+                    Font = new FontUsage("default", 30, "500"),
                 },
                 bar = new Container
                 {
@@ -151,6 +158,7 @@ namespace S2VX.Game
 
             TimeSpan time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
             clock.Text = time.ToString(@"mm\:ss\:fff");
+            TextSize = story.DrawWidth / 40;
         }
     }
 }
