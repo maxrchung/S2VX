@@ -103,7 +103,7 @@ namespace S2VX.Game
                         new RelativeBox
                         {
                             Colour = Color4.White,
-                            Height = timelineHeight / 10
+                            Height = timelineHeight / 2.5f,
                         },
                         slider
                     }
