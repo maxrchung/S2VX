@@ -5,8 +5,10 @@ using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Text;
@@ -32,6 +34,8 @@ namespace S2VX.Game
             Anchor = Anchor.CentreLeft,
             RelativePositionAxes = Axes.None
         };
+
+        private SpriteText clock { get; set; } = new SpriteText();
 
         private bool switchToPlaying { get; set; } = false;
 
@@ -69,6 +73,16 @@ namespace S2VX.Game
                 new RelativeBox
                 {
                     Colour = Color4.Black.Opacity(0.9f)
+                },
+                clock = new SpriteText
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    RelativePositionAxes = Axes.Both,
+                    Anchor = Anchor.CentreLeft,
+                    Colour = Color4.White,
+                    Text = "00:00:00",
+                    X = .05f,
+                    Y = -.11f,
                 },
                 bar = new Container
                 {
@@ -134,6 +148,9 @@ namespace S2VX.Game
             var songRatio = story.GameTime / story.Track.Length;
             var newX = songRatio * bar.DrawWidth;
             slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
+
+            TimeSpan time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
+            clock.Text = time.ToString(@"mm\:ss\:fff");
         }
     }
 }
