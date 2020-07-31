@@ -18,7 +18,10 @@ namespace S2VX.Game
     public class S2VXGame : S2VXGameBase
     {
         [Cached]
-        public Story Story { get; } = new Story();
+        private Story Story { get; set; } = new Story();
+
+        private CommandPanel commandPanel { get; set; } = new CommandPanel();
+        private bool isCommandPanelVisible { get; set; } = false;
 
         private BindableInt sliderCurrent { get; set; } = new BindableInt(1) { MinValue = 0, MaxValue = 2, Default = 1 };
 
@@ -45,43 +48,7 @@ namespace S2VX.Game
                         }
                     }
                 },
-
-                new FillFlowContainer()
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    RelativePositionAxes = Axes.Both,
-                    Width = 0.5f,
-                    Height = 0.5f,
-                    Spacing = new Vector2(0),
-                    Children = new Drawable[]
-                    {
-                        new BasicButton
-                        {
-                            BackgroundColour = Color4.White,
-                            Text = "+",
-                            Width = 200,
-                            Height = 200,
-                        },
-                        new BasicDropdown<int>
-                        {
-                            Width = 200,
-                            Items = new List<int>
-                            {
-                                1, 2, 3
-                            }
-                        },
-                        //new BasicPasswordTextBox(),
-                        //new BasicRearrangeableListContainer<int>(),
-                        //new BasicSliderBar<int>()
-                        //{
-                        //    Current = sliderCurrent
-                        //},
-                        //new BasicTextBox(),
-                    }
-                },
-
+                commandPanel,
                 new Timeline()
             };
         }
@@ -108,6 +75,21 @@ namespace S2VX.Game
                         save();
                     }
                     break;
+                case Key.Number1:
+                {
+                    if (e.ControlPressed)
+                    {
+                        if (isCommandPanelVisible)
+                        {
+                            commandPanel.Hide();
+                        } else
+                        {
+                            commandPanel.Show();
+                        }
+                        isCommandPanelVisible = !isCommandPanelVisible;
+                    }
+                    break;
+                }
             }
             return true;
         }
