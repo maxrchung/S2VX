@@ -28,13 +28,18 @@ namespace S2VX.Game
         private static Vector2 inputSize { get; set; } = new Vector2(100, 30);
 
         private FillFlowContainer inputBar { get; set; } = new FillFlowContainer { Direction = FillDirection.Horizontal };
-        private Dropdown<string> type = new BasicDropdown<string> { Width = 160 };
-        private TextBox startTime { get; set; } = new BasicTextBox() { Size = inputSize };
-        private TextBox endTime { get; set; } = new BasicTextBox() { Size = inputSize };
-        private Dropdown<string> easing = new BasicDropdown<string> { Width = inputSize.X };
-        private TextBox startValue { get; set; } = new BasicTextBox() { Size = inputSize };
-        private TextBox endValue { get; set; } = new BasicTextBox() { Size = inputSize };
-        private Button update { get; set; } = new BasicButton() { Size = inputSize };
+        private Dropdown<string> dropType = new BasicDropdown<string> { Width = 160 };
+        private TextBox txtStartTime { get; set; } = new BasicTextBox() { Size = inputSize };
+        private TextBox txtEndTime { get; set; } = new BasicTextBox() { Size = inputSize };
+        private Dropdown<string> dropEasing = new BasicDropdown<string> { Width = inputSize.X };
+        private TextBox txtStartValue { get; set; } = new BasicTextBox() { Size = inputSize };
+        private TextBox txtEndValue { get; set; } = new BasicTextBox() { Size = inputSize };
+        private Button btnAdd { get; set; } = new BasicButton()
+        {
+            Width = inputSize.Y,
+            Height = inputSize.Y,
+            Text = "+"
+        };
 
         private void addInput(string text, Drawable input)
         {
@@ -61,22 +66,20 @@ namespace S2VX.Game
             Width = 0.7f;
             Height = 1;
 
-            var dropdown = new BasicDropdown<string>
-            {
-                Width = 160
-            };
             var allCommands = new List<string> {
                 "All Commands"
             };
             allCommands.AddRange(Enum.GetNames(typeof(Commands)));
-            dropdown.Items = allCommands;
+            dropType.Items = allCommands;
+            dropEasing.Items = Enum.GetNames(typeof(Easing));
 
-            addInput("Type", type);
-            addInput("StartTime", startTime);
-            addInput("EndTime", endTime);
-            addInput("Easing", easing);
-            addInput("StartValue", startValue);
-            addInput("EndValue", endValue);
+            addInput("Type", dropType);
+            addInput("StartTime", txtStartTime);
+            addInput("EndTime", txtEndTime);
+            addInput("Easing", dropEasing);
+            addInput("StartValue", txtStartValue);
+            addInput("EndValue", txtEndValue);
+            addInput("Add", btnAdd);
 
             Children = new Drawable[]
             {
