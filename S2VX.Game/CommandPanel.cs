@@ -25,18 +25,45 @@ namespace S2VX.Game
             this.FadeOut(100);
         }
 
+        private static Vector2 inputSize { get; set; } = new Vector2(100, 30);
+
+        private FillFlowContainer inputBar { get; set; } = new FillFlowContainer { Direction = FillDirection.Horizontal };
+        private Dropdown<string> type = new BasicDropdown<string> { Width = 160 };
+        private TextBox startTime { get; set; } = new BasicTextBox() { Size = inputSize };
+        private TextBox endTime { get; set; } = new BasicTextBox() { Size = inputSize };
+        private Dropdown<string> easing = new BasicDropdown<string> { Width = inputSize.X };
+        private TextBox startValue { get; set; } = new BasicTextBox() { Size = inputSize };
+        private TextBox endValue { get; set; } = new BasicTextBox() { Size = inputSize };
+        private Button update { get; set; } = new BasicButton() { Size = inputSize };
+
+        private void addInput(string text, Drawable input)
+        {
+            inputBar.Add(
+                new FillFlowContainer
+                {
+                    AutoSizeAxes = Axes.Both,
+                    Direction = FillDirection.Vertical,
+                    Children = new Drawable[]
+                    {
+                        new SpriteText { Text = text },
+                        input
+                    }
+                }
+            );
+        }
+
         [BackgroundDependencyLoader]
         private void load()
         {
             Anchor = Anchor.CentreRight;
             Origin = Anchor.CentreRight;
             RelativeSizeAxes = Axes.Both;
-            Width = 0.5f;
+            Width = 0.7f;
             Height = 1;
 
             var dropdown = new BasicDropdown<string>
             {
-                Width = 150
+                Width = 160
             };
             var allCommands = new List<string> {
                 "All Commands"
@@ -44,66 +71,24 @@ namespace S2VX.Game
             allCommands.AddRange(Enum.GetNames(typeof(Commands)));
             dropdown.Items = allCommands;
 
+            addInput("Type", type);
+            addInput("StartTime", startTime);
+            addInput("EndTime", endTime);
+            addInput("Easing", easing);
+            addInput("StartValue", startValue);
+            addInput("EndValue", endValue);
+
             Children = new Drawable[]
             {
-                new RelativeBox
-                {
-                    Colour = Color4.Black.Opacity(0.9f)
-                },
+                new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 new FillFlowContainer
                 {
-                    RelativeSizeAxes = Axes.X,
-                    AutoSizeAxes = Axes.Y,
+                    AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
                     {
-                        new SpriteText
-                        {
-                            Text = "Command Panel"
-                        },
-                        new Container
-                        {
-                            RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            Children = new Drawable[]
-                            {
-                                new FillFlowContainer
-                                {
-                                    RelativeSizeAxes = Axes.Y,
-                                    AutoSizeAxes = Axes.X,
-                                    Direction = FillDirection.Horizontal,
-                                    Children = new Drawable[]
-                                    {
-                                        new FillFlowContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Y,
-                                            AutoSizeAxes = Axes.X,
-                                            Direction = FillDirection.Vertical,
-                                            Children = new Drawable[]
-                                            {
-                                                new SpriteText { Text = "Command Type" },
-                                                dropdown
-                                            }
-                                        },
-                                        new FillFlowContainer
-                                        {
-                                           RelativeSizeAxes = Axes.Y,
-                                            AutoSizeAxes = Axes.X,
-                                            Direction = FillDirection.Vertical,
-                                            Children = new Drawable[]
-                                            {
-                                                new SpriteText { Text = "StartTime" },
-                                                new BasicTextBox
-                                                {
-                                                    Width = 100,
-                                                    Height = 30,
-                                                }
-                                            }
-                                        },
-                                    }
-                                }
-                            }
-                        }
+                        new SpriteText { Text = "Command Panel" },
+                        inputBar
                     }
                 }
             };
