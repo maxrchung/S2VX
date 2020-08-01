@@ -4,13 +4,13 @@
       "Type": "BackgroundColor",
       "StartTime": 0,
       "EndTime": 10000,
-      "StartColor": {
+      "StartValue": {
         "R": 1,
         "G": 0,
         "B": 0,
         "A": 1
       },
-      "EndColor": {
+      "EndValue": {
         "R": 1,
         "G": 1,
         "B": 0,
@@ -21,11 +21,11 @@
       "Type": "CameraMove",
       "StartTime": 0,
       "EndTime": 10000,
-      "StartPosition": {
+      "StartValue": {
         "X": 1,
         "Y": 1
       },
-      "EndPosition": {
+      "EndValue": {
         "X": 2,
         "Y": 3
       }
@@ -34,8 +34,8 @@
       "Type": "CameraRotate",
       "StartTime": 0,
       "EndTime": 10000,
-      "StartRotation": 45,
-      "EndRotation": -45,
+      "StartValue": 45,
+      "EndValue": -45,
       "Easing": 15
     }
   ],
