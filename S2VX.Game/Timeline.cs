@@ -156,7 +156,7 @@ namespace S2VX.Game
             var newX = songRatio * bar.DrawWidth;
             slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
 
-            TimeSpan time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
+            var time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
             clock.Text = time.ToString(@"mm\:ss\:fff");
             TextSize = story.DrawWidth / 40;
         }
