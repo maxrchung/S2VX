@@ -48,7 +48,7 @@ namespace S2VX.Game
         private bool delayDrag { get; set; } = false;
 
         public bool DisplayMS { get; set; } = false;
-        
+
         private void updateSlider(Vector2 mousePosition)
         {
             var mousePosX = ToLocalSpace(mousePosition).X;
@@ -158,7 +158,8 @@ namespace S2VX.Game
             var newX = songRatio * bar.DrawWidth;
             slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
 
-            if (DisplayMS) {
+            if (DisplayMS)
+            {
                 clock.Text = Math.Truncate(Math.Clamp(story.GameTime, 0, story.Track.Length)).ToString();
             }
             else

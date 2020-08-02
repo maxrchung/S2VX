@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
+using osuTK;
+using osuTK.Graphics;
 using osuTK.Input;
 
 namespace S2VX.Game
@@ -13,19 +19,24 @@ namespace S2VX.Game
     public class S2VXGame : S2VXGameBase
     {
         [Cached]
-        public Story Story { get; } = new Story();
+        private Story story { get; set; } = new Story();
+
+        private CommandPanel commandPanel { get; } = new CommandPanel();
+        private bool isCommandPanelVisible { get; set; } = false;
+
+        private Timeline timeline { get; } = new Timeline();
 
         [BackgroundDependencyLoader]
         private void load()
         {
             Children = new Drawable[]
             {
-                Story,
+                story,
                 new BasicMenu(Direction.Horizontal, true)
                 {
+                    BackgroundColour = Color4.Black.Opacity(0.9f),
                     Width = 1,
-                    Height = 0.05f,
-                    RelativeSizeAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.X,
                     Items = new[]
                     {
                         new MenuItem("File")
@@ -37,7 +48,9 @@ namespace S2VX.Game
                             }
                         }
                     }
-                }
+                },
+                commandPanel,
+                timeline
             };
         }
 
@@ -46,10 +59,10 @@ namespace S2VX.Game
             switch (e.Key)
             {
                 case Key.Space:
-                    Story.Play(!Story.IsPlaying);
+                    story.Play(!story.IsPlaying);
                     break;
                 case Key.X:
-                    Story.Restart();
+                    story.Restart();
                     break;
                 case Key.O:
                     if (e.ControlPressed)
@@ -63,8 +76,24 @@ namespace S2VX.Game
                         save();
                     }
                     break;
+                case Key.Number1:
+                {
+                    if (e.ControlPressed)
+                    {
+                        if (isCommandPanelVisible)
+                        {
+                            commandPanel.Hide();
+                        }
+                        else
+                        {
+                            commandPanel.Show();
+                        }
+                        isCommandPanelVisible = !isCommandPanelVisible;
+                    }
+                    break;
+                }
                 case Key.T:
-                    Story.Timeline.DisplayMS = !Story.Timeline.DisplayMS;
+                    timeline.DisplayMS = !timeline.DisplayMS;
                     break;
             }
             return true;
@@ -75,25 +104,25 @@ namespace S2VX.Game
             // The dialog runs synchronously so the game time will skip forward
             // after cancelling. To counteract this, we can always force the
             // game to pause.
-            Story.Play(false);
+            story.Play(false);
             var dialog = new CommonOpenFileDialog();
             dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                Story.Open(dialog.FileName);
+                story.Open(dialog.FileName);
             }
         }
 
         private void save()
         {
-            Story.Play(false);
+            story.Play(false);
             var dialog = new CommonSaveFileDialog();
             dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                Story.Save(dialog.FileName);
+                story.Save(dialog.FileName);
             }
         }
     }

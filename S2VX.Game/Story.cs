@@ -23,8 +23,8 @@ namespace S2VX.Game
 {
     public class Story : CompositeDrawable
     {
-        public double GameTime { get; set; } = 0;
-        public bool IsPlaying { get; set; } = false;
+        public double GameTime { get; private set; } = 0;
+        public bool IsPlaying { get; private set; } = false;
 
         [Cached]
         public Camera Camera { get; } = new Camera();
@@ -38,15 +38,13 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
-        public DrawableTrack Track = null;
+        public DrawableTrack Track { get; private set; } = null;
 
-        public Timeline Timeline = new Timeline();
-
-        private List<Command> commands { get; set; } = new List<Command>();
+        public List<Command> Commands { get; private set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
-        private static readonly JsonConverter[] converters = { new Vector2Converter(), new NoteConverter() };
+        private static JsonConverter[] converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)
@@ -63,9 +61,21 @@ namespace S2VX.Game
                 Background,
                 Notes,
                 Grid,
-                Approaches,
-                Timeline,
+                Approaches
             };
+        }
+
+        public void AddCommand(Command command)
+        {
+            Commands.Add(command);
+            Commands.Sort();
+            Seek(GameTime);
+        }
+
+        public void RemoveCommand(int index)
+        {
+            Commands.RemoveAt(index);
+            Seek(GameTime);
         }
 
         public void Play(bool isPlaying)
@@ -108,11 +118,10 @@ namespace S2VX.Game
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
             {
-                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.Load(type, serializedCommand.ToString());
-                commands.Add(command);
+                var command = Command.FromJson(serializedCommand);
+                Commands.Add(command);
             }
-            commands.Sort();
+            Commands.Sort();
 
             var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
             Notes.Children = notes;
@@ -127,7 +136,7 @@ namespace S2VX.Game
         {
             var obj = new
             {
-                Commands = commands,
+                Commands,
                 Notes = Notes.Children
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
@@ -142,9 +151,9 @@ namespace S2VX.Game
             }
 
             // Add new active commands
-            while (nextActive < commands.Count && commands[nextActive].StartTime <= GameTime)
+            while (nextActive < Commands.Count && Commands[nextActive].StartTime <= GameTime)
             {
-                actives.Add(commands[nextActive++]);
+                actives.Add(Commands[nextActive++]);
             }
 
             var newActives = new HashSet<Command>();

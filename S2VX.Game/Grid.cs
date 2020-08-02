@@ -11,7 +11,7 @@ namespace S2VX.Game
     {
         public float Thickness { get; set; } = 0.005f;
 
-        private float lineLength { get; set; } = 2;
+        private float lineLength { get; } = 2;
 
         [Resolved]
         private Camera camera { get; set; } = new Camera();
