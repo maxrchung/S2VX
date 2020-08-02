@@ -22,7 +22,7 @@ namespace S2VX.Game
     public class Timeline : CompositeDrawable
     {
         [Resolved]
-        private Story story { get; set; } = new Story();
+        private Story story { get; set; } = null;
 
         private Container bar { get; set; } = new Container();
 
@@ -47,6 +47,8 @@ namespace S2VX.Game
 
         private bool delayDrag { get; set; } = false;
 
+        public bool DisplayMS { get; set; } = false;
+        
         private void updateSlider(Vector2 mousePosition)
         {
             var mousePosX = ToLocalSpace(mousePosition).X;
@@ -156,8 +158,15 @@ namespace S2VX.Game
             var newX = songRatio * bar.DrawWidth;
             slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
 
-            var time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
-            clock.Text = time.ToString(@"mm\:ss\:fff");
+            if (DisplayMS) {
+                clock.Text = Math.Truncate(Math.Clamp(story.GameTime, 0, story.Track.Length)).ToString();
+            }
+            else
+            {
+                var time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
+                clock.Text = time.ToString(@"mm\:ss\:fff");
+            }
+
             TextSize = story.DrawWidth / 40;
         }
     }
