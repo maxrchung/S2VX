@@ -22,7 +22,9 @@ namespace S2VX.Game
         private static Vector2 inputSize { get; set; } = new Vector2(100, 30);
 
         private FillFlowContainer inputBar { get; set; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-        private Dropdown<string> dropType = new BasicDropdown<string> { Width = 160 };
+        private Dropdown<string> dropType = new BasicDropdown<string> {
+            Width = 160
+        };
         private TextBox txtStartTime { get; set; } = new BasicTextBox() { Size = inputSize };
         private TextBox txtEndTime { get; set; } = new BasicTextBox() { Size = inputSize };
         private Dropdown<string> dropEasing = new BasicDropdown<string> { Width = inputSize.X };
@@ -85,6 +87,11 @@ namespace S2VX.Game
             }
         }
 
+        private void handleTypeSelect(ValueChangedEvent<string> e)
+        {
+            loadCommandsList();
+        }
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -100,6 +107,8 @@ namespace S2VX.Game
             dropEasing.Items = Enum.GetNames(typeof(Easing));
 
             addInput("Type", dropType);
+            dropType.Current.BindValueChanged(handleTypeSelect);
+
             addInput("StartTime", txtStartTime);
             addInput("EndTime", txtEndTime);
             addInput("Easing", dropEasing);
