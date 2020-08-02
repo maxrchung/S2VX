@@ -15,19 +15,13 @@ namespace S2VX.Game
 {
     public class CommandPanel : OverlayContainer
     {
-        protected override void PopIn()
-        {
-            this.FadeIn(100);
-        }
-
-        protected override void PopOut()
-        {
-            this.FadeOut(100);
-        }
-
+        private static Vector2 panelSize { get; set; } = new Vector2(727, 727);
         private static Vector2 inputSize { get; set; } = new Vector2(100, 30);
 
-        private FillFlowContainer inputBar { get; set; } = new FillFlowContainer { Direction = FillDirection.Horizontal };
+        private FillFlowContainer inputBar { get; set; } = new FillFlowContainer
+        {
+            AutoSizeAxes = Axes.Both,
+        };
         private Dropdown<string> dropType = new BasicDropdown<string> { Width = 160 };
         private TextBox txtStartTime { get; set; } = new BasicTextBox() { Size = inputSize };
         private TextBox txtEndTime { get; set; } = new BasicTextBox() { Size = inputSize };
@@ -62,9 +56,7 @@ namespace S2VX.Game
         {
             Anchor = Anchor.CentreRight;
             Origin = Anchor.CentreRight;
-            RelativeSizeAxes = Axes.Both;
-            Width = 0.7f;
-            Height = 1;
+            Size = panelSize;
 
             var allCommands = new List<string> {
                 "All Commands"
@@ -84,9 +76,65 @@ namespace S2VX.Game
             Children = new Drawable[]
             {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
+                new BasicScrollContainer
+                {
+                    // This is so mega fucked?
+                    Position = new Vector2(0, 70),
+                    Width = panelSize.X,
+                    Height = panelSize.Y - 70,
+                    Child = new FillFlowContainer
+                    {
+                        AutoSizeAxes = Axes.Both,
+                        Direction = FillDirection.Vertical,
+                        Children = new Drawable[]
+                        {
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                            new SpriteText { Text = "Command Panel" },
+                        }
+                    }
+                },
                 new FillFlowContainer
                 {
-                    AutoSizeAxes = Axes.Both,
+                    AutoSizeAxes = Axes.Y,
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
                     {
@@ -95,6 +143,16 @@ namespace S2VX.Game
                     }
                 }
             };
+        }
+
+        protected override void PopIn()
+        {
+            this.FadeIn(100);
+        }
+
+        protected override void PopOut()
+        {
+            this.FadeOut(100);
         }
     }
 
