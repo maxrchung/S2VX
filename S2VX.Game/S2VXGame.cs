@@ -63,6 +63,9 @@ namespace S2VX.Game
                         save();
                     }
                     break;
+                case Key.T:
+                    Story.Timeline.DisplayMS = !Story.Timeline.DisplayMS;
+                    break;
             }
             return true;
         }

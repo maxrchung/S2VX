@@ -40,6 +40,8 @@ namespace S2VX.Game
 
         public DrawableTrack Track = null;
 
+        public Timeline Timeline = new Timeline();
+
         private List<Command> commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
@@ -62,7 +64,7 @@ namespace S2VX.Game
                 Notes,
                 Grid,
                 Approaches,
-                new Timeline()
+                Timeline,
             };
         }
 
