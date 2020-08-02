@@ -16,13 +16,13 @@ namespace S2VX.Game
     public class CommandPanel : OverlayContainer
     {
         [Resolved]
-        private Story story { get; set;  } = new Story();
+        private Story story { get; set; } = new Story();
 
         private static Vector2 panelSize { get; } = new Vector2(727, 727);
         private static Vector2 inputSize { get; } = new Vector2(100, 30);
 
         private FillFlowContainer inputBar { get; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-        private Dropdown<string> dropType { get; }  = new BasicDropdown<string>
+        private Dropdown<string> dropType { get; } = new BasicDropdown<string>
         {
             Width = 160
         };
@@ -64,7 +64,7 @@ namespace S2VX.Game
         {
             commandsList.Clear();
             var type = dropType.Current.Value;
-            for(var i = 0; i < story.Commands.Count; ++i) 
+            for (var i = 0; i < story.Commands.Count; ++i)
             {
                 var command = story.Commands[i];
                 if (type == "All Commands" || type == command.Type.ToString())

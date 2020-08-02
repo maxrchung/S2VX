@@ -468,7 +468,8 @@ namespace S2VX.Game
         }
         public static ApproachesThicknessCommand FromString(string[] split)
         {
-            var command = new ApproachesThicknessCommand() {
+            var command = new ApproachesThicknessCommand()
+            {
                 StartValue = float.Parse(split[4]),
                 EndValue = float.Parse(split[5]),
             };

@@ -83,7 +83,8 @@ namespace S2VX.Game
                         if (isCommandPanelVisible)
                         {
                             commandPanel.Hide();
-                        } else
+                        }
+                        else
                         {
                             commandPanel.Show();
                         }
