@@ -23,8 +23,8 @@ namespace S2VX.Game
 {
     public class Story : CompositeDrawable
     {
-        public double GameTime { get; set; } = 0;
-        public bool IsPlaying { get; set; } = false;
+        public double GameTime { get; private set; } = 0;
+        public bool IsPlaying { get; private set; } = false;
 
         [Cached]
         public Camera Camera { get; } = new Camera();
@@ -38,13 +38,13 @@ namespace S2VX.Game
         [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
-        public DrawableTrack Track = null;
+        public DrawableTrack Track { get; private set; } = null;
 
-        public List<Command> Commands { get; set; } = new List<Command>();
+        public List<Command> Commands { get; private set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
-        private static readonly JsonConverter[] converters = { new Vector2Converter(), new NoteConverter() };
+        private static JsonConverter[] converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
         private void load(AudioManager audioManager)

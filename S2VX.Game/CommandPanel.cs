@@ -16,21 +16,22 @@ namespace S2VX.Game
     public class CommandPanel : OverlayContainer
     {
         [Resolved]
-        private Story story { get; set; } = new Story();
+        private Story story { get; set;  } = new Story();
 
-        private static Vector2 panelSize { get; set; } = new Vector2(727, 727);
-        private static Vector2 inputSize { get; set; } = new Vector2(100, 30);
+        private static Vector2 panelSize { get; } = new Vector2(727, 727);
+        private static Vector2 inputSize { get; } = new Vector2(100, 30);
 
-        private FillFlowContainer inputBar { get; set; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-        private Dropdown<string> dropType = new BasicDropdown<string> {
+        private FillFlowContainer inputBar { get; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
+        private Dropdown<string> dropType { get; }  = new BasicDropdown<string>
+        {
             Width = 160
         };
-        private TextBox txtStartTime { get; set; } = new BasicTextBox() { Size = inputSize };
-        private TextBox txtEndTime { get; set; } = new BasicTextBox() { Size = inputSize };
-        private Dropdown<string> dropEasing = new BasicDropdown<string> { Width = inputSize.X };
-        private TextBox txtStartValue { get; set; } = new BasicTextBox() { Size = inputSize };
-        private TextBox txtEndValue { get; set; } = new BasicTextBox() { Size = inputSize };
-        private Button btnAdd { get; set; } = new BasicButton()
+        private TextBox txtStartTime { get; } = new BasicTextBox() { Size = inputSize };
+        private TextBox txtEndTime { get; } = new BasicTextBox() { Size = inputSize };
+        private Dropdown<string> dropEasing { get; } = new BasicDropdown<string> { Width = inputSize.X };
+        private TextBox txtStartValue { get; } = new BasicTextBox() { Size = inputSize };
+        private TextBox txtEndValue { get; } = new BasicTextBox() { Size = inputSize };
+        private Button btnAdd { get; } = new BasicButton()
         {
             Width = inputSize.Y,
             Height = inputSize.Y,
