@@ -24,6 +24,8 @@ namespace S2VX.Game
         private CommandPanel commandPanel { get; } = new CommandPanel();
         private bool isCommandPanelVisible { get; set; } = false;
 
+        private Timeline timeline { get; } = new Timeline();
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -48,7 +50,7 @@ namespace S2VX.Game
                     }
                 },
                 commandPanel,
-                new Timeline()
+                timeline
             };
         }
 
@@ -89,6 +91,9 @@ namespace S2VX.Game
                     }
                     break;
                 }
+                case Key.T:
+                    timeline.DisplayMS = !timeline.DisplayMS;
+                    break;
             }
             return true;
         }
