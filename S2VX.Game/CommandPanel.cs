@@ -180,6 +180,4 @@ namespace S2VX.Game
             this.FadeOut(100);
         }
     }
-
-
 }
