@@ -40,7 +40,7 @@ namespace S2VX.Game
 
         public DrawableTrack Track = null;
 
-        private List<Command> commands { get; set; } = new List<Command>();
+        public List<Command> Commands { get; set; } = new List<Command>();
         private int nextActive { get; set; } = 0;
         private HashSet<Command> actives { get; set; } = new HashSet<Command>();
 
@@ -107,9 +107,9 @@ namespace S2VX.Game
             {
                 var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
                 var command = Command.FromJson(type, serializedCommand.ToString());
-                commands.Add(command);
+                Commands.Add(command);
             }
-            commands.Sort();
+            Commands.Sort();
 
             var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
             Notes.Children = notes;
@@ -124,7 +124,7 @@ namespace S2VX.Game
         {
             var obj = new
             {
-                Commands = commands,
+                Commands,
                 Notes = Notes.Children
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
@@ -139,9 +139,9 @@ namespace S2VX.Game
             }
 
             // Add new active commands
-            while (nextActive < commands.Count && commands[nextActive].StartTime <= GameTime)
+            while (nextActive < Commands.Count && Commands[nextActive].StartTime <= GameTime)
             {
-                actives.Add(commands[nextActive++]);
+                actives.Add(Commands[nextActive++]);
             }
 
             var newActives = new HashSet<Command>();

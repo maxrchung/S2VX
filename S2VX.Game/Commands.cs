@@ -44,7 +44,7 @@ namespace S2VX.Game
         protected abstract string ToValues();
         public string ToString()
         {
-            return $"{StartTime}|{EndTime}|{Easing}|{ToValues()}";
+            return $"{Type}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
         }
 
         protected string Vector2ToString(Vector2 data)
