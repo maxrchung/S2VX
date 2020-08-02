@@ -12,21 +12,20 @@ namespace S2VX.Game
     public enum Commands
     {
         None,
+        ApproachesDistance,
+        ApproachesThickness,
+        BackgroundColor,
         CameraMove,
         CameraRotate,
         CameraScale,
         GridAlpha,
         GridColor,
         GridThickness,
-        BackgroundColor,
-        NotesFadeInTime,
-        NotesShowTime,
-        NotesFadeOutTime,
         NotesAlpha,
         NotesColor,
-        Approaches,
-        ApproachesDistance,
-        ApproachesThickness
+        NotesFadeInTime,
+        NotesFadeOutTime,
+        NotesShowTime,
     }
 
     public abstract class Command : IComparable<Command>
