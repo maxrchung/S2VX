@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
@@ -33,9 +34,9 @@ namespace S2VX.Game
                 Story,
                 new BasicMenu(Direction.Horizontal, true)
                 {
+                    BackgroundColour = Color4.Black.Opacity(0.9f),
                     Width = 1,
-                    Height = 0.05f,
-                    RelativeSizeAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.X,
                     Items = new[]
                     {
                         new MenuItem("File")
