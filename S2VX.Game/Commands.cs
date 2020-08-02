@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Utils;
@@ -68,9 +69,10 @@ namespace S2VX.Game
             return new Color4(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]), 1);
         }
 
-        public static Command FromString(Commands type, string data)
+        public static Command FromString(string data)
         {
             var split = data.Split("|");
+            var type = Enum.Parse<Commands>(split[0]);
             Command command = null;
             switch (type)
             {
@@ -96,25 +98,27 @@ namespace S2VX.Game
             return command;
         }
 
-        public static Command FromJson(Commands type, string json)
+        public static Command FromJson(JObject json)
         {
+            var type = Enum.Parse<Commands>(json["Type"].ToString());
+            var data = json.ToString();
             Command command = null;
             switch (type)
             {
-                case Commands.CameraMove: command = JsonConvert.DeserializeObject<CameraMoveCommand>(json); break;
-                case Commands.CameraRotate: command = JsonConvert.DeserializeObject<CameraRotateCommand>(json); break;
-                case Commands.CameraScale: command = JsonConvert.DeserializeObject<CameraScaleCommand>(json); break;
-                case Commands.GridAlpha: command = JsonConvert.DeserializeObject<GridAlphaCommand>(json); break;
-                case Commands.GridColor: command = JsonConvert.DeserializeObject<GridColorCommand>(json); break;
-                case Commands.GridThickness: command = JsonConvert.DeserializeObject<GridThicknessCommand>(json); break;
-                case Commands.BackgroundColor: command = JsonConvert.DeserializeObject<BackgroundColorCommand>(json); break;
-                case Commands.NotesAlpha: command = JsonConvert.DeserializeObject<NotesAlphaCommand>(json); break;
-                case Commands.NotesColor: command = JsonConvert.DeserializeObject<NotesColorCommand>(json); break;
-                case Commands.NotesFadeInTime: command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(json); break;
-                case Commands.NotesShowTime: command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(json); break;
-                case Commands.NotesFadeOutTime: command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(json); break;
-                case Commands.ApproachesDistance: command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(json); break;
-                case Commands.ApproachesThickness: command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(json); break;
+                case Commands.CameraMove: command = JsonConvert.DeserializeObject<CameraMoveCommand>(data); break;
+                case Commands.CameraRotate: command = JsonConvert.DeserializeObject<CameraRotateCommand>(data); break;
+                case Commands.CameraScale: command = JsonConvert.DeserializeObject<CameraScaleCommand>(data); break;
+                case Commands.GridAlpha: command = JsonConvert.DeserializeObject<GridAlphaCommand>(data); break;
+                case Commands.GridColor: command = JsonConvert.DeserializeObject<GridColorCommand>(data); break;
+                case Commands.GridThickness: command = JsonConvert.DeserializeObject<GridThicknessCommand>(data); break;
+                case Commands.BackgroundColor: command = JsonConvert.DeserializeObject<BackgroundColorCommand>(data); break;
+                case Commands.NotesAlpha: command = JsonConvert.DeserializeObject<NotesAlphaCommand>(data); break;
+                case Commands.NotesColor: command = JsonConvert.DeserializeObject<NotesColorCommand>(data); break;
+                case Commands.NotesFadeInTime: command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(data); break;
+                case Commands.NotesShowTime: command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(data); break;
+                case Commands.NotesFadeOutTime: command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(data); break;
+                case Commands.ApproachesDistance: command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(data); break;
+                case Commands.ApproachesThickness: command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data); break;
             }
             return command;
         }

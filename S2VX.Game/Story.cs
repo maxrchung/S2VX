@@ -65,6 +65,19 @@ namespace S2VX.Game
             };
         }
 
+        public void AddCommand(Command command)
+        {
+            Commands.Add(command);
+            Commands.Sort();
+            Seek(GameTime);
+        }
+
+        public void RemoveCommand(int index)
+        {
+            Commands.RemoveAt(index);
+            Seek(GameTime);
+        }
+
         public void Play(bool isPlaying)
         {
             if (isPlaying)
@@ -105,8 +118,7 @@ namespace S2VX.Game
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
             foreach (var serializedCommand in serializedCommands)
             {
-                var type = Enum.Parse<Commands>(serializedCommand["Type"].ToString());
-                var command = Command.FromJson(type, serializedCommand.ToString());
+                var command = Command.FromJson(serializedCommand);
                 Commands.Add(command);
             }
             Commands.Sort();

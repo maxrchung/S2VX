@@ -63,10 +63,12 @@ namespace S2VX.Game
         {
             commandsList.Clear();
             var type = dropType.Current.Value;
-            foreach (var command in story.Commands)
+            for(var i = 0; i < story.Commands.Count; ++i) 
             {
+                var command = story.Commands[i];
                 if (type == "All Commands" || type == command.Type.ToString())
                 {
+                    var localIndex = i;
                     commandsList.Add(new FillFlowContainer
                     {
                         AutoSizeAxes = Axes.Both,
@@ -74,6 +76,7 @@ namespace S2VX.Game
                         {
                             new BasicButton
                             {
+                                Action = () => handleRemoveClick(localIndex),
                                 Width = inputSize.Y,
                                 Height = inputSize.Y,
                                 Text = "-"
@@ -85,6 +88,29 @@ namespace S2VX.Game
                     });
                 }
             }
+        }
+
+        private void handleAddClick()
+        {
+            var data = new string[]
+            {
+                $"{dropType.Current.Value}",
+                $"{txtStartTime.Current.Value}",
+                $"{txtEndTime.Current.Value}",
+                $"{dropEasing.Current.Value}",
+                $"{txtStartValue.Current.Value}",
+                $"{txtEndValue.Current.Value}"
+            };
+            var join = String.Join("|", data);
+            var command = Command.FromString(join);
+            story.AddCommand(command);
+            loadCommandsList();
+        }
+
+        private void handleRemoveClick(int commandIndex)
+        {
+            story.RemoveCommand(commandIndex);
+            loadCommandsList();
         }
 
         private void handleTypeSelect(ValueChangedEvent<string> e)
@@ -114,7 +140,9 @@ namespace S2VX.Game
             addInput("Easing", dropEasing);
             addInput("StartValue", txtStartValue);
             addInput("EndValue", txtEndValue);
-            addInput("Add", btnAdd);
+
+            addInput(" ", btnAdd);
+            btnAdd.Action = handleAddClick;
 
             loadCommandsList();
 
