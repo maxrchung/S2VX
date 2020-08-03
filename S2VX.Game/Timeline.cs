@@ -100,6 +100,7 @@ namespace S2VX.Game
                     Origin = Anchor.Centre,
                     Colour = Color4.White,
                     Width = timelineWidth / 1.5f,
+
                     Children = new Drawable[]
                     {
                         new RelativeBox

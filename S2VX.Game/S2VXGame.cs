@@ -26,6 +26,8 @@ namespace S2VX.Game
 
         private Timeline timeline { get; } = new Timeline();
 
+        private NotesTimeline notesTimeline { get; } = new NotesTimeline();
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -50,7 +52,8 @@ namespace S2VX.Game
                     }
                 },
                 commandPanel,
-                timeline
+                timeline,
+                notesTimeline,
             };
         }
 
