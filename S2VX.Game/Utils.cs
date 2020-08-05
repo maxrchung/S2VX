@@ -1,6 +1,7 @@
 ﻿using System;
 using osu.Framework.Utils;
 using osuTK;
+using osuTK.Graphics;
 
 namespace S2VX.Game
 {
@@ -18,6 +19,27 @@ namespace S2VX.Game
                 x * sin + y * cos
             );
             return rotated;
+        }
+
+        public static string Vector2ToString(Vector2 data)
+        {
+            return $"({data.X},{data.Y})";
+        }
+        public static string Color4ToString(Color4 data)
+        {
+            return $"({data.R},{data.G},{data.B})";
+        }
+
+        public static Vector2 Vector2FromString(string data)
+        {
+            var split = data.Replace("(", "").Replace(")", "").Split(',');
+            return new Vector2(float.Parse(split[0]), float.Parse(split[1]));
+        }
+
+        public static Color4 Color4FromString(string data)
+        {
+            var split = data.Replace("(", "").Replace(")", "").Split(',');
+            return new Color4(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]), 1);
         }
     }
 }
