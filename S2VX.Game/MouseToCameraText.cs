@@ -4,6 +4,8 @@ using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input;
+using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Input;
 
@@ -12,7 +14,7 @@ namespace S2VX.Game
     public class MouseToCameraText : SpriteText
     {
         [Resolved]
-        private Story story { get; set; } = new Story();
+        private Story story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -22,10 +24,7 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            var mouse = Mouse.GetState();
-            var mousePosition = new Vector2(mouse.X, mouse.Y);
-            var camera = story.Camera;
-            Text = Utils.Vector2ToString(mousePosition);
+            Text = Utils.Vector2ToString(story.MousePosition);
         }
     }
 }

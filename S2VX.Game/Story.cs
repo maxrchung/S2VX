@@ -26,16 +26,15 @@ namespace S2VX.Game
         public double GameTime { get; private set; } = 0;
         public bool IsPlaying { get; private set; } = false;
 
-        [Cached]
+        public Vector2 MousePosition { get; private set; } = Vector2.Zero;
+
         public Camera Camera { get; } = new Camera();
         public RelativeBox Background = new RelativeBox
         {
             Colour = Color4.Black,
         };
         public Grid Grid { get; } = new Grid();
-        [Cached]
         public Notes Notes { get; } = new Notes();
-        [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
         public DrawableTrack Track { get; private set; } = null;
@@ -141,6 +140,13 @@ namespace S2VX.Game
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
             File.WriteAllText(path, serialized);
+        }
+
+        protected override bool OnMouseMove(MouseMoveEvent e)
+        {
+
+            MousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
+            return true;
         }
 
         protected override void Update()
