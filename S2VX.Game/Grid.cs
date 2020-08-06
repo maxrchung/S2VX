@@ -14,7 +14,7 @@ namespace S2VX.Game
         private float lineLength { get; } = 2;
 
         [Resolved]
-        private Camera camera { get; set; } = new Camera();
+        private Story story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -25,6 +25,8 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            var camera = story.Camera;
+
             if (Alpha <= 0 || Thickness <= 0)
             {
                 return;
