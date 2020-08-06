@@ -21,9 +21,19 @@ namespace S2VX.Game
             return rotated;
         }
 
-        public static string Vector2ToString(Vector2 data)
+        public static string Vector2ToString(Vector2 data, int precision = 0)
         {
-            return $"({data.X},{data.Y})";
+            if (precision == 0)
+            {
+                return $"({data.X},{data.Y})";
+            }
+            else
+            {
+                var formatString = "{0:0." + new string('#', precision) + "}";
+                var x = string.Format(formatString, data.X);
+                var y = string.Format(formatString, data.Y);
+                return $"({x},{y})";
+            }
         }
         public static string Color4ToString(Color4 data)
         {
