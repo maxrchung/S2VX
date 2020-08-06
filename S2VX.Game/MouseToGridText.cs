@@ -11,7 +11,7 @@ using osuTK.Input;
 
 namespace S2VX.Game
 {
-    public class MouseToCameraText : SpriteText
+    public class MouseToGridText : SpriteText
     {
         [Resolved]
         private Story story { get; set; } = null;
@@ -30,7 +30,7 @@ namespace S2VX.Game
             var rotatedPosition = Utils.Rotate(relativePosition, camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
-            Text = Utils.Vector2ToString(translatedPosition);
+            Text = Utils.Vector2ToString(translatedPosition, 2);
         }
     }
 }

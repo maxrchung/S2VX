@@ -36,7 +36,7 @@ namespace S2VX.Game
         };
 
         private SpriteText clock { get; set; } = new SpriteText();
-        private SpriteText mouseToGridText { get; set; } = new MouseToCameraText()
+        private SpriteText mouseToGridText { get; set; } = new MouseToGridText()
         {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
