@@ -24,7 +24,13 @@ namespace S2VX.Game
 
         protected override void Update()
         {
-            Text = Utils.Vector2ToString(story.MousePosition);
+            var mousePosition = story.MousePosition;
+            var relativePosition = (mousePosition - (story.DrawSize / 2)) / story.DrawWidth;
+            var camera = story.Camera;
+            var rotatedPosition = Utils.Rotate(relativePosition, camera.Rotation);
+            var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
+            var translatedPosition = scaledPosition + camera.Position;
+            Text = Utils.Vector2ToString(translatedPosition);
         }
     }
 }
