@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FFmpeg.AutoGen;
 using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
@@ -89,21 +88,20 @@ namespace S2VX.Game
             var timeBetweenTicks = story.Track.Length / numBeats;
             var midTickOffset = (story.GameTime - offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (sectionLength * 1000);
+            //Console.WriteLine($"GameTime: {story.GameTime} tickSpacing: {tickSpacing} relativeMTO % tickSpacing: {(0.5f + relativeMidTickOffset) % tickSpacing} relativeMTO: {relativeMidTickOffset} MTO: {midTickOffset} timebtwnticks: {timeBetweenTicks}");
 
-            for (var tickPos = 0 - relativeMidTickOffset; tickPos <= 1; tickPos += tickSpacing)
+            for (var tickPos = (0.5f - relativeMidTickOffset) % tickSpacing; tickPos <= 1; tickPos += tickSpacing)
             {
-                if (tickPos >= 0)
+                tickBar.Add(new RelativeBox
                 {
-                    tickBar.Add(new RelativeBox
-                    {
-                        Colour = Color4.White,
-                        Width = timelineWidth / 350,
-                        Height = 0.3f,
-                        X = (float)tickPos,
-                        Y = 0.35f,
-                        Anchor = Anchor.TopLeft,
-                    });
-                }
+                    Colour = Color4.White,
+                    Width = timelineWidth / 350,
+                    Height = 0.3f,
+                    X = (float)tickPos,
+                    Y = 0.35f,
+                    Anchor = Anchor.TopLeft,
+                });
+                //Console.WriteLine($"Real Tick Pos: {tickPos}");
             }
         }
     }
