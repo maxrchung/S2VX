@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FFmpeg.AutoGen;
 using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
@@ -73,31 +74,36 @@ namespace S2VX.Game
             {
                 Colour = Color4.White,
                 Width = timelineWidth / 350,
+                Height = 0.8f,
                 Anchor = Anchor.TopCentre,
+                Y = 0.1f,
             });
 
+            var offset = 727; // temp
             var BPM = 222; // temp
             var sectionLength = 6; // temp until tickBar is zoomable
             var totalSeconds = story.Track.Length / 1000;
-            var BPS = BPM / 60;
-            var numBeats = (int) (BPS * totalSeconds);
-            var visibleTicks = sectionLength * BPS;
-            var tickSpacing = 1.0f / (visibleTicks + 1);
+            var BPS = BPM / 60f;
+            var numBeats = BPS * totalSeconds;
+            var tickSpacing = (1 / numBeats) * (totalSeconds / sectionLength);
+            var timeBetweenTicks = story.Track.Length / numBeats;
+            var midTickOffset = (story.GameTime - offset) % timeBetweenTicks;
+            var relativeMidTickOffset = midTickOffset / (sectionLength * 1000);
 
-            var tickPos = tickSpacing;
-            for (var t = 0; t < visibleTicks; ++t)
+            for (var tickPos = 0 - relativeMidTickOffset; tickPos <= 1; tickPos += tickSpacing)
             {
-                tickBar.Add(new RelativeBox
+                if (tickPos >= 0)
                 {
-                    Colour = Color4.White,
-                    Width = timelineWidth / 350,
-                    Height = 0.3f,
-                    X = tickPos,
-                    Y = 0.35f,
-                    Anchor = Anchor.TopLeft,
-                });
-
-                tickPos += tickSpacing;
+                    tickBar.Add(new RelativeBox
+                    {
+                        Colour = Color4.White,
+                        Width = timelineWidth / 350,
+                        Height = 0.3f,
+                        X = (float)tickPos,
+                        Y = 0.35f,
+                        Anchor = Anchor.TopLeft,
+                    });
+                }
             }
         }
     }
