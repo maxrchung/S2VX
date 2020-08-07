@@ -36,11 +36,24 @@ namespace S2VX.Game
         };
 
         private SpriteText clock { get; set; } = new SpriteText();
+        private SpriteText mouseToGridText { get; set; } = new MouseToGridText()
+        {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.CentreLeft,
+            Colour = Color4.White,
+            X = 0.87f,
+            Y = -0.15f,
+            Font = new FontUsage("default", 30, "500"),
+        };
 
         public float TextSize
         {
-            get => clock.Font.Size;
-            set => clock.Font = clock.Font.With(size: value);
+            set
+            {
+                clock.Font = clock.Font.With(size: value);
+                mouseToGridText.Font = clock.Font;
+            }
         }
 
         private bool switchToPlaying { get; set; } = false;
@@ -89,8 +102,8 @@ namespace S2VX.Game
                     Anchor = Anchor.CentreLeft,
                     Colour = Color4.White,
                     Text = "00:00:00",
-                    X = .05f,
-                    Y = -.15f,
+                    X = 0.05f,
+                    Y = -0.15f,
                     Font = new FontUsage("default", 30, "500"),
                 },
                 bar = new Container
@@ -110,6 +123,7 @@ namespace S2VX.Game
                         slider
                     }
                 },
+                mouseToGridText
             };
         }
 

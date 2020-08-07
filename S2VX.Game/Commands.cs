@@ -47,27 +47,6 @@ namespace S2VX.Game
             return $"{Type}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
         }
 
-        protected string Vector2ToString(Vector2 data)
-        {
-            return $"({data.X},{data.Y})";
-        }
-        protected string Color4ToString(Color4 data)
-        {
-            return $"({data.R},{data.G},{data.B})";
-        }
-
-        protected static Vector2 Vector2FromString(string data)
-        {
-            var split = data.Replace("(", "").Replace(")", "").Split(',');
-            return new Vector2(float.Parse(split[0]), float.Parse(split[1]));
-        }
-
-        protected static Color4 Color4FromString(string data)
-        {
-            var split = data.Replace("(", "").Replace(")", "").Split(',');
-            return new Color4(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]), 1);
-        }
-
         public static Command FromString(string data)
         {
             var split = data.Split("|");
@@ -135,14 +114,14 @@ namespace S2VX.Game
         }
         protected override string ToValues()
         {
-            return $"{Vector2ToString(StartValue)}|{Vector2ToString(EndValue)}";
+            return $"{Utils.Vector2ToString(StartValue)}|{Utils.Vector2ToString(EndValue)}";
         }
         public static CameraMoveCommand FromString(string[] split)
         {
             var command = new CameraMoveCommand()
             {
-                StartValue = Command.Vector2FromString(split[4]),
-                EndValue = Command.Vector2FromString(split[5]),
+                StartValue = Utils.Vector2FromString(split[4]),
+                EndValue = Utils.Vector2FromString(split[5]),
             };
             return command;
         }
@@ -185,14 +164,14 @@ namespace S2VX.Game
         }
         protected override string ToValues()
         {
-            return $"{Vector2ToString(StartValue)}|{Vector2ToString(EndValue)}";
+            return $"{Utils.Vector2ToString(StartValue)}|{Utils.Vector2ToString(EndValue)}";
         }
         public static CameraScaleCommand FromString(string[] split)
         {
             var command = new CameraScaleCommand()
             {
-                StartValue = Vector2FromString(split[4]),
-                EndValue = Vector2FromString(split[5]),
+                StartValue = Utils.Vector2FromString(split[4]),
+                EndValue = Utils.Vector2FromString(split[5]),
             };
             return command;
         }
@@ -240,14 +219,14 @@ namespace S2VX.Game
         }
         protected override string ToValues()
         {
-            return $"{Color4ToString(StartValue)}|{Color4ToString(EndValue)}";
+            return $"{Utils.Color4ToString(StartValue)}|{Utils.Color4ToString(EndValue)}";
         }
         public static GridColorCommand FromString(string[] split)
         {
             var command = new GridColorCommand()
             {
-                StartValue = Color4FromString(split[4]),
-                EndValue = Color4FromString(split[5]),
+                StartValue = Utils.Color4FromString(split[4]),
+                EndValue = Utils.Color4FromString(split[5]),
             };
             return command;
         }
@@ -290,14 +269,14 @@ namespace S2VX.Game
         }
         protected override string ToValues()
         {
-            return $"{Color4ToString(StartValue)}|{Color4ToString(EndValue)}";
+            return $"{Utils.Color4ToString(StartValue)}|{Utils.Color4ToString(EndValue)}";
         }
         public static BackgroundColorCommand FromString(string[] split)
         {
             var command = new BackgroundColorCommand()
             {
-                StartValue = Color4FromString(split[4]),
-                EndValue = Color4FromString(split[5]),
+                StartValue = Utils.Color4FromString(split[4]),
+                EndValue = Utils.Color4FromString(split[5]),
             };
             return command;
         }
@@ -414,14 +393,14 @@ namespace S2VX.Game
         }
         protected override string ToValues()
         {
-            return $"{Color4ToString(StartValue)}|{Color4ToString(EndValue)}";
+            return $"{Utils.Color4ToString(StartValue)}|{Utils.Color4ToString(EndValue)}";
         }
         public static NotesColorCommand FromString(string[] split)
         {
             var command = new NotesColorCommand()
             {
-                StartValue = Color4FromString(split[4]),
-                EndValue = Color4FromString(split[5]),
+                StartValue = Utils.Color4FromString(split[4]),
+                EndValue = Utils.Color4FromString(split[5]),
             };
             return command;
         }
