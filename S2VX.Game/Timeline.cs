@@ -22,6 +22,9 @@ namespace S2VX.Game
     public class Timeline : CompositeDrawable
     {
         [Resolved]
+        private Editor editor { get; set; }
+
+        [Resolved]
         private Story story { get; set; } = null;
 
         private Container bar { get; set; } = new Container();
@@ -36,7 +39,7 @@ namespace S2VX.Game
         };
 
         private SpriteText clock { get; set; } = new SpriteText();
-        private SpriteText mouseToGridText { get; set; } = new MouseToGridText()
+        private SpriteText txtMousePosition { get; set; } = new SpriteText
         {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
@@ -52,7 +55,7 @@ namespace S2VX.Game
             set
             {
                 clock.Font = clock.Font.With(size: value);
-                mouseToGridText.Font = clock.Font;
+                txtMousePosition.Font = clock.Font;
             }
         }
 
@@ -123,7 +126,7 @@ namespace S2VX.Game
                         slider
                     }
                 },
-                mouseToGridText
+                txtMousePosition
             };
         }
 
@@ -183,6 +186,8 @@ namespace S2VX.Game
             }
 
             TextSize = story.DrawWidth / 40;
+
+            txtMousePosition.Text = Utils.Vector2ToString(editor.MousePosition, 2);
         }
     }
 }

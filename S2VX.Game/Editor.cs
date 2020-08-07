@@ -78,7 +78,13 @@ namespace S2VX.Game
 
         protected override bool OnMouseMove(MouseMoveEvent e)
         {
-            MousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
+            var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
+            var relativePosition = (mousePosition - (story.DrawSize / 2)) / story.DrawWidth;
+            var camera = story.Camera;
+            var rotatedPosition = Utils.Rotate(relativePosition, camera.Rotation);
+            var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
+            var translatedPosition = scaledPosition + camera.Position;
+            MousePosition = translatedPosition;
             return true;
         }
 
