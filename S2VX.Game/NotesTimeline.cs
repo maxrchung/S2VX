@@ -8,6 +8,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
+using SixLabors.ImageSharp;
 
 namespace S2VX.Game
 {
@@ -26,6 +27,20 @@ namespace S2VX.Game
             X = -0.075f,
             Y = 0.3f,
         };
+
+        public static readonly int[] validBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
+
+        public static readonly Color4[][] tickColoring = new Color4[][]
+        {
+            new Color4[] { Color4.White},
+            new Color4[] { Color4.White, Color4.Red},
+            new Color4[] { Color4.White, Color4.Pink, Color4.Pink},
+            new Color4[] { Color4.White, Color4.Blue, Color4.Red, Color4.Blue},
+            new Color4[] { Color4.White, Color4.Orange, Color4.Pink, Color4.Red, Color4.Pink, Color4.Orange},
+            new Color4[] { Color4.White, Color4.Yellow, Color4.Blue, Color4.Yellow, Color4.Red, Color4.Yellow, Color4.Blue, Color4.Yellow},
+            new Color4[] { Color4.White, Color4.Brown, Color4.Orange, Color4.Blue, Color4.Pink, Color4.Brown, Color4.Red, Color4.Brown, Color4.Pink, Color4.Blue, Color4.Orange, Color4.Brown},
+            new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown},
+        }; // lmao
 
         private const float timelineHeight = 0.075f;
         private const float timelineWidth = 1.0f;
@@ -78,30 +93,53 @@ namespace S2VX.Game
                 Y = 0.1f,
             });
 
-            var offset = 727; // temp
-            var BPM = 222; // temp
-            var sectionLength = 6; // temp until tickBar is zoomable
+            var i = 4;
+            var divisor = validBeatDivisors[i]; // also temp
+            var offset = 0; // temp
+            var BPM = 242; // temp
+            var sectionLength = 2; // temp until tickBar is zoomable
             var totalSeconds = story.Track.Length / 1000;
             var BPS = BPM / 60f;
-            var numBeats = BPS * totalSeconds;
-            var tickSpacing = (1 / numBeats) * (totalSeconds / sectionLength);
-            var timeBetweenTicks = story.Track.Length / numBeats;
+            var numTicks = BPS * totalSeconds;
+            var tickSpacing = (1 / numTicks) * (totalSeconds / sectionLength);
+            var timeBetweenTicks = story.Track.Length / numTicks;
             var midTickOffset = (story.GameTime - offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (sectionLength * 1000);
-            //Console.WriteLine($"GameTime: {story.GameTime} tickSpacing: {tickSpacing} relativeMTO % tickSpacing: {(0.5f + relativeMidTickOffset) % tickSpacing} relativeMTO: {relativeMidTickOffset} MTO: {midTickOffset} timebtwnticks: {timeBetweenTicks}");
 
-            for (var tickPos = (0.5f - relativeMidTickOffset) % tickSpacing; tickPos <= 1; tickPos += tickSpacing)
+            var microTickSpacing = tickSpacing / divisor;
+
+            for (var tickPos = ((0.5f - relativeMidTickOffset) % tickSpacing) - tickSpacing; tickPos <= 1;)
             {
-                tickBar.Add(new RelativeBox
+                var bigTick = true;
+                for (var beat = 0; beat < divisor && tickPos <= 1; ++beat)
                 {
-                    Colour = Color4.White,
-                    Width = timelineWidth / 350,
-                    Height = 0.3f,
-                    X = (float)tickPos,
-                    Y = 0.35f,
-                    Anchor = Anchor.TopLeft,
-                });
-                //Console.WriteLine($"Real Tick Pos: {tickPos}");
+                    if (tickPos >= 0)
+                    {
+                        var height = 0.15f;
+                        var y = 0.425f;
+                        var width = timelineWidth / 410;
+
+                        if (bigTick)
+                        {
+                            height = 0.3f;
+                            y = 0.35f;
+                            width = timelineWidth / 350;
+                        }
+
+                        tickBar.Add(new RelativeBox
+                        {
+                            Colour = tickColoring[i][beat],
+                            Width = width,
+                            Height = height,
+                            X = (float)tickPos,
+                            Y = y,
+                            Anchor = Anchor.TopLeft,
+                            Depth = 10,
+                        });
+                    }
+                    tickPos += microTickSpacing;
+                    bigTick = false;
+                }
             }
         }
     }
