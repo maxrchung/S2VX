@@ -13,13 +13,7 @@ namespace S2VX.Game
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private Story story { get; set; } = new Story();
-        [Resolved]
-        private Camera camera { get; set; } = new Camera();
-        [Resolved]
-        private Notes notes { get; set; } = new Notes();
-        [Resolved]
-        private Approaches approaches { get; set; } = new Approaches();
+        private Story story { get; set; } = null;
 
         private RelativeBox[] lines { get; set; } = new RelativeBox[4]
         {
@@ -40,6 +34,10 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            var notes = story.Notes;
+            var camera = story.Camera;
+            var approaches = story.Approaches;
+
             var time = story.GameTime;
             var endFadeOut = EndTime + notes.FadeOutTime;
 

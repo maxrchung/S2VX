@@ -13,7 +13,7 @@ namespace S2VX.Game
         public float Thickness { get; set; } = 0.005f;
 
         [Resolved]
-        private Notes notes { get; set; } = new Notes();
+        private Story story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -24,6 +24,7 @@ namespace S2VX.Game
 
         protected override void Update()
         {
+            var notes = story.Notes;
             Alpha = notes.Alpha;
             Colour = notes.Colour;
         }
