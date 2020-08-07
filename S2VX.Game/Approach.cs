@@ -65,7 +65,7 @@ namespace S2VX.Game
             var rotationY = Utils.Rotate(new Vector2(0, distance), rotation);
 
             // Add extra thickness so corners overlap
-            var overlap = distance * 2 + thickness / 2;
+            var overlap = distance * 2 + thickness;
 
             lines[0].Position = offset + rotationY;
             lines[0].Rotation = rotation;
