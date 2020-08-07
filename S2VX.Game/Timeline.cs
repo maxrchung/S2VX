@@ -42,7 +42,7 @@ namespace S2VX.Game
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.CentreLeft,
             Colour = Color4.White,
-            X = 0.87f, // lol!!!
+            X = 0.87f,
             Y = -0.15f,
             Font = new FontUsage("default", 30, "500"),
         };
