@@ -64,9 +64,9 @@ namespace S2VX.Game
                         {
                             Items = new[]
                             {
-                                new MenuItem("Play/Pause (Space)", viewCommandPanel),
-                                new MenuItem("Restart (X)", viewCommandPanel),
-                                new MenuItem("Toggle Time Display (T)", viewCommandPanel),
+                                new MenuItem("Play/Pause (Space)", playbackPlay),
+                                new MenuItem("Restart (X)", playbackRestart),
+                                new MenuItem("Toggle Time Display (T)", playbackDisplay),
                             }
                         }
                     }
