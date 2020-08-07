@@ -2,7 +2,7 @@
 using osu.Framework.Graphics;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Camera : Drawable
     {

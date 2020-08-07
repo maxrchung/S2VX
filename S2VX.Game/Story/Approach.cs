@@ -5,7 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Approach : CompositeDrawable
     {
@@ -13,7 +13,7 @@ namespace S2VX.Game
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         private RelativeBox[] lines { get; set; } = new RelativeBox[4]
         {

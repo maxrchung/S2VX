@@ -13,16 +13,16 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Story;
 
-
-namespace S2VX.Game
+namespace S2VX.Game.Editor
 {
-    public class Editor : CompositeDrawable
+    public class S2VXEditor : CompositeDrawable
     {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
         [Cached]
-        private Story story { get; set; } = new Story();
+        private S2VXStory story { get; set; } = new S2VXStory();
 
         private CommandPanel commandPanel { get; } = new CommandPanel();
         private bool isCommandPanelVisible { get; set; } = false;
@@ -116,7 +116,7 @@ namespace S2VX.Game
                     playbackPlay();
                     break;
                 case Key.X:
-                    story.Restart();
+                    playbackRestart();
                     break;
                 case Key.T:
                     playbackDisplay();

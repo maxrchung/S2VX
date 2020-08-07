@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     // Special converter for serialization since we only care about the X and Y values of Vector2
     public class Vector2Converter : JsonConverter<Vector2>

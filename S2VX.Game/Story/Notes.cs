@@ -4,7 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Notes : CompositeDrawable
     {

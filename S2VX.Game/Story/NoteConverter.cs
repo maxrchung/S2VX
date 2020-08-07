@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     // Special converter for Note serialization since we only care about EndTime and Coordinates
     public class NoteConverter : JsonConverter<Note>

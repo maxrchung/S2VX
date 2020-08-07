@@ -4,7 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Approaches : CompositeDrawable
     {
@@ -13,7 +13,7 @@ namespace S2VX.Game
         public float Thickness { get; set; } = 0.005f;
 
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()
