@@ -7,6 +7,9 @@ using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using SixLabors.ImageSharp;
 
@@ -29,7 +32,6 @@ namespace S2VX.Game
         };
 
         public static readonly int[] validBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
-
         public static readonly Color4[][] tickColoring = new Color4[][]
         {
             new Color4[] { Color4.White},
@@ -44,6 +46,39 @@ namespace S2VX.Game
 
         private const float timelineHeight = 0.075f;
         private const float timelineWidth = 1.0f;
+
+        private int divisorIndex = 3;
+        private int divisor = 4;
+
+        private SpriteText txtBeatSnapDivisorLabel { get; set; } = new SpriteText
+        {
+            Text = "Beat Snap Divisor",
+            Font = new FontUsage("default", 23, "500"),
+        };
+
+        private SpriteText txtBeatSnapDivisor { get; set; } = new SpriteText
+        {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Font = new FontUsage("default", 23, "500"),
+            Text = "1/4",
+            X = 0.4f,
+            Y = 0.275f,
+        };
+
+        private float TextSize
+        {
+            set
+            {
+                txtBeatSnapDivisorLabel.Font = txtBeatSnapDivisorLabel.Font.With(size: value);
+                txtBeatSnapDivisor.Font = txtBeatSnapDivisorLabel.Font;
+            }
+        }
+
+        private void changeBeatDivisor(int delta)
+        {
+            divisorIndex = Math.Clamp(divisorIndex + delta, 0, 7);
+        }
 
         [BackgroundDependencyLoader]
         private void load()
@@ -63,14 +98,56 @@ namespace S2VX.Game
                     Colour = Color4.Black.Opacity(0.9f)
                 },
                 tickBar,
-                new RelativeBox
+                new FillFlowContainer
                 {
-                    Colour = Color4.Black,
-                    Height = 0.6f,
-                    Width = timelineWidth / 12,
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    X = -0.05f,
+                    RelativeSizeAxes = Axes.Both,
+                    RelativePositionAxes = Axes.Both,
+                    Height = 0.565f,
+                    Width = timelineWidth / 10,
+                    Anchor = Anchor.TopRight,
+                    Origin = Anchor.TopRight,
+                    X = -0.035f,
+                    Y = 0.05f,
+                    Direction = FillDirection.Vertical,
+
+                    Children = new Drawable[]
+                    {
+                        txtBeatSnapDivisorLabel,
+                        new Container
+                        {
+                            RelativeSizeAxes = Axes.Both,
+
+                            Children = new Drawable[]
+                            {
+                                new BasicButton
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    RelativePositionAxes = Axes.Both,
+                                    Width = 0.25f,
+                                    Action = () => changeBeatDivisor(-1),
+                                    Text = "-",
+                                },
+                                new Box
+                                {
+                                    Colour = Color4.Black,
+                                    RelativeSizeAxes = Axes.Both,
+                                    RelativePositionAxes = Axes.Both,
+                                    Width = 0.5f,
+                                    X = 0.25f,
+                                },
+                                new BasicButton
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    RelativePositionAxes = Axes.Both,
+                                    Width = 0.25f,
+                                    X = 0.75f,
+                                    Action = () => changeBeatDivisor(1),
+                                    Text = "+",
+                                },
+                                txtBeatSnapDivisor,
+                            }
+                        }
+                    }
                 }
             };
         }
@@ -93,8 +170,6 @@ namespace S2VX.Game
                 Y = 0.1f,
             });
 
-            var i = 4;
-            var divisor = validBeatDivisors[i]; // also temp
             var offset = 0; // temp
             var BPM = 242; // temp
             var sectionLength = 2; // temp until tickBar is zoomable
@@ -106,6 +181,7 @@ namespace S2VX.Game
             var midTickOffset = (story.GameTime - offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (sectionLength * 1000);
 
+            divisor = validBeatDivisors[divisorIndex];
             var microTickSpacing = tickSpacing / divisor;
 
             for (var tickPos = ((0.5f - relativeMidTickOffset) % tickSpacing) - tickSpacing; tickPos <= 1;)
@@ -128,19 +204,22 @@ namespace S2VX.Game
 
                         tickBar.Add(new RelativeBox
                         {
-                            Colour = tickColoring[i][beat],
+                            Colour = tickColoring[divisorIndex][beat],
                             Width = width,
                             Height = height,
                             X = (float)tickPos,
                             Y = y,
                             Anchor = Anchor.TopLeft,
-                            Depth = 10,
+                            Depth = 1,
                         });
                     }
                     tickPos += microTickSpacing;
                     bigTick = false;
                 }
             }
+
+            TextSize = story.DrawWidth / 60;
+            txtBeatSnapDivisor.Text = $"1/{divisor}";
         }
     }
 }
