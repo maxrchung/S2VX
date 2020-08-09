@@ -81,7 +81,7 @@ namespace S2VX.Game.Editor
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - (story.DrawSize / 2)) / story.DrawWidth;
             var camera = story.Camera;
-            var rotatedPosition = Utils.Rotate(relativePosition, camera.Rotation);
+            var rotatedPosition = Utils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
             MousePosition = translatedPosition;
