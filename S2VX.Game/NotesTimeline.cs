@@ -10,6 +10,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osuTK;
 using osuTK.Graphics;
 using SixLabors.ImageSharp;
 
@@ -27,7 +28,7 @@ namespace S2VX.Game
             Width = timelineWidth / 1.25f,
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
-            X = -0.075f,
+            X = -0.05f,
             Y = 0.3f,
         };
 
@@ -46,6 +47,8 @@ namespace S2VX.Game
 
         private const float timelineHeight = 0.075f;
         private const float timelineWidth = 1.0f;
+
+        private float sectionLength = 2;
 
         private int divisorIndex = 3;
         private int divisor = 4;
@@ -75,9 +78,14 @@ namespace S2VX.Game
             }
         }
 
-        private void changeBeatDivisor(int delta)
+        private void ChangeBeatDivisor(int delta)
         {
             divisorIndex = Math.Clamp(divisorIndex + delta, 0, 7);
+        }
+
+        private void HandleZoom(float delta)
+        {
+            sectionLength = Math.Clamp(sectionLength + delta, 0.5f, 10f);
         }
 
         [BackgroundDependencyLoader]
@@ -106,7 +114,7 @@ namespace S2VX.Game
                     Width = timelineWidth / 10,
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
-                    X = -0.035f,
+                    X = -0.025f,
                     Y = 0.05f,
                     Direction = FillDirection.Vertical,
 
@@ -124,14 +132,14 @@ namespace S2VX.Game
                                     RelativeSizeAxes = Axes.Both,
                                     RelativePositionAxes = Axes.Both,
                                     Width = 0.25f,
-                                    Action = () => changeBeatDivisor(-1),
+                                    Action = () => ChangeBeatDivisor(-1),
                                     Text = "-",
                                 },
                                 new Box
                                 {
-                                    Colour = Color4.Black,
                                     RelativeSizeAxes = Axes.Both,
                                     RelativePositionAxes = Axes.Both,
+                                    Colour = Color4.Black,
                                     Width = 0.5f,
                                     X = 0.25f,
                                 },
@@ -141,14 +149,70 @@ namespace S2VX.Game
                                     RelativePositionAxes = Axes.Both,
                                     Width = 0.25f,
                                     X = 0.75f,
-                                    Action = () => changeBeatDivisor(1),
+                                    Action = () => ChangeBeatDivisor(1),
                                     Text = "+",
                                 },
                                 txtBeatSnapDivisor,
                             }
                         }
                     }
+                },
+                new Container
+                {
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
+                    Height = 0.75f,
+                    Width = 0.03f,
+                    X = 0.01f,
+                    Y = -0.045f,
+
+                    Children = new Drawable[]
+                    {
+                        new BasicButton
+                        {
+                            Colour = Color4.Black,
+                            RelativePositionAxes = Axes.Both,
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Height = 0.5f,
+                            Action = () => HandleZoom(-.5f),
+                        },
+                        new BasicButton
+                        {
+                            Colour = Color4.Black,
+                            RelativePositionAxes = Axes.Both,
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Height = 0.5f,
+                            Y = 0.5f,
+                            Action = () => HandleZoom(.5f),
+                        },
+                        new SpriteIcon
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Icon = FontAwesome.Solid.SearchPlus,
+                            Size = new Vector2(.5f),
+                        },
+                        new SpriteIcon
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Icon = FontAwesome.Solid.SearchMinus,
+                            Size = new Vector2(.5f),
+                            Y = 0.5f,
+                        },
+                    }
                 }
+
             };
         }
 
@@ -172,7 +236,6 @@ namespace S2VX.Game
 
             var offset = 0; // temp
             var BPM = 242; // temp
-            var sectionLength = 2; // temp until tickBar is zoomable
             var totalSeconds = story.Track.Length / 1000;
             var BPS = BPM / 60f;
             var numTicks = BPS * totalSeconds;
