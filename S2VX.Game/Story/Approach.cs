@@ -1,27 +1,19 @@
-﻿using System;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
+using System;
 
-namespace S2VX.Game
-{
-    public class Approach : CompositeDrawable
-    {
-        public float EndTime { get; set; } = 0;
+namespace S2VX.Game.Story {
+    public class Approach : CompositeDrawable {
+        public double EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private Story story { get; set; } = new Story();
-        [Resolved]
-        private Camera camera { get; set; } = new Camera();
-        [Resolved]
-        private Notes notes { get; set; } = new Notes();
-        [Resolved]
-        private Approaches approaches { get; set; } = new Approaches();
+        private S2VXStory Story { get; set; } = null;
 
-        private RelativeBox[] lines { get; set; } = new RelativeBox[4]
+        private RelativeBox[] Lines { get; set; } = new RelativeBox[4]
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -30,21 +22,22 @@ namespace S2VX.Game
         };
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             Alpha = 0;
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
-            InternalChildren = lines;
+            InternalChildren = Lines;
         }
 
-        protected override void Update()
-        {
-            var time = story.GameTime;
+        protected override void Update() {
+            var notes = Story.Notes;
+            var camera = Story.Camera;
+            var approaches = Story.Approaches;
+
+            var time = Story.GameTime;
             var endFadeOut = EndTime + notes.FadeOutTime;
 
-            if (time >= endFadeOut)
-            {
+            if (time >= endFadeOut) {
                 Alpha = 0;
                 // Return early to save some calculations
                 return;
@@ -67,35 +60,30 @@ namespace S2VX.Game
             var rotationY = Utils.Rotate(new Vector2(0, distance), rotation);
 
             // Add extra thickness so corners overlap
-            var overlap = distance * 2 + thickness / 2;
+            var overlap = distance * 2 + thickness;
 
-            lines[0].Position = offset + rotationY;
-            lines[0].Rotation = rotation;
-            lines[0].Size = new Vector2(overlap, thickness);
+            Lines[0].Position = offset + rotationY;
+            Lines[0].Rotation = rotation;
+            Lines[0].Size = new Vector2(overlap, thickness);
 
-            lines[1].Position = offset - rotationY;
-            lines[1].Rotation = rotation;
-            lines[1].Size = new Vector2(overlap, thickness);
+            Lines[1].Position = offset - rotationY;
+            Lines[1].Rotation = rotation;
+            Lines[1].Size = new Vector2(overlap, thickness);
 
-            lines[2].Position = offset + rotationX;
-            lines[2].Rotation = rotation;
-            lines[2].Size = new Vector2(thickness, overlap);
+            Lines[2].Position = offset + rotationX;
+            Lines[2].Rotation = rotation;
+            Lines[2].Size = new Vector2(thickness, overlap);
 
-            lines[3].Position = offset - rotationX;
-            lines[3].Rotation = rotation;
-            lines[3].Size = new Vector2(thickness, overlap);
+            Lines[3].Position = offset - rotationX;
+            Lines[3].Rotation = rotation;
+            Lines[3].Size = new Vector2(thickness, overlap);
 
-            if (time >= EndTime)
-            {
+            if (time >= EndTime) {
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
                 Alpha = alpha;
-            }
-            else if (time >= startTime)
-            {
+            } else if (time >= startTime) {
                 Alpha = 1;
-            }
-            else
-            {
+            } else {
                 var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
                 Alpha = alpha;
             }

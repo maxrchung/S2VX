@@ -4,25 +4,17 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using S2VX.Resources;
 
-namespace S2VX.Game
-{
-    public class S2VXGameBase : osu.Framework.Game
-    {
+namespace S2VX.Game {
+    public class S2VXGameBase : osu.Framework.Game {
         // Anything in this class is shared between the test browser and the game implementation.
         // It allows for caching global dependencies that should be accessible to tests, or changing
         // the screen scaling for all components including the test browser and framework overlays.
 
         protected override Container<Drawable> Content { get; }
 
-        protected S2VXGameBase()
-        {
-            base.Content.Add(Content = new SquareContainer());
-        }
+        protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
-            Resources.AddStore(new DllResourceStore(typeof(S2VXResources).Assembly));
-        }
+        private void Load() => Resources.AddStore(new DllResourceStore(typeof(S2VXResources).Assembly));
     }
 }

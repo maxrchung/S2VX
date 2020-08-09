@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
+using System;
+using System.Collections.Generic;
 
-namespace S2VX.Game
-{
-    public class Grid : CompositeDrawable
-    {
+namespace S2VX.Game.Story {
+    public class Grid : CompositeDrawable {
         public float Thickness { get; set; } = 0.005f;
 
-        private float lineLength { get; } = 2;
+        private float LineLength { get; } = 2;
 
         [Resolved]
-        private Camera camera { get; set; } = new Camera();
+        private S2VXStory Story { get; set; } = null;
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             RelativeSizeAxes = Axes.Both;
             AlwaysPresent = true;
         }
 
-        protected override void Update()
-        {
-            if (Alpha <= 0 || Thickness <= 0)
-            {
+        protected override void Update() {
+            var camera = Story.Camera;
+
+            if (Alpha <= 0 || Thickness <= 0) {
                 return;
             }
 
@@ -45,51 +42,44 @@ namespace S2VX.Game
 
             var grid = new List<Drawable>();
 
-            for (var i = scale / 2; i <= lineLength / 2; i += scale)
-            {
+            for (var i = scale / 2; i <= LineLength / 2; i += scale) {
                 var up = rotationY * i + offset;
                 var down = -rotationY * i + offset;
                 var right = rotationX * i + offset;
                 var left = -rotationX * i + offset;
 
-                grid.Add(new RelativeBox
-                {
+                grid.Add(new RelativeBox {
                     Position = up,
-                    Width = lineLength,
+                    Width = LineLength,
                     Height = Thickness,
                     Rotation = rotation
                 });
-                grid.Add(new RelativeBox
-                {
+                grid.Add(new RelativeBox {
                     Position = down,
-                    Width = lineLength,
+                    Width = LineLength,
                     Height = Thickness,
                     Rotation = rotation
                 });
-                grid.Add(new RelativeBox
-                {
+                grid.Add(new RelativeBox {
                     Position = right,
                     Width = Thickness,
-                    Height = lineLength,
+                    Height = LineLength,
                     Rotation = rotation
                 });
-                grid.Add(new RelativeBox
-                {
+                grid.Add(new RelativeBox {
                     Position = left,
                     Width = Thickness,
-                    Height = lineLength,
+                    Height = LineLength,
                     Rotation = rotation
                 });
             }
 
-            grid.Add(new RelativeBox
-            {
+            grid.Add(new RelativeBox {
                 Position = offset,
                 Width = 0.01f,
                 Height = 0.01f,
             });
-            grid.Add(new RelativeBox
-            {
+            grid.Add(new RelativeBox {
                 Position = Vector2.Zero,
                 Width = 0.01f,
                 Height = 0.01f,

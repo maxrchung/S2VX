@@ -1,0 +1,173 @@
+﻿using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Animations;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Input.Events;
+using osu.Framework.Text;
+using osuTK;
+using osuTK.Graphics;
+using S2VX.Game.Story;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace S2VX.Game.Editor {
+    public class Timeline : CompositeDrawable {
+        [Resolved]
+        private S2VXEditor Editor { get; set; }
+
+        [Resolved]
+        private S2VXStory Story { get; set; } = null;
+
+        private Container Bar { get; set; } = new Container();
+
+        private RelativeBox Slider { get; set; } = new RelativeBox {
+            Colour = Color4.White,
+            Height = 0.5f,
+            Width = TimelineWidth / 150,
+            Anchor = Anchor.CentreLeft,
+            RelativePositionAxes = Axes.None
+        };
+
+        private SpriteText Clock { get; set; } = new SpriteText();
+        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.CentreLeft,
+            Colour = Color4.White,
+            X = 0.87f,
+            Y = -0.15f,
+            Font = new FontUsage("default", 30, "500"),
+        };
+
+        public float TextSize {
+            set {
+                Clock.Font = Clock.Font.With(size: value);
+                TxtMousePosition.Font = Clock.Font;
+            }
+        }
+
+        private bool SwitchToPlaying { get; set; } = false;
+
+        private bool DelayDrag { get; set; } = false;
+
+        public bool DisplayMS { get; set; } = false;
+
+        private void UpdateSlider(Vector2 mousePosition) {
+            var mousePosX = ToLocalSpace(mousePosition).X;
+            var xPosDelta = (DrawWidth - Bar.DrawWidth) / 2;
+            var newX = mousePosX - xPosDelta;
+            var xLengthRatio = newX / Bar.DrawWidth;
+            var newTime = xLengthRatio * Story.Track.Length;
+
+            var clampedX = Math.Clamp(newX, 0, Bar.DrawWidth);
+            Slider.X = clampedX;
+
+            var clampedTime = Math.Clamp(newTime, 0, Story.Track.Length);
+            Story.Seek(clampedTime);
+        }
+
+        private const float TimelineHeight = 0.075f;
+        private const float TimelineWidth = 1.0f;
+
+        [BackgroundDependencyLoader]
+        private void Load() {
+            RelativeSizeAxes = Axes.Both;
+            Height = TimelineHeight;
+            Width = TimelineWidth;
+            Anchor = Anchor.BottomCentre;
+            Origin = Anchor.BottomCentre;
+
+            InternalChildren = new Drawable[]
+            {
+                new RelativeBox
+                {
+                    Colour = Color4.Black.Opacity(0.9f)
+                },
+                Clock = new SpriteText
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    RelativePositionAxes = Axes.Both,
+                    Anchor = Anchor.CentreLeft,
+                    Colour = Color4.White,
+                    Text = "00:00:00",
+                    X = 0.05f,
+                    Y = -0.15f,
+                    Font = new FontUsage("default", 30, "500"),
+                },
+                Bar = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Colour = Color4.White,
+                    Width = TimelineWidth / 1.5f,
+                    Children = new Drawable[]
+                    {
+                        new RelativeBox
+                        {
+                            Colour = Color4.White,
+                            Height = TimelineHeight / 2.5f,
+                        },
+                        Slider
+                    }
+                },
+                TxtMousePosition
+            };
+        }
+
+        protected override bool OnMouseDown(MouseDownEvent e) {
+            UpdateSlider(e.ScreenSpaceMousePosition);
+            return true;
+        }
+
+        protected override bool OnDragStart(DragStartEvent e) {
+            // Pause if we start a drag
+            if (Story.IsPlaying) {
+                Story.Play(false);
+                SwitchToPlaying = true;
+            } else {
+                SwitchToPlaying = false;
+            }
+            return true;
+        }
+
+        protected override void OnDrag(DragEvent e) {
+            if (!DelayDrag) {
+                UpdateSlider(e.ScreenSpaceMousePosition);
+                DelayDrag = true;
+            }
+        }
+
+        protected override void OnDragEnd(DragEndEvent e) {
+            if (SwitchToPlaying) {
+                Story.Play(true);
+            }
+        }
+
+        protected override void Update() {
+            DelayDrag = false;
+            var songRatio = Story.GameTime / Story.Track.Length;
+            var newX = songRatio * Bar.DrawWidth;
+            Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
+
+            if (DisplayMS) {
+                Clock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString();
+            } else {
+                var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Story.Track.Length));
+                Clock.Text = time.ToString(@"mm\:ss\:fff");
+            }
+
+            TextSize = Story.DrawWidth / 40;
+
+            TxtMousePosition.Text = Utils.Vector2ToString(Editor.MousePosition, 2);
+        }
+    }
+}

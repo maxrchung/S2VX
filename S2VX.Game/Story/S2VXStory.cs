@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,37 +15,37 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-namespace S2VX.Game
-{
-    public class Story : CompositeDrawable
-    {
+namespace S2VX.Game.Story {
+    // Per Microsoft docs, class names should not conflict with their namespace,
+    // so I've prepended S2VX to fix these problems
+    public class S2VXStory : CompositeDrawable {
         public double GameTime { get; private set; } = 0;
         public bool IsPlaying { get; private set; } = false;
+        public double BPM { get; set; } = 0;
+        public double Offset { get; set; } = 0;
 
-        [Cached]
         public Camera Camera { get; } = new Camera();
-        public RelativeBox Background = new RelativeBox
-        {
+        public RelativeBox Background = new RelativeBox {
             Colour = Color4.Black,
         };
         public Grid Grid { get; } = new Grid();
-        [Cached]
         public Notes Notes { get; } = new Notes();
-        [Cached]
         public Approaches Approaches { get; } = new Approaches();
 
         public DrawableTrack Track { get; private set; } = null;
 
         public List<Command> Commands { get; private set; } = new List<Command>();
-        private int nextActive { get; set; } = 0;
-        private HashSet<Command> actives { get; set; } = new HashSet<Command>();
+        private int NextActive { get; set; } = 0;
+        private HashSet<Command> Actives { get; set; } = new HashSet<Command>();
 
-        private static JsonConverter[] converters { get; } = { new Vector2Converter(), new NoteConverter() };
+        private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
-        private void load(AudioManager audioManager)
-        {
+        private void Load(AudioManager audioManager) {
             Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Track.VolumeTo(0.05f);
 
@@ -65,59 +62,53 @@ namespace S2VX.Game
             };
         }
 
-        public void AddCommand(Command command)
-        {
+        public void AddCommand(Command command) {
             Commands.Add(command);
             Commands.Sort();
             Seek(GameTime);
         }
 
-        public void RemoveCommand(int index)
-        {
+        public void RemoveCommand(int index) {
             Commands.RemoveAt(index);
             Seek(GameTime);
         }
 
-        public void Play(bool isPlaying)
-        {
-            if (isPlaying)
-            {
+        public void AddNote(Vector2 position, double time) {
+            Notes.AddNote(position, time);
+            Approaches.AddApproach(position, time);
+        }
+
+        public void Play(bool isPlaying) {
+            if (isPlaying) {
                 Track.Start();
-            }
-            else
-            {
+            } else {
                 Track.Stop();
             }
             IsPlaying = isPlaying;
         }
 
-        public void Restart()
-        {
+        public void Restart() {
             GameTime = 0;
-            nextActive = 0;
-            actives.Clear();
+            NextActive = 0;
+            Actives.Clear();
             Track.Restart();
-            if (!IsPlaying)
-            {
+            if (!IsPlaying) {
                 Play(false);
             }
         }
 
-        public void Seek(double time)
-        {
-            nextActive = 0;
-            actives.Clear();
+        public void Seek(double time) {
+            NextActive = 0;
+            Actives.Clear();
             GameTime = time;
             Track.Seek(time);
         }
 
-        public void Open(string path)
-        {
+        public void Open(string path) {
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
-            foreach (var serializedCommand in serializedCommands)
-            {
+            foreach (var serializedCommand in serializedCommands) {
                 var command = Command.FromJson(serializedCommand);
                 Commands.Add(command);
             }
@@ -132,48 +123,39 @@ namespace S2VX.Game
             Play(false);
         }
 
-        public void Save(string path)
-        {
-            var obj = new
-            {
+        public void Save(string path) {
+            var obj = new {
                 Commands,
                 Notes = Notes.Children
             };
-            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, converters);
+            var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
         }
 
-        protected override void Update()
-        {
-            if (IsPlaying)
-            {
+        protected override void Update() {
+            if (IsPlaying) {
                 GameTime += Time.Elapsed;
             }
 
             // Add new active commands
-            while (nextActive < Commands.Count && Commands[nextActive].StartTime <= GameTime)
-            {
-                actives.Add(Commands[nextActive++]);
+            while (NextActive < Commands.Count && Commands[NextActive].StartTime <= GameTime) {
+                Actives.Add(Commands[NextActive++]);
             }
 
             var newActives = new HashSet<Command>();
-            foreach (var active in actives)
-            {
+            foreach (var active in Actives) {
                 // Run active commands
                 active.Apply(GameTime, this);
 
                 // Remove finished commands
-                if (active.EndTime >= GameTime)
-                {
+                if (active.EndTime >= GameTime) {
                     newActives.Add(active);
-                }
-                else
-                {
+                } else {
                     // Ensure command end will always trigger
                     active.Apply(active.EndTime, this);
                 }
             }
-            actives = newActives;
+            Actives = newActives;
         }
     }
 }

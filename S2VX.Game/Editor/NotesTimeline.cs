@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -12,28 +8,30 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Story;
 using SixLabors.ImageSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace S2VX.Game
-{
-    class NotesTimeline : CompositeDrawable
-    {
+namespace S2VX.Game.Editor {
+    public class NotesTimeline : CompositeDrawable {
         [Resolved]
-        private Story story { get; set; } = null;
-        private List<RelativeBox> ticks { get; set; } = new List<RelativeBox>();
-        private Container tickBar { get; set; } = new Container
-        {
+        private S2VXStory Story { get; set; } = null;
+        private List<RelativeBox> Ticks { get; set; } = new List<RelativeBox>();
+        private Container TickBar { get; set; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
-            Width = timelineWidth / 1.25f,
+            Width = TimelineWidth / 1.25f,
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
             X = -0.05f,
             Y = 0.3f,
         };
 
-        public static readonly int[] validBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
-        public static readonly Color4[][] tickColoring = new Color4[][]
+        public static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
+        public static readonly Color4[][] TickColoring = new Color4[][]
         {
             new Color4[] { Color4.White},
             new Color4[] { Color4.White, Color4.Red},
@@ -45,22 +43,20 @@ namespace S2VX.Game
             new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown},
         }; // lmao
 
-        private const float timelineHeight = 0.075f;
-        private const float timelineWidth = 1.0f;
+        private const float TimelineHeight = 0.075f;
+        private const float TimelineWidth = 1.0f;
 
-        private float sectionLength = 2;
+        private float SectionLength = 2;
 
-        private int divisorIndex = 3;
-        private int divisor = 4;
+        private int DivisorIndex = 3;
+        private int Divisor = 4;
 
-        private SpriteText txtBeatSnapDivisorLabel { get; set; } = new SpriteText
-        {
+        private SpriteText TxtBeatSnapDivisorLabel { get; set; } = new SpriteText {
             Text = "Beat Snap Divisor",
             Font = new FontUsage("default", 23, "500"),
         };
 
-        private SpriteText txtBeatSnapDivisor { get; set; } = new SpriteText
-        {
+        private SpriteText TxtBeatSnapDivisor { get; set; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 23, "500"),
@@ -69,32 +65,23 @@ namespace S2VX.Game
             Y = 0.275f,
         };
 
-        private float TextSize
-        {
-            set
-            {
-                txtBeatSnapDivisorLabel.Font = txtBeatSnapDivisorLabel.Font.With(size: value);
-                txtBeatSnapDivisor.Font = txtBeatSnapDivisorLabel.Font;
+        private float TextSize {
+            set {
+                TxtBeatSnapDivisorLabel.Font = TxtBeatSnapDivisorLabel.Font.With(size: value);
+                TxtBeatSnapDivisor.Font = TxtBeatSnapDivisorLabel.Font;
             }
         }
 
-        private void ChangeBeatDivisor(int delta)
-        {
-            divisorIndex = Math.Clamp(divisorIndex + delta, 0, 7);
-        }
+        private void ChangeBeatDivisor(int delta) => DivisorIndex = Math.Clamp(DivisorIndex + delta, 0, 7);
 
-        private void HandleZoom(float delta)
-        {
-            sectionLength = Math.Clamp(sectionLength + delta, 0.5f, 10f);
-        }
+        private void HandleZoom(float delta) => SectionLength = Math.Clamp(SectionLength + delta, 0.5f, 10f);
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
-            Height = timelineHeight;
-            Width = timelineWidth;
+            Height = TimelineHeight;
+            Width = TimelineWidth;
             Anchor = Anchor.TopCentre;
             Origin = Anchor.TopCentre;
             Margin = new MarginPadding { Vertical = 24 };
@@ -105,13 +92,13 @@ namespace S2VX.Game
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                tickBar,
+                TickBar,
                 new FillFlowContainer
                 {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     Height = 0.565f,
-                    Width = timelineWidth / 10,
+                    Width = TimelineWidth / 10,
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
                     X = -0.025f,
@@ -120,7 +107,7 @@ namespace S2VX.Game
 
                     Children = new Drawable[]
                     {
-                        txtBeatSnapDivisorLabel,
+                        TxtBeatSnapDivisorLabel,
                         new Container
                         {
                             RelativeSizeAxes = Axes.Both,
@@ -152,7 +139,7 @@ namespace S2VX.Game
                                     Action = () => ChangeBeatDivisor(1),
                                     Text = "+",
                                 },
-                                txtBeatSnapDivisor,
+                                TxtBeatSnapDivisor,
                             }
                         }
                     }
@@ -216,58 +203,48 @@ namespace S2VX.Game
             };
         }
 
-        protected override void Update()
-        {
-            tickBar.Clear();
-            tickBar.Add(new RelativeBox
-            {
+        protected override void Update() {
+            TickBar.Clear();
+            TickBar.Add(new RelativeBox {
                 Colour = Color4.White,
-                Height = timelineHeight / 3.5f,
+                Height = TimelineHeight / 3.5f,
             });
 
-            tickBar.Add(new RelativeBox
-            {
+            TickBar.Add(new RelativeBox {
                 Colour = Color4.White,
-                Width = timelineWidth / 350,
+                Width = TimelineWidth / 350,
                 Height = 0.8f,
                 Anchor = Anchor.TopCentre,
                 Y = 0.1f,
             });
 
-            var offset = 0; // temp
-            var BPM = 242; // temp
-            var totalSeconds = story.Track.Length / 1000;
-            var BPS = BPM / 60f;
+            var totalSeconds = Story.Track.Length / 1000;
+            var BPS = Story.BPM / 60f;
             var numTicks = BPS * totalSeconds;
-            var tickSpacing = (1 / numTicks) * (totalSeconds / sectionLength);
-            var timeBetweenTicks = story.Track.Length / numTicks;
-            var midTickOffset = (story.GameTime - offset) % timeBetweenTicks;
-            var relativeMidTickOffset = midTickOffset / (sectionLength * 1000);
+            var tickSpacing = 1 / numTicks * (totalSeconds / SectionLength);
+            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+            var relativeMidTickOffset = midTickOffset / (SectionLength * 1000);
 
-            divisor = validBeatDivisors[divisorIndex];
-            var microTickSpacing = tickSpacing / divisor;
+            Divisor = ValidBeatDivisors[DivisorIndex];
+            var microTickSpacing = tickSpacing / Divisor;
 
-            for (var tickPos = ((0.5f - relativeMidTickOffset) % tickSpacing) - tickSpacing; tickPos <= 1;)
-            {
+            for (var tickPos = (0.5f - relativeMidTickOffset) % tickSpacing - tickSpacing; tickPos <= 1;) {
                 var bigTick = true;
-                for (var beat = 0; beat < divisor && tickPos <= 1; ++beat)
-                {
-                    if (tickPos >= 0)
-                    {
+                for (var beat = 0; beat < Divisor && tickPos <= 1; ++beat) {
+                    if (tickPos >= 0) {
                         var height = 0.15f;
                         var y = 0.425f;
-                        var width = timelineWidth / 410;
+                        var width = TimelineWidth / 410;
 
-                        if (bigTick)
-                        {
+                        if (bigTick) {
                             height = 0.3f;
                             y = 0.35f;
-                            width = timelineWidth / 350;
+                            width = TimelineWidth / 350;
                         }
 
-                        tickBar.Add(new RelativeBox
-                        {
-                            Colour = tickColoring[divisorIndex][beat],
+                        TickBar.Add(new RelativeBox {
+                            Colour = TickColoring[DivisorIndex][beat],
                             Width = width,
                             Height = height,
                             X = (float)tickPos,
@@ -281,8 +258,8 @@ namespace S2VX.Game
                 }
             }
 
-            TextSize = story.DrawWidth / 60;
-            txtBeatSnapDivisor.Text = $"1/{divisor}";
+            TextSize = Story.DrawWidth / 60;
+            TxtBeatSnapDivisor.Text = $"1/{Divisor}";
         }
     }
 }
