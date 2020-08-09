@@ -3,9 +3,6 @@ using Newtonsoft.Json.Linq;
 using osuTK;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace S2VX.Game.Story {

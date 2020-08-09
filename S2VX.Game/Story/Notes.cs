@@ -24,7 +24,7 @@ namespace S2VX.Game.Story {
         }
 
         [BackgroundDependencyLoader]
-        private void load() {
+        private void Load() {
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Children;
         }

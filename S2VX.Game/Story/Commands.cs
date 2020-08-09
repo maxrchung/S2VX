@@ -36,7 +36,7 @@ namespace S2VX.Game.Story {
         public int CompareTo(Command other) => StartTime.CompareTo(other.StartTime);
 
         protected abstract string ToValues();
-        public string ToString() => $"{Type}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
+        public override string ToString() => $"{Type}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
 
         public static Command FromString(string data) {
             var split = data.Split("|");
