@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
@@ -14,40 +12,38 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Story;
+using System;
+using System.Collections.Generic;
 
-namespace S2VX.Game.Editor
-{
-    public class S2VXEditor : CompositeDrawable
-    {
+namespace S2VX.Game.Editor {
+    public class S2VXEditor : CompositeDrawable {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
         [Cached]
-        private S2VXStory story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; } = new S2VXStory();
 
-        private CommandPanel commandPanel { get; } = new CommandPanel();
-        private bool isCommandPanelVisible { get; set; } = false;
+        private CommandPanel CommandPanel { get; } = new CommandPanel();
+        private bool IsCommandPanelVisible { get; set; } = false;
 
-        private Timeline timeline { get; } = new Timeline();
+        private Timeline Timeline { get; } = new Timeline();
 
-        private ToolState toolState { get; set; } = new SelectToolState();
+        private ToolState ToolState { get; set; } = new SelectToolState();
 
-        private Container toolContainer { get; set; } = new Container
-        {
+        private Container ToolContainer { get; set; } = new Container {
             RelativeSizeAxes = Axes.Both,
             Size = Vector2.One
         };
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
 
-            toolContainer.Child = toolState;
+            ToolContainer.Child = ToolState;
             InternalChildren = new Drawable[]
             {
-                story,
-                toolContainer,
+                Story,
+                ToolContainer,
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -59,51 +55,47 @@ namespace S2VX.Game.Editor
                         {
                             Items = new[]
                             {
-                                new MenuItem("Open... (Ctrl+O)", fileOpen),
-                                new MenuItem("Save... (Ctrl+S)", fileSave)
+                                new MenuItem("Open... (Ctrl+O)", FileOpen),
+                                new MenuItem("Save... (Ctrl+S)", FileSave)
                             }
                         },
                         new MenuItem("View")
                         {
                             Items = new[]
                             {
-                                new MenuItem("Command Panel (Ctrl+1)", viewCommandPanel),
+                                new MenuItem("Command Panel (Ctrl+1)", ViewCommandPanel),
                             }
                         },
                         new MenuItem("Playback")
                         {
                             Items = new[]
                             {
-                                new MenuItem("Play/Pause (Space)", playbackPlay),
-                                new MenuItem("Restart (X)", playbackRestart),
-                                new MenuItem("Toggle Time Display (T)", playbackDisplay),
+                                new MenuItem("Play/Pause (Space)", PlaybackPlay),
+                                new MenuItem("Restart (X)", PlaybackRestart),
+                                new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
                             }
                         },
                         new MenuItem("Tool")
                         {
                             Items = new[]
                             {
-                                new MenuItem("Select (1)", toolSelect),
-                                new MenuItem("Note (2)", toolNote),
+                                new MenuItem("Select (1)", ToolSelect),
+                                new MenuItem("Note (2)", ToolNote),
                             }
                         }
                     }
                 },
-                timeline,
-                commandPanel,
+                Timeline,
+                CommandPanel,
             };
         }
 
-        protected override bool OnClick(ClickEvent e)
-        {
-            return toolState.OnToolClick(e);
-        }
+        protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
 
-        protected override bool OnMouseMove(MouseMoveEvent e)
-        {
+        protected override bool OnMouseMove(MouseMoveEvent e) {
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
-            var relativePosition = (mousePosition - (story.DrawSize / 2)) / story.DrawWidth;
-            var camera = story.Camera;
+            var relativePosition = (mousePosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var camera = Story.Camera;
             var rotatedPosition = Utils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
@@ -111,120 +103,93 @@ namespace S2VX.Game.Editor
             return true;
         }
 
-        protected override bool OnKeyDown(KeyDownEvent e)
-        {
-            switch (e.Key)
-            {
+        protected override bool OnKeyDown(KeyDownEvent e) {
+            switch (e.Key) {
                 case Key.O:
-                    if (e.ControlPressed)
-                    {
-                        fileOpen();
+                    if (e.ControlPressed) {
+                        FileOpen();
                     }
                     break;
                 case Key.S:
-                    if (e.ControlPressed)
-                    {
-                        fileSave();
+                    if (e.ControlPressed) {
+                        FileSave();
                     }
                     break;
-                case Key.Number1:
-                {
-                    if (e.ControlPressed)
-                    {
-                        viewCommandPanel();
+                case Key.Number1: {
+                    if (e.ControlPressed) {
+                        ViewCommandPanel();
                         break;
                     }
-                    toolSelect();
+                    ToolSelect();
                     break;
                 }
-                case Key.Number2:
-                {
-                    if (e.ControlPressed)
-                    {
-                        viewCommandPanel();
+                case Key.Number2: {
+                    if (e.ControlPressed) {
+                        ViewCommandPanel();
                         break;
                     }
-                    toolNote();
+                    ToolNote();
                     break;
                 }
                 case Key.Space:
-                    playbackPlay();
+                    PlaybackPlay();
                     break;
                 case Key.X:
-                    playbackRestart();
+                    PlaybackRestart();
                     break;
                 case Key.T:
-                    playbackDisplay();
+                    PlaybackDisplay();
                     break;
             }
             return true;
         }
 
-        private void fileOpen()
-        {
+        private void FileOpen() {
             // The dialog runs synchronously so the game time will skip forward
             // after cancelling. To counteract this, we can always force the
             // game to pause.
-            story.Play(false);
+            Story.Play(false);
             var dialog = new CommonOpenFileDialog();
             dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                story.Open(dialog.FileName);
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+                Story.Open(dialog.FileName);
             }
         }
 
-        private void fileSave()
-        {
-            story.Play(false);
+        private void FileSave() {
+            Story.Play(false);
             var dialog = new CommonSaveFileDialog();
             dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
             dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                story.Save(dialog.FileName);
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+                Story.Save(dialog.FileName);
             }
         }
 
-        private void viewCommandPanel()
-        {
-            if (isCommandPanelVisible)
-            {
-                commandPanel.Hide();
+        private void ViewCommandPanel() {
+            if (IsCommandPanelVisible) {
+                CommandPanel.Hide();
+            } else {
+                CommandPanel.Show();
             }
-            else
-            {
-                commandPanel.Show();
-            }
-            isCommandPanelVisible = !isCommandPanelVisible;
+            IsCommandPanelVisible = !IsCommandPanelVisible;
         }
 
-        private void playbackPlay()
-        {
-            story.Play(!story.IsPlaying);
+        private void PlaybackPlay() => Story.Play(!Story.IsPlaying);
+
+        private void PlaybackRestart() => Story.Restart();
+
+        private void PlaybackDisplay() => Timeline.DisplayMS = !Timeline.DisplayMS;
+
+        private void ToolSelect() {
+            ToolState = new SelectToolState();
+            ToolContainer.Child = ToolState;
         }
 
-        private void playbackRestart()
-        {
-            story.Restart();
-        }
-
-        private void playbackDisplay()
-        {
-            timeline.DisplayMS = !timeline.DisplayMS;
-        }
-
-        private void toolSelect()
-        {
-            toolState = new SelectToolState();
-            toolContainer.Child = toolState;
-        }
-
-        private void toolNote()
-        {
-            toolState = new NoteToolState();
-            toolContainer.Child = toolState;
+        private void ToolNote() {
+            ToolState = new NoteToolState();
+            ToolContainer.Child = ToolState;
         }
     }
 }
