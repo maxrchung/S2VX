@@ -103,6 +103,8 @@ namespace S2VX.Game.Story {
         }
 
         public void Open(string path) {
+            Play(false);
+
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
@@ -117,11 +119,12 @@ namespace S2VX.Game.Story {
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
             Approaches.Children = approaches;
 
-            Restart();
-            Play(false);
+            Seek(GameTime);
         }
 
         public void Save(string path) {
+            Play(false);
+
             var obj = new {
                 Commands,
                 Notes = Notes.Children
