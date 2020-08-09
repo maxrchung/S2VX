@@ -2,8 +2,6 @@
 using Newtonsoft.Json.Linq;
 using osuTK;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace S2VX.Game.Story {
     // Special converter for serialization since we only care about the X and Y values of Vector2

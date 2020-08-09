@@ -1,22 +1,14 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osu.Framework.Text;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace S2VX.Game.Editor {
     public class Timeline : CompositeDrawable {

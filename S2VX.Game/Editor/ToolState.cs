@@ -1,8 +1,5 @@
 ﻿using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace S2VX.Game.Editor {
     // For more flexibility in handling a selected editor tool, we can use a class
