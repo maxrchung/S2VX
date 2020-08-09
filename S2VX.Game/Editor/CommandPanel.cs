@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -11,45 +8,40 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace S2VX.Game.Editor
-{
-    public class CommandPanel : OverlayContainer
-    {
+namespace S2VX.Game.Editor {
+    public class CommandPanel : OverlayContainer {
         [Resolved]
-        private S2VXStory story { get; set; } = null;
+        private S2VXStory Story { get; set; } = null;
 
-        private static Vector2 panelSize { get; } = new Vector2(727, 727);
-        private static Vector2 inputSize { get; } = new Vector2(100, 30);
+        private static Vector2 PanelSize { get; } = new Vector2(727, 727);
+        private static Vector2 InputSize { get; } = new Vector2(100, 30);
 
-        private FillFlowContainer inputBar { get; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-        private Dropdown<string> dropType { get; } = new BasicDropdown<string>
-        {
+        private FillFlowContainer InputBar { get; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
+        private Dropdown<string> DropType { get; } = new BasicDropdown<string> {
             Width = 160
         };
-        private TextBox txtStartTime { get; } = new BasicTextBox() { Size = inputSize };
-        private TextBox txtEndTime { get; } = new BasicTextBox() { Size = inputSize };
-        private Dropdown<string> dropEasing { get; } = new BasicDropdown<string> { Width = inputSize.X };
-        private TextBox txtStartValue { get; } = new BasicTextBox() { Size = inputSize };
-        private TextBox txtEndValue { get; } = new BasicTextBox() { Size = inputSize };
-        private Button btnAdd { get; } = new BasicButton()
-        {
-            Width = inputSize.Y,
-            Height = inputSize.Y,
+        private TextBox TxtStartTime { get; } = new BasicTextBox() { Size = InputSize };
+        private TextBox TxtEndTime { get; } = new BasicTextBox() { Size = InputSize };
+        private Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = InputSize.X };
+        private TextBox TxtStartValue { get; } = new BasicTextBox() { Size = InputSize };
+        private TextBox TxtEndValue { get; } = new BasicTextBox() { Size = InputSize };
+        private Button BtnAdd { get; } = new BasicButton() {
+            Width = InputSize.Y,
+            Height = InputSize.Y,
             Text = "+"
         };
 
-        private FillFlowContainer commandsList = new FillFlowContainer
-        {
+        private readonly FillFlowContainer CommandsList = new FillFlowContainer {
             AutoSizeAxes = Axes.Both,
             Direction = FillDirection.Vertical
         };
 
-        private void addInput(string text, Drawable input)
-        {
-            inputBar.Add(
-                new FillFlowContainer
-                {
+        private void AddInput(string text, Drawable input) => InputBar.Add(
+                new FillFlowContainer {
                     AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
@@ -59,28 +51,23 @@ namespace S2VX.Game.Editor
                     }
                 }
             );
-        }
 
-        private void loadCommandsList()
-        {
-            commandsList.Clear();
-            var type = dropType.Current.Value;
-            for (var i = 0; i < story.Commands.Count; ++i)
-            {
-                var command = story.Commands[i];
-                if (type == "All Commands" || type == command.Type.ToString())
-                {
+        private void LoadCommandsList() {
+            CommandsList.Clear();
+            var type = DropType.Current.Value;
+            for (var i = 0; i < Story.Commands.Count; ++i) {
+                var command = Story.Commands[i];
+                if (type == "All Commands" || type == command.Type.ToString()) {
                     var localIndex = i;
-                    commandsList.Add(new FillFlowContainer
-                    {
+                    CommandsList.Add(new FillFlowContainer {
                         AutoSizeAxes = Axes.Both,
                         Children = new Drawable[]
                         {
                             new BasicButton
                             {
-                                Action = () => handleRemoveClick(localIndex),
-                                Width = inputSize.Y,
-                                Height = inputSize.Y,
+                                Action = () => HandleRemoveClick(localIndex),
+                                Width = InputSize.Y,
+                                Height = InputSize.Y,
                                 Text = "-"
                             },
                             new SpriteText {
@@ -92,61 +79,55 @@ namespace S2VX.Game.Editor
             }
         }
 
-        private void handleAddClick()
-        {
+        private void HandleAddClick() {
             var data = new string[]
             {
-                $"{dropType.Current.Value}",
-                $"{txtStartTime.Current.Value}",
-                $"{txtEndTime.Current.Value}",
-                $"{dropEasing.Current.Value}",
-                $"{txtStartValue.Current.Value}",
-                $"{txtEndValue.Current.Value}"
+                $"{DropType.Current.Value}",
+                $"{TxtStartTime.Current.Value}",
+                $"{TxtEndTime.Current.Value}",
+                $"{DropEasing.Current.Value}",
+                $"{TxtStartValue.Current.Value}",
+                $"{TxtEndValue.Current.Value}"
             };
-            var join = String.Join("|", data);
+            var join = string.Join("|", data);
             var command = Command.FromString(join);
-            story.AddCommand(command);
-            loadCommandsList();
+            Story.AddCommand(command);
+            LoadCommandsList();
         }
 
-        private void handleRemoveClick(int commandIndex)
-        {
-            story.RemoveCommand(commandIndex);
-            loadCommandsList();
+        private void HandleRemoveClick(int commandIndex) {
+            Story.RemoveCommand(commandIndex);
+            LoadCommandsList();
         }
 
-        private void handleTypeSelect(ValueChangedEvent<string> e)
-        {
-            loadCommandsList();
-        }
+        private void HandleTypeSelect(ValueChangedEvent<string> e) => LoadCommandsList();
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             Anchor = Anchor.TopRight;
             Origin = Anchor.TopRight;
-            Size = panelSize;
+            Size = PanelSize;
 
             var allCommands = new List<string> {
                 "All Commands"
             };
             allCommands.AddRange(Enum.GetNames(typeof(Commands)));
-            dropType.Items = allCommands;
-            dropEasing.Items = Enum.GetNames(typeof(Easing));
+            DropType.Items = allCommands;
+            DropEasing.Items = Enum.GetNames(typeof(Easing));
 
-            addInput("Type", dropType);
-            dropType.Current.BindValueChanged(handleTypeSelect);
+            AddInput("Type", DropType);
+            DropType.Current.BindValueChanged(HandleTypeSelect);
 
-            addInput("StartTime", txtStartTime);
-            addInput("EndTime", txtEndTime);
-            addInput("Easing", dropEasing);
-            addInput("StartValue", txtStartValue);
-            addInput("EndValue", txtEndValue);
+            AddInput("StartTime", TxtStartTime);
+            AddInput("EndTime", TxtEndTime);
+            AddInput("Easing", DropEasing);
+            AddInput("StartValue", TxtStartValue);
+            AddInput("EndValue", TxtEndValue);
 
-            addInput(" ", btnAdd);
-            btnAdd.Action = handleAddClick;
+            AddInput(" ", BtnAdd);
+            BtnAdd.Action = HandleAddClick;
 
-            loadCommandsList();
+            LoadCommandsList();
 
             Children = new Drawable[]
             {
@@ -155,9 +136,9 @@ namespace S2VX.Game.Editor
                 {
                     // This is so mega fucked?
                     Position = new Vector2(0, 70),
-                    Width = panelSize.X,
-                    Height = panelSize.Y - 70,
-                    Child = commandsList
+                    Width = PanelSize.X,
+                    Height = PanelSize.Y - 70,
+                    Child = CommandsList
                 },
                 new FillFlowContainer
                 {
@@ -166,20 +147,14 @@ namespace S2VX.Game.Editor
                     Children = new Drawable[]
                     {
                         new SpriteText { Text = "Command Panel" },
-                        inputBar
+                        InputBar
                     }
                 }
             };
         }
 
-        protected override void PopIn()
-        {
-            this.FadeIn(100);
-        }
+        protected override void PopIn() => this.FadeIn(100);
 
-        protected override void PopOut()
-        {
-            this.FadeOut(100);
-        }
+        protected override void PopOut() => this.FadeOut(100);
     }
 }

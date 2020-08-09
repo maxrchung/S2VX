@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
+using System.Collections.Generic;
 
-namespace S2VX.Game.Story
-{
-    public class Notes : CompositeDrawable
-    {
+namespace S2VX.Game.Story {
+    public class Notes : CompositeDrawable {
         public List<Note> Children { get; set; } = new List<Note>();
 
         // Notes fade in, show for a period of time, then fade out
@@ -16,10 +14,8 @@ namespace S2VX.Game.Story
         public float ShowTime { get; set; } = 1000;
         public float FadeOutTime { get; set; } = 100;
 
-        public void AddNote(Vector2 position, double time)
-        {
-            var note = new Note
-            {
+        public void AddNote(Vector2 position, double time) {
+            var note = new Note {
                 Coordinates = position,
                 EndTime = time
             };
@@ -28,8 +24,7 @@ namespace S2VX.Game.Story
         }
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void load() {
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Children;
         }

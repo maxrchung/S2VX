@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
@@ -14,34 +10,34 @@ using osu.Framework.Input.Events;
 using osu.Framework.Text;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Story;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using S2VX.Game.Story;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace S2VX.Game.Editor
-{
-    public class Timeline : CompositeDrawable
-    {
+namespace S2VX.Game.Editor {
+    public class Timeline : CompositeDrawable {
         [Resolved]
-        private S2VXEditor editor { get; set; }
+        private S2VXEditor Editor { get; set; }
 
         [Resolved]
-        private S2VXStory story { get; set; } = null;
+        private S2VXStory Story { get; set; } = null;
 
-        private Container bar { get; set; } = new Container();
+        private Container Bar { get; set; } = new Container();
 
-        private RelativeBox slider { get; set; } = new RelativeBox
-        {
+        private RelativeBox Slider { get; set; } = new RelativeBox {
             Colour = Color4.White,
             Height = 0.5f,
-            Width = timelineWidth / 150,
+            Width = TimelineWidth / 150,
             Anchor = Anchor.CentreLeft,
             RelativePositionAxes = Axes.None
         };
 
-        private SpriteText clock { get; set; } = new SpriteText();
-        private SpriteText txtMousePosition { get; set; } = new SpriteText
-        {
+        private SpriteText Clock { get; set; } = new SpriteText();
+        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.CentreLeft,
@@ -51,45 +47,41 @@ namespace S2VX.Game.Editor
             Font = new FontUsage("default", 30, "500"),
         };
 
-        public float TextSize
-        {
-            set
-            {
-                clock.Font = clock.Font.With(size: value);
-                txtMousePosition.Font = clock.Font;
+        public float TextSize {
+            set {
+                Clock.Font = Clock.Font.With(size: value);
+                TxtMousePosition.Font = Clock.Font;
             }
         }
 
-        private bool switchToPlaying { get; set; } = false;
+        private bool SwitchToPlaying { get; set; } = false;
 
-        private bool delayDrag { get; set; } = false;
+        private bool DelayDrag { get; set; } = false;
 
         public bool DisplayMS { get; set; } = false;
 
-        private void updateSlider(Vector2 mousePosition)
-        {
+        private void UpdateSlider(Vector2 mousePosition) {
             var mousePosX = ToLocalSpace(mousePosition).X;
-            var xPosDelta = (DrawWidth - bar.DrawWidth) / 2;
+            var xPosDelta = (DrawWidth - Bar.DrawWidth) / 2;
             var newX = mousePosX - xPosDelta;
-            var xLengthRatio = newX / bar.DrawWidth;
-            var newTime = xLengthRatio * story.Track.Length;
+            var xLengthRatio = newX / Bar.DrawWidth;
+            var newTime = xLengthRatio * Story.Track.Length;
 
-            var clampedX = Math.Clamp(newX, 0, bar.DrawWidth);
-            slider.X = clampedX;
+            var clampedX = Math.Clamp(newX, 0, Bar.DrawWidth);
+            Slider.X = clampedX;
 
-            var clampedTime = Math.Clamp(newTime, 0, story.Track.Length);
-            story.Seek(clampedTime);
+            var clampedTime = Math.Clamp(newTime, 0, Story.Track.Length);
+            Story.Seek(clampedTime);
         }
 
-        private const float timelineHeight = 0.075f;
-        private const float timelineWidth = 1.0f;
+        private const float TimelineHeight = 0.075f;
+        private const float TimelineWidth = 1.0f;
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
+        private void Load() {
             RelativeSizeAxes = Axes.Both;
-            Height = timelineHeight;
-            Width = timelineWidth;
+            Height = TimelineHeight;
+            Width = TimelineWidth;
             Anchor = Anchor.BottomCentre;
             Origin = Anchor.BottomCentre;
 
@@ -99,7 +91,7 @@ namespace S2VX.Game.Editor
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                clock = new SpriteText
+                Clock = new SpriteText
                 {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
@@ -110,85 +102,72 @@ namespace S2VX.Game.Editor
                     Y = -0.15f,
                     Font = new FontUsage("default", 30, "500"),
                 },
-                bar = new Container
+                Bar = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Colour = Color4.White,
-                    Width = timelineWidth / 1.5f,
+                    Width = TimelineWidth / 1.5f,
                     Children = new Drawable[]
                     {
                         new RelativeBox
                         {
                             Colour = Color4.White,
-                            Height = timelineHeight / 2.5f,
+                            Height = TimelineHeight / 2.5f,
                         },
-                        slider
+                        Slider
                     }
                 },
-                txtMousePosition
+                TxtMousePosition
             };
         }
 
-        protected override bool OnMouseDown(MouseDownEvent e)
-        {
-            updateSlider(e.ScreenSpaceMousePosition);
+        protected override bool OnMouseDown(MouseDownEvent e) {
+            UpdateSlider(e.ScreenSpaceMousePosition);
             return true;
         }
 
-        protected override bool OnDragStart(DragStartEvent e)
-        {
+        protected override bool OnDragStart(DragStartEvent e) {
             // Pause if we start a drag
-            if (story.IsPlaying)
-            {
-                story.Play(false);
-                switchToPlaying = true;
-            }
-            else
-            {
-                switchToPlaying = false;
+            if (Story.IsPlaying) {
+                Story.Play(false);
+                SwitchToPlaying = true;
+            } else {
+                SwitchToPlaying = false;
             }
             return true;
         }
 
-        protected override void OnDrag(DragEvent e)
-        {
-            if (!delayDrag)
-            {
-                updateSlider(e.ScreenSpaceMousePosition);
-                delayDrag = true;
+        protected override void OnDrag(DragEvent e) {
+            if (!DelayDrag) {
+                UpdateSlider(e.ScreenSpaceMousePosition);
+                DelayDrag = true;
             }
         }
 
-        protected override void OnDragEnd(DragEndEvent e)
-        {
-            if (switchToPlaying)
-            {
-                story.Play(true);
+        protected override void OnDragEnd(DragEndEvent e) {
+            if (SwitchToPlaying) {
+                Story.Play(true);
             }
         }
 
-        protected override void Update()
-        {
-            delayDrag = false;
-            var songRatio = story.GameTime / story.Track.Length;
-            var newX = songRatio * bar.DrawWidth;
-            slider.X = (float)Math.Clamp(newX, 0, bar.DrawWidth);
+        protected override void Update() {
+            DelayDrag = false;
+            var songRatio = Story.GameTime / Story.Track.Length;
+            var newX = songRatio * Bar.DrawWidth;
+            Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
-            if (DisplayMS)
-            {
-                clock.Text = Math.Truncate(Math.Clamp(story.GameTime, 0, story.Track.Length)).ToString();
-            }
-            else
-            {
-                var time = TimeSpan.FromMilliseconds(Math.Clamp(story.GameTime, 0, story.Track.Length));
-                clock.Text = time.ToString(@"mm\:ss\:fff");
+            if (DisplayMS) {
+                Clock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString();
+            } else {
+                var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Story.Track.Length));
+                Clock.Text = time.ToString(@"mm\:ss\:fff");
             }
 
-            TextSize = story.DrawWidth / 40;
+            TextSize = Story.DrawWidth / 40;
 
-            txtMousePosition.Text = Utils.Vector2ToString(editor.MousePosition, 2);
+            TxtMousePosition.Text = Utils.Vector2ToString(Editor.MousePosition, 2);
         }
     }
 }

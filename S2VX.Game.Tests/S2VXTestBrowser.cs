@@ -3,12 +3,9 @@ using osu.Framework.Graphics.Cursor;
 using osu.Framework.Platform;
 using osu.Framework.Testing;
 
-namespace S2VX.Game.Tests
-{
-    public class S2VXTestBrowser : S2VXGameBase
-    {
-        protected override void LoadComplete()
-        {
+namespace S2VX.Game.Tests {
+    public class S2VXTestBrowser : S2VXGameBase {
+        protected override void LoadComplete() {
             base.LoadComplete();
 
             AddRange(new Drawable[]
@@ -18,8 +15,7 @@ namespace S2VX.Game.Tests
             });
         }
 
-        public override void SetHost(GameHost host)
-        {
+        public override void SetHost(GameHost host) {
             base.SetHost(host);
             host.Window.CursorState |= CursorState.Hidden;
         }

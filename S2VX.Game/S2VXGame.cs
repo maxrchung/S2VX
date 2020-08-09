@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
@@ -14,18 +12,15 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Editor;
+using System;
+using System.Collections.Generic;
 
-namespace S2VX.Game
-{
-    public class S2VXGame : S2VXGameBase
-    {
+namespace S2VX.Game {
+    public class S2VXGame : S2VXGameBase {
         [Cached]
-        private S2VXEditor editor = new S2VXEditor();
+        private readonly S2VXEditor Editor = new S2VXEditor();
 
         [BackgroundDependencyLoader]
-        private void load()
-        {
-            Child = editor;
-        }
+        private void Load() => Child = Editor;
     }
 }
