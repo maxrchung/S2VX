@@ -23,7 +23,7 @@ namespace S2VX.Game.Editor
         {
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
-            InternalChild = preview;
+            Child = preview;
         }
 
         public override bool OnMouseClick()

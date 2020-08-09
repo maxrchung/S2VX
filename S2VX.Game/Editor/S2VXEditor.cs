@@ -29,7 +29,13 @@ namespace S2VX.Game.Editor
 
         private Timeline timeline { get; } = new Timeline();
 
-        private ToolState toolState { get; set; } = ToolState.NoteToolState;
+        private ToolState toolState { get; set; } = new SelectToolState();
+
+        private Container toolContainer { get; set; } = new Container
+        {
+            RelativeSizeAxes = Axes.Both,
+            Size = Vector2.One
+        };
 
         [BackgroundDependencyLoader]
         private void load()
@@ -37,9 +43,11 @@ namespace S2VX.Game.Editor
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
 
+            toolContainer.Child = toolState;
             InternalChildren = new Drawable[]
             {
                 story,
+                toolContainer,
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -70,12 +78,19 @@ namespace S2VX.Game.Editor
                                 new MenuItem("Restart (X)", playbackRestart),
                                 new MenuItem("Toggle Time Display (T)", playbackDisplay),
                             }
+                        },
+                        new MenuItem("Tool")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Select (1)", toolSelect),
+                                new MenuItem("Note (2)", toolNote),
+                            }
                         }
                     }
                 },
-                commandPanel,
                 timeline,
-                toolState
+                commandPanel,
             };
         }
 
@@ -112,7 +127,19 @@ namespace S2VX.Game.Editor
                     if (e.ControlPressed)
                     {
                         viewCommandPanel();
+                        break;
                     }
+                    toolSelect();
+                    break;
+                }
+                case Key.Number2:
+                {
+                    if (e.ControlPressed)
+                    {
+                        viewCommandPanel();
+                        break;
+                    }
+                    toolNote();
                     break;
                 }
                 case Key.Space:
@@ -181,6 +208,18 @@ namespace S2VX.Game.Editor
         private void playbackDisplay()
         {
             timeline.DisplayMS = !timeline.DisplayMS;
+        }
+
+        private void toolSelect()
+        {
+            toolState = new SelectToolState();
+            toolContainer.Child = toolState;
+        }
+
+        private void toolNote()
+        {
+            toolState = new NoteToolState();
+            toolContainer.Child = toolState;
         }
     }
 }
