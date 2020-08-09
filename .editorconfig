@@ -5,6 +5,9 @@ root = true
 [*.cs]
 
 #### Core EditorConfig Options ####
+# To show editorconfig errors on build, this setting must be configured
+# See https://github.com/dotnet/roslyn/issues/33558 for ongoing discussion
+dotnet_analyzer_diagnostic.severity = error
 
 # Indentation and spacing
 indent_size = 4
