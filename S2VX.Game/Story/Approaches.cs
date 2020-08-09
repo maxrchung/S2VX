@@ -4,7 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Approaches : CompositeDrawable
     {
@@ -12,8 +12,19 @@ namespace S2VX.Game
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
+        public void AddApproach(Vector2 position, double time)
+        {
+            var approach = new Approach
+            {
+                Coordinates = position,
+                EndTime = time
+            };
+            Children.Add(approach);
+            AddInternal(approach);
+        }
+
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()

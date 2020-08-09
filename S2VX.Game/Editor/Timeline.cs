@@ -16,16 +16,17 @@ using osuTK;
 using osuTK.Graphics;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using S2VX.Game.Story;
 
-namespace S2VX.Game
+namespace S2VX.Game.Editor
 {
     public class Timeline : CompositeDrawable
     {
         [Resolved]
-        private Editor editor { get; set; }
+        private S2VXEditor editor { get; set; }
 
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         private Container bar { get; set; } = new Container();
 

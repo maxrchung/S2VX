@@ -5,15 +5,15 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Approach : CompositeDrawable
     {
-        public float EndTime { get; set; } = 0;
+        public double EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         private RelativeBox[] lines { get; set; } = new RelativeBox[4]
         {
@@ -65,7 +65,7 @@ namespace S2VX.Game
             var rotationY = Utils.Rotate(new Vector2(0, distance), rotation);
 
             // Add extra thickness so corners overlap
-            var overlap = distance * 2 + thickness / 2;
+            var overlap = distance * 2 + thickness;
 
             lines[0].Position = offset + rotationY;
             lines[0].Rotation = rotation;

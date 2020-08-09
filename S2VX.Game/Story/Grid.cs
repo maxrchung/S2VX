@@ -5,7 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
     public class Grid : CompositeDrawable
     {
@@ -14,7 +14,7 @@ namespace S2VX.Game
         private float lineLength { get; } = 2;
 
         [Resolved]
-        private Story story { get; set; } = null;
+        private S2VXStory story { get; set; } = null;
 
         [BackgroundDependencyLoader]
         private void load()

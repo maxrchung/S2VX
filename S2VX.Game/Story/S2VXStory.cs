@@ -19,9 +19,11 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 
-namespace S2VX.Game
+namespace S2VX.Game.Story
 {
-    public class Story : CompositeDrawable
+    // Per Microsoft docs, class names should not conflict with their namespace,
+    // so I've prepended S2VX to fix these problems
+    public class S2VXStory : CompositeDrawable
     {
         public double GameTime { get; private set; } = 0;
         public bool IsPlaying { get; private set; } = false;
@@ -73,6 +75,12 @@ namespace S2VX.Game
         {
             Commands.RemoveAt(index);
             Seek(GameTime);
+        }
+
+        public void AddNote(Vector2 position, double time)
+        {
+            Notes.AddNote(position, time);
+            Approaches.AddApproach(position, time);
         }
 
         public void Play(bool isPlaying)

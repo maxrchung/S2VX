@@ -13,21 +13,29 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Story;
 
-
-namespace S2VX.Game
+namespace S2VX.Game.Editor
 {
-    public class Editor : CompositeDrawable
+    public class S2VXEditor : CompositeDrawable
     {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
         [Cached]
-        private Story story { get; set; } = new Story();
+        private S2VXStory story { get; set; } = new S2VXStory();
 
         private CommandPanel commandPanel { get; } = new CommandPanel();
         private bool isCommandPanelVisible { get; set; } = false;
 
         private Timeline timeline { get; } = new Timeline();
+
+        private ToolState toolState { get; set; } = new SelectToolState();
+
+        private Container toolContainer { get; set; } = new Container
+        {
+            RelativeSizeAxes = Axes.Both,
+            Size = Vector2.One
+        };
 
         [BackgroundDependencyLoader]
         private void load()
@@ -35,9 +43,11 @@ namespace S2VX.Game
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
 
+            toolContainer.Child = toolState;
             InternalChildren = new Drawable[]
             {
                 story,
+                toolContainer,
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -68,12 +78,25 @@ namespace S2VX.Game
                                 new MenuItem("Restart (X)", playbackRestart),
                                 new MenuItem("Toggle Time Display (T)", playbackDisplay),
                             }
+                        },
+                        new MenuItem("Tool")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Select (1)", toolSelect),
+                                new MenuItem("Note (2)", toolNote),
+                            }
                         }
                     }
                 },
+                timeline,
                 commandPanel,
-                timeline
             };
+        }
+
+        protected override bool OnClick(ClickEvent e)
+        {
+            return toolState.OnToolClick(e);
         }
 
         protected override bool OnMouseMove(MouseMoveEvent e)
@@ -81,7 +104,7 @@ namespace S2VX.Game
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - (story.DrawSize / 2)) / story.DrawWidth;
             var camera = story.Camera;
-            var rotatedPosition = Utils.Rotate(relativePosition, camera.Rotation);
+            var rotatedPosition = Utils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
             MousePosition = translatedPosition;
@@ -109,14 +132,26 @@ namespace S2VX.Game
                     if (e.ControlPressed)
                     {
                         viewCommandPanel();
+                        break;
                     }
+                    toolSelect();
+                    break;
+                }
+                case Key.Number2:
+                {
+                    if (e.ControlPressed)
+                    {
+                        viewCommandPanel();
+                        break;
+                    }
+                    toolNote();
                     break;
                 }
                 case Key.Space:
                     playbackPlay();
                     break;
                 case Key.X:
-                    story.Restart();
+                    playbackRestart();
                     break;
                 case Key.T:
                     playbackDisplay();
@@ -178,6 +213,18 @@ namespace S2VX.Game
         private void playbackDisplay()
         {
             timeline.DisplayMS = !timeline.DisplayMS;
+        }
+
+        private void toolSelect()
+        {
+            toolState = new SelectToolState();
+            toolContainer.Child = toolState;
+        }
+
+        private void toolNote()
+        {
+            toolState = new NoteToolState();
+            toolContainer.Child = toolState;
         }
     }
 }

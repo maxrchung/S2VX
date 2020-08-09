@@ -10,13 +10,14 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Story;
 
-namespace S2VX.Game
+namespace S2VX.Game.Editor
 {
     public class CommandPanel : OverlayContainer
     {
         [Resolved]
-        private Story story { get; set; } = new Story();
+        private S2VXStory story { get; set; } = null;
 
         private static Vector2 panelSize { get; } = new Vector2(727, 727);
         private static Vector2 inputSize { get; } = new Vector2(100, 30);

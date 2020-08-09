@@ -13,13 +13,14 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Editor;
 
 namespace S2VX.Game
 {
     public class S2VXGame : S2VXGameBase
     {
         [Cached]
-        private Editor editor = new Editor();
+        private S2VXEditor editor = new S2VXEditor();
 
         [BackgroundDependencyLoader]
         private void load()
