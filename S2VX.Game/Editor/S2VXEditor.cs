@@ -29,6 +29,8 @@ namespace S2VX.Game.Editor
 
         private Timeline timeline { get; } = new Timeline();
 
+        private ToolState toolState { get; set; } = ToolState.NoteToolState;
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -72,7 +74,8 @@ namespace S2VX.Game.Editor
                     }
                 },
                 commandPanel,
-                timeline
+                timeline,
+                toolState
             };
         }
 

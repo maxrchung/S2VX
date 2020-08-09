@@ -6,7 +6,7 @@ namespace S2VX.Game.Story
 {
     public class Note : RelativeBox
     {
-        public float EndTime { get; set; } = 0;
+        public double EndTime { get; set; } = 0;
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
