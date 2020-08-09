@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Input.Events;
 
 namespace S2VX.Game.Editor
 {
@@ -12,7 +13,7 @@ namespace S2VX.Game.Editor
     {
         // Returns whether to block propagation. By default, return false
         // to allow a parent component, i.e. S2VXEditor, to handle inputs.
-        public virtual bool OnMouseClick()
+        public virtual bool OnToolClick(ClickEvent e)
         {
             return false;
         }

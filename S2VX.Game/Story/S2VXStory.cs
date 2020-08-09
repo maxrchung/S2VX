@@ -77,6 +77,12 @@ namespace S2VX.Game.Story
             Seek(GameTime);
         }
 
+        public void AddNote(Vector2 position, double time)
+        {
+            Notes.AddNote(position, time);
+            Approaches.AddApproach(position, time);
+        }
+
         public void Play(bool isPlaying)
         {
             if (isPlaying)

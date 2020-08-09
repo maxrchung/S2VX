@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Story;
 
@@ -26,8 +27,9 @@ namespace S2VX.Game.Editor
             Child = preview;
         }
 
-        public override bool OnMouseClick()
+        public override bool OnToolClick(ClickEvent _)
         {
+            story.AddNote(editor.MousePosition, story.GameTime);
             return false;
         }
 

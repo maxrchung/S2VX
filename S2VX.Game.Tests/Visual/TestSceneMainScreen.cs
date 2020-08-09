@@ -1,4 +1,5 @@
 using osu.Framework.Testing;
+using S2VX.Game.Story;
 
 namespace S2VX.Game.Tests.Visual
 {
@@ -9,7 +10,7 @@ namespace S2VX.Game.Tests.Visual
 
         public TestSceneMainScreen()
         {
-            Add(new Story());
+            Add(new S2VXStory());
         }
     }
 }

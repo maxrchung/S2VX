@@ -94,6 +94,11 @@ namespace S2VX.Game.Editor
             };
         }
 
+        protected override bool OnClick(ClickEvent e)
+        {
+            return toolState.OnToolClick(e);
+        }
+
         protected override bool OnMouseMove(MouseMoveEvent e)
         {
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);

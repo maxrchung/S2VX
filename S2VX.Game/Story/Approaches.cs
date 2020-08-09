@@ -12,6 +12,17 @@ namespace S2VX.Game.Story
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
+        public void AddApproach(Vector2 position, double time)
+        {
+            var approach = new Approach
+            {
+                Coordinates = position,
+                EndTime = time
+            };
+            Children.Add(approach);
+            AddInternal(approach);
+        }
+
         [Resolved]
         private S2VXStory story { get; set; } = null;
 
