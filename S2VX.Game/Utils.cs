@@ -9,8 +9,8 @@ namespace S2VX.Game {
         public static Vector2 Rotate(Vector2 v, float degrees) {
             var x = v.X;
             var y = v.Y;
-            var cos = (float)Math.Cos((double)MathUtils.DegreesToRadians(degrees));
-            var sin = (float)Math.Sin((double)MathUtils.DegreesToRadians(degrees));
+            var cos = (float)Math.Cos(MathUtils.DegreesToRadians(degrees));
+            var sin = (float)Math.Sin(MathUtils.DegreesToRadians(degrees));
             var rotated = new Vector2(
                 x * cos - y * sin,
                 x * sin + y * cos
