@@ -1,19 +1,13 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using osu.Framework.Allocation;
-using osu.Framework.Bindables;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osu.Framework.Logging;
-using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Story;
-using System;
-using System.Collections.Generic;
 
 namespace S2VX.Game.Editor {
     public class S2VXEditor : CompositeDrawable {
@@ -51,12 +45,12 @@ namespace S2VX.Game.Editor {
                     RelativeSizeAxes = Axes.X,
                     Items = new[]
                     {
-                        new MenuItem("File")
+                        new MenuItem("Project")
                         {
                             Items = new[]
                             {
-                                new MenuItem("Open... (Ctrl+O)", FileOpen),
-                                new MenuItem("Save... (Ctrl+S)", FileSave)
+                                new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
+                                new MenuItem("Save (Ctrl+S)", ProjectSave)
                             }
                         },
                         new MenuItem("View")
@@ -106,14 +100,14 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
-                case Key.O:
+                case Key.R:
                     if (e.ControlPressed) {
-                        FileOpen();
+                        ProjectRefresh();
                     }
                     break;
                 case Key.S:
                     if (e.ControlPressed) {
-                        FileSave();
+                        ProjectSave();
                     }
                     break;
                 case Key.Number1: {
@@ -145,28 +139,12 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
-        private void FileOpen() {
-            // The dialog runs synchronously so the game time will skip forward
-            // after cancelling. To counteract this, we can always force the
-            // game to pause.
-            Story.Play(false);
-            var dialog = new CommonOpenFileDialog();
-            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
-            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
-                Story.Open(dialog.FileName);
-            }
+        private void ProjectRefresh() {
+            Story.Save(@"../../../story.json");
+            Story.Open(@"../../../story.json");
         }
 
-        private void FileSave() {
-            Story.Play(false);
-            var dialog = new CommonSaveFileDialog();
-            dialog.Filters.Add(new CommonFileDialogFilter("Story files", "json"));
-            dialog.Filters.Add(new CommonFileDialogFilter("All files", "*"));
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
-                Story.Save(dialog.FileName);
-            }
-        }
+        private void ProjectSave() => Story.Save(@"../../../story.json");
 
         private void ViewCommandPanel() {
             if (IsCommandPanelVisible) {

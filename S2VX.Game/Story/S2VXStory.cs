@@ -1,21 +1,12 @@
-using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Input.Events;
-using osu.Framework.Logging;
-using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
-using osuTK.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -105,6 +96,9 @@ namespace S2VX.Game.Story {
         }
 
         public void Open(string path) {
+            Play(false);
+
+            Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
@@ -119,11 +113,12 @@ namespace S2VX.Game.Story {
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
             Approaches.Children = approaches;
 
-            Restart();
-            Play(false);
+            Seek(GameTime);
         }
 
         public void Save(string path) {
+            Play(false);
+
             var obj = new {
                 Commands,
                 Notes = Notes.Children

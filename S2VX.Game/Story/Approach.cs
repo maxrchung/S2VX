@@ -3,7 +3,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
-using System;
 
 namespace S2VX.Game.Story {
     public class Approach : CompositeDrawable {

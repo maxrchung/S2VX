@@ -1,22 +1,14 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osu.Framework.Text;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace S2VX.Game.Editor {
     public class Timeline : CompositeDrawable {
@@ -36,7 +28,7 @@ namespace S2VX.Game.Editor {
             RelativePositionAxes = Axes.None
         };
 
-        private SpriteText Clock { get; set; } = new SpriteText();
+        private SpriteText TxtClock { get; set; } = new SpriteText();
         private SpriteText TxtMousePosition { get; set; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
@@ -49,8 +41,8 @@ namespace S2VX.Game.Editor {
 
         public float TextSize {
             set {
-                Clock.Font = Clock.Font.With(size: value);
-                TxtMousePosition.Font = Clock.Font;
+                TxtClock.Font = TxtClock.Font.With(size: value);
+                TxtMousePosition.Font = TxtClock.Font;
             }
         }
 
@@ -91,7 +83,7 @@ namespace S2VX.Game.Editor {
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                Clock = new SpriteText
+                TxtClock = new SpriteText
                 {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
@@ -159,10 +151,10 @@ namespace S2VX.Game.Editor {
             Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
             if (DisplayMS) {
-                Clock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString();
+                TxtClock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString();
             } else {
                 var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Story.Track.Length));
-                Clock.Text = time.ToString(@"mm\:ss\:fff");
+                TxtClock.Text = time.ToString(@"mm\:ss\:fff");
             }
 
             TextSize = Story.DrawWidth / 40;
