@@ -96,6 +96,7 @@ namespace S2VX.Game.Story {
         public void Open(string path) {
             Play(false);
 
+            Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
             var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());

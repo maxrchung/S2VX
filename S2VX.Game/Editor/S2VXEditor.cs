@@ -138,7 +138,10 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
-        private void ProjectRefresh() => Story.Open(@"../../../story.json");
+        private void ProjectRefresh() {
+            Story.Save(@"../../../story.json");
+            Story.Open(@"../../../story.json");
+        }
 
         private void ProjectSave() => Story.Save(@"../../../story.json");
 
