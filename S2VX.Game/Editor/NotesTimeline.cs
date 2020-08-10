@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -9,17 +8,12 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
-using SixLabors.ImageSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
-        private List<RelativeBox> Ticks { get; set; } = new List<RelativeBox>();
         private Container TickBar { get; set; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
