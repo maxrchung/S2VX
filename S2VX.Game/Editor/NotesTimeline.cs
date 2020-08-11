@@ -24,8 +24,8 @@ namespace S2VX.Game.Editor {
             Y = 0.3f,
         };
 
-        public int[] ValidBeatDivisors { get; } = { 1, 2, 3, 4, 6, 8, 12, 16 };
-        public static readonly Color4[][] TickColoring = new Color4[][]
+        private static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
+        private static readonly Color4[][] TickColoring = new Color4[][]
         {
             new Color4[] { Color4.White },
             new Color4[] { Color4.White, Color4.Red },
@@ -42,8 +42,8 @@ namespace S2VX.Game.Editor {
 
         private float SectionLength { get; set; } = 2;
 
-        private int DivisorIndex = 3;
-        private int Divisor = 4;
+        private int DivisorIndex { get; set; } = 3;
+        private int Divisor { get; set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
             Text = "Beat Snap Divisor",
@@ -71,6 +71,7 @@ namespace S2VX.Game.Editor {
         private void HandleZoom(float delta) => SectionLength = Math.Clamp(SectionLength + delta, 0.5f, 10f);
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
@@ -213,8 +214,8 @@ namespace S2VX.Game.Editor {
             });
 
             var totalSeconds = Story.Track.Length / 1000;
-            var BPS = Story.BPM / 60f;
-            var numTicks = BPS * totalSeconds;
+            var bps = Story.BPM / 60f;
+            var numTicks = bps * totalSeconds;
             var tickSpacing = 1 / numTicks * (totalSeconds / SectionLength);
             var timeBetweenTicks = Story.Track.Length / numTicks;
             var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;

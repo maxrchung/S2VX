@@ -35,10 +35,10 @@ namespace S2VX.Game.Story {
                 (float)Math.Round(position.X),
                 (float)Math.Round(position.Y)
             );
-            var offset = Utils.Rotate(closest - position, rotation) * scale;
+            var offset = S2VXUtils.Rotate(closest - position, rotation) * scale;
 
-            var rotationX = Utils.Rotate(new Vector2(1, 0), rotation);
-            var rotationY = Utils.Rotate(new Vector2(0, 1), rotation);
+            var rotationX = S2VXUtils.Rotate(new Vector2(1, 0), rotation);
+            var rotationY = S2VXUtils.Rotate(new Vector2(0, 1), rotation);
 
             var grid = new List<Drawable>();
 

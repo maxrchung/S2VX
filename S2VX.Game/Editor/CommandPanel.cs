@@ -102,6 +102,7 @@ namespace S2VX.Game.Editor {
         private void HandleTypeSelect(ValueChangedEvent<string> e) => LoadCommandsList();
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             Anchor = Anchor.TopRight;
             Origin = Anchor.TopRight;
@@ -110,7 +111,7 @@ namespace S2VX.Game.Editor {
             var allCommands = new List<string> {
                 "All Commands"
             };
-            allCommands.AddRange(Enum.GetNames(typeof(Commands)));
+            allCommands.AddRange(Enum.GetNames(typeof(CommandType)));
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
 

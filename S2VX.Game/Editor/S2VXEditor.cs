@@ -17,7 +17,7 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; set; } = new S2VXStory();
 
         private CommandPanel CommandPanel { get; } = new CommandPanel();
-        private bool IsCommandPanelVisible { get; set; } = false;
+        private bool IsCommandPanelVisible { get; set; }
 
         private Timeline Timeline { get; } = new Timeline();
 
@@ -29,6 +29,7 @@ namespace S2VX.Game.Editor {
         };
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
@@ -91,13 +92,14 @@ namespace S2VX.Game.Editor {
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - Story.DrawSize / 2) / Story.DrawWidth;
             var camera = Story.Camera;
-            var rotatedPosition = Utils.Rotate(relativePosition, -camera.Rotation);
+            var rotatedPosition = S2VXUtils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
             MousePosition = translatedPosition;
             return true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.R:
@@ -113,16 +115,12 @@ namespace S2VX.Game.Editor {
                 case Key.Number1: {
                     if (e.ControlPressed) {
                         ViewCommandPanel();
-                        break;
+                    } else {
+                        ToolSelect();
                     }
-                    ToolSelect();
                     break;
                 }
                 case Key.Number2: {
-                    if (e.ControlPressed) {
-                        ViewCommandPanel();
-                        break;
-                    }
                     ToolNote();
                     break;
                 }
@@ -134,6 +132,8 @@ namespace S2VX.Game.Editor {
                     break;
                 case Key.T:
                     PlaybackDisplay();
+                    break;
+                default:
                     break;
             }
             return true;

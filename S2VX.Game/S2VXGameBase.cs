@@ -12,9 +12,17 @@ namespace S2VX.Game {
 
         protected override Container<Drawable> Content { get; }
 
+        private DllResourceStore ResourceStore { get; set; }
+
         protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
 
         [BackgroundDependencyLoader]
-        private void Load() => Resources.AddStore(new DllResourceStore(typeof(S2VXResources).Assembly));
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(typeof(S2VXResources).Assembly));
+
+        protected override void Dispose(bool isDisposing) {
+            ResourceStore.Dispose();
+            base.Dispose(isDisposing);
+        }
     }
 }

@@ -14,28 +14,29 @@ namespace S2VX.Game.Story {
     // Per Microsoft docs, class names should not conflict with their namespace,
     // so I've prepended S2VX to fix these problems
     public class S2VXStory : CompositeDrawable {
-        public double GameTime { get; private set; } = 0;
-        public bool IsPlaying { get; private set; } = false;
-        public double BPM { get; set; } = 0;
-        public double Offset { get; set; } = 0;
+        public double GameTime { get; private set; }
+        public bool IsPlaying { get; private set; }
+        public double BPM { get; set; }
+        public double Offset { get; set; }
 
         public Camera Camera { get; } = new Camera();
-        public RelativeBox Background = new RelativeBox {
+        public RelativeBox Background { get; } = new RelativeBox {
             Colour = Color4.Black,
         };
         public Grid Grid { get; } = new Grid();
         public Notes Notes { get; } = new Notes();
         public Approaches Approaches { get; } = new Approaches();
 
-        public DrawableTrack Track { get; private set; } = null;
+        public DrawableTrack Track { get; private set; }
 
         public List<Command> Commands { get; private set; } = new List<Command>();
-        private int NextActive { get; set; } = 0;
+        private int NextActive { get; set; }
         private HashSet<Command> Actives { get; set; } = new HashSet<Command>();
 
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load(AudioManager audioManager) {
             Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Track.VolumeTo(0.05f);
@@ -101,17 +102,17 @@ namespace S2VX.Game.Story {
             Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
-            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story["Commands"].ToString());
+            var serializedCommands = JsonConvert.DeserializeObject<List<JObject>>(story[nameof(Commands)].ToString());
             foreach (var serializedCommand in serializedCommands) {
                 var command = Command.FromJson(serializedCommand);
                 Commands.Add(command);
             }
             Commands.Sort();
 
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story["Notes"].ToString());
-            Notes.Children = notes;
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story["Notes"].ToString());
-            Approaches.Children = approaches;
+            var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
+            Notes.SetChildren(notes);
+            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
+            Approaches.SetChildren(approaches);
 
             Seek(GameTime);
         }
@@ -119,10 +120,7 @@ namespace S2VX.Game.Story {
         public void Save(string path) {
             Play(false);
 
-            var obj = new {
-                Commands,
-                Notes = Notes.Children
-            };
+            var obj = (Commands, Notes: Notes.Children);
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
         }

@@ -2,9 +2,10 @@
 using osuTK;
 using osuTK.Graphics;
 using System;
+using System.Globalization;
 
 namespace S2VX.Game {
-    public class Utils {
+    public static class S2VXUtils {
         // https://en.wikipedia.org/wiki/Rotation_matrix
         public static Vector2 Rotate(Vector2 v, float degrees) {
             var x = v.X;
@@ -23,21 +24,26 @@ namespace S2VX.Game {
                 return $"({data.X},{data.Y})";
             } else {
                 var formatString = "{0:0." + new string('#', precision) + "}";
-                var x = string.Format(formatString, data.X);
-                var y = string.Format(formatString, data.Y);
+                var x = string.Format(CultureInfo.InvariantCulture, formatString, data.X);
+                var y = string.Format(CultureInfo.InvariantCulture, formatString, data.Y);
                 return $"({x},{y})";
             }
         }
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
         public static Vector2 Vector2FromString(string data) {
-            var split = data.Replace("(", "").Replace(")", "").Split(',');
-            return new Vector2(float.Parse(split[0]), float.Parse(split[1]));
+            var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
+            return new Vector2(float.Parse(split[0], CultureInfo.InvariantCulture), float.Parse(split[1], CultureInfo.InvariantCulture));
         }
 
         public static Color4 Color4FromString(string data) {
-            var split = data.Replace("(", "").Replace(")", "").Split(',');
-            return new Color4(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]), 1);
+            var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
+            return new Color4(
+                float.Parse(split[0], CultureInfo.InvariantCulture),
+                float.Parse(split[1], CultureInfo.InvariantCulture),
+                float.Parse(split[2], CultureInfo.InvariantCulture),
+                1
+            );
         }
     }
 }
