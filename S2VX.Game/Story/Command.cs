@@ -24,6 +24,7 @@ namespace S2VX.Game.Story {
         NotesFadeInTime,
         NotesFadeOutTime,
         NotesShowTime,
+        TimingChange,
     }
 
     public abstract class Command : IComparable<Command> {
@@ -85,6 +86,9 @@ namespace S2VX.Game.Story {
                 case CommandType.ApproachesThickness:
                     command = ApproachesThicknessCommand.FromString(split);
                     break;
+                case CommandType.TimingChange:
+                    command = TimingChangeCommand.FromString(split);
+                    break;
                 case CommandType.None:
                     break;
                 default:
@@ -143,6 +147,9 @@ namespace S2VX.Game.Story {
                     break;
                 case CommandType.ApproachesThickness:
                     command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data);
+                    break;
+                case CommandType.TimingChange:
+                    command = JsonConvert.DeserializeObject<TimingChangeCommand>(data);
                     break;
                 case CommandType.None:
                     break;
@@ -417,6 +424,25 @@ namespace S2VX.Game.Story {
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static ApproachesThicknessCommand FromString(string[] split) {
             var command = new ApproachesThicknessCommand() {
+                StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
+                EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
+            };
+            return command;
+        }
+    }
+
+    public class TimingChangeCommand : Command {
+        public override CommandType Type { get; set; } = CommandType.TimingChange;
+        public float StartValue { get; set; }
+        public float EndValue { get; set; }
+        public override void Apply(double time, S2VXStory story) {
+            var bpm = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            story.BPM = bpm;
+            story.Offset = StartTime;
+        }
+        protected override string ToValues() => $"{StartValue}|{EndValue}";
+        public static TimingChangeCommand FromString(string[] split) {
+            var command = new TimingChangeCommand() {
                 StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
                 EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
             };

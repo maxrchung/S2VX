@@ -16,6 +16,8 @@ namespace S2VX.Game.Story {
     public class S2VXStory : CompositeDrawable {
         public double GameTime { get; private set; }
         public bool IsPlaying { get; private set; }
+        public double BPM { get; set; }
+        public double Offset { get; set; }
 
         public Camera Camera { get; } = new Camera();
         public RelativeBox Background { get; } = new RelativeBox {
