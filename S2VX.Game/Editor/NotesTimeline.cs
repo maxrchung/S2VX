@@ -14,7 +14,7 @@ namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
-        private Container TickBar { get; set; } = new Container {
+        private Container TickBar { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
             Width = TimelineWidth / 1.25f,
@@ -24,33 +24,33 @@ namespace S2VX.Game.Editor {
             Y = 0.3f,
         };
 
-        public static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
+        public int[] ValidBeatDivisors { get; } = { 1, 2, 3, 4, 6, 8, 12, 16 };
         public static readonly Color4[][] TickColoring = new Color4[][]
         {
-            new Color4[] { Color4.White},
-            new Color4[] { Color4.White, Color4.Red},
-            new Color4[] { Color4.White, Color4.Pink, Color4.Pink},
-            new Color4[] { Color4.White, Color4.Blue, Color4.Red, Color4.Blue},
-            new Color4[] { Color4.White, Color4.Orange, Color4.Pink, Color4.Red, Color4.Pink, Color4.Orange},
-            new Color4[] { Color4.White, Color4.Yellow, Color4.Blue, Color4.Yellow, Color4.Red, Color4.Yellow, Color4.Blue, Color4.Yellow},
-            new Color4[] { Color4.White, Color4.Brown, Color4.Orange, Color4.Blue, Color4.Pink, Color4.Brown, Color4.Red, Color4.Brown, Color4.Pink, Color4.Blue, Color4.Orange, Color4.Brown},
-            new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown},
+            new Color4[] { Color4.White },
+            new Color4[] { Color4.White, Color4.Red },
+            new Color4[] { Color4.White, Color4.Pink, Color4.Pink },
+            new Color4[] { Color4.White, Color4.Blue, Color4.Red, Color4.Blue },
+            new Color4[] { Color4.White, Color4.Orange, Color4.Pink, Color4.Red, Color4.Pink, Color4.Orange },
+            new Color4[] { Color4.White, Color4.Yellow, Color4.Blue, Color4.Yellow, Color4.Red, Color4.Yellow, Color4.Blue, Color4.Yellow },
+            new Color4[] { Color4.White, Color4.Brown, Color4.Orange, Color4.Blue, Color4.Pink, Color4.Brown, Color4.Red, Color4.Brown, Color4.Pink, Color4.Blue, Color4.Orange, Color4.Brown },
+            new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown },
         };
 
         private const float TimelineHeight = 0.075f;
         private const float TimelineWidth = 1.0f;
 
-        private float SectionLength = 2;
+        private float SectionLength { get; set; } = 2;
 
         private int DivisorIndex = 3;
         private int Divisor = 4;
 
-        private SpriteText TxtBeatSnapDivisorLabel { get; set; } = new SpriteText {
+        private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
             Text = "Beat Snap Divisor",
             Font = new FontUsage("default", 23, "500"),
         };
 
-        private SpriteText TxtBeatSnapDivisor { get; set; } = new SpriteText {
+        private SpriteText TxtBeatSnapDivisor { get; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 23, "500"),

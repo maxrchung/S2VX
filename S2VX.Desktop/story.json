@@ -37,6 +37,13 @@
       "StartValue": 45,
       "EndValue": -45,
       "Easing": 15
+    },
+    {
+      "Type": "TimingChange",
+      "StartTime": 0,
+      "EndTime": 368002,
+      "StartValue": 242,
+      "EndValue": 242
     }
   ],
   "Notes": [

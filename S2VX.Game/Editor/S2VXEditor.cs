@@ -38,6 +38,7 @@ namespace S2VX.Game.Editor {
             {
                 Story,
                 ToolContainer,
+                new NotesTimeline(),
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -80,7 +81,6 @@ namespace S2VX.Game.Editor {
                     }
                 },
                 Timeline,
-                new NotesTimeline(),
                 CommandPanel,
             };
         }
