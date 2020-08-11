@@ -9,6 +9,7 @@ using osuTK.Graphics;
 using S2VX.Game.Story;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Globalization;
 
 namespace S2VX.Game.Editor {
     public class Timeline : CompositeDrawable {
@@ -39,18 +40,16 @@ namespace S2VX.Game.Editor {
             Font = new FontUsage("default", 30, "500"),
         };
 
-        public float TextSize {
-            set {
-                TxtClock.Font = TxtClock.Font.With(size: value);
-                TxtMousePosition.Font = TxtClock.Font;
-            }
+        private bool SwitchToPlaying { get; set; }
+
+        private bool DelayDrag { get; set; }
+
+        public bool DisplayMS { get; set; }
+
+        private void SetTextSize(float value) {
+            TxtClock.Font = TxtClock.Font.With(size: value);
+            TxtMousePosition.Font = TxtClock.Font;
         }
-
-        private bool SwitchToPlaying { get; set; } = false;
-
-        private bool DelayDrag { get; set; } = false;
-
-        public bool DisplayMS { get; set; } = false;
 
         private void UpdateSlider(Vector2 mousePosition) {
             var mousePosX = ToLocalSpace(mousePosition).X;
@@ -151,15 +150,15 @@ namespace S2VX.Game.Editor {
             Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
             if (DisplayMS) {
-                TxtClock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString();
+                TxtClock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString(CultureInfo.InvariantCulture);
             } else {
                 var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Story.Track.Length));
-                TxtClock.Text = time.ToString(@"mm\:ss\:fff");
+                TxtClock.Text = time.ToString(@"mm\:ss\:fff", CultureInfo.InvariantCulture);
             }
 
-            TextSize = Story.DrawWidth / 40;
+            SetTextSize(Story.DrawWidth / 40);
 
-            TxtMousePosition.Text = Utils.Vector2ToString(Editor.MousePosition, 2);
+            TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
         }
     }
 }

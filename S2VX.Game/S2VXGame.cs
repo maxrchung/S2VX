@@ -7,6 +7,7 @@ namespace S2VX.Game {
         private readonly S2VXEditor Editor = new S2VXEditor();
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() => Child = Editor;
     }
 }
