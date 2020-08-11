@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story {
     public class Notes : CompositeDrawable {
-        public List<Note> Children { get; set; } = new List<Note>();
+        public List<Note> Children { get; private set; } = new List<Note>();
+        public void SetChildren(List<Note> notes) => Children = notes;
 
         // Notes fade in, show for a period of time, then fade out
         // The note should be hit at the very end of the show time

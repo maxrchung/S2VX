@@ -6,7 +6,7 @@ using osuTK;
 
 namespace S2VX.Game.Story {
     public class Approach : CompositeDrawable {
-        public double EndTime { get; set; } = 0;
+        public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
@@ -50,13 +50,13 @@ namespace S2VX.Game.Story {
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
 
-            var offset = Utils.Rotate(Coordinates - position, rotation) * scale;
+            var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
 
             var distance = time < EndTime
                 ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, EndTime)
                 : scale.X / 2;
-            var rotationX = Utils.Rotate(new Vector2(distance, 0), rotation);
-            var rotationY = Utils.Rotate(new Vector2(0, distance), rotation);
+            var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
+            var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
 
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;

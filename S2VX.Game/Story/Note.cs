@@ -4,7 +4,7 @@ using osuTK;
 
 namespace S2VX.Game.Story {
     public class Note : RelativeBox {
-        public double EndTime { get; set; } = 0;
+        public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
@@ -31,7 +31,7 @@ namespace S2VX.Game.Story {
 
             Rotation = camera.Rotation;
             Size = camera.Scale;
-            Position = Utils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
+            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
 
             var startTime = EndTime - notes.ShowTime;
             if (time >= EndTime) {
