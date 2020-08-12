@@ -19,6 +19,7 @@ namespace S2VX.Game.Editor {
         private CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
 
+        private NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
         private ToolState ToolState { get; set; } = new SelectToolState();
@@ -39,7 +40,7 @@ namespace S2VX.Game.Editor {
             {
                 Story,
                 ToolContainer,
-                new NotesTimeline(),
+                NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -69,6 +70,12 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Play/Pause (Space)", PlaybackPlay),
                                 new MenuItem("Restart (X)", PlaybackRestart),
                                 new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
+                                new MenuItem("Seek Left Tick (<- / MouseWheelUp)", PlaybackSeekLeftTick),
+                                new MenuItem("Seek Right Tick (-> / MouseWheelDown)", PlaybackSeekRightTick),
+                                new MenuItem("Zoom Out Notes Timeline (Ctrl+[)", PlaybackZoomOut),
+                                new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
+                                new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
+                                new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
                             }
                         },
                         new MenuItem("Tool")
@@ -120,6 +127,26 @@ namespace S2VX.Game.Editor {
                     }
                     break;
                 }
+                case Key.BracketLeft: {
+                    if (e.ControlPressed) {
+                        if (e.ShiftPressed) {
+                            PlaybackDecreaseBeatDivisor();
+                        } else {
+                            PlaybackZoomIn();
+                        }
+                    }
+                    break;
+                }
+                case Key.BracketRight: {
+                    if (e.ControlPressed) {
+                        if (e.ShiftPressed) {
+                            PlaybackIncreaseBeatDivisor();
+                        } else {
+                            PlaybackZoomOut();
+                        }
+                    }
+                    break;
+                }
                 case Key.Number2: {
                     ToolNote();
                     break;
@@ -133,8 +160,23 @@ namespace S2VX.Game.Editor {
                 case Key.T:
                     PlaybackDisplay();
                     break;
+                case Key.Left:
+                    NotesTimeline.SnapToTick(true);
+                    break;
+                case Key.Right:
+                    NotesTimeline.SnapToTick(false);
+                    break;
                 default:
                     break;
+            }
+            return true;
+        }
+
+        protected override bool OnScroll(ScrollEvent e) {
+            if (e.ScrollDelta.Y > 0) {
+                NotesTimeline.SnapToTick(true);
+            } else {
+                NotesTimeline.SnapToTick(false);
             }
             return true;
         }
@@ -160,6 +202,18 @@ namespace S2VX.Game.Editor {
         private void PlaybackRestart() => Story.Restart();
 
         private void PlaybackDisplay() => Timeline.DisplayMS = !Timeline.DisplayMS;
+
+        private void PlaybackSeekLeftTick() => NotesTimeline.SnapToTick(true);
+
+        private void PlaybackSeekRightTick() => NotesTimeline.SnapToTick(false);
+
+        private void PlaybackZoomOut() => NotesTimeline.HandleZoom(false);
+
+        private void PlaybackZoomIn() => NotesTimeline.HandleZoom(true);
+
+        private void PlaybackDecreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(false);
+
+        private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
         private void ToolSelect() {
             ToolState = new SelectToolState();

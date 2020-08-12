@@ -66,9 +66,9 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        private void ChangeBeatDivisor(int delta) => DivisorIndex = Math.Clamp(DivisorIndex + delta, 0, 7);
+        public void ChangeBeatDivisor(bool increase) => DivisorIndex = Math.Clamp(DivisorIndex + (increase ? 1 : -1), 0, 7);
 
-        private void HandleZoom(float delta) => SectionLength = Math.Clamp(SectionLength + delta, 0.5f, 10f);
+        public void HandleZoom(bool zoomIn) => SectionLength = Math.Clamp(SectionLength + (zoomIn ? -0.5f : 0.5f), 0.5f, 10f);
 
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -114,7 +114,7 @@ namespace S2VX.Game.Editor {
                                     RelativeSizeAxes = Axes.Both,
                                     RelativePositionAxes = Axes.Both,
                                     Width = 0.25f,
-                                    Action = () => ChangeBeatDivisor(-1),
+                                    Action = () => ChangeBeatDivisor(false),
                                     Text = "-",
                                 },
                                 new Box
@@ -131,7 +131,7 @@ namespace S2VX.Game.Editor {
                                     RelativePositionAxes = Axes.Both,
                                     Width = 0.25f,
                                     X = 0.75f,
-                                    Action = () => ChangeBeatDivisor(1),
+                                    Action = () => ChangeBeatDivisor(true),
                                     Text = "+",
                                 },
                                 TxtBeatSnapDivisor,
@@ -160,7 +160,7 @@ namespace S2VX.Game.Editor {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
                             Height = 0.5f,
-                            Action = () => HandleZoom(-.5f),
+                            Action = () => HandleZoom(false),
                         },
                         new BasicButton
                         {
@@ -171,16 +171,7 @@ namespace S2VX.Game.Editor {
                             Origin = Anchor.TopCentre,
                             Height = 0.5f,
                             Y = 0.5f,
-                            Action = () => HandleZoom(.5f),
-                        },
-                        new SpriteIcon
-                        {
-                            RelativePositionAxes = Axes.Both,
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            Icon = FontAwesome.Solid.SearchPlus,
-                            Size = new Vector2(.5f),
+                            Action = () => HandleZoom(true),
                         },
                         new SpriteIcon
                         {
@@ -190,12 +181,37 @@ namespace S2VX.Game.Editor {
                             Origin = Anchor.TopCentre,
                             Icon = FontAwesome.Solid.SearchMinus,
                             Size = new Vector2(.5f),
+                        },
+                        new SpriteIcon
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Icon = FontAwesome.Solid.SearchPlus,
+                            Size = new Vector2(.5f),
                             Y = 0.5f,
                         },
                     }
                 }
 
             };
+        }
+
+        public void SnapToTick(bool snapLeft) {
+            var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Divisor;
+            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+
+            var tolerance = 0.0000000001;
+            if (snapLeft) {
+                leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
+                Story.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Story.Track.Length));
+            } else {
+                var rightOffset = timeBetweenTicks - leftOffset;
+                rightOffset = rightOffset <= tolerance ? timeBetweenTicks : rightOffset;
+                Story.Seek(Math.Clamp(Story.GameTime + rightOffset, 0, Story.Track.Length));
+            }
         }
 
         protected override void Update() {
@@ -215,9 +231,9 @@ namespace S2VX.Game.Editor {
 
             var totalSeconds = Story.Track.Length / 1000;
             var bps = Story.BPM / 60f;
-            var numTicks = bps * totalSeconds;
-            var tickSpacing = 1 / numTicks * (totalSeconds / SectionLength);
-            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var numBigTicks = bps * totalSeconds;
+            var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
+            var timeBetweenTicks = Story.Track.Length / numBigTicks;
             var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (SectionLength * 1000);
 
