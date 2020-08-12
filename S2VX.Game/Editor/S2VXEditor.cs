@@ -146,6 +146,15 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
+        protected override bool OnScroll(ScrollEvent e) {
+            if (e.ScrollDelta.Y > 0) {
+                NotesTimeline.SnapToTick(true);
+            } else {
+                NotesTimeline.SnapToTick(false);
+            }
+            return true;
+        }
+
         private void ProjectRefresh() {
             Story.Save(@"../../../story.json");
             Story.Open(@"../../../story.json");
