@@ -205,7 +205,7 @@ namespace S2VX.Game.Editor {
 
             var tolerance = 0.0000000001;
             if (snapLeft) {
-                leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset; // 5Head
+                leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
                 Story.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Story.Track.Length));
             } else {
                 var rightOffset = timeBetweenTicks - leftOffset;
