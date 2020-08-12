@@ -198,6 +198,22 @@ namespace S2VX.Game.Editor {
             };
         }
 
+        public void SnapToTick(bool snapLeft) {
+            var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Divisor;
+            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+
+            var tolerance = 0.0000000001;
+            if (snapLeft) {
+                leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset; // 5Head
+                Story.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Story.Track.Length));
+            } else {
+                var rightOffset = timeBetweenTicks - leftOffset;
+                rightOffset = rightOffset <= tolerance ? timeBetweenTicks : rightOffset;
+                Story.Seek(Math.Clamp(Story.GameTime + rightOffset, 0, Story.Track.Length));
+            }
+        }
+
         protected override void Update() {
             TickBar.Clear();
             TickBar.Add(new RelativeBox {
@@ -215,9 +231,9 @@ namespace S2VX.Game.Editor {
 
             var totalSeconds = Story.Track.Length / 1000;
             var bps = Story.BPM / 60f;
-            var numTicks = bps * totalSeconds;
-            var tickSpacing = 1 / numTicks * (totalSeconds / SectionLength);
-            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var numBigTicks = bps * totalSeconds;
+            var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
+            var timeBetweenTicks = Story.Track.Length / numBigTicks;
             var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (SectionLength * 1000);
 

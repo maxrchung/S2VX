@@ -19,6 +19,7 @@ namespace S2VX.Game.Editor {
         private CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
 
+        private NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
         private ToolState ToolState { get; set; } = new SelectToolState();
@@ -39,7 +40,7 @@ namespace S2VX.Game.Editor {
             {
                 Story,
                 ToolContainer,
-                new NotesTimeline(),
+                NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -132,6 +133,12 @@ namespace S2VX.Game.Editor {
                     break;
                 case Key.T:
                     PlaybackDisplay();
+                    break;
+                case Key.Left:
+                    NotesTimeline.SnapToTick(true);
+                    break;
+                case Key.Right:
+                    NotesTimeline.SnapToTick(false);
                     break;
                 default:
                     break;
