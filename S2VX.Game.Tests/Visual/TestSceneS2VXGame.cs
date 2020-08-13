@@ -10,6 +10,7 @@ namespace S2VX.Game.Tests.Visual {
         private S2VXGame Game;
 
         [BackgroundDependencyLoader]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load(GameHost host) {
             Game = new S2VXGame();
             Game.SetHost(host);

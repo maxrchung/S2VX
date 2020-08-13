@@ -9,6 +9,7 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
 using System;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
@@ -214,7 +215,26 @@ namespace S2VX.Game.Editor {
             }
         }
 
+        private void AddVisibleNotes() {
+            var lowerBound = Story.GameTime - SectionLength * 1000 / 2;
+            var upperBound = Story.GameTime + SectionLength * 1000 / 2;
+            foreach (var note in Story.Notes.Children) {
+                if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
+                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * 1000);
+                    TickBar.Add(new RelativeBox {
+                        Colour = Color4.White.Opacity(0.727f),
+                        Width = TimelineWidth / 17.5f,
+                        Height = 0.6f,
+                        X = (float)relativePosition,
+                        Y = 0.2f,
+                        Anchor = Anchor.TopLeft,
+                    });
+                }
+            }
+        }
+
         protected override void Update() {
+            Console.WriteLine(Story.Notes.Children);
             TickBar.Clear();
             TickBar.Add(new RelativeBox {
                 Colour = Color4.White,
@@ -271,6 +291,8 @@ namespace S2VX.Game.Editor {
 
             TextSize = Story.DrawWidth / 60;
             TxtBeatSnapDivisor.Text = $"1/{Divisor}";
+
+            AddVisibleNotes();
         }
     }
 }
