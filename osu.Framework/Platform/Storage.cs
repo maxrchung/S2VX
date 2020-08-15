@@ -1,0 +1,133 @@
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace osu.Framework.Platform
+{
+    public abstract class Storage
+    {
+        protected string BasePath { get; }
+
+        protected Storage(string path, string subfolder = null)
+        {
+            static string filenameStrip(string entry)
+            {
+                foreach (char c in Path.GetInvalidFileNameChars())
+                    entry = entry.Replace(c.ToString(), string.Empty);
+                return entry;
+            }
+
+            BasePath = path;
+
+            if (BasePath == null)
+                throw new InvalidOperationException($"{nameof(BasePath)} not correctly initialized!");
+
+            if (!string.IsNullOrEmpty(subfolder))
+                BasePath = Path.Combine(BasePath, filenameStrip(subfolder));
+        }
+
+        /// <summary>
+        /// Get a usable filesystem path for the provided incomplete path.
+        /// </summary>
+        /// <param name="path">An incomplete path, usually provided as user input.</param>
+        /// <param name="createIfNotExisting">Create the path if it doesn't already exist.</param>
+        /// <returns>A usable filesystem path.</returns>
+        public abstract string GetFullPath(string path, bool createIfNotExisting = false);
+
+        /// <summary>
+        /// Check whether a file exists at the specified path.
+        /// </summary>
+        /// <param name="path">The path to check.</param>
+        /// <returns>Whether a file exists.</returns>
+        public abstract bool Exists(string path);
+
+        /// <summary>
+        /// Check whether a directory exists at the specified path.
+        /// </summary>
+        /// <param name="path">The path to check.</param>
+        /// <returns>Whether a directory exists.</returns>
+        public abstract bool ExistsDirectory(string path);
+
+        /// <summary>
+        /// Delete a directory and all its contents recursively.
+        /// </summary>
+        /// <param name="path">The path of the directory to delete.</param>
+        public abstract void DeleteDirectory(string path);
+
+        /// <summary>
+        /// Delete a file.
+        /// </summary>
+        /// <param name="path">The path of the file to delete.</param>
+        public abstract void Delete(string path);
+
+        /// <summary>
+        /// Retrieve a list of directories at the specified path.
+        /// </summary>
+        /// <param name="path">The path to list.</param>
+        /// <returns>A list of directories in the path, relative to the path of this storage.</returns>
+        public abstract IEnumerable<string> GetDirectories(string path);
+
+        /// <summary>
+        /// Retrieve a list of files at the specified path.
+        /// </summary>
+        /// <param name="path">The path to list.</param>
+        /// <param name="pattern">An optional search pattern. Accepts "*" wildcard.</param>
+        /// <returns>A list of files in the path, relative to the path of this storage.</returns>
+        public abstract IEnumerable<string> GetFiles(string path, string pattern = "*");
+
+        /// <summary>
+        /// Retrieve a <see cref="Storage"/> for a contained directory.
+        /// Creates the path if not existing.
+        /// </summary>
+        /// <param name="path">The subdirectory to use as a root.</param>
+        /// <returns>A more specific storage.</returns>
+        public virtual Storage GetStorageForDirectory(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("Must be non-null and not empty string", nameof(path));
+
+            if (!path.EndsWith(Path.DirectorySeparatorChar))
+                path += Path.DirectorySeparatorChar;
+
+            // create non-existing path.
+            var fullPath = GetFullPath(path, true);
+
+            return (Storage)Activator.CreateInstance(GetType(), fullPath);
+        }
+
+        /// <summary>
+        /// Retrieve a stream from an underlying file inside this storage.
+        /// </summary>
+        /// <param name="path">The path of the file.</param>
+        /// <param name="access">The access requirements.</param>
+        /// <param name="mode">The mode in which the file should be opened.</param>
+        /// <returns>A stream associated with the requested path.</returns>
+        public abstract Stream GetStream(string path, FileAccess access = FileAccess.Read, FileMode mode = FileMode.OpenOrCreate);
+
+        /// <summary>
+        /// Retrieve an SQLite database connection string from within this storage.
+        /// </summary>
+        /// <param name="name">The name of the database.</param>
+        /// <returns>An SQLite connection string.</returns>
+        public abstract string GetDatabaseConnectionString(string name);
+
+        /// <summary>
+        /// Delete an SQLite database from within this storage.
+        /// </summary>
+        /// <param name="name">The name of the database to delete.</param>
+        public abstract void DeleteDatabase(string name);
+
+        /// <summary>
+        /// Opens a native file browser window to the root path of this storage.
+        /// </summary>
+        public void OpenInNativeExplorer() => OpenPathInNativeExplorer(string.Empty);
+
+        /// <summary>
+        /// Opens a native file browser window to the specified relative path.
+        /// </summary>
+        public abstract void OpenPathInNativeExplorer(string path);
+    }
+}
