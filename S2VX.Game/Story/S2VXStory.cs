@@ -122,7 +122,10 @@ namespace S2VX.Game.Story {
         public void Save(string path) {
             Play(false);
 
-            var obj = (Commands, Notes: Notes.Children);
+            var obj = new {
+                Commands,
+                Notes = Notes.Children
+            };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
         }
