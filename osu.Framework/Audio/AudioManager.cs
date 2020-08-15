@@ -114,7 +114,7 @@ namespace osu.Framework.Audio
 
             thread.RegisterManager(this);
 
-            // Fixes BASS already initialized error
+            // Addresses BASS already error caused by a race condition setting the audio device
             //AudioDevice.ValueChanged += onDeviceChanged;
 
             globalTrackStore = new Lazy<TrackStore>(() =>
