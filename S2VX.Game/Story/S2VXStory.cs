@@ -33,12 +33,14 @@ namespace S2VX.Game.Story {
         private int NextActive { get; set; }
         private HashSet<Command> Actives { get; set; } = new HashSet<Command>();
 
+        [Resolved]
+        private AudioManager Audio { get; set; }
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        private void Load(AudioManager audioManager) {
-            Track = new DrawableTrack(audioManager.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+        private void Load() {
+            Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Track.VolumeTo(0.05f);
 
             Open(@"../../../story.json");
