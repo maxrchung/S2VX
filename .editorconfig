@@ -218,3 +218,7 @@ dotnet_naming_style.camel_case.capitalization = camel_case
 
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = suggestion
+
+# Ran into bug during serialization where an anonymous object was necessary over tuple
+# IDE0050: Convert to tuple
+dotnet_diagnostic.IDE0050.severity = none
