@@ -19,7 +19,7 @@ namespace S2VX.Game.Editor {
         private CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
 
-        private NotesTimeline NotesTimeline { get; } = new NotesTimeline();
+        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
         private ToolState ToolState { get; set; } = new SelectToolState();

@@ -15,7 +15,9 @@ namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
-        private Container TickBar { get; } = new Container {
+        public Dictionary<double, RelativeBox> TimeToVisibleNotes { get; } = new Dictionary<double, RelativeBox>();
+
+        public Container TickBar { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
             Width = TimelineWidth / 1.25f,
@@ -23,6 +25,22 @@ namespace S2VX.Game.Editor {
             Origin = Anchor.Centre,
             X = -0.05f,
             Y = 0.3f,
+
+            Children = new Drawable[] {
+                new RelativeBox {
+                    Name = "TickBar",
+                    Colour = Color4.White,
+                    Height = TimelineHeight / 3.5f,
+                },
+                new RelativeBox {
+                    Name = "MiddleTick",
+                    Colour = Color4.White,
+                    Width = TimelineWidth / 350,
+                    Height = 0.8f,
+                    Anchor = Anchor.TopCentre,
+                    Y = 0.1f,
+                },
+            }
         };
 
         private static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
@@ -39,9 +57,9 @@ namespace S2VX.Game.Editor {
         };
 
         private const float TimelineHeight = 0.075f;
-        private const float TimelineWidth = 1.0f;
+        public const float TimelineWidth = 1.0f;
 
-        private float SectionLength { get; set; } = 2;
+        public float SectionLength { get; set; } = 2;
 
         private int DivisorIndex { get; set; } = 3;
         private int Divisor { get; set; } = 4;
@@ -221,33 +239,24 @@ namespace S2VX.Game.Editor {
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * 1000);
-                    TickBar.Add(new RelativeBox {
+                    var visibleNote = new RelativeBox {
+                        Name = "NoteBox",
                         Colour = Color4.White.Opacity(0.727f),
                         Width = TimelineWidth / 17.5f,
                         Height = 0.6f,
                         X = (float)relativePosition,
                         Y = 0.2f,
                         Anchor = Anchor.TopLeft,
-                    });
+                    };
+                    TimeToVisibleNotes[note.EndTime] = visibleNote;
+                    TickBar.Add(visibleNote);
                 }
             }
         }
 
         protected override void Update() {
-            Console.WriteLine(Story.Notes.Children);
-            TickBar.Clear();
-            TickBar.Add(new RelativeBox {
-                Colour = Color4.White,
-                Height = TimelineHeight / 3.5f,
-            });
-
-            TickBar.Add(new RelativeBox {
-                Colour = Color4.White,
-                Width = TimelineWidth / 350,
-                Height = 0.8f,
-                Anchor = Anchor.TopCentre,
-                Y = 0.1f,
-            });
+            TimeToVisibleNotes.Clear();
+            TickBar.RemoveAll(item => item.Name == "Tick" || item.Name == "NoteBox");
 
             var totalSeconds = Story.Track.Length / 1000;
             var bps = Story.BPM / 60f;
@@ -275,6 +284,7 @@ namespace S2VX.Game.Editor {
                         }
 
                         TickBar.Add(new RelativeBox {
+                            Name = "Tick",
                             Colour = TickColoring[DivisorIndex][beat],
                             Width = width,
                             Height = height,
