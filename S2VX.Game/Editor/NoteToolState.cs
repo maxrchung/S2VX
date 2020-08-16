@@ -31,5 +31,7 @@ namespace S2VX.Game.Editor {
             Preview.EndTime = Story.GameTime;
             Preview.Coordinates = Editor.MousePosition;
         }
+
+        public override string DisplayName() => "Note";
     }
 }
