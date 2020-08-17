@@ -22,7 +22,8 @@ namespace S2VX.Game.Editor {
         private NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
-        private ToolState ToolState { get; set; } = new SelectToolState();
+        public ToolState ToolState { get; private set; } = new SelectToolState();
+        public void SetToolState(ToolState value) => ToolState = value;
 
         private Container ToolContainer { get; set; } = new Container {
             RelativeSizeAxes = Axes.Both,
@@ -90,6 +91,7 @@ namespace S2VX.Game.Editor {
                 },
                 Timeline,
                 CommandPanel,
+                new ToolDisplay()
             };
         }
 
