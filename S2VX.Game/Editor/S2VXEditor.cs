@@ -24,6 +24,16 @@ namespace S2VX.Game.Editor {
 
         private ToolState ToolState { get; set; } = new SelectToolState();
 
+        public Container NoteSelectionIndicators { get; } = new Container {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
+        };
+
+        private void SetToolState(ToolState newState) {
+            ToolState.HandleExit();
+            ToolState = newState;
+        }
+
         private Container ToolContainer { get; set; } = new Container {
             RelativeSizeAxes = Axes.Both,
             Size = Vector2.One
@@ -40,6 +50,7 @@ namespace S2VX.Game.Editor {
             {
                 Story,
                 ToolContainer,
+                NoteSelectionIndicators,
                 NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
@@ -216,12 +227,12 @@ namespace S2VX.Game.Editor {
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
         private void ToolSelect() {
-            ToolState = new SelectToolState();
+            SetToolState(new SelectToolState());
             ToolContainer.Child = ToolState;
         }
 
         private void ToolNote() {
-            ToolState = new NoteToolState();
+            SetToolState(new NoteToolState());
             ToolContainer.Child = ToolState;
         }
     }

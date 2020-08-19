@@ -15,7 +15,7 @@ namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
-        public Dictionary<double, RelativeBox> TimeToVisibleNotes { get; } = new Dictionary<double, RelativeBox>();
+        public Dictionary<Note, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<Note, RelativeBox>();
 
         public Container TickBar { get; } = new Container {
             RelativePositionAxes = Axes.Both,
@@ -248,14 +248,14 @@ namespace S2VX.Game.Editor {
                         Y = 0.2f,
                         Anchor = Anchor.TopLeft,
                     };
-                    TimeToVisibleNotes[note.EndTime] = visibleNote;
+                    NoteToTimelineNote[note] = visibleNote;
                     TickBar.Add(visibleNote);
                 }
             }
         }
 
         protected override void Update() {
-            TimeToVisibleNotes.Clear();
+            NoteToTimelineNote.Clear();
             TickBar.RemoveAll(item => item.Name == "Tick" || item.Name == "NoteBox");
 
             var totalSeconds = Story.Track.Length / 1000;
