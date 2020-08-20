@@ -40,6 +40,8 @@ namespace osu.Game.Rulesets.S2VX {
         {
             new KeyBinding(InputKey.Z, S2VXAction.Button1),
             new KeyBinding(InputKey.X, S2VXAction.Button2),
+            new KeyBinding(InputKey.C, S2VXAction.Button3),
+            new KeyBinding(InputKey.V, S2VXAction.Button4),
         };
 
         public override Drawable CreateIcon() => new S2VXIcon();
