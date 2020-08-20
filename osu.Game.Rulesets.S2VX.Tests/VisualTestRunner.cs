@@ -10,7 +10,8 @@ namespace osu.Game.Rulesets.S2VX.Tests {
         [STAThread]
         public static int Main(string[] _) {
             using var host = Host.GetSuitableHost(@"osu", true);
-            host.Run(new OsuTestBrowser());
+            using var browser = new OsuTestBrowser();
+            host.Run(browser);
             return 0;
         }
     }

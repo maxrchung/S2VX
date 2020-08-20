@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.S2VX.Replays {
     public class S2VXAutoGenerator : AutoGenerator {
-        protected Replay Replay;
+        protected Replay Replay { get; set; }
         protected List<ReplayFrame> Frames => Replay.Frames;
 
         public new Beatmap<S2VXHitObject> Beatmap => (Beatmap<S2VXHitObject>)base.Beatmap;

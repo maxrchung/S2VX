@@ -2,20 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
 using osu.Game.Beatmaps;
-using osu.Game.Graphics;
 using osu.Game.Rulesets.Difficulty;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.S2VX.Beatmaps;
 using osu.Game.Rulesets.S2VX.Mods;
 using osu.Game.Rulesets.S2VX.UI;
 using osu.Game.Rulesets.UI;
-using osuTK;
-using osuTK.Graphics;
 using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.S2VX {
