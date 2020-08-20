@@ -86,7 +86,7 @@ csharp_style_expression_bodied_properties = true:error
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true:error
 csharp_style_pattern_matching_over_is_with_cast_check = true:error
-csharp_style_prefer_switch_expression = true:error
+csharp_style_prefer_switch_expression = true:suggestion
 
 # Null-checking preferences
 csharp_style_conditional_delegate_call = true:error
@@ -215,10 +215,25 @@ dotnet_naming_style.camel_case.required_suffix =
 dotnet_naming_style.camel_case.word_separator = 
 dotnet_naming_style.camel_case.capitalization = camel_case
 
-
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = suggestion
 
 # Ran into bug during serialization where an anonymous object was necessary over tuple
 # IDE0050: Convert to tuple
 dotnet_diagnostic.IDE0050.severity = none
+
+# osu! relies on a Load function with BackgroundDepencyLoader that will trigger this error
+# IDE0051: Remove unused private members
+dotnet_diagnostic.IDE0051.severity = suggestion
+
+# IDE0010: Add missing cases
+dotnet_diagnostic.IDE0010.severity = suggestion
+
+# I'd like for all things besides private/parameters to be in PascalCase, however, 
+# Framework namespaces use lowercase osu
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = suggestion
+
+# I'd like to keep this in... but in too many scenarios this doesn't work out that great
+# IDE0072: Add missing cases
+dotnet_diagnostic.IDE0072.severity = suggestion
