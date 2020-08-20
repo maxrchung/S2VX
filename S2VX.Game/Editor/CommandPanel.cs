@@ -102,7 +102,6 @@ namespace S2VX.Game.Editor {
         private void HandleTypeSelect(ValueChangedEvent<string> e) => LoadCommandsList();
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             Anchor = Anchor.TopRight;
             Origin = Anchor.TopRight;

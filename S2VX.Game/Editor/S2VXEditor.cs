@@ -31,7 +31,6 @@ namespace S2VX.Game.Editor {
         };
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
@@ -108,7 +107,6 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.R:

@@ -69,7 +69,6 @@ namespace S2VX.Game.Editor {
         private const float TimelineWidth = 1.0f;
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             Height = TimelineHeight;
