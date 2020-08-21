@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Shapes;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Scoring;
 using osuTK;
@@ -9,14 +10,21 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.S2VX.Objects.Drawables {
     public class DrawableS2VXHitObject : DrawableHitObject<S2VXHitObject> {
+        private readonly Box box;
         public DrawableS2VXHitObject(S2VXHitObject hitObject)
             : base(hitObject) {
             Size = new Vector2(40);
             Origin = Anchor.Centre;
 
             Position = hitObject.Position;
+            AlwaysPresent = true;
 
-            // todo: add visuals.
+            AddInternal(box = new Box {
+                RelativeSizeAxes = Axes.Both,
+                Origin = Anchor.Centre,
+                Anchor = Anchor.Centre,
+                Colour = Color4.Red,
+            });
         }
 
         protected override void CheckForResult(bool userTriggered, double timeOffset) {

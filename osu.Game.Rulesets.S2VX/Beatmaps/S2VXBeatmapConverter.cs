@@ -7,6 +7,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.S2VX.Objects;
 using osuTK;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace osu.Game.Rulesets.S2VX.Beatmaps {
     public class S2VXBeatmapConverter : BeatmapConverter<S2VXHitObject> {
@@ -14,9 +15,7 @@ namespace osu.Game.Rulesets.S2VX.Beatmaps {
             : base(beatmap, ruleset) {
         }
 
-        // todo: Check for conversion types that should be supported (ie. Beatmap.HitObjects.Any(h => h is IHasXPosition))
-        // https://github.com/ppy/osu/tree/master/osu.Game/Rulesets/Objects/Types
-        public override bool CanConvert() => true;
+        public override bool CanConvert() => Beatmap.HitObjects.All(h => h is IHasPosition);
 
         protected override IEnumerable<S2VXHitObject> ConvertHitObject(HitObject original, IBeatmap beatmap) {
             yield return new S2VXHitObject {
