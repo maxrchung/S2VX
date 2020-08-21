@@ -58,6 +58,8 @@ namespace S2VX.Game.Editor {
 
         private const float TimelineHeight = 0.075f;
         public const float TimelineWidth = 1.0f;
+        public const float TimelineNoteHeight = 0.6f;
+        public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 
         public float SectionLength { get; set; } = 2;
 
@@ -242,8 +244,8 @@ namespace S2VX.Game.Editor {
                     var visibleNote = new RelativeBox {
                         Name = "NoteBox",
                         Colour = Color4.White.Opacity(0.727f),
-                        Width = TimelineWidth / 17.5f,
-                        Height = 0.6f,
+                        Width = TimelineNoteWidth,
+                        Height = TimelineNoteHeight,
                         X = (float)relativePosition,
                         Y = 0.2f,
                         Anchor = Anchor.TopLeft,

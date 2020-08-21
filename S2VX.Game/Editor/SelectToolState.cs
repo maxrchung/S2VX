@@ -5,6 +5,7 @@ using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 using osu.Framework.Graphics;
+using osu.Framework.Extensions.Color4Extensions;
 
 namespace S2VX.Game.Editor {
     public class SelectToolState : ToolState {
@@ -14,7 +15,7 @@ namespace S2VX.Game.Editor {
         private S2VXEditor Editor { get; set; } = null;
         private Dictionary<double, Note> TimeToSelectedNote { get; set; } = new Dictionary<double, Note>();
 
-        private const float SelectionIndicatorThickness = 0.05f;
+        private const float SelectionIndicatorThickness = 0.025f;
 
         public override bool OnToolClick(ClickEvent _) {
             TimeToSelectedNote.Clear();
@@ -31,17 +32,17 @@ namespace S2VX.Game.Editor {
                 var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
                 if (mouseInXRange && mouseInYRange) {
                     TimeToSelectedNote[notes.Key.EndTime] = notes.Key;
-                    Editor.NoteSelectionIndicators.Add(new RelativeBox {
-                        Name = "SelectionIndicator",
-                        Colour = Color4.Red,
+                    var noteSelection = new RelativeBox {
+                        Colour = Color4.LimeGreen.Opacity(0.5f),
                         Width = notes.Key.Size.X + SelectionIndicatorThickness,
                         Height = notes.Key.Size.Y + SelectionIndicatorThickness,
-                        X = notes.Key.Position.X,
-                        Y = notes.Key.Position.Y,
                         RelativePositionAxes = Axes.Both,
                         RelativeSizeAxes = Axes.Both,
                         Rotation = notes.Key.Rotation,
-                    });
+                    };
+                    noteSelection.X = notes.Key.Position.X;
+                    noteSelection.Y = notes.Key.Position.Y;
+                    Editor.NoteSelectionIndicators.Add(noteSelection);
                     //Console.WriteLine(notes.Key.EndTime);
                     Console.WriteLine($"Actual Note Coords: {notes.Key.DrawPosition}");
                     return false;
@@ -50,23 +51,25 @@ namespace S2VX.Game.Editor {
             return false;
         }
 
+        protected override bool OnDragStart(DragStartEvent e) => true;
+
         public override void HandleExit() {
-            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "Selection");
+            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
             Editor.NoteSelectionIndicators.Clear();
         }
 
         protected override void Update() {
-            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "Selection");
+            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
             var lowerBound = Story.GameTime - Editor.NotesTimeline.SectionLength * 1000 / 2;
             var upperBound = Story.GameTime + Editor.NotesTimeline.SectionLength * 1000 / 2;
             foreach (var timeAndNote in TimeToSelectedNote) {
                 if (lowerBound <= timeAndNote.Key && timeAndNote.Key <= upperBound) {
                     var relativePosition = (timeAndNote.Key - lowerBound) / (Editor.NotesTimeline.SectionLength * 1000);
                     var indication = new RelativeBox {
-                        Name = "Selection",
-                        Colour = Color4.Red,
-                        Width = 1.0f / 7.5f,
-                        Height = .8f,
+                        Name = "TimelineSelection",
+                        Colour = Color4.LimeGreen.Opacity(0.727f),
+                        Width = NotesTimeline.TimelineNoteWidth + 0.009727f,
+                        Height = NotesTimeline.TimelineNoteHeight + 0.1f,
                         X = (float)relativePosition,
                         Y = 0.2f,
                         Anchor = Anchor.TopLeft,

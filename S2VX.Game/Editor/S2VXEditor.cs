@@ -49,8 +49,8 @@ namespace S2VX.Game.Editor {
             InternalChildren = new Drawable[]
             {
                 Story,
-                ToolContainer,
                 NoteSelectionIndicators,
+                ToolContainer,
                 NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
