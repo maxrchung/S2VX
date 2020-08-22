@@ -9,6 +9,10 @@ namespace S2VX.Game.Editor {
         // Returns whether to block propagation. By default, return false
         // to allow a parent component, i.e. S2VXEditor, to handle inputs.
         public virtual bool OnToolClick(ClickEvent e) => false;
+        public virtual bool OnToolMouseDown(MouseDownEvent e) => false;
+        public virtual bool OnToolDragStart(DragStartEvent e) => false;
+        public virtual void OnToolDrag(DragEvent e) { }
+        public virtual void OnToolDragEnd(DragEndEvent e) { }
         public virtual void HandleExit() { }
     }
 }

@@ -106,6 +106,14 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
 
+        protected override bool OnMouseDown(MouseDownEvent e) => ToolState.OnToolMouseDown(e);
+
+        protected override bool OnDragStart(DragStartEvent e) => ToolState.OnToolDragStart(e);
+
+        protected override void OnDrag(DragEvent e) => ToolState.OnToolDrag(e);
+
+        protected override void OnDragEnd(DragEndEvent e) => ToolState.OnToolDragEnd(e);
+
         protected override bool OnMouseMove(MouseMoveEvent e) {
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - Story.DrawSize / 2) / Story.DrawWidth;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
+using osuTK;
 
 namespace S2VX.Game.Editor {
     public class SelectToolState : ToolState {
@@ -13,26 +14,34 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; set; } = null;
         [Resolved]
         private S2VXEditor Editor { get; set; } = null;
-        private Dictionary<double, Note> TimeToSelectedNote { get; set; } = new Dictionary<double, Note>();
+        private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
+        private Dictionary<Note, double> SelectedNoteToTimeCopy { get; set; } = new Dictionary<Note, double>();
 
         private const float SelectionIndicatorThickness = 0.025f;
 
-        public override bool OnToolClick(ClickEvent _) {
-            TimeToSelectedNote.Clear();
+        private bool DragTimelineNote { get; set; }
+        private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
+
+        private static bool MouseIsOnNote(Vector2 mousePos, RelativeBox timelineNote) {
+            var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
+            var rightBound = timelineNote.DrawPosition.X + timelineNote.DrawSize.X / 2;
+            var topBound = timelineNote.DrawPosition.Y - timelineNote.DrawSize.Y / 2;
+            var bottomBound = timelineNote.DrawPosition.Y + timelineNote.DrawSize.Y / 2;
+
+            var mouseInXRange = leftBound <= mousePos.X && mousePos.X <= rightBound;
+            var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
+            return mouseInXRange && mouseInYRange;
+        }
+
+        public override bool OnToolMouseDown(MouseDownEvent _) {
+            SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
             Console.WriteLine(mousePos);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
-                var leftBound = notes.Value.DrawPosition.X - notes.Value.DrawSize.X / 2;
-                var rightBound = notes.Value.DrawPosition.X + notes.Value.DrawSize.X / 2;
-                var topBound = notes.Value.DrawPosition.Y - notes.Value.DrawSize.Y / 2;
-                var bottomBound = notes.Value.DrawPosition.Y + notes.Value.DrawSize.Y / 2;
-
-                var mouseInXRange = leftBound <= mousePos.X && mousePos.X <= rightBound;
-                var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
-                if (mouseInXRange && mouseInYRange) {
-                    TimeToSelectedNote[notes.Key.EndTime] = notes.Key;
+                if (MouseIsOnNote(mousePos, notes.Value)) {
+                    SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
                     var noteSelection = new RelativeBox {
                         Colour = Color4.LimeGreen.Opacity(0.5f),
                         Width = notes.Key.Size.X + SelectionIndicatorThickness,
@@ -53,7 +62,45 @@ namespace S2VX.Game.Editor {
             return false;
         }
 
-        protected override bool OnDragStart(DragStartEvent e) => true;
+        public override bool OnToolDragStart(DragStartEvent _) {
+            SelectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
+            var relativeMousePosX = mousePos.X / Editor.NotesTimeline.TickBar.DrawWidth;
+            var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
+            var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
+
+            foreach (var noteAndTime in SelectedNoteToTime) {
+                var note = noteAndTime.Key;
+                NoteToDragPointDelta[note] = note.EndTime - gameTimeAtMouse;
+                if (MouseIsOnNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
+                    DragTimelineNote = true;
+                }
+            }
+            return true;
+        }
+
+        public override void OnToolDrag(DragEvent _) {
+            if (DragTimelineNote) {
+                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar).X;
+                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBar.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBar.DrawWidth;
+                var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
+                var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
+
+                foreach (var noteAndTime in SelectedNoteToTimeCopy) {
+                    var note = noteAndTime.Key;
+                    var newTime = gameTimeAtMouse + NoteToDragPointDelta[note];
+                    note.EndTime = newTime;
+                    SelectedNoteToTime[note] = newTime;
+                }
+            }
+        }
+
+        public override void OnToolDragEnd(DragEndEvent _) {
+            DragTimelineNote = false;
+            SelectedNoteToTimeCopy.Clear();
+        }
 
         public override void HandleExit() {
             Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
@@ -64,9 +111,9 @@ namespace S2VX.Game.Editor {
             Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
             var lowerBound = Story.GameTime - Editor.NotesTimeline.SectionLength * 1000 / 2;
             var upperBound = Story.GameTime + Editor.NotesTimeline.SectionLength * 1000 / 2;
-            foreach (var timeAndNote in TimeToSelectedNote) {
-                if (lowerBound <= timeAndNote.Key && timeAndNote.Key <= upperBound) {
-                    var relativePosition = (timeAndNote.Key - lowerBound) / (Editor.NotesTimeline.SectionLength * 1000);
+            foreach (var noteAndTime in SelectedNoteToTime) {
+                if (lowerBound <= noteAndTime.Value && noteAndTime.Value <= upperBound) {
+                    var relativePosition = (noteAndTime.Value - lowerBound) / (Editor.NotesTimeline.SectionLength * 1000);
                     var indication = new RelativeBox {
                         Name = "TimelineSelection",
                         Colour = Color4.LimeGreen.Opacity(0.727f),
