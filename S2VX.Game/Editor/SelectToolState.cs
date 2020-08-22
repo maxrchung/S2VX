@@ -14,6 +14,7 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private S2VXEditor Editor { get; set; } = null;
         private Dictionary<double, Note> TimeToSelectedNote { get; set; } = new Dictionary<double, Note>();
+        private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
 
         private const float SelectionIndicatorThickness = 0.025f;
 
@@ -43,6 +44,7 @@ namespace S2VX.Game.Editor {
                     noteSelection.X = notes.Key.Position.X;
                     noteSelection.Y = notes.Key.Position.Y;
                     Editor.NoteSelectionIndicators.Add(noteSelection);
+                    NoteSelectionToNote[noteSelection] = notes.Key;
                     //Console.WriteLine(notes.Key.EndTime);
                     Console.WriteLine($"Actual Note Coords: {notes.Key.DrawPosition}");
                     return false;
@@ -80,9 +82,11 @@ namespace S2VX.Game.Editor {
                     //Console.WriteLine(indication.DrawPosition);
                 }
             }
-            //foreach (var x in Editor.NoteSelectionIndicators) {
-            //    Console.WriteLine(x.Name);
-            //}
+            foreach (var noteSelection in Editor.NoteSelectionIndicators) {
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
+            }
         }
     }
 }
