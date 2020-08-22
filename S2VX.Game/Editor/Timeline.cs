@@ -160,6 +160,10 @@ namespace S2VX.Game.Editor {
             SetTextSize(Story.DrawWidth / 40);
 
             TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
+
+            if (Story.GameTime >= Story.Track.Length) {
+                Story.Play(false);
+            }
         }
     }
 }

@@ -17,6 +17,8 @@ tab_width = 4
 end_of_line = crlf
 insert_final_newline = false
 
+guidelines = 150
+
 #### .NET Coding Conventions ####
 
 # Organize usings
