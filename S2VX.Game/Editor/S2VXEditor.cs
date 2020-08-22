@@ -199,7 +199,11 @@ namespace S2VX.Game.Editor {
             IsCommandPanelVisible = !IsCommandPanelVisible;
         }
 
-        private void PlaybackPlay() => Story.Play(!Story.IsPlaying);
+        private void PlaybackPlay() {
+            if (Story.GameTime < Story.Track.Length) {
+                Story.Play(!Story.IsPlaying);
+            }
+        }
 
         private void PlaybackRestart() => Story.Restart();
 
