@@ -41,6 +41,7 @@ namespace S2VX.Game.Editor {
             {
                 Story,
                 ToolContainer,
+                new ToolDisplay(),
                 NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
@@ -90,8 +91,7 @@ namespace S2VX.Game.Editor {
                     }
                 },
                 Timeline,
-                CommandPanel,
-                new ToolDisplay()
+                CommandPanel
             };
         }
 
