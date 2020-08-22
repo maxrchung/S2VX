@@ -10,7 +10,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.S2VX.Objects.Drawables {
     public class DrawableS2VXHitObject : DrawableHitObject<S2VXHitObject> {
-        private readonly Box box;
+        private readonly Box Box;
         public DrawableS2VXHitObject(S2VXHitObject hitObject)
             : base(hitObject) {
             Size = new Vector2(40);
@@ -19,7 +19,7 @@ namespace osu.Game.Rulesets.S2VX.Objects.Drawables {
             Position = hitObject.Position;
             AlwaysPresent = true;
 
-            AddInternal(box = new Box {
+            AddInternal(Box = new Box {
                 RelativeSizeAxes = Axes.Both,
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,

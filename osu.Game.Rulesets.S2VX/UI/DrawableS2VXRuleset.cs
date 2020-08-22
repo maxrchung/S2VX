@@ -12,13 +12,19 @@ using osu.Game.Rulesets.S2VX.Objects;
 using osu.Game.Rulesets.S2VX.Objects.Drawables;
 using osu.Game.Rulesets.S2VX.Replays;
 using osu.Game.Rulesets.UI;
+using S2VX.Game.Story;
 using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.S2VX.UI {
     [Cached]
     public class DrawableS2VXRuleset : DrawableRuleset<S2VXHitObject> {
+        [Cached]
+        public S2VXStory Story { get; }
         public DrawableS2VXRuleset(S2VXRuleset ruleset, IBeatmap beatmap, IReadOnlyList<Mod> mods = null)
             : base(ruleset, beatmap, mods) {
+            // For now we'll just try and load a story.json directly
+            //var storyPath = @"../../../../../S2VX.Desktop/story.json";
+            Story = new S2VXStory();
         }
 
         protected override Playfield CreatePlayfield() => new S2VXPlayfield();
