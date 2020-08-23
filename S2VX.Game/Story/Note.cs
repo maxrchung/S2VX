@@ -55,9 +55,9 @@ namespace S2VX.Game.Story {
             var startTime = EndTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
 
-            Rotation = camera.Rotation;
-            Size = camera.Scale;
-            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
+            SquareNote.Rotation = camera.Rotation;
+            SquareNote.Size = camera.Scale;
+            SquareNote.Position = S2VXUtils.Rotate(Coordinates - camera.Position, SquareNote.Rotation) * SquareNote.Size.X;
 
 
             if (time >= EndTime) {
