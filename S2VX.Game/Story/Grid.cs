@@ -75,17 +75,6 @@ namespace S2VX.Game.Story {
                 });
             }
 
-            grid.Add(new RelativeBox {
-                Position = offset,
-                Width = 0.01f,
-                Height = 0.01f,
-            });
-            grid.Add(new RelativeBox {
-                Position = Vector2.Zero,
-                Width = 0.01f,
-                Height = 0.01f,
-            });
-
             InternalChildren = grid;
         }
     }

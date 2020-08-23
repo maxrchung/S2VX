@@ -47,8 +47,8 @@ namespace S2VX.Game.Story {
             {
                 Camera,
                 Background,
-                Notes,
                 Grid,
+                Notes,
             };
         }
 

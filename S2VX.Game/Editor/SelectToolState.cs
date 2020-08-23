@@ -40,21 +40,22 @@ namespace S2VX.Game.Editor {
             Console.WriteLine(mousePos);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
                 if (MouseIsOnNote(mousePos, notes.Value)) {
+                    var note = notes.Key;
                     SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
                     var noteSelection = new RelativeBox {
                         Colour = Color4.LimeGreen.Opacity(0.5f),
-                        Width = notes.Key.Size.X + SelectionIndicatorThickness,
-                        Height = notes.Key.Size.Y + SelectionIndicatorThickness,
+                        Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
+                        Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
                         RelativePositionAxes = Axes.Both,
                         RelativeSizeAxes = Axes.Both,
-                        Rotation = notes.Key.Rotation,
+                        Rotation = note.SquareNote.Rotation,
                     };
-                    noteSelection.X = notes.Key.Position.X;
-                    noteSelection.Y = notes.Key.Position.Y;
+                    noteSelection.X = note.SquareNote.Position.X;
+                    noteSelection.Y = note.SquareNote.Position.Y;
                     Editor.NoteSelectionIndicators.Add(noteSelection);
-                    NoteSelectionToNote[noteSelection] = notes.Key;
+                    NoteSelectionToNote[noteSelection] = note;
                     //Console.WriteLine(notes.Key.EndTime);
-                    Console.WriteLine($"Actual Note Coords: {notes.Key.DrawPosition}");
+                    Console.WriteLine($"Actual Note Coords: {note.DrawPosition}");
                     return false;
                 }
             }
@@ -126,9 +127,9 @@ namespace S2VX.Game.Editor {
                 }
             }
             foreach (var noteSelection in Editor.NoteSelectionIndicators) {
-                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
-                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
-                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].SquareNote.Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].SquareNote.Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].SquareNote.Position.Y;
             }
         }
     }

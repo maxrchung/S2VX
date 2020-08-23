@@ -20,7 +20,7 @@ namespace S2VX.Game.Story {
             new RelativeBox() // left
         };
 
-        private RelativeBox SquareNote { get; set; } = new RelativeBox();
+        public RelativeBox SquareNote { get; private set; } = new RelativeBox();
 
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -58,17 +58,6 @@ namespace S2VX.Game.Story {
             SquareNote.Rotation = camera.Rotation;
             SquareNote.Size = camera.Scale;
             SquareNote.Position = S2VXUtils.Rotate(Coordinates - camera.Position, SquareNote.Rotation) * SquareNote.Size.X;
-
-
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            } else {
-                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                Alpha = alpha;
-            }
 
 
             if (time >= endFadeOut) {
