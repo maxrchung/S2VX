@@ -133,9 +133,11 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
-            if (IsPlaying) {
-                GameTime += Time.Elapsed;
-            }
+            //if (IsPlaying) {
+            //    GameTime += Time.Elapsed;
+            //}
+
+            GameTime = Time.Current;
 
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= GameTime) {

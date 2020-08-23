@@ -14,9 +14,9 @@ namespace osu.Game.Rulesets.S2VX.UI {
 
         [BackgroundDependencyLoader]
         private void Load() => AddRangeInternal(new Drawable[]
-            {
-                Story,
-                HitObjectContainer,
-            });
+        {
+            Story,
+            HitObjectContainer,
+        });
     }
 }
