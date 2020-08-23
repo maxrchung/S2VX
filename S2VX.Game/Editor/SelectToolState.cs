@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osuTK;
-//using osuTK.Input;
-
 
 namespace S2VX.Game.Editor {
     public class SelectToolState : ToolState {
