@@ -4,6 +4,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.UI;
+using S2VX.Game;
 using S2VX.Game.Story;
 
 namespace osu.Game.Rulesets.S2VX.UI {
@@ -15,7 +16,9 @@ namespace osu.Game.Rulesets.S2VX.UI {
         [BackgroundDependencyLoader]
         private void Load() => AddRangeInternal(new Drawable[]
         {
-            Story,
+            new SquareContainer {
+                Story,
+            },
             HitObjectContainer,
         });
     }
