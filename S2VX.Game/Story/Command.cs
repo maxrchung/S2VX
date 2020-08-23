@@ -401,7 +401,7 @@ namespace S2VX.Game.Story {
         public float EndValue { get; set; } = 0.5f;
         public override void Apply(double time, S2VXStory story) {
             var distance = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Approaches.Distance = distance;
+            story.Notes.ApproachDistance = distance;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static ApproachesDistanceCommand FromString(string[] split) {
@@ -419,7 +419,7 @@ namespace S2VX.Game.Story {
         public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {
             var thickness = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Approaches.Thickness = thickness;
+            story.Notes.ApproachThickness = thickness;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static ApproachesThicknessCommand FromString(string[] split) {

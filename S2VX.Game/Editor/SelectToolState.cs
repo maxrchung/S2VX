@@ -98,15 +98,6 @@ namespace S2VX.Game.Editor {
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
 
-        //public override bool OnToolKeyDown(KeyDownEvent e) {
-        //    //switch (e.Key) {
-        //    //    case Key.Delete:
-        //    //        break;
-        //    //}
-        //    Console.WriteLine("");
-        //    return true;
-        //}
-
         public override void HandleExit() {
             Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
             Editor.NoteSelectionIndicators.Clear();
