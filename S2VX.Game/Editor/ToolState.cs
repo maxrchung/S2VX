@@ -13,6 +13,7 @@ namespace S2VX.Game.Editor {
         public virtual bool OnToolDragStart(DragStartEvent e) => false;
         public virtual void OnToolDrag(DragEvent e) { }
         public virtual void OnToolDragEnd(DragEndEvent e) { }
+        //public virtual bool OnToolKeyDown(KeyDownEvent e) => true;
         public virtual void HandleExit() { }
     }
 }

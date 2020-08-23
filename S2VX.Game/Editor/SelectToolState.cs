@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osuTK;
+//using osuTK.Input;
+
 
 namespace S2VX.Game.Editor {
     public class SelectToolState : ToolState {
@@ -16,7 +18,6 @@ namespace S2VX.Game.Editor {
         private S2VXEditor Editor { get; set; } = null;
         private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
-        private Dictionary<Note, double> SelectedNoteToTimeCopy { get; set; } = new Dictionary<Note, double>();
 
         private const float SelectionIndicatorThickness = 0.025f;
 
@@ -63,8 +64,6 @@ namespace S2VX.Game.Editor {
         }
 
         public override bool OnToolDragStart(DragStartEvent _) {
-            SelectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
             var relativeMousePosX = mousePos.X / Editor.NotesTimeline.TickBar.DrawWidth;
             var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
@@ -88,19 +87,27 @@ namespace S2VX.Game.Editor {
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
                 var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
 
-                foreach (var noteAndTime in SelectedNoteToTimeCopy) {
+                var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
                     var newTime = gameTimeAtMouse + NoteToDragPointDelta[note];
                     note.EndTime = newTime;
-                    SelectedNoteToTime[note] = newTime;
+                    selectedNoteToTimeCopy[note] = newTime;
                 }
+                SelectedNoteToTime = selectedNoteToTimeCopy;
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) {
-            DragTimelineNote = false;
-            SelectedNoteToTimeCopy.Clear();
-        }
+        public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
+
+        //public override bool OnToolKeyDown(KeyDownEvent e) {
+        //    //switch (e.Key) {
+        //    //    case Key.Delete:
+        //    //        break;
+        //    //}
+        //    Console.WriteLine("");
+        //    return true;
+        //}
 
         public override void HandleExit() {
             Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");

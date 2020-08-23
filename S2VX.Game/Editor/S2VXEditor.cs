@@ -127,6 +127,7 @@ namespace S2VX.Game.Editor {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         protected override bool OnKeyDown(KeyDownEvent e) {
+            //ToolState.OnToolKeyDown(e);
             switch (e.Key) {
                 case Key.R:
                     if (e.ControlPressed) {
