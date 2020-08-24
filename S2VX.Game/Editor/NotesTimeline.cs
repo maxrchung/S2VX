@@ -64,7 +64,7 @@ namespace S2VX.Game.Editor {
         public float SectionLength { get; private set; } = 2;
 
         private int DivisorIndex { get; set; } = 3;
-        private int Divisor { get; set; } = 4;
+        public int Divisor { get; private set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
             Text = "Beat Snap Divisor",

@@ -37,7 +37,6 @@ namespace S2VX.Game.Editor {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
-            Console.WriteLine(mousePos);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
                 if (MouseIsOnNote(mousePos, notes.Value)) {
                     var note = notes.Key;
@@ -54,8 +53,6 @@ namespace S2VX.Game.Editor {
                     noteSelection.Y = note.SquareNote.Position.Y;
                     Editor.NoteSelectionIndicators.Add(noteSelection);
                     NoteSelectionToNote[noteSelection] = note;
-                    //Console.WriteLine(notes.Key.EndTime);
-                    Console.WriteLine($"Actual Note Coords: {note.DrawPosition}");
                     return false;
                 }
             }
@@ -64,18 +61,33 @@ namespace S2VX.Game.Editor {
 
         public override bool OnToolDragStart(DragStartEvent _) {
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
-            var relativeMousePosX = mousePos.X / Editor.NotesTimeline.TickBar.DrawWidth;
-            var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
-            var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
+            var selectedNoteTime = -727d;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
-                NoteToDragPointDelta[note] = note.EndTime - gameTimeAtMouse;
                 if (MouseIsOnNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
                     DragTimelineNote = true;
+                    selectedNoteTime = note.EndTime;
                 }
             }
+
+            if (selectedNoteTime == -727d) {
+                return true;
+            }
+
+            foreach (var noteAndTime in SelectedNoteToTime) {
+                var note = noteAndTime.Key;
+                NoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+            }
             return true;
+        }
+
+        private double GetClosestTickTime(double gameTime) { //instead of time at mouse I need time at cl
+            var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Editor.NotesTimeline.Divisor;
+            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var leftOffset = (gameTime - Story.Offset) % timeBetweenTicks;
+            var rightOffset = timeBetweenTicks - leftOffset;
+            return gameTime + (leftOffset <= rightOffset ? -leftOffset : rightOffset);
         }
 
         public override void OnToolDrag(DragEvent _) {
@@ -89,7 +101,7 @@ namespace S2VX.Game.Editor {
                 var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
-                    var newTime = gameTimeAtMouse + NoteToDragPointDelta[note];
+                    var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
                     note.EndTime = newTime;
                     selectedNoteToTimeCopy[note] = newTime;
                 }
@@ -123,7 +135,6 @@ namespace S2VX.Game.Editor {
                         RelativeSizeAxes = Axes.Both,
                     };
                     Editor.NotesTimeline.TickBar.Add(indication);
-                    //Console.WriteLine(indication.DrawPosition);
                 }
             }
             foreach (var noteSelection in Editor.NoteSelectionIndicators) {
