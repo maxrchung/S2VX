@@ -3,4 +3,9 @@
   <PropertyGroup>
     <ApplicationManifest>$(MSBuildThisFileDirectory)app.manifest</ApplicationManifest>
   </PropertyGroup>
+
+  <!-- Necessary if we import osu.Framework locally -->
+  <ItemGroup Label="Resources">
+    <EmbeddedResource Include="Resources\**\*.*" />
+  </ItemGroup>
 </Project>

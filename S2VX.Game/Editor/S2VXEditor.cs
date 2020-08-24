@@ -22,7 +22,8 @@ namespace S2VX.Game.Editor {
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
-        private ToolState ToolState { get; set; } = new SelectToolState();
+        public ToolState ToolState { get; private set; } = new SelectToolState();
+        public void SetToolState(ToolState value) => ToolState = value;
 
         public Container NoteSelectionIndicators { get; } = new Container {
             RelativePositionAxes = Axes.Both,
@@ -51,6 +52,7 @@ namespace S2VX.Game.Editor {
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
+                new ToolDisplay(),
                 NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
@@ -100,7 +102,7 @@ namespace S2VX.Game.Editor {
                     }
                 },
                 Timeline,
-                CommandPanel,
+                CommandPanel
             };
         }
 
@@ -216,7 +218,11 @@ namespace S2VX.Game.Editor {
             IsCommandPanelVisible = !IsCommandPanelVisible;
         }
 
-        private void PlaybackPlay() => Story.Play(!Story.IsPlaying);
+        private void PlaybackPlay() {
+            if (Story.GameTime < Story.Track.Length) {
+                Story.Play(!Story.IsPlaying);
+            }
+        }
 
         private void PlaybackRestart() => Story.Restart();
 

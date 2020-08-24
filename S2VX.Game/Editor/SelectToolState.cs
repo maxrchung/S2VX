@@ -141,5 +141,6 @@ namespace S2VX.Game.Editor {
                 noteSelection.Y = NoteSelectionToNote[noteSelection].SquareNote.Position.Y;
             }
         }
+        public override string DisplayName() => "Select";
     }
 }
