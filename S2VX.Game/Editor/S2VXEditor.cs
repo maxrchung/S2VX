@@ -23,7 +23,6 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new Timeline();
 
         public ToolState ToolState { get; private set; } = new SelectToolState();
-        public void SetToolState(ToolState value) => ToolState = value;
 
         public Container NoteSelectionIndicators { get; } = new Container {
             RelativePositionAxes = Axes.Both,
