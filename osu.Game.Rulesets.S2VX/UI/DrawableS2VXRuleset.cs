@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Input;
 using osu.Game.Beatmaps;
 using osu.Game.Input.Handlers;
@@ -18,6 +19,9 @@ using System.Collections.Generic;
 namespace osu.Game.Rulesets.S2VX.UI {
     [Cached]
     public class DrawableS2VXRuleset : DrawableRuleset<S2VXHitObject> {
+        [Resolved]
+        private Bindable<WorkingBeatmap> BindableWorking { get; set; }
+
         [Cached]
         public S2VXStory Story { get; }
         public DrawableS2VXRuleset(S2VXRuleset ruleset, IBeatmap beatmap, IReadOnlyList<Mod> mods = null)
@@ -25,6 +29,10 @@ namespace osu.Game.Rulesets.S2VX.UI {
             // For now we'll just try and load a story.json directly
             //var storyPath = @"../../../../../S2VX.Desktop/story.json";
             Story = new S2VXStory();
+        }
+
+        protected override void LoadComplete() {
+            base.LoadComplete();
         }
 
         protected override Playfield CreatePlayfield() => new S2VXPlayfield();
