@@ -1,12 +1,12 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
+using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
-using osu.Framework.Graphics;
-using osu.Framework.Extensions.Color4Extensions;
-using osuTK;
 
 namespace S2VX.Game.Editor {
     public class SelectToolState : ToolState {
@@ -61,28 +61,26 @@ namespace S2VX.Game.Editor {
 
         public override bool OnToolDragStart(DragStartEvent _) {
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
-            var selectedNoteTime = -727d;
+            var selectedNoteTime = 0d;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
                 if (MouseIsOnNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
                     DragTimelineNote = true;
                     selectedNoteTime = note.EndTime;
+                    break;
                 }
             }
-
-            if (selectedNoteTime == -727d) {
-                return true;
-            }
-
-            foreach (var noteAndTime in SelectedNoteToTime) {
-                var note = noteAndTime.Key;
-                NoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+            if (DragTimelineNote) {
+                foreach (var noteAndTime in SelectedNoteToTime) {
+                    var note = noteAndTime.Key;
+                    NoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                }
             }
             return true;
         }
 
-        private double GetClosestTickTime(double gameTime) { //instead of time at mouse I need time at cl
+        private double GetClosestTickTime(double gameTime) {
             var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Editor.NotesTimeline.Divisor;
             var timeBetweenTicks = Story.Track.Length / numTicks;
             var leftOffset = (gameTime - Story.Offset) % timeBetweenTicks;
