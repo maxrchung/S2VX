@@ -17,30 +17,13 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; set; } = null;
         public Dictionary<Note, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<Note, RelativeBox>();
 
-        public Container TickBar { get; } = new Container {
+        private Container TickBarContent { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
-            Width = TimelineWidth / 1.25f,
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            X = -0.05f,
-            Y = 0.3f,
-
-            Children = new Drawable[] {
-                new RelativeBox {
-                    Name = "TickBar",
-                    Colour = Color4.White,
-                    Height = TimelineHeight / 3.5f,
-                },
-                new RelativeBox {
-                    Name = "MiddleTick",
-                    Colour = Color4.White,
-                    Width = TimelineWidth / 350,
-                    Height = 0.8f,
-                    Anchor = Anchor.TopCentre,
-                    Y = 0.1f,
-                },
-            }
+        };
+        public Container TickBarNoteSelections { get; } = new Container {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
         };
 
         private static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
@@ -108,7 +91,31 @@ namespace S2VX.Game.Editor {
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                TickBar,
+                new Container {
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Width = TimelineWidth / 1.25f,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    X = -0.05f,
+                    Y = 0.3f,
+
+                    Children = new Drawable[] {
+                        new RelativeBox {
+                            Colour = Color4.White,
+                            Height = TimelineHeight / 3.5f,
+                        },
+                        new RelativeBox {
+                            Colour = Color4.White,
+                            Width = TimelineWidth / 350,
+                            Height = 0.8f,
+                            Anchor = Anchor.TopCentre,
+                            Y = 0.1f,
+                        },
+                        TickBarNoteSelections,
+                        TickBarContent,
+                    }
+                },
                 new FillFlowContainer
                 {
                     RelativeSizeAxes = Axes.Both,
@@ -242,7 +249,6 @@ namespace S2VX.Game.Editor {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * 1000);
                     var visibleNote = new RelativeBox {
-                        Name = "NoteBox",
                         Colour = Color4.White.Opacity(0.727f),
                         Width = TimelineNoteWidth,
                         Height = TimelineNoteHeight,
@@ -251,14 +257,14 @@ namespace S2VX.Game.Editor {
                         Anchor = Anchor.TopLeft,
                     };
                     NoteToTimelineNote[note] = visibleNote;
-                    TickBar.Add(visibleNote);
+                    TickBarContent.Add(visibleNote);
                 }
             }
         }
 
         protected override void Update() {
             NoteToTimelineNote.Clear();
-            TickBar.RemoveAll(item => item.Name == "Tick" || item.Name == "NoteBox");
+            TickBarContent.Clear();
 
             var totalSeconds = Story.Track.Length / 1000;
             var bps = Story.BPM / 60f;
@@ -285,8 +291,7 @@ namespace S2VX.Game.Editor {
                             width = TimelineWidth / 350;
                         }
 
-                        TickBar.Add(new RelativeBox {
-                            Name = "Tick",
+                        TickBarContent.Add(new RelativeBox {
                             Colour = TickColoring[DivisorIndex][beat],
                             Width = width,
                             Height = height,

@@ -36,7 +36,7 @@ namespace S2VX.Game.Editor {
         public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
-            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
                 if (MouseIsOnNote(mousePos, notes.Value)) {
                     var note = notes.Key;
@@ -60,7 +60,7 @@ namespace S2VX.Game.Editor {
         }
 
         public override bool OnToolDragStart(DragStartEvent e) {
-            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             var selectedNoteTime = 0d;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
@@ -90,9 +90,9 @@ namespace S2VX.Game.Editor {
 
         public override void OnToolDrag(DragEvent e) {
             if (DragTimelineNote) {
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar).X;
-                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBar.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
-                var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBar.DrawWidth;
+                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections).X;
+                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
                 var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
 
@@ -110,19 +110,18 @@ namespace S2VX.Game.Editor {
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
 
         public override void HandleExit() {
-            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
+            Editor.NotesTimeline.TickBarNoteSelections.Clear();
             Editor.NoteSelectionIndicators.Clear();
         }
 
         protected override void Update() {
-            Editor.NotesTimeline.TickBar.RemoveAll(item => item.Name == "TimelineSelection");
+            Editor.NotesTimeline.TickBarNoteSelections.Clear();
             var lowerBound = Story.GameTime - Editor.NotesTimeline.SectionLength * 1000 / 2;
             var upperBound = Story.GameTime + Editor.NotesTimeline.SectionLength * 1000 / 2;
             foreach (var noteAndTime in SelectedNoteToTime) {
                 if (lowerBound <= noteAndTime.Value && noteAndTime.Value <= upperBound) {
                     var relativePosition = (noteAndTime.Value - lowerBound) / (Editor.NotesTimeline.SectionLength * 1000);
                     var indication = new RelativeBox {
-                        Name = "TimelineSelection",
                         Colour = Color4.LimeGreen.Opacity(0.727f),
                         Width = NotesTimeline.TimelineNoteWidth + 0.009727f,
                         Height = NotesTimeline.TimelineNoteHeight + 0.1f,
@@ -132,7 +131,7 @@ namespace S2VX.Game.Editor {
                         RelativePositionAxes = Axes.Both,
                         RelativeSizeAxes = Axes.Both,
                     };
-                    Editor.NotesTimeline.TickBar.Add(indication);
+                    Editor.NotesTimeline.TickBarNoteSelections.Add(indication);
                 }
             }
             foreach (var noteSelection in Editor.NoteSelectionIndicators) {
