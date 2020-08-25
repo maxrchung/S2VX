@@ -57,7 +57,7 @@ namespace S2VX.Game.Editor {
         };
 
         private const float TimelineHeight = 0.075f;
-        public const float TimelineWidth = 1.0f;
+        private const float TimelineWidth = 1.0f;
         public const float TimelineNoteHeight = 0.6f;
         public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 
