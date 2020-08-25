@@ -67,6 +67,8 @@ namespace S2VX.Game.Story {
 
         public void AddNote(Vector2 position, double time) => Notes.AddNote(position, time);
 
+        public void DeleteNote(Note note) => Notes.DeleteNote(note);
+
         public void Play(bool isPlaying) {
             if (isPlaying) {
                 Track.Start();

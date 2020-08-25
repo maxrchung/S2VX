@@ -32,6 +32,13 @@ namespace S2VX.Game.Editor {
             var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
             return mouseInXRange && mouseInYRange;
         }
+        public void DeleteSelectedNote() {
+            Editor.NoteSelectionIndicators.Clear();
+            foreach (var noteAndTime in SelectedNoteToTime) {
+                var note = noteAndTime.Key;
+                Story.DeleteNote(note);
+            }
+        }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
