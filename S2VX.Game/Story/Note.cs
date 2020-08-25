@@ -55,9 +55,14 @@ namespace S2VX.Game.Story {
             var startTime = EndTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
 
-            SquareNote.Rotation = camera.Rotation;
-            SquareNote.Size = camera.Scale;
-            SquareNote.Position = S2VXUtils.Rotate(Coordinates - camera.Position, SquareNote.Rotation) * SquareNote.Size.X;
+            var position = camera.Position;
+            var rotation = camera.Rotation;
+            var scale = camera.Scale;
+            var thickness = notes.ApproachThickness;
+
+            SquareNote.Rotation = rotation;
+            SquareNote.Size = scale;
+            SquareNote.Position = S2VXUtils.Rotate(Coordinates - position, SquareNote.Rotation) * SquareNote.Size.X;
 
 
             if (time >= endFadeOut) {
@@ -65,11 +70,6 @@ namespace S2VX.Game.Story {
                 // Return early to save some calculations
                 return;
             }
-
-            var position = camera.Position;
-            var rotation = camera.Rotation;
-            var scale = camera.Scale;
-            var thickness = notes.ApproachThickness;
 
             var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
 

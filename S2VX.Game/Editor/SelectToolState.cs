@@ -33,10 +33,10 @@ namespace S2VX.Game.Editor {
             return mouseInXRange && mouseInYRange;
         }
 
-        public override bool OnToolMouseDown(MouseDownEvent _) {
+        public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
-            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
                 if (MouseIsOnNote(mousePos, notes.Value)) {
                     var note = notes.Key;
@@ -59,8 +59,8 @@ namespace S2VX.Game.Editor {
             return false;
         }
 
-        public override bool OnToolDragStart(DragStartEvent _) {
-            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
+        public override bool OnToolDragStart(DragStartEvent e) {
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar);
             var selectedNoteTime = 0d;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
@@ -88,9 +88,9 @@ namespace S2VX.Game.Editor {
             return gameTime + (leftOffset <= rightOffset ? -leftOffset : rightOffset);
         }
 
-        public override void OnToolDrag(DragEvent _) {
+        public override void OnToolDrag(DragEvent e) {
             if (DragTimelineNote) {
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(_.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar).X;
+                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBar).X;
                 mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBar.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
                 var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBar.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * 1000;
