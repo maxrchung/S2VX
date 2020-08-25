@@ -147,6 +147,10 @@ namespace S2VX.Game.Editor {
                     }
                     break;
                 }
+                case Key.Number2: {
+                    ToolNote();
+                    break;
+                }
                 case Key.BracketLeft: {
                     if (e.ControlPressed) {
                         if (e.ShiftPressed) {
@@ -167,10 +171,6 @@ namespace S2VX.Game.Editor {
                     }
                     break;
                 }
-                case Key.Number2: {
-                    ToolNote();
-                    break;
-                }
                 case Key.Space:
                     PlaybackPlay();
                     break;
@@ -185,6 +185,11 @@ namespace S2VX.Game.Editor {
                     break;
                 case Key.Right:
                     NotesTimeline.SnapToTick(false);
+                    break;
+                case Key.Delete:
+                    if (ToolState is SelectToolState tool) {
+                        tool.DeleteSelectedNote();
+                    }
                     break;
                 default:
                     break;
