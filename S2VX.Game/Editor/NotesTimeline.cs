@@ -236,7 +236,7 @@ namespace S2VX.Game.Editor {
             var timeBetweenTicks = Editor.Track.Length / numTicks;
             var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
 
-            var tolerance = 0.0000000001;
+            var tolerance = 0.02;
             if (snapLeft) {
                 leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
                 Editor.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Editor.Track.Length));
