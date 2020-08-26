@@ -45,6 +45,7 @@ namespace S2VX.Game.Editor {
         public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 
         public float SectionLength { get; private set; } = 2;
+        public const int SecondsToMS = 1000;
 
         private int DivisorIndex { get; set; } = 3;
         public int Divisor { get; private set; } = 4;
@@ -227,7 +228,7 @@ namespace S2VX.Game.Editor {
         }
 
         public void SnapToTick(bool snapLeft) {
-            var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Divisor;
+            var numTicks = Story.BPM / 60f * (Story.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Story.Track.Length / numTicks;
             var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
 
@@ -243,11 +244,11 @@ namespace S2VX.Game.Editor {
         }
 
         private void AddVisibleNotes() {
-            var lowerBound = Story.GameTime - SectionLength * 1000 / 2;
-            var upperBound = Story.GameTime + SectionLength * 1000 / 2;
+            var lowerBound = Story.GameTime - SectionLength * SecondsToMS / 2;
+            var upperBound = Story.GameTime + SectionLength * SecondsToMS / 2;
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
-                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * 1000);
+                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
                     var visibleNote = new RelativeBox {
                         Colour = Color4.White.Opacity(0.727f),
                         Width = TimelineNoteWidth,
@@ -266,13 +267,13 @@ namespace S2VX.Game.Editor {
             NoteToTimelineNote.Clear();
             TickBarContent.Clear();
 
-            var totalSeconds = Story.Track.Length / 1000;
+            var totalSeconds = Story.Track.Length / SecondsToMS;
             var bps = Story.BPM / 60f;
             var numBigTicks = bps * totalSeconds;
             var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
             var timeBetweenTicks = Story.Track.Length / numBigTicks;
             var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
-            var relativeMidTickOffset = midTickOffset / (SectionLength * 1000);
+            var relativeMidTickOffset = midTickOffset / (SectionLength * SecondsToMS);
 
             Divisor = ValidBeatDivisors[DivisorIndex];
             var microTickSpacing = tickSpacing / Divisor;
