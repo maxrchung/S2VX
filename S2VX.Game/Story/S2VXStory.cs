@@ -23,7 +23,6 @@ namespace S2VX.Game.Story {
         };
         public Grid Grid { get; } = new Grid();
         public Notes Notes { get; } = new Notes();
-        public Approaches Approaches { get; } = new Approaches();
 
         public List<Command> Commands { get; private set; } = new List<Command>();
         private int NextActive { get; set; }
@@ -39,9 +38,8 @@ namespace S2VX.Game.Story {
             {
                 Camera,
                 Background,
-                Notes,
                 Grid,
-                Approaches
+                Notes,
             };
         }
 
@@ -61,10 +59,7 @@ namespace S2VX.Game.Story {
             ClearActives();
         }
 
-        public void AddNote(Vector2 position, double time) {
-            Notes.AddNote(position, time);
-            Approaches.AddApproach(position, time);
-        }
+        public void AddNote(Vector2 position, double time) => Notes.AddNote(position, time);
 
         public void Open(string path) {
             Commands.Clear();
@@ -79,8 +74,6 @@ namespace S2VX.Game.Story {
 
             var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
             Notes.SetChildren(notes);
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
-            Approaches.SetChildren(approaches);
         }
 
         public void Save(string path) {

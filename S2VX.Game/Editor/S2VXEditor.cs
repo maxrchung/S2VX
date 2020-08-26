@@ -1,4 +1,4 @@
-﻿using osu.Framework.Allocation;
+using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -22,11 +22,20 @@ namespace S2VX.Game.Editor {
         private CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
 
-        private NotesTimeline NotesTimeline { get; } = new NotesTimeline();
+        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
 
         public ToolState ToolState { get; private set; } = new SelectToolState();
-        public void SetToolState(ToolState value) => ToolState = value;
+
+        public Container NoteSelectionIndicators { get; } = new Container {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
+        };
+
+        private void SetToolState(ToolState newState) {
+            ToolState.HandleExit();
+            ToolState = newState;
+        }
 
         private Container ToolContainer { get; set; } = new Container {
             RelativeSizeAxes = Axes.Both,
@@ -55,6 +64,7 @@ namespace S2VX.Game.Editor {
             InternalChildren = new Drawable[]
             {
                 Story,
+                NoteSelectionIndicators,
                 ToolContainer,
                 new ToolDisplay(),
                 NotesTimeline,
@@ -111,6 +121,14 @@ namespace S2VX.Game.Editor {
         }
 
         protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
+
+        protected override bool OnMouseDown(MouseDownEvent e) => ToolState.OnToolMouseDown(e);
+
+        protected override bool OnDragStart(DragStartEvent e) => ToolState.OnToolDragStart(e);
+
+        protected override void OnDrag(DragEvent e) => ToolState.OnToolDrag(e);
+
+        protected override void OnDragEnd(DragEndEvent e) => ToolState.OnToolDragEnd(e);
 
         protected override bool OnMouseMove(MouseMoveEvent e) {
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
@@ -260,12 +278,12 @@ namespace S2VX.Game.Editor {
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
         private void ToolSelect() {
-            ToolState = new SelectToolState();
+            SetToolState(new SelectToolState());
             ToolContainer.Child = ToolState;
         }
 
         private void ToolNote() {
-            ToolState = new NoteToolState();
+            SetToolState(new NoteToolState());
             ToolContainer.Child = ToolState;
         }
     }
