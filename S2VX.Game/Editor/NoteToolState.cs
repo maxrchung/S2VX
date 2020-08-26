@@ -23,12 +23,12 @@ namespace S2VX.Game.Editor {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            Story.AddNote(Editor.MousePosition, Story.GameTime);
+            Story.AddNote(Editor.MousePosition, Time.Current);
             return false;
         }
 
         protected override void Update() {
-            Preview.EndTime = Story.GameTime;
+            Preview.EndTime = Time.Current;
             Preview.Coordinates = Editor.MousePosition;
         }
 

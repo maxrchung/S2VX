@@ -234,22 +234,22 @@ namespace S2VX.Game.Editor {
         public void SnapToTick(bool snapLeft) {
             var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Editor.Track.Length / numTicks;
-            var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+            var leftOffset = (Time.Current - Story.Offset) % timeBetweenTicks;
 
             var tolerance = 0.02;
             if (snapLeft) {
                 leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
-                Editor.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Editor.Track.Length));
+                Editor.Seek(Math.Clamp(Time.Current - leftOffset, 0, Editor.Track.Length));
             } else {
                 var rightOffset = timeBetweenTicks - leftOffset;
                 rightOffset = rightOffset <= tolerance ? timeBetweenTicks : rightOffset;
-                Editor.Seek(Math.Clamp(Story.GameTime + rightOffset, 0, Editor.Track.Length));
+                Editor.Seek(Math.Clamp(Time.Current + rightOffset, 0, Editor.Track.Length));
             }
         }
 
         private void AddVisibleNotes() {
-            var lowerBound = Story.GameTime - SectionLength * SecondsToMS / 2;
-            var upperBound = Story.GameTime + SectionLength * SecondsToMS / 2;
+            var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
+            var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
@@ -276,7 +276,7 @@ namespace S2VX.Game.Editor {
             var numBigTicks = bps * totalSeconds;
             var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
             var timeBetweenTicks = Editor.Track.Length / numBigTicks;
-            var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+            var midTickOffset = (Time.Current - Story.Offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (SectionLength * SecondsToMS);
 
             Divisor = ValidBeatDivisors[DivisorIndex];

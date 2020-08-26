@@ -12,8 +12,6 @@ namespace S2VX.Game.Story {
     // Per Microsoft docs, class names should not conflict with their namespace,
     // so I've prepended S2VX to fix these problems
     public class S2VXStory : CompositeDrawable {
-        public double GameTime { get; private set; }
-        public bool IsPlaying { get; private set; }
         public double BPM { get; set; }
         public double Offset { get; set; }
 
@@ -86,20 +84,18 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
-            GameTime = Clock.CurrentTime;
-
             // Add new active commands
-            while (NextActive < Commands.Count && Commands[NextActive].StartTime <= GameTime) {
+            while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);
             }
 
             var newActives = new HashSet<Command>();
             foreach (var active in Actives) {
                 // Run active commands
-                active.Apply(GameTime, this);
+                active.Apply(Time.Current, this);
 
                 // Remove finished commands
-                if (active.EndTime >= GameTime) {
+                if (active.EndTime >= Time.Current) {
                     newActives.Add(active);
                 } else {
                     // Ensure command end will always trigger

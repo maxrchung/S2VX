@@ -146,14 +146,14 @@ namespace S2VX.Game.Editor {
 
         protected override void Update() {
             DelayDrag = false;
-            var songRatio = Story.GameTime / Editor.Track.Length;
+            var songRatio = Time.Current / Editor.Track.Length;
             var newX = songRatio * Bar.DrawWidth;
             Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
             if (DisplayMS) {
-                TxtClock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Editor.Track.Length)).ToString(CultureInfo.InvariantCulture);
+                TxtClock.Text = Math.Truncate(Math.Clamp(Time.Current, 0, Editor.Track.Length)).ToString(CultureInfo.InvariantCulture);
             } else {
-                var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Editor.Track.Length));
+                var time = TimeSpan.FromMilliseconds(Math.Clamp(Time.Current, 0, Editor.Track.Length));
                 TxtClock.Text = time.ToString(@"mm\:ss\:fff", CultureInfo.InvariantCulture);
             }
 
@@ -161,7 +161,7 @@ namespace S2VX.Game.Editor {
 
             TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
 
-            if (Story.GameTime >= Editor.Track.Length) {
+            if (Time.Current >= Editor.Track.Length) {
                 Editor.Play(false);
             }
         }
