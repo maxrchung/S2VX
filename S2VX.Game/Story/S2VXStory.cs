@@ -25,7 +25,6 @@ namespace S2VX.Game.Story {
         };
         public Grid Grid { get; } = new Grid();
         public Notes Notes { get; } = new Notes();
-        public Approaches Approaches { get; } = new Approaches();
 
         public DrawableTrack Track { get; private set; }
 
@@ -50,9 +49,8 @@ namespace S2VX.Game.Story {
             {
                 Camera,
                 Background,
-                Notes,
                 Grid,
-                Approaches
+                Notes,
             };
         }
 
@@ -67,10 +65,7 @@ namespace S2VX.Game.Story {
             Seek(GameTime);
         }
 
-        public void AddNote(Vector2 position, double time) {
-            Notes.AddNote(position, time);
-            Approaches.AddApproach(position, time);
-        }
+        public void AddNote(Vector2 position, double time) => Notes.AddNote(position, time);
 
         public void Play(bool isPlaying) {
             if (isPlaying) {
@@ -113,8 +108,6 @@ namespace S2VX.Game.Story {
 
             var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
             Notes.SetChildren(notes);
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
-            Approaches.SetChildren(approaches);
 
             Seek(GameTime);
         }

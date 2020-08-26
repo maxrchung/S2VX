@@ -9,19 +9,21 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
 using System;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
-        private Container TickBar { get; } = new Container {
+        public Dictionary<Note, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<Note, RelativeBox>();
+
+        private Container TickBarContent { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
-            Width = TimelineWidth / 1.25f,
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            X = -0.05f,
-            Y = 0.3f,
+        };
+        public Container TickBarNoteSelections { get; } = new Container {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
         };
 
         private static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
@@ -39,11 +41,14 @@ namespace S2VX.Game.Editor {
 
         private const float TimelineHeight = 0.075f;
         private const float TimelineWidth = 1.0f;
+        public const float TimelineNoteHeight = 0.6f;
+        public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 
-        private float SectionLength { get; set; } = 2;
+        public float SectionLength { get; private set; } = 2;
+        public const int SecondsToMS = 1000;
 
         private int DivisorIndex { get; set; } = 3;
-        private int Divisor { get; set; } = 4;
+        public int Divisor { get; private set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
             Text = "Beat Snap Divisor",
@@ -87,7 +92,31 @@ namespace S2VX.Game.Editor {
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                TickBar,
+                new Container {
+                    RelativePositionAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both,
+                    Width = TimelineWidth / 1.25f,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    X = -0.05f,
+                    Y = 0.3f,
+
+                    Children = new Drawable[] {
+                        new RelativeBox {
+                            Colour = Color4.White,
+                            Height = TimelineHeight / 3.5f,
+                        },
+                        new RelativeBox {
+                            Colour = Color4.White,
+                            Width = TimelineWidth / 350,
+                            Height = 0.8f,
+                            Anchor = Anchor.TopCentre,
+                            Y = 0.1f,
+                        },
+                        TickBarNoteSelections,
+                        TickBarContent,
+                    }
+                },
                 new FillFlowContainer
                 {
                     RelativeSizeAxes = Axes.Both,
@@ -199,7 +228,7 @@ namespace S2VX.Game.Editor {
         }
 
         public void SnapToTick(bool snapLeft) {
-            var numTicks = Story.BPM / 60f * (Story.Track.Length / 1000) * Divisor;
+            var numTicks = Story.BPM / 60f * (Story.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Story.Track.Length / numTicks;
             var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
 
@@ -214,28 +243,37 @@ namespace S2VX.Game.Editor {
             }
         }
 
+        private void AddVisibleNotes() {
+            var lowerBound = Story.GameTime - SectionLength * SecondsToMS / 2;
+            var upperBound = Story.GameTime + SectionLength * SecondsToMS / 2;
+            foreach (var note in Story.Notes.Children) {
+                if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
+                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
+                    var visibleNote = new RelativeBox {
+                        Colour = Color4.White.Opacity(0.727f),
+                        Width = TimelineNoteWidth,
+                        Height = TimelineNoteHeight,
+                        X = (float)relativePosition,
+                        Y = 0.2f,
+                        Anchor = Anchor.TopLeft,
+                    };
+                    NoteToTimelineNote[note] = visibleNote;
+                    TickBarContent.Add(visibleNote);
+                }
+            }
+        }
+
         protected override void Update() {
-            TickBar.Clear();
-            TickBar.Add(new RelativeBox {
-                Colour = Color4.White,
-                Height = TimelineHeight / 3.5f,
-            });
+            NoteToTimelineNote.Clear();
+            TickBarContent.Clear();
 
-            TickBar.Add(new RelativeBox {
-                Colour = Color4.White,
-                Width = TimelineWidth / 350,
-                Height = 0.8f,
-                Anchor = Anchor.TopCentre,
-                Y = 0.1f,
-            });
-
-            var totalSeconds = Story.Track.Length / 1000;
+            var totalSeconds = Story.Track.Length / SecondsToMS;
             var bps = Story.BPM / 60f;
             var numBigTicks = bps * totalSeconds;
             var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
             var timeBetweenTicks = Story.Track.Length / numBigTicks;
             var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
-            var relativeMidTickOffset = midTickOffset / (SectionLength * 1000);
+            var relativeMidTickOffset = midTickOffset / (SectionLength * SecondsToMS);
 
             Divisor = ValidBeatDivisors[DivisorIndex];
             var microTickSpacing = tickSpacing / Divisor;
@@ -254,7 +292,7 @@ namespace S2VX.Game.Editor {
                             width = TimelineWidth / 350;
                         }
 
-                        TickBar.Add(new RelativeBox {
+                        TickBarContent.Add(new RelativeBox {
                             Colour = TickColoring[DivisorIndex][beat],
                             Width = width,
                             Height = height,
@@ -271,6 +309,8 @@ namespace S2VX.Game.Editor {
 
             TextSize = Story.DrawWidth / 60;
             TxtBeatSnapDivisor.Text = $"1/{Divisor}";
+
+            AddVisibleNotes();
         }
     }
 }
