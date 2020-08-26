@@ -1,9 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 using osuTK.Graphics;
@@ -27,24 +25,15 @@ namespace S2VX.Game.Story {
         public Notes Notes { get; } = new Notes();
         public Approaches Approaches { get; } = new Approaches();
 
-        public DrawableTrack Track { get; private set; }
-
         public List<Command> Commands { get; private set; } = new List<Command>();
         private int NextActive { get; set; }
         private HashSet<Command> Actives { get; set; } = new HashSet<Command>();
 
-        [Resolved]
-        private AudioManager Audio { get; set; }
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
-            Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Track.VolumeTo(0.05f);
-
-            Open(@"../../../story.json");
-
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
             {
@@ -56,15 +45,20 @@ namespace S2VX.Game.Story {
             };
         }
 
+        public void ClearActives() {
+            NextActive = 0;
+            Actives.Clear();
+        }
+
         public void AddCommand(Command command) {
             Commands.Add(command);
             Commands.Sort();
-            Seek(GameTime);
+            ClearActives();
         }
 
         public void RemoveCommand(int index) {
             Commands.RemoveAt(index);
-            Seek(GameTime);
+            ClearActives();
         }
 
         public void AddNote(Vector2 position, double time) {
@@ -72,35 +66,7 @@ namespace S2VX.Game.Story {
             Approaches.AddApproach(position, time);
         }
 
-        public void Play(bool isPlaying) {
-            if (isPlaying) {
-                Track.Start();
-            } else {
-                Track.Stop();
-            }
-            IsPlaying = isPlaying;
-        }
-
-        public void Restart() {
-            GameTime = 0;
-            NextActive = 0;
-            Actives.Clear();
-            Track.Restart();
-            if (!IsPlaying) {
-                Play(false);
-            }
-        }
-
-        public void Seek(double time) {
-            NextActive = 0;
-            Actives.Clear();
-            GameTime = time;
-            Track.Seek(time);
-        }
-
         public void Open(string path) {
-            Play(false);
-
             Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
@@ -115,13 +81,9 @@ namespace S2VX.Game.Story {
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
-
-            Seek(GameTime);
         }
 
         public void Save(string path) {
-            Play(false);
-
             var obj = new {
                 Commands,
                 Notes = Notes.Children
@@ -131,9 +93,7 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
-            if (IsPlaying) {
-                GameTime += Time.Elapsed;
-            }
+            GameTime = Clock.CurrentTime;
 
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= GameTime) {

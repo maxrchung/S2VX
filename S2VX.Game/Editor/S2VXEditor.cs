@@ -1,9 +1,12 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
@@ -30,9 +33,21 @@ namespace S2VX.Game.Editor {
             Size = Vector2.One
         };
 
+        [Resolved]
+        private AudioManager Audio { get; set; }
+        public DrawableTrack Track { get; private set; }
+
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
+            Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track.VolumeTo(0.05f);
+
+            Story.Open(@"../../../story.json");
+
+            var trackBasedClock = new FramedClock(Track);
+            Clock = trackBasedClock;
+
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
 
@@ -183,12 +198,35 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
-        private void ProjectRefresh() {
-            Story.Save(@"../../../story.json");
-            Story.Open(@"../../../story.json");
+        public void Play(bool isPlaying) {
+            if (isPlaying) {
+                Track.Start();
+            } else {
+                Track.Stop();
+            }
         }
 
-        private void ProjectSave() => Story.Save(@"../../../story.json");
+        public void Restart() {
+            Track.Restart();
+            Story.ClearActives();
+        }
+
+        public void Seek(double time) {
+            Track.Seek(time);
+            Story.ClearActives();
+        }
+
+        private void ProjectRefresh() {
+            Play(false);
+            Story.Save(@"../../../story.json");
+            Story.Open(@"../../../story.json");
+            Seek(Track.CurrentTime);
+        }
+
+        private void ProjectSave() {
+            Play(false);
+            Story.Save(@"../../../story.json");
+        }
 
         private void ViewCommandPanel() {
             if (IsCommandPanelVisible) {
@@ -200,12 +238,12 @@ namespace S2VX.Game.Editor {
         }
 
         private void PlaybackPlay() {
-            if (Story.GameTime < Story.Track.Length) {
-                Story.Play(!Story.IsPlaying);
+            if (Time.Current < Track.Length) {
+                Play(!Track.IsRunning);
             }
         }
 
-        private void PlaybackRestart() => Story.Restart();
+        private void PlaybackRestart() => Restart();
 
         private void PlaybackDisplay() => Timeline.DisplayMS = !Timeline.DisplayMS;
 
