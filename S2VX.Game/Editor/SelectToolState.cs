@@ -38,6 +38,7 @@ namespace S2VX.Game.Editor {
                 var note = noteAndTime.Key;
                 Story.DeleteNote(note);
             }
+            SelectedNoteToTime.Clear();
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
