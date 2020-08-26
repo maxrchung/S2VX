@@ -56,13 +56,13 @@ namespace S2VX.Game.Editor {
             var xPosDelta = (DrawWidth - Bar.DrawWidth) / 2;
             var newX = mousePosX - xPosDelta;
             var xLengthRatio = newX / Bar.DrawWidth;
-            var newTime = xLengthRatio * Story.Track.Length;
+            var newTime = xLengthRatio * Editor.Track.Length;
 
             var clampedX = Math.Clamp(newX, 0, Bar.DrawWidth);
             Slider.X = clampedX;
 
-            var clampedTime = Math.Clamp(newTime, 0, Story.Track.Length);
-            Story.Seek(clampedTime);
+            var clampedTime = Math.Clamp(newTime, 0, Editor.Track.Length);
+            Editor.Seek(clampedTime);
         }
 
         private const float TimelineHeight = 0.075f;
@@ -122,8 +122,8 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnDragStart(DragStartEvent e) {
             // Pause if we start a drag
-            if (Story.IsPlaying) {
-                Story.Play(false);
+            if (Editor.Track.IsRunning) {
+                Editor.Play(false);
                 SwitchToPlaying = true;
             } else {
                 SwitchToPlaying = false;
@@ -140,20 +140,20 @@ namespace S2VX.Game.Editor {
 
         protected override void OnDragEnd(DragEndEvent e) {
             if (SwitchToPlaying) {
-                Story.Play(true);
+                Editor.Play(true);
             }
         }
 
         protected override void Update() {
             DelayDrag = false;
-            var songRatio = Story.GameTime / Story.Track.Length;
+            var songRatio = Time.Current / Editor.Track.Length;
             var newX = songRatio * Bar.DrawWidth;
             Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
             if (DisplayMS) {
-                TxtClock.Text = Math.Truncate(Math.Clamp(Story.GameTime, 0, Story.Track.Length)).ToString(CultureInfo.InvariantCulture);
+                TxtClock.Text = Math.Truncate(Math.Clamp(Time.Current, 0, Editor.Track.Length)).ToString(CultureInfo.InvariantCulture);
             } else {
-                var time = TimeSpan.FromMilliseconds(Math.Clamp(Story.GameTime, 0, Story.Track.Length));
+                var time = TimeSpan.FromMilliseconds(Math.Clamp(Time.Current, 0, Editor.Track.Length));
                 TxtClock.Text = time.ToString(@"mm\:ss\:fff", CultureInfo.InvariantCulture);
             }
 
@@ -161,8 +161,8 @@ namespace S2VX.Game.Editor {
 
             TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
 
-            if (Story.GameTime >= Story.Track.Length) {
-                Story.Play(false);
+            if (Time.Current >= Editor.Track.Length) {
+                Editor.Play(false);
             }
         }
     }

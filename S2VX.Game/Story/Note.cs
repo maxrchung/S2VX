@@ -44,7 +44,7 @@ namespace S2VX.Game.Story {
             var notes = Story.Notes;
             var camera = Story.Camera;
 
-            var time = Story.GameTime;
+            var time = Time.Current;
             var endFadeOut = EndTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
