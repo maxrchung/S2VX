@@ -17,7 +17,9 @@ namespace S2VX.Game.Editor {
         private S2VXEditor Editor { get; set; } = null;
         private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
+
         private const float SelectionIndicatorThickness = 0.025f;
+
         private bool DragTimelineNote { get; set; }
         private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
 
@@ -80,8 +82,8 @@ namespace S2VX.Game.Editor {
         }
 
         private double GetClosestTickTime(double gameTime) {
-            var numTicks = Story.BPM / 60f * (Story.Track.Length / NotesTimeline.SecondsToMS) * Editor.NotesTimeline.Divisor;
-            var timeBetweenTicks = Story.Track.Length / numTicks;
+            var numTicks = Story.BPM / 60f * (Editor.Track.Length / NotesTimeline.SecondsToMS) * Editor.NotesTimeline.Divisor;
+            var timeBetweenTicks = Editor.Track.Length / numTicks;
             var leftOffset = (gameTime - Story.Offset) % timeBetweenTicks;
             var rightOffset = timeBetweenTicks - leftOffset;
             return gameTime + (leftOffset <= rightOffset ? -leftOffset : rightOffset);
@@ -93,7 +95,7 @@ namespace S2VX.Game.Editor {
                 mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
                 var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
-                var gameTimeAtMouse = Story.GameTime + gameTimeDeltaFromMiddle;
+                var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
                 var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
                 foreach (var noteAndTime in SelectedNoteToTime) {
@@ -131,8 +133,8 @@ namespace S2VX.Game.Editor {
 
         protected override void Update() {
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
-            var lowerBound = Story.GameTime - Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
-            var upperBound = Story.GameTime + Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
+            var lowerBound = Time.Current - Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
+            var upperBound = Time.Current + Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
             foreach (var noteAndTime in SelectedNoteToTime) {
                 if (lowerBound <= noteAndTime.Value && noteAndTime.Value <= upperBound) {
                     var relativePosition = (noteAndTime.Value - lowerBound) / (Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS);

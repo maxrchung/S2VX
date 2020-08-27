@@ -14,7 +14,11 @@ using System.Collections.Generic;
 namespace S2VX.Game.Editor {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
-        private S2VXStory Story { get; set; } = null;
+        private S2VXEditor Editor { get; set; }
+
+        [Resolved]
+        private S2VXStory Story { get; set; }
+
         public Dictionary<Note, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<Note, RelativeBox>();
 
         private Container TickBarContent { get; } = new Container {
@@ -228,24 +232,24 @@ namespace S2VX.Game.Editor {
         }
 
         public void SnapToTick(bool snapLeft) {
-            var numTicks = Story.BPM / 60f * (Story.Track.Length / SecondsToMS) * Divisor;
-            var timeBetweenTicks = Story.Track.Length / numTicks;
-            var leftOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+            var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
+            var timeBetweenTicks = Editor.Track.Length / numTicks;
+            var leftOffset = (Time.Current - Story.Offset) % timeBetweenTicks;
 
-            var tolerance = 0.0000000001;
+            var tolerance = 0.02;
             if (snapLeft) {
                 leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
-                Story.Seek(Math.Clamp(Story.GameTime - leftOffset, 0, Story.Track.Length));
+                Editor.Seek(Math.Clamp(Time.Current - leftOffset, 0, Editor.Track.Length));
             } else {
                 var rightOffset = timeBetweenTicks - leftOffset;
                 rightOffset = rightOffset <= tolerance ? timeBetweenTicks : rightOffset;
-                Story.Seek(Math.Clamp(Story.GameTime + rightOffset, 0, Story.Track.Length));
+                Editor.Seek(Math.Clamp(Time.Current + rightOffset, 0, Editor.Track.Length));
             }
         }
 
         private void AddVisibleNotes() {
-            var lowerBound = Story.GameTime - SectionLength * SecondsToMS / 2;
-            var upperBound = Story.GameTime + SectionLength * SecondsToMS / 2;
+            var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
+            var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
@@ -267,12 +271,12 @@ namespace S2VX.Game.Editor {
             NoteToTimelineNote.Clear();
             TickBarContent.Clear();
 
-            var totalSeconds = Story.Track.Length / SecondsToMS;
+            var totalSeconds = Editor.Track.Length / SecondsToMS;
             var bps = Story.BPM / 60f;
             var numBigTicks = bps * totalSeconds;
             var tickSpacing = 1 / numBigTicks * (totalSeconds / SectionLength);
-            var timeBetweenTicks = Story.Track.Length / numBigTicks;
-            var midTickOffset = (Story.GameTime - Story.Offset) % timeBetweenTicks;
+            var timeBetweenTicks = Editor.Track.Length / numBigTicks;
+            var midTickOffset = (Time.Current - Story.Offset) % timeBetweenTicks;
             var relativeMidTickOffset = midTickOffset / (SectionLength * SecondsToMS);
 
             Divisor = ValidBeatDivisors[DivisorIndex];
