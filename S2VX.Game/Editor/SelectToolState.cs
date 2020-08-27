@@ -108,7 +108,7 @@ namespace S2VX.Game.Editor {
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
 
-        public override void OnToolKeyDown(KeyDownEvent e) {
+        public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Delete:
                     Editor.NoteSelectionIndicators.Clear();
@@ -117,10 +117,11 @@ namespace S2VX.Game.Editor {
                         Story.DeleteNote(note);
                     }
                     SelectedNoteToTime.Clear();
-                    break;
+                    return true;
                 default:
                     break;
             }
+            return false;
         }
 
         public override void HandleExit() {
