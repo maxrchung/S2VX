@@ -187,9 +187,7 @@ namespace S2VX.Game.Editor {
                     NotesTimeline.SnapToTick(false);
                     break;
                 case Key.Delete:
-                    if (ToolState is SelectToolState tool) {
-                        tool.DeleteSelectedNote();
-                    }
+                    ToolState.OnToolKeyDown(e);
                     break;
                 default:
                     break;

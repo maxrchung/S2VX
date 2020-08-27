@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
+using osuTK.Input;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,7 @@ namespace S2VX.Game.Editor {
         private S2VXEditor Editor { get; set; } = null;
         private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
-
         private const float SelectionIndicatorThickness = 0.025f;
-
         private bool DragTimelineNote { get; set; }
         private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
 
@@ -31,15 +30,6 @@ namespace S2VX.Game.Editor {
             var mouseInXRange = leftBound <= mousePos.X && mousePos.X <= rightBound;
             var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
             return mouseInXRange && mouseInYRange;
-        }
-
-        public void DeleteSelectedNote() {
-            Editor.NoteSelectionIndicators.Clear();
-            foreach (var noteAndTime in SelectedNoteToTime) {
-                var note = noteAndTime.Key;
-                Story.DeleteNote(note);
-            }
-            SelectedNoteToTime.Clear();
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
@@ -117,6 +107,21 @@ namespace S2VX.Game.Editor {
         }
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
+
+        public override void OnToolKeyDown(KeyDownEvent e) {
+            switch (e.Key) {
+                case Key.Delete:
+                    Editor.NoteSelectionIndicators.Clear();
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        Story.DeleteNote(note);
+                    }
+                    SelectedNoteToTime.Clear();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public override void HandleExit() {
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
