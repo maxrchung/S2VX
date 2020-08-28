@@ -17,7 +17,6 @@ namespace S2VX.Game {
         protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(typeof(S2VXResources).Assembly));
 
         protected override void Dispose(bool isDisposing) {
