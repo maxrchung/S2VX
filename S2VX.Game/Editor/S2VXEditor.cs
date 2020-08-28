@@ -143,6 +143,9 @@ namespace S2VX.Game.Editor {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         protected override bool OnKeyDown(KeyDownEvent e) {
+            if (ToolState.OnToolKeyDown(e)) {
+                return true;
+            }
             switch (e.Key) {
                 case Key.R:
                     if (e.ControlPressed) {
@@ -160,6 +163,10 @@ namespace S2VX.Game.Editor {
                     } else {
                         ToolSelect();
                     }
+                    break;
+                }
+                case Key.Number2: {
+                    ToolNote();
                     break;
                 }
                 case Key.BracketLeft: {
@@ -180,10 +187,6 @@ namespace S2VX.Game.Editor {
                             PlaybackZoomOut();
                         }
                     }
-                    break;
-                }
-                case Key.Number2: {
-                    ToolNote();
                     break;
                 }
                 case Key.Space:
