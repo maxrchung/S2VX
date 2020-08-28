@@ -34,12 +34,38 @@ namespace S2VX.Game.Editor {
             return mouseInXRange && mouseInYRange;
         }
 
+        private bool MouseIsOnNote(Vector2 mousePos, Note note) {
+            var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
+            var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
+            var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
+
+            if (!noteVisibleOnEditor) {
+                return false;
+            }
+
+            mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
+            var storyNote = note.SquareNote;
+
+            // Note.DrawPosition centered at (0,0). I convert it so (0,0) is top left
+            var notePositionX = storyNote.DrawPosition.X + Editor.DrawWidth / 2;
+            var notePositionY = storyNote.DrawPosition.Y + Editor.DrawHeight / 2;
+
+            var leftBound = notePositionX - storyNote.DrawSize.X / 2;
+            var rightBound = notePositionX + storyNote.DrawSize.X / 2;
+            var topBound = notePositionY - storyNote.DrawSize.Y / 2;
+            var bottomBound = notePositionY + storyNote.DrawSize.Y / 2;
+            //Console.WriteLine($"{mousePos}, {leftBound}, {rightBound}, {topBound}, {bottomBound}");
+            var mouseInXRange = leftBound <= mousePos.X && mousePos.X <= rightBound;
+            var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
+            return mouseInXRange && mouseInYRange;
+        }
+
         public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
-                if (MouseIsOnNote(mousePos, notes.Value)) {
+                if (MouseIsOnNote(mousePos, notes.Value) || MouseIsOnNote(e.ScreenSpaceMousePosition, notes.Key)) {
                     var note = notes.Key;
                     SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
                     var noteSelection = new RelativeBox {
@@ -110,6 +136,7 @@ namespace S2VX.Game.Editor {
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Delete:
