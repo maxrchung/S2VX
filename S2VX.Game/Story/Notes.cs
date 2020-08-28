@@ -26,6 +26,11 @@ namespace S2VX.Game.Story {
             AddInternal(note);
         }
 
+        public void DeleteNote(Note note) {
+            Children.Remove(note);
+            RemoveInternal(note);
+        }
+
         [BackgroundDependencyLoader]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
