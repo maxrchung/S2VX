@@ -26,6 +26,11 @@ namespace S2VX.Game.Story {
             AddInternal(note);
         }
 
+        public void DeleteNote(Note note) {
+            Children.Remove(note);
+            RemoveInternal(note);
+        }
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;

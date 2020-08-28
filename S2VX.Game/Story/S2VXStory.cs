@@ -58,6 +58,8 @@ namespace S2VX.Game.Story {
 
         public void AddNote(Vector2 position, double time) => Notes.AddNote(position, time);
 
+        public void DeleteNote(Note note) => Notes.DeleteNote(note);
+
         public void Open(string path) {
             Commands.Clear();
             var text = File.ReadAllText(path);

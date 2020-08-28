@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
+using osuTK.Input;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,22 @@ namespace S2VX.Game.Editor {
         }
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
+
+        public override bool OnToolKeyDown(KeyDownEvent e) {
+            switch (e.Key) {
+                case Key.Delete:
+                    Editor.NoteSelectionIndicators.Clear();
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        Story.DeleteNote(note);
+                    }
+                    SelectedNoteToTime.Clear();
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
 
         public override void HandleExit() {
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
