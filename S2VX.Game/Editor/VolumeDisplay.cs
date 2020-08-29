@@ -39,9 +39,9 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {
-                Editor.VolumeIncrease10();
+                Editor.VolumeIncrease();
             } else {
-                Editor.VolumeDecrease10();
+                Editor.VolumeDecrease();
             }
             return true;
         }

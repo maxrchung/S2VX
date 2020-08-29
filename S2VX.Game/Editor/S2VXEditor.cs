@@ -105,8 +105,8 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
-                                new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease10),
-                                new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease10),
+                                new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
+                                new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             }
                         },
                         new MenuItem("Tool")
@@ -283,9 +283,13 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
-        public void VolumeIncrease10() => Track.VolumeTo(Track.Volume.Value + 0.1);
+        private void VolumeIncrease() => VolumeIncrease(0.25);
 
-        public void VolumeDecrease10() => Track.VolumeTo(Track.Volume.Value - 0.1);
+        private void VolumeDecrease() => VolumeDecrease(0.25);
+
+        public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
+
+        public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
