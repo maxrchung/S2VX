@@ -15,11 +15,7 @@ namespace S2VX.Game.Editor {
         public Anchor TextAnchor { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            RelativeSizeAxes = Axes.Both;
-            Anchor = Anchor.CentreRight;
-            Origin = Anchor.CentreRight;
-            Width = 0.15f;
+        private void Load() =>
             InternalChildren = new Drawable[]
             {
                 TxtPlaybackRate = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
@@ -28,7 +24,6 @@ namespace S2VX.Game.Editor {
                     TextAnchor = TextAnchor,
                 }
             };
-        }
 
         protected override void Update() => TxtPlaybackRate.Text = $"Speed: {Editor.Track.Rate.ToString("P0", CultureInfo.InvariantCulture)}";
 
