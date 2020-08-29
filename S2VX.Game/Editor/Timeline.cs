@@ -30,15 +30,8 @@ namespace S2VX.Game.Editor {
         };
 
         private SpriteText TxtClock { get; set; } = new SpriteText();
-        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.CentreLeft,
-            Colour = Color4.White,
-            X = 0.87f,
-            Y = -0.15f,
-            Font = new FontUsage("default", 30, "500"),
-        };
+
+        private PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay();
 
         private bool SwitchToPlaying { get; set; }
 
@@ -46,10 +39,7 @@ namespace S2VX.Game.Editor {
 
         public bool DisplayMS { get; set; }
 
-        private void SetTextSize(float value) {
-            TxtClock.Font = TxtClock.Font.With(size: value);
-            TxtMousePosition.Font = TxtClock.Font;
-        }
+        private void SetTextSize(float value) => TxtClock.Font = TxtClock.Font.With(size: value);
 
         private void UpdateSlider(Vector2 mousePosition) {
             var mousePosX = ToLocalSpace(mousePosition).X;
@@ -110,7 +100,7 @@ namespace S2VX.Game.Editor {
                         Slider
                     }
                 },
-                TxtMousePosition
+                PlaybackRateDisplay,
             };
         }
 
@@ -157,8 +147,6 @@ namespace S2VX.Game.Editor {
             }
 
             SetTextSize(Story.DrawWidth / 40);
-
-            TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
 
             if (Time.Current >= Editor.Track.Length) {
                 Editor.Play(false);
