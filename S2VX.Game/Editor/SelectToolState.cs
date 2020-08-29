@@ -34,6 +34,24 @@ namespace S2VX.Game.Editor {
             return mouseInXRange && mouseInYRange;
         }
 
+        // https://gamedev.stackexchange.com/a/86784
+        private Vector2 GetRotatedPoint(Vector2 point, Vector2 origin, float rotation) {
+            // origin is centered at (0,0). I convert it so (0,0) is top left
+            var originX = origin.X + Editor.DrawWidth / 2;
+            var originY = origin.Y + Editor.DrawHeight / 2;
+
+            Console.WriteLine($"Starting Point: {point}");
+            var translatedX = point.X - originX;
+            var translatedY = point.Y - originY;
+
+            var rotatedX = translatedX * (float)Math.Cos(rotation) - translatedY * (float)Math.Sin(rotation);
+            var rotatedY = translatedX * (float)Math.Sin(rotation) + translatedY * (float)Math.Cos(rotation);
+
+            var final = new Vector2(rotatedX + originX, rotatedY + originY);
+            Console.WriteLine($"Ending Point: {final}");
+            return final;
+        }
+
         private bool MouseIsOnNote(Vector2 mousePos, Note note) {
             var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
             var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
@@ -46,18 +64,29 @@ namespace S2VX.Game.Editor {
             mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
             var storyNote = note.SquareNote;
 
-            // Note.DrawPosition centered at (0,0). I convert it so (0,0) is top left
-            var notePositionX = storyNote.DrawPosition.X + Editor.DrawWidth / 2;
-            var notePositionY = storyNote.DrawPosition.Y + Editor.DrawHeight / 2;
+            // https://gamedev.stackexchange.com/a/110233
+            var pointA = GetRotatedPoint(storyNote.BoundingBox.TopLeft, storyNote.DrawPosition, storyNote.Rotation);
+            var pointB = GetRotatedPoint(storyNote.BoundingBox.TopRight, storyNote.DrawPosition, storyNote.Rotation);
+            var pointC = GetRotatedPoint(storyNote.BoundingBox.BottomLeft, storyNote.DrawPosition, storyNote.Rotation);
 
-            var leftBound = notePositionX - storyNote.DrawSize.X / 2;
-            var rightBound = notePositionX + storyNote.DrawSize.X / 2;
-            var topBound = notePositionY - storyNote.DrawSize.Y / 2;
-            var bottomBound = notePositionY + storyNote.DrawSize.Y / 2;
-            //Console.WriteLine($"{mousePos}, {leftBound}, {rightBound}, {topBound}, {bottomBound}");
-            var mouseInXRange = leftBound <= mousePos.X && mousePos.X <= rightBound;
-            var mouseInYRange = topBound <= mousePos.Y && mousePos.Y <= bottomBound;
-            return mouseInXRange && mouseInYRange;
+            Console.WriteLine($"mousePos: {mousePos}");
+            Console.WriteLine($"A: {pointA}, B: {pointB}, C: {pointC}");
+
+            var v0 = pointC - pointA;
+            var v1 = pointB - pointA;
+            var v2 = mousePos - pointA;
+
+            var dot00 = Vector2.Dot(v0, v0);
+            var dot01 = Vector2.Dot(v0, v1);
+            var dot02 = Vector2.Dot(v0, v2);
+            var dot11 = Vector2.Dot(v1, v1);
+            var dot12 = Vector2.Dot(v1, v2);
+
+            var invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+            var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+            var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+            return u >= 0 && v >= 0 && u <= 1 && v <= 1;
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
