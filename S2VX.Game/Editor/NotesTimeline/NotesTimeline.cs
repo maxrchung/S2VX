@@ -43,8 +43,8 @@ namespace S2VX.Game.Editor {
             new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown },
         };
 
-        private const float TimelineHeight = 0.075f;
-        private const float TimelineWidth = 1.0f;
+        public const float TimelineHeight = 0.075f;
+        public const float TimelineWidth = 1.0f;
         public const float TimelineNoteHeight = 0.6f;
         public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 

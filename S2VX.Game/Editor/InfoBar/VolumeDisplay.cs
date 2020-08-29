@@ -12,26 +12,18 @@ namespace S2VX.Game.Editor {
 
         private TextFlowContainer TxtVolume { get; set; }
 
-        [BackgroundDependencyLoader]
-        private void Load() {
-            RelativeSizeAxes = Axes.Both;
-            RelativePositionAxes = Axes.Both;
-            Anchor = Anchor.TopRight;
-            Origin = Anchor.TopRight;
-            Height = 0.03f;
-            Width = 0.15f;
-            Y = 0.075f;
-            Margin = new MarginPadding { Vertical = 24 };
+        public Anchor TextAnchor { get; set; }
 
+        [BackgroundDependencyLoader]
+        private void Load() =>
             InternalChildren = new Drawable[]
             {
                 TxtVolume = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
-                    TextAnchor = Anchor.Centre,
+                    TextAnchor = TextAnchor,
                 }
             };
-        }
 
         protected override void Update() => TxtVolume.Text = $"Volume: {Editor.Track.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
 

@@ -24,6 +24,9 @@ namespace S2VX.Game.Editor {
         private bool IsCommandPanelVisible { get; set; }
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
+
+        public BasicMenu BasicMenu { get; private set; }
+
         private Timeline Timeline { get; } = new Timeline();
 
         public ToolState ToolState { get; private set; } = new SelectToolState();
@@ -68,10 +71,9 @@ namespace S2VX.Game.Editor {
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
-                new ToolDisplay(),
-                VolumeDisplay,
                 NotesTimeline,
-                new BasicMenu(Direction.Horizontal, true)
+                new InfoBar(),
+                BasicMenu = new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
                     Width = 1,

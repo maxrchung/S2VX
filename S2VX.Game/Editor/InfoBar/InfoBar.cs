@@ -7,11 +7,11 @@ using osuTK.Graphics;
 using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game.Editor {
-    public class ToolDisplay : CompositeDrawable {
+    public class InfoBar : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
-        private SpriteText TxtTool { get; set; } = new SpriteText() {
+        private SpriteText TxtTool { get; set; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 30, "500")
@@ -20,10 +20,18 @@ namespace S2VX.Game.Editor {
         private SpriteText TxtMousePosition { get; set; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopLeft,
+            Anchor = Anchor.TopCentre,
             Colour = Color4.White,
-            X = 0.45f,
             Font = new FontUsage("default", 30, "500"),
+        };
+
+        private VolumeDisplay VolumeDisplay { get; set; } = new VolumeDisplay {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.TopRight,
+            Origin = Anchor.TopRight,
+            Width = 0.15f,
+            TextAnchor = Anchor.TopCentre,
         };
 
         private void SetTextSize(float value) {
@@ -31,20 +39,24 @@ namespace S2VX.Game.Editor {
             TxtMousePosition.Font = TxtMousePosition.Font.With(size: value);
         }
 
+        public const float InfoBarHeight = 0.03f;
+        public const float InfoBarWidth = 1.0f;
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             RelativePositionAxes = Axes.Both;
-            Height = 0.03f;
-            Width = 1.0f;
-            Y = 0.075f;
+            Height = InfoBarHeight;
+            Width = InfoBarWidth;
+            Y = NotesTimeline.TimelineHeight;
             Margin = new MarginPadding { Vertical = 24 };
 
             InternalChildren = new Drawable[]
             {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 TxtTool,
-                TxtMousePosition
+                TxtMousePosition,
+                VolumeDisplay
             };
         }
 
