@@ -31,7 +31,9 @@ namespace S2VX.Game.Editor {
 
         private SpriteText TxtClock { get; set; } = new SpriteText();
 
-        private PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay();
+        private PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay {
+            TextAnchor = Anchor.Centre,
+        };
 
         private bool SwitchToPlaying { get; set; }
 

@@ -12,6 +12,8 @@ namespace S2VX.Game.Editor {
 
         private TextFlowContainer TxtPlaybackRate { get; set; }
 
+        public Anchor TextAnchor { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
@@ -23,7 +25,7 @@ namespace S2VX.Game.Editor {
                 TxtPlaybackRate = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
-                    TextAnchor = Anchor.Centre,
+                    TextAnchor = TextAnchor,
                 }
             };
         }
