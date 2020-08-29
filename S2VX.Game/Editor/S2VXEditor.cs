@@ -46,10 +46,12 @@ namespace S2VX.Game.Editor {
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
 
+        private VolumeDisplay VolumeDisplay { get; set; } = new VolumeDisplay();
+
         [BackgroundDependencyLoader]
         private void Load() {
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Track.VolumeTo(0.05f);
+            Track.VolumeTo(0.10f);
 
             Story.Open(@"../../../story.json");
 
@@ -66,6 +68,7 @@ namespace S2VX.Game.Editor {
                 NoteSelectionIndicators,
                 ToolContainer,
                 new ToolDisplay(),
+                VolumeDisplay,
                 NotesTimeline,
                 new BasicMenu(Direction.Horizontal, true)
                 {
@@ -102,6 +105,8 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
+                                new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease10),
+                                new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease10),
                             }
                         },
                         new MenuItem("Tool")
@@ -277,6 +282,10 @@ namespace S2VX.Game.Editor {
         private void PlaybackDecreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(false);
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
+
+        public void VolumeIncrease10() => Track.VolumeTo(Track.Volume.Value + 0.1);
+
+        public void VolumeDecrease10() => Track.VolumeTo(Track.Volume.Value - 0.1);
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
