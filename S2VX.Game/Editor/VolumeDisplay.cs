@@ -10,7 +10,7 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
-        private SpriteText TxtTool { get; set; } = new SpriteText() {
+        private SpriteText TxtVolume { get; set; } = new SpriteText() {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 30, "500")
@@ -28,13 +28,13 @@ namespace S2VX.Game.Editor {
 
             InternalChildren = new Drawable[]
             {
-                TxtTool
+                TxtVolume
             };
         }
 
         protected override void Update() {
-            TxtTool.Text = $"Volume: {Editor.Track.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
-            TxtTool.Font = TxtTool.Font.With(size: Editor.DrawWidth / 40);
+            TxtVolume.Text = $"Volume: {Editor.Track.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
+            TxtVolume.Font = TxtVolume.Font.With(size: Editor.DrawWidth / 40);
         }
 
         protected override bool OnScroll(ScrollEvent e) {
