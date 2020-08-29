@@ -2,6 +2,7 @@
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
+using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
@@ -35,20 +36,14 @@ namespace S2VX.Game.Editor {
         }
 
         // https://gamedev.stackexchange.com/a/86784
-        private Vector2 GetRotatedPoint(Vector2 point, Vector2 origin, float rotation) {
-            // origin is centered at (0,0). I convert it so (0,0) is top left
-            var originX = origin.X + Editor.DrawWidth / 2;
-            var originY = origin.Y + Editor.DrawHeight / 2;
-
-            Console.WriteLine($"Starting Point: {point}");
-            var translatedX = point.X - originX;
-            var translatedY = point.Y - originY;
+        private static Vector2 GetRotatedPoint(Vector2 point, Vector2 center, float rotation) {
+            var translatedX = point.X - center.X;
+            var translatedY = point.Y - center.Y;
 
             var rotatedX = translatedX * (float)Math.Cos(rotation) - translatedY * (float)Math.Sin(rotation);
             var rotatedY = translatedX * (float)Math.Sin(rotation) + translatedY * (float)Math.Cos(rotation);
 
-            var final = new Vector2(rotatedX + originX, rotatedY + originY);
-            Console.WriteLine($"Ending Point: {final}");
+            var final = new Vector2(rotatedX + center.X, rotatedY + center.Y);
             return final;
         }
 
@@ -63,14 +58,18 @@ namespace S2VX.Game.Editor {
 
             mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
             var storyNote = note.SquareNote;
+            // DrawPosition is centered at (0,0). I convert it so (0,0) starts top left
+            var convertedCenterPoint = new Vector2(storyNote.DrawPosition.X + Editor.DrawWidth / 2, storyNote.DrawPosition.Y + Editor.DrawHeight / 2);
+            var topLeft = new Vector2(convertedCenterPoint.X - storyNote.DrawWidth / 2, convertedCenterPoint.Y - storyNote.DrawHeight / 2);
+            var topRight = new Vector2(convertedCenterPoint.X + storyNote.DrawWidth / 2, convertedCenterPoint.Y - storyNote.DrawHeight / 2);
+            var bottomLeft = new Vector2(convertedCenterPoint.X - storyNote.DrawWidth / 2, convertedCenterPoint.Y + storyNote.DrawHeight / 2);
+
+            var rotationRadians = MathUtils.DegreesToRadians(storyNote.Rotation);
 
             // https://gamedev.stackexchange.com/a/110233
-            var pointA = GetRotatedPoint(storyNote.BoundingBox.TopLeft, storyNote.DrawPosition, storyNote.Rotation);
-            var pointB = GetRotatedPoint(storyNote.BoundingBox.TopRight, storyNote.DrawPosition, storyNote.Rotation);
-            var pointC = GetRotatedPoint(storyNote.BoundingBox.BottomLeft, storyNote.DrawPosition, storyNote.Rotation);
-
-            Console.WriteLine($"mousePos: {mousePos}");
-            Console.WriteLine($"A: {pointA}, B: {pointB}, C: {pointC}");
+            var pointA = GetRotatedPoint(topLeft, convertedCenterPoint, rotationRadians);
+            var pointB = GetRotatedPoint(topRight, convertedCenterPoint, rotationRadians);
+            var pointC = GetRotatedPoint(bottomLeft, convertedCenterPoint, rotationRadians);
 
             var v0 = pointC - pointA;
             var v1 = pointB - pointA;
@@ -101,8 +100,6 @@ namespace S2VX.Game.Editor {
                         Colour = Color4.LimeGreen.Opacity(0.5f),
                         Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
                         Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
-                        RelativePositionAxes = Axes.Both,
-                        RelativeSizeAxes = Axes.Both,
                         Rotation = note.SquareNote.Rotation,
                     };
                     noteSelection.X = note.SquareNote.Position.X;
