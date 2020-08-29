@@ -17,6 +17,20 @@ namespace S2VX.Game.Editor {
             Font = new FontUsage("default", 30, "500")
         };
 
+        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.TopLeft,
+            Colour = Color4.White,
+            X = 0.45f,
+            Font = new FontUsage("default", 30, "500"),
+        };
+
+        private void SetTextSize(float value) {
+            TxtTool.Font = TxtTool.Font.With(size: value);
+            TxtMousePosition.Font = TxtMousePosition.Font.With(size: value);
+        }
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
@@ -29,13 +43,15 @@ namespace S2VX.Game.Editor {
             InternalChildren = new Drawable[]
             {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
-                TxtTool
+                TxtTool,
+                TxtMousePosition
             };
         }
 
         protected override void Update() {
             TxtTool.Text = $"Tool: {Editor.ToolState.DisplayName()}";
-            TxtTool.Font = TxtTool.Font.With(size: Editor.DrawWidth / 40);
+            TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
+            SetTextSize(Editor.DrawWidth / 40);
         }
     }
 }

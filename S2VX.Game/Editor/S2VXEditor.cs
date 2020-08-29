@@ -11,6 +11,7 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Story;
+using System;
 
 namespace S2VX.Game.Editor {
     public class S2VXEditor : CompositeDrawable {
@@ -277,6 +278,10 @@ namespace S2VX.Game.Editor {
         private void PlaybackDecreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(false);
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
+
+        public void PlaybackIncreaseRate() => Track.TempoTo(Math.Clamp(Track.Tempo.Value + 0.1, 0.1, 1));
+
+        public void PlaybackDecreaseRate() => Track.TempoTo(Math.Clamp(Track.Tempo.Value - 0.1, 0.1, 1));
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
