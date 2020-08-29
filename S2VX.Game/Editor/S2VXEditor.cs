@@ -97,12 +97,14 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Play/Pause (Space)", PlaybackPlay),
                                 new MenuItem("Restart (X)", PlaybackRestart),
                                 new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
-                                new MenuItem("Seek Left Tick (<- / MouseWheelUp)", PlaybackSeekLeftTick),
-                                new MenuItem("Seek Right Tick (-> / MouseWheelDown)", PlaybackSeekRightTick),
+                                new MenuItem("Seek Left Tick (Left / MouseWheelUp)", PlaybackSeekLeftTick),
+                                new MenuItem("Seek Right Tick (Right / MouseWheelDown)", PlaybackSeekRightTick),
                                 new MenuItem("Zoom Out Notes Timeline (Ctrl+[)", PlaybackZoomOut),
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
+                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
+                                new MenuItem("Decrease Playback Speed (Down)", PlaybackDecreaseRate),
                             }
                         },
                         new MenuItem("Tool")
@@ -203,6 +205,12 @@ namespace S2VX.Game.Editor {
                 case Key.Right:
                     NotesTimeline.SnapToTick(false);
                     break;
+                case Key.Up:
+                    PlaybackIncreaseRate();
+                    break;
+                case Key.Down:
+                    PlaybackDecreaseRate();
+                    break;
                 default:
                     break;
             }
@@ -279,9 +287,13 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
-        public void PlaybackIncreaseRate() => Track.TempoTo(Math.Clamp(Track.Tempo.Value + 0.1, 0.1, 1));
+        private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.2);
 
-        public void PlaybackDecreaseRate() => Track.TempoTo(Math.Clamp(Track.Tempo.Value - 0.1, 0.1, 1));
+        private void PlaybackDecreaseRate() => PlaybackDecreaseRate(0.2);
+
+        public void PlaybackIncreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value + step, 0.2, 1));
+
+        public void PlaybackDecreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value - step, 0.2, 1));
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
