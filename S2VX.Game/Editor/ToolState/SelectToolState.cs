@@ -6,11 +6,12 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Story;
+using S2VX.Game.Editor.Containers;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor {
-    public class SelectToolState : ToolState {
+namespace S2VX.Game.Editor.ToolState {
+    public class SelectToolState : S2VXToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
         [Resolved]
