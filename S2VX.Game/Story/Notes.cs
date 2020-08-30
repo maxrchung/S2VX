@@ -26,7 +26,7 @@ namespace S2VX.Game.Story {
             AddInternal(note);
         }
 
-        public void DeleteNote(Note note) {
+        public void RemoveNote(Note note) {
             Children.Remove(note);
             RemoveInternal(note);
         }

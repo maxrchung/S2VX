@@ -116,7 +116,7 @@ namespace S2VX.Game.Editor {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Story.DeleteNote(note);
+                        Story.RemoveNote(note);
                     }
                     SelectedNoteToTime.Clear();
                     return true;
