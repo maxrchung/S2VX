@@ -24,7 +24,7 @@ namespace S2VX.Game.Editor {
         private bool DragTimelineNote { get; set; }
         private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
 
-        private static bool MouseIsOnNote(Vector2 mousePos, RelativeBox timelineNote) {
+        private static bool MouseIsOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
             var rightBound = timelineNote.DrawPosition.X + timelineNote.DrawSize.X / 2;
             var topBound = timelineNote.DrawPosition.Y - timelineNote.DrawSize.Y / 2;
@@ -43,21 +43,13 @@ namespace S2VX.Game.Editor {
             var rotatedX = translatedX * (float)Math.Cos(rotation) - translatedY * (float)Math.Sin(rotation);
             var rotatedY = translatedX * (float)Math.Sin(rotation) + translatedY * (float)Math.Cos(rotation);
 
-            var final = new Vector2(rotatedX + center.X, rotatedY + center.Y);
-            return final;
+            return new Vector2(rotatedX + center.X, rotatedY + center.Y);
         }
 
         private bool MouseIsOnNote(Vector2 mousePos, Note note) {
-            var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
-            var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
-            var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
-
-            if (!noteVisibleOnEditor) {
-                return false;
-            }
-
             mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
             var storyNote = note.SquareNote;
+
             // DrawPosition is centered at (0,0). I convert it so (0,0) starts top left
             var convertedCenterPoint = new Vector2(storyNote.DrawPosition.X + Editor.DrawWidth / 2, storyNote.DrawPosition.Y + Editor.DrawHeight / 2);
             var topLeft = new Vector2(convertedCenterPoint.X - storyNote.DrawWidth / 2, convertedCenterPoint.Y - storyNote.DrawHeight / 2);
@@ -88,24 +80,48 @@ namespace S2VX.Game.Editor {
             return u >= 0 && v >= 0 && u <= 1 && v <= 1;
         }
 
+        private List<Note> GetVisibleStoryNotes() {
+            var visibleStoryNotes = new List<Note>();
+            foreach (var note in Story.Notes.Children) {
+                var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
+                var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
+                var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
+
+                if (noteVisibleOnEditor) {
+                    visibleStoryNotes.Add(note);
+                }
+            }
+            return visibleStoryNotes;
+        }
+
+        private void AddNoteSelection(Note note) {
+            SelectedNoteToTime[note] = note.EndTime;
+            var noteSelection = new RelativeBox {
+                Colour = Color4.LimeGreen.Opacity(0.5f),
+                Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
+                Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
+                Rotation = note.SquareNote.Rotation,
+            };
+            noteSelection.X = note.SquareNote.Position.X;
+            noteSelection.Y = note.SquareNote.Position.Y;
+            Editor.NoteSelectionIndicators.Add(noteSelection);
+            NoteSelectionToNote[noteSelection] = note;
+        }
+
         public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
+
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
-                if (MouseIsOnNote(mousePos, notes.Value) || MouseIsOnNote(e.ScreenSpaceMousePosition, notes.Key)) {
-                    var note = notes.Key;
-                    SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
-                    var noteSelection = new RelativeBox {
-                        Colour = Color4.LimeGreen.Opacity(0.5f),
-                        Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
-                        Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
-                        Rotation = note.SquareNote.Rotation,
-                    };
-                    noteSelection.X = note.SquareNote.Position.X;
-                    noteSelection.Y = note.SquareNote.Position.Y;
-                    Editor.NoteSelectionIndicators.Add(noteSelection);
-                    NoteSelectionToNote[noteSelection] = note;
+                if (MouseIsOnTimelineNote(mousePos, notes.Value)) {
+                    AddNoteSelection(notes.Key);
+                    return false;
+                }
+            }
+            foreach (var note in GetVisibleStoryNotes()) {
+                if (MouseIsOnNote(e.ScreenSpaceMousePosition, note)) {
+                    AddNoteSelection(note);
                     return false;
                 }
             }
@@ -118,7 +134,7 @@ namespace S2VX.Game.Editor {
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
-                if (MouseIsOnNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
+                if (Editor.NotesTimeline.NoteToTimelineNote.ContainsKey(note) && MouseIsOnTimelineNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
                     DragTimelineNote = true;
                     selectedNoteTime = note.EndTime;
                     break;
