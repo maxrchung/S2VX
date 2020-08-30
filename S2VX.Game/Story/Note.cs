@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Utils;
 using osuTK;
+using System.Linq;
 
 namespace S2VX.Game.Story {
     public class Note : RelativeBox {
@@ -8,12 +9,33 @@ namespace S2VX.Game.Story {
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private S2VXStory Story { get; set; } = null;
+        private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
             Alpha = 0;
             AlwaysPresent = true;
+        }
+
+        public Approach FindApproach() {
+            var approach = Story.Approaches.Children.Where(a =>
+                a.EndTime == EndTime &&
+                a.Coordinates == Coordinates
+            ).First();
+            return approach;
+        }
+
+        // These Update setters modify both the Note and a corresponding Approach
+        public void UpdateEndTime(double endTime) {
+            var approach = FindApproach();
+            approach.EndTime = endTime;
+            EndTime = endTime;
+        }
+
+        public void UpdateCoordinates(Vector2 coordinates) {
+            var approach = FindApproach();
+            approach.Coordinates = coordinates;
+            Coordinates = coordinates;
         }
 
         protected override void Update() {

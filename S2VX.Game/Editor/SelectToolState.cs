@@ -101,7 +101,7 @@ namespace S2VX.Game.Editor {
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
                     var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
-                    note.EndTime = newTime;
+                    note.UpdateEndTime(newTime);
                     selectedNoteToTimeCopy[note] = newTime;
                 }
                 SelectedNoteToTime = selectedNoteToTimeCopy;

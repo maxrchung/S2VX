@@ -79,10 +79,11 @@ namespace S2VX.Game.Story {
             }
             Commands.Sort();
 
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
-            Notes.SetChildren(notes);
+
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
+            var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
+            Notes.SetChildren(notes);
         }
 
         public void Save(string path) {
