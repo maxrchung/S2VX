@@ -108,8 +108,8 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
-                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
                                 new MenuItem("Decrease Playback Speed (Down)", PlaybackDecreaseRate),
+                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
                                 new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
                                 new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             }
@@ -294,17 +294,17 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
-        private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.2);
+        private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.1);
 
-        private void PlaybackDecreaseRate() => PlaybackDecreaseRate(0.2);
+        private void PlaybackDecreaseRate() => PlaybackDecreaseRate(0.1);
 
-        public void PlaybackIncreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value + step, 0.2, 1));
+        public void PlaybackIncreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value + step, 0.1, 1));
 
-        public void PlaybackDecreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value - step, 0.2, 1));
+        public void PlaybackDecreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value - step, 0.1, 1));
 
-        private void VolumeIncrease() => VolumeIncrease(0.25);
+        private void VolumeIncrease() => VolumeIncrease(0.1);
 
-        private void VolumeDecrease() => VolumeDecrease(0.25);
+        private void VolumeDecrease() => VolumeDecrease(0.1);
 
         public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
 

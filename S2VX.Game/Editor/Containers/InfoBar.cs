@@ -12,13 +12,13 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
-        private SpriteText TxtTool { get; set; } = new SpriteText {
+        private SpriteText TxtTool { get; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 30, "500")
         };
 
-        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
+        private SpriteText TxtMousePosition { get; } = new SpriteText {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopCentre,
@@ -26,7 +26,7 @@ namespace S2VX.Game.Editor.Containers {
             Font = new FontUsage("default", 30, "500"),
         };
 
-        private VolumeDisplay VolumeDisplay { get; set; } = new VolumeDisplay {
+        private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopRight,
