@@ -10,7 +10,10 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Story;
+using System;
 
 namespace S2VX.Game.Editor {
     public class S2VXEditor : CompositeDrawable {
@@ -23,16 +26,19 @@ namespace S2VX.Game.Editor {
         private bool IsCommandPanelVisible { get; set; }
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
+
+        public BasicMenu BasicMenu { get; private set; }
+
         private Timeline Timeline { get; } = new Timeline();
 
-        public ToolState ToolState { get; private set; } = new SelectToolState();
+        public S2VXToolState ToolState { get; private set; } = new SelectToolState();
 
         public Container NoteSelectionIndicators { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
 
-        private void SetToolState(ToolState newState) {
+        private void SetToolState(S2VXToolState newState) {
             ToolState.HandleExit();
             ToolState = newState;
         }
@@ -49,7 +55,7 @@ namespace S2VX.Game.Editor {
         [BackgroundDependencyLoader]
         private void Load() {
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Track.VolumeTo(0.05f);
+            Track.VolumeTo(0.10f);
 
             Story.Open(@"../../../story.json");
 
@@ -65,8 +71,8 @@ namespace S2VX.Game.Editor {
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
-                new ToolDisplay(),
                 NotesTimeline,
+                new InfoBar(),
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -96,12 +102,16 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Play/Pause (Space)", PlaybackPlay),
                                 new MenuItem("Restart (X)", PlaybackRestart),
                                 new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
-                                new MenuItem("Seek Left Tick (<- / MouseWheelUp)", PlaybackSeekLeftTick),
-                                new MenuItem("Seek Right Tick (-> / MouseWheelDown)", PlaybackSeekRightTick),
+                                new MenuItem("Seek Left Tick (Left / MouseWheelUp)", PlaybackSeekLeftTick),
+                                new MenuItem("Seek Right Tick (Right / MouseWheelDown)", PlaybackSeekRightTick),
                                 new MenuItem("Zoom Out Notes Timeline (Ctrl+[)", PlaybackZoomOut),
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
+                                new MenuItem("Decrease Playback Speed (Down)", PlaybackDecreaseRate),
+                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
+                                new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
+                                new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             }
                         },
                         new MenuItem("Tool")
@@ -202,6 +212,12 @@ namespace S2VX.Game.Editor {
                 case Key.Right:
                     NotesTimeline.SnapToTick(false);
                     break;
+                case Key.Up:
+                    PlaybackIncreaseRate();
+                    break;
+                case Key.Down:
+                    PlaybackDecreaseRate();
+                    break;
                 default:
                     break;
             }
@@ -277,6 +293,22 @@ namespace S2VX.Game.Editor {
         private void PlaybackDecreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(false);
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
+
+        private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.1);
+
+        private void PlaybackDecreaseRate() => PlaybackDecreaseRate(0.1);
+
+        public void PlaybackIncreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value + step, 0.1, 1));
+
+        public void PlaybackDecreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value - step, 0.1, 1));
+
+        private void VolumeIncrease() => VolumeIncrease(0.1);
+
+        private void VolumeDecrease() => VolumeDecrease(0.1);
+
+        public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
+
+        public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
