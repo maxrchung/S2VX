@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story {
     public class Approaches : CompositeDrawable {
@@ -19,6 +20,15 @@ namespace S2VX.Game.Story {
             };
             Children.Add(approach);
             AddInternal(approach);
+        }
+
+        public void RemoveApproach(Note note) {
+            var approach = Children.Where(a =>
+                a.Coordinates == note.Coordinates &&
+                a.EndTime == note.EndTime
+            ).First();
+            Children.Remove(approach);
+            RemoveInternal(approach);
         }
 
         [Resolved]
