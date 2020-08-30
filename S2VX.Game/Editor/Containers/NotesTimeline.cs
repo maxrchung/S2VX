@@ -11,7 +11,7 @@ using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }

@@ -10,6 +10,8 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Story;
 using System;
 
@@ -29,14 +31,14 @@ namespace S2VX.Game.Editor {
 
         private Timeline Timeline { get; } = new Timeline();
 
-        public ToolState ToolState { get; private set; } = new SelectToolState();
+        public S2VXToolState ToolState { get; private set; } = new SelectToolState();
 
         public Container NoteSelectionIndicators { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
 
-        private void SetToolState(ToolState newState) {
+        private void SetToolState(S2VXToolState newState) {
             ToolState.HandleExit();
             ToolState = newState;
         }
@@ -49,8 +51,6 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
-
-        private VolumeDisplay VolumeDisplay { get; set; } = new VolumeDisplay();
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -73,7 +73,7 @@ namespace S2VX.Game.Editor {
                 ToolContainer,
                 NotesTimeline,
                 new InfoBar(),
-                BasicMenu = new BasicMenu(Direction.Horizontal, true)
+                new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
                     Width = 1,

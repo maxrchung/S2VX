@@ -4,9 +4,10 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
+using S2VX.Game.Editor.UserInterface;
 using SixLabors.ImageSharp.Processing;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class InfoBar : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }

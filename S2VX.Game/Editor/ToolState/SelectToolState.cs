@@ -9,8 +9,8 @@ using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor {
-    public class SelectToolState : ToolState {
+namespace S2VX.Game.Editor.ToolState {
+    public class SelectToolState : S2VXToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
         [Resolved]
@@ -82,7 +82,7 @@ namespace S2VX.Game.Editor {
         }
 
         private double GetClosestTickTime(double gameTime) {
-            var numTicks = Story.BPM / 60f * (Editor.Track.Length / NotesTimeline.SecondsToMS) * Editor.NotesTimeline.Divisor;
+            var numTicks = Story.BPM / 60f * (Editor.Track.Length / Containers.NotesTimeline.SecondsToMS) * Editor.NotesTimeline.Divisor;
             var timeBetweenTicks = Editor.Track.Length / numTicks;
             var leftOffset = (gameTime - Story.Offset) % timeBetweenTicks;
             var rightOffset = timeBetweenTicks - leftOffset;
@@ -94,7 +94,7 @@ namespace S2VX.Game.Editor {
                 var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections).X;
                 mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
                 var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
-                var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
+                var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * Containers.NotesTimeline.SecondsToMS;
                 var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
                 var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
@@ -133,15 +133,15 @@ namespace S2VX.Game.Editor {
 
         protected override void Update() {
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
-            var lowerBound = Time.Current - Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
-            var upperBound = Time.Current + Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
+            var lowerBound = Time.Current - Editor.NotesTimeline.SectionLength * Containers.NotesTimeline.SecondsToMS / 2;
+            var upperBound = Time.Current + Editor.NotesTimeline.SectionLength * Containers.NotesTimeline.SecondsToMS / 2;
             foreach (var noteAndTime in SelectedNoteToTime) {
                 if (lowerBound <= noteAndTime.Value && noteAndTime.Value <= upperBound) {
-                    var relativePosition = (noteAndTime.Value - lowerBound) / (Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS);
+                    var relativePosition = (noteAndTime.Value - lowerBound) / (Editor.NotesTimeline.SectionLength * Containers.NotesTimeline.SecondsToMS);
                     var indication = new RelativeBox {
                         Colour = Color4.LimeGreen.Opacity(0.727f),
-                        Width = NotesTimeline.TimelineNoteWidth + 0.009727f,
-                        Height = NotesTimeline.TimelineNoteHeight + 0.1f,
+                        Width = Containers.NotesTimeline.TimelineNoteWidth + 0.009727f,
+                        Height = Containers.NotesTimeline.TimelineNoteHeight + 0.1f,
                         X = (float)relativePosition,
                         Y = 0.2f,
                         Anchor = Anchor.TopLeft,

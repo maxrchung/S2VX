@@ -5,12 +5,12 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using System.Globalization;
 
-namespace S2VX.Game.Editor {
-    public class VolumeDisplay : CompositeDrawable {
+namespace S2VX.Game.Editor.UserInterface {
+    public class PlaybackRateDisplay : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
-        private TextFlowContainer TxtVolume { get; set; }
+        private TextFlowContainer TxtPlaybackRate { get; set; }
 
         public Anchor TextAnchor { get; set; }
 
@@ -18,20 +18,20 @@ namespace S2VX.Game.Editor {
         private void Load() =>
             InternalChildren = new Drawable[]
             {
-                TxtVolume = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
+                TxtPlaybackRate = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = TextAnchor,
                 }
             };
 
-        protected override void Update() => TxtVolume.Text = $"Volume: {Editor.Track.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
+        protected override void Update() => TxtPlaybackRate.Text = $"Speed: {Editor.Track.Rate.ToString("P0", CultureInfo.InvariantCulture)}";
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {
-                Editor.VolumeIncrease();
+                Editor.PlaybackIncreaseRate();
             } else {
-                Editor.VolumeDecrease();
+                Editor.PlaybackDecreaseRate();
             }
             return true;
         }

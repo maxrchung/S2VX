@@ -7,11 +7,12 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Editor.UserInterface;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Globalization;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class Timeline : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }
