@@ -29,7 +29,6 @@ namespace S2VX.Game.Story {
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
@@ -58,6 +57,8 @@ namespace S2VX.Game.Story {
         }
 
         public void AddNote(Vector2 position, double time) => Notes.AddNote(position, time);
+
+        public void DeleteNote(Note note) => Notes.DeleteNote(note);
 
         public void Open(string path) {
             Commands.Clear();

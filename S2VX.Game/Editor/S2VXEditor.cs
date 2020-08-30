@@ -47,7 +47,6 @@ namespace S2VX.Game.Editor {
         public DrawableTrack Track { get; private set; }
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Track.VolumeTo(0.05f);
@@ -141,8 +140,10 @@ namespace S2VX.Game.Editor {
             return true;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         protected override bool OnKeyDown(KeyDownEvent e) {
+            if (ToolState.OnToolKeyDown(e)) {
+                return true;
+            }
             switch (e.Key) {
                 case Key.R:
                     if (e.ControlPressed) {
@@ -160,6 +161,10 @@ namespace S2VX.Game.Editor {
                     } else {
                         ToolSelect();
                     }
+                    break;
+                }
+                case Key.Number2: {
+                    ToolNote();
                     break;
                 }
                 case Key.BracketLeft: {
@@ -180,10 +185,6 @@ namespace S2VX.Game.Editor {
                             PlaybackZoomOut();
                         }
                     }
-                    break;
-                }
-                case Key.Number2: {
-                    ToolNote();
                     break;
                 }
                 case Key.Space:
