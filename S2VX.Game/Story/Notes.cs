@@ -14,8 +14,6 @@ namespace S2VX.Game.Story {
         public float FadeInTime { get; set; } = 100;
         public float ShowTime { get; set; } = 1000;
         public float FadeOutTime { get; set; } = 100;
-        public float ApproachDistance { get; set; } = 0.5f;
-        public float ApproachThickness { get; set; } = 0.005f;
 
         public void AddNote(Vector2 position, double time) {
             var note = new Note {
