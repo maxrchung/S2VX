@@ -143,10 +143,10 @@ namespace S2VX.Game.Story {
                     command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(data);
                     break;
                 case CommandType.ApproachesDistance:
-                    command = JsonConvert.DeserializeObject<ApproachDistanceCommand>(data);
+                    command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(data);
                     break;
                 case CommandType.ApproachesThickness:
-                    command = JsonConvert.DeserializeObject<ApproachThicknessCommand>(data);
+                    command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data);
                     break;
                 case CommandType.TimingChange:
                     command = JsonConvert.DeserializeObject<TimingChangeCommand>(data);
