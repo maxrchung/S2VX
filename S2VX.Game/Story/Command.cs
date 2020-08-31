@@ -10,8 +10,8 @@ using System.Globalization;
 namespace S2VX.Game.Story {
     public enum CommandType {
         None,
-        ApproachDistance,
-        ApproachThickness,
+        ApproachesDistance,
+        ApproachesThickness,
         BackgroundColor,
         CameraMove,
         CameraRotate,
@@ -80,11 +80,11 @@ namespace S2VX.Game.Story {
                 case CommandType.NotesFadeOutTime:
                     command = NotesFadeOutTimeCommand.FromString(split);
                     break;
-                case CommandType.ApproachDistance:
-                    command = ApproachDistanceCommand.FromString(split);
+                case CommandType.ApproachesDistance:
+                    command = ApproachesDistanceCommand.FromString(split);
                     break;
-                case CommandType.ApproachThickness:
-                    command = ApproachThicknessCommand.FromString(split);
+                case CommandType.ApproachesThickness:
+                    command = ApproachesThicknessCommand.FromString(split);
                     break;
                 case CommandType.TimingChange:
                     command = TimingChangeCommand.FromString(split);
@@ -142,11 +142,11 @@ namespace S2VX.Game.Story {
                 case CommandType.NotesFadeOutTime:
                     command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(data);
                     break;
-                case CommandType.ApproachDistance:
-                    command = JsonConvert.DeserializeObject<ApproachDistanceCommand>(data);
+                case CommandType.ApproachesDistance:
+                    command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(data);
                     break;
-                case CommandType.ApproachThickness:
-                    command = JsonConvert.DeserializeObject<ApproachThicknessCommand>(data);
+                case CommandType.ApproachesThickness:
+                    command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data);
                     break;
                 case CommandType.TimingChange:
                     command = JsonConvert.DeserializeObject<TimingChangeCommand>(data);
@@ -395,17 +395,17 @@ namespace S2VX.Game.Story {
         }
     }
 
-    public class ApproachDistanceCommand : Command {
-        public override CommandType Type { get; set; } = CommandType.ApproachDistance;
+    public class ApproachesDistanceCommand : Command {
+        public override CommandType Type { get; set; } = CommandType.ApproachesDistance;
         public float StartValue { get; set; } = 0.5f;
         public float EndValue { get; set; } = 0.5f;
         public override void Apply(double time, S2VXStory story) {
             var distance = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Notes.ApproachDistance = distance;
+            story.Approaches.Distance = distance;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
-        public static ApproachDistanceCommand FromString(string[] split) {
-            var command = new ApproachDistanceCommand() {
+        public static ApproachesDistanceCommand FromString(string[] split) {
+            var command = new ApproachesDistanceCommand() {
                 StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
                 EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
             };
@@ -413,17 +413,17 @@ namespace S2VX.Game.Story {
         }
     }
 
-    public class ApproachThicknessCommand : Command {
-        public override CommandType Type { get; set; } = CommandType.ApproachThickness;
+    public class ApproachesThicknessCommand : Command {
+        public override CommandType Type { get; set; } = CommandType.ApproachesThickness;
         public float StartValue { get; set; } = 0.005f;
         public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {
             var thickness = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Notes.ApproachThickness = thickness;
+            story.Approaches.Thickness = thickness;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
-        public static ApproachThicknessCommand FromString(string[] split) {
-            var command = new ApproachThicknessCommand() {
+        public static ApproachesThicknessCommand FromString(string[] split) {
+            var command = new ApproachesThicknessCommand() {
                 StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
                 EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
             };

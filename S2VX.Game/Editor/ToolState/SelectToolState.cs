@@ -45,14 +45,14 @@ namespace S2VX.Game.Editor.ToolState {
                     SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
                     var noteSelection = new RelativeBox {
                         Colour = Color4.LimeGreen.Opacity(0.5f),
-                        Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
-                        Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
+                        Width = note.Size.X + SelectionIndicatorThickness,
+                        Height = note.Size.Y + SelectionIndicatorThickness,
                         RelativePositionAxes = Axes.Both,
                         RelativeSizeAxes = Axes.Both,
-                        Rotation = note.SquareNote.Rotation,
+                        Rotation = note.Rotation,
                     };
-                    noteSelection.X = note.SquareNote.Position.X;
-                    noteSelection.Y = note.SquareNote.Position.Y;
+                    noteSelection.X = note.Position.X;
+                    noteSelection.Y = note.Position.Y;
                     Editor.NoteSelectionIndicators.Add(noteSelection);
                     NoteSelectionToNote[noteSelection] = note;
                     return false;
@@ -102,7 +102,7 @@ namespace S2VX.Game.Editor.ToolState {
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
                     var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
-                    note.EndTime = newTime;
+                    note.UpdateEndTime(newTime);
                     selectedNoteToTimeCopy[note] = newTime;
                 }
                 SelectedNoteToTime = selectedNoteToTimeCopy;
@@ -117,7 +117,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Story.DeleteNote(note);
+                        Story.RemoveNote(note);
                     }
                     SelectedNoteToTime.Clear();
                     return true;
@@ -153,9 +153,9 @@ namespace S2VX.Game.Editor.ToolState {
                 }
             }
             foreach (var noteSelection in Editor.NoteSelectionIndicators) {
-                noteSelection.Rotation = NoteSelectionToNote[noteSelection].SquareNote.Rotation;
-                noteSelection.X = NoteSelectionToNote[noteSelection].SquareNote.Position.X;
-                noteSelection.Y = NoteSelectionToNote[noteSelection].SquareNote.Position.Y;
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
             }
         }
         public override string DisplayName() => "Select";
