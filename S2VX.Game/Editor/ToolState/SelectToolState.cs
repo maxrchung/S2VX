@@ -6,8 +6,8 @@ using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
-using S2VX.Game.Story;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 
