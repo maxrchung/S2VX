@@ -7,11 +7,12 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Editor.UserInterface;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Globalization;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class Timeline : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -30,14 +31,13 @@ namespace S2VX.Game.Editor {
         };
 
         private SpriteText TxtClock { get; set; } = new SpriteText();
-        private SpriteText TxtMousePosition { get; set; } = new SpriteText {
+
+        private PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay {
             RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.CentreLeft,
-            Colour = Color4.White,
-            X = 0.87f,
-            Y = -0.15f,
-            Font = new FontUsage("default", 30, "500"),
+            Anchor = Anchor.CentreRight,
+            Origin = Anchor.CentreRight,
+            Width = 0.15f,
+            TextAnchor = Anchor.Centre,
         };
 
         private bool SwitchToPlaying { get; set; }
@@ -46,10 +46,7 @@ namespace S2VX.Game.Editor {
 
         public bool DisplayMS { get; set; }
 
-        private void SetTextSize(float value) {
-            TxtClock.Font = TxtClock.Font.With(size: value);
-            TxtMousePosition.Font = TxtClock.Font;
-        }
+        private void SetTextSize(float value) => TxtClock.Font = TxtClock.Font.With(size: value);
 
         private void UpdateSlider(Vector2 mousePosition) {
             var mousePosX = ToLocalSpace(mousePosition).X;
@@ -69,7 +66,6 @@ namespace S2VX.Game.Editor {
         private const float TimelineWidth = 1.0f;
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             Height = TimelineHeight;
@@ -111,7 +107,7 @@ namespace S2VX.Game.Editor {
                         Slider
                     }
                 },
-                TxtMousePosition
+                PlaybackRateDisplay,
             };
         }
 
@@ -158,8 +154,6 @@ namespace S2VX.Game.Editor {
             }
 
             SetTextSize(Story.DrawWidth / 40);
-
-            TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
 
             if (Time.Current >= Editor.Track.Length) {
                 Editor.Play(false);

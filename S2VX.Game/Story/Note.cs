@@ -23,7 +23,6 @@ namespace S2VX.Game.Story {
         public RelativeBox SquareNote { get; private set; } = new RelativeBox();
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             Alpha = 0;
             AlwaysPresent = true;

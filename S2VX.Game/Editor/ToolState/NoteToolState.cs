@@ -4,8 +4,8 @@ using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Story;
 
-namespace S2VX.Game.Editor {
-    public class NoteToolState : ToolState {
+namespace S2VX.Game.Editor.ToolState {
+    public class NoteToolState : S2VXToolState {
         private Note Preview { get; set; } = new Note();
 
         [Resolved]
@@ -15,7 +15,6 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; set; } = null;
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;

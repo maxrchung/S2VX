@@ -11,7 +11,7 @@ using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
@@ -102,7 +102,6 @@ namespace S2VX.Game.Editor {
         private void HandleTypeSelect(ValueChangedEvent<string> e) => LoadCommandsList();
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             Anchor = Anchor.TopRight;
             Origin = Anchor.TopRight;

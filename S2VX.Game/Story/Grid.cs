@@ -15,7 +15,6 @@ namespace S2VX.Game.Story {
         private S2VXStory Story { get; set; } = null;
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             AlwaysPresent = true;

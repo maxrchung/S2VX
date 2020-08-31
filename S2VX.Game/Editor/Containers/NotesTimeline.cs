@@ -11,7 +11,7 @@ using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor {
+namespace S2VX.Game.Editor.Containers {
     public class NotesTimeline : CompositeDrawable {
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -43,8 +43,8 @@ namespace S2VX.Game.Editor {
             new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown },
         };
 
-        private const float TimelineHeight = 0.075f;
-        private const float TimelineWidth = 1.0f;
+        public const float TimelineHeight = 0.075f;
+        public const float TimelineWidth = 1.0f;
         public const float TimelineNoteHeight = 0.6f;
         public const float TimelineNoteWidth = TimelineWidth / 17.5f;
 
@@ -80,7 +80,6 @@ namespace S2VX.Game.Editor {
         public void HandleZoom(bool zoomIn) => SectionLength = Math.Clamp(SectionLength + (zoomIn ? -0.5f : 0.5f), 0.5f, 10f);
 
         [BackgroundDependencyLoader]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void Load() {
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
