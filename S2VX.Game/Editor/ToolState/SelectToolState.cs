@@ -179,7 +179,6 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0010:Add missing cases", Justification = "<Pending>")]
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Delete:
