@@ -152,8 +152,8 @@ namespace S2VX.Game.Editor.Containers {
             };
         }
 
-        protected override void PopIn() => Alpha = 1;
+        protected override void PopIn() => this.FadeIn(100);
 
-        protected override void PopOut() => Alpha = 0;
+        protected override void PopOut() => this.FadeOut(100);
     }
 }
