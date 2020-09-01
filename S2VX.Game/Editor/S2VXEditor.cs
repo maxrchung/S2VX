@@ -52,6 +52,9 @@ namespace S2VX.Game.Editor {
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
 
+        private int NoteSnapDivisor { get; set; } = 1;
+        private const int MaxNoteSnapDivisor = 4;
+
         [BackgroundDependencyLoader]
         private void Load() {
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
@@ -112,6 +115,8 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
                                 new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
                                 new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
+                                new MenuItem("Decrease Note Snapping Divisor ()", NoteSnapDivisorDecrease),
+                                new MenuItem("Increase Note Snapping Divisor ()", NoteSnapDivisorIncrease),
                             }
                         },
                         new MenuItem("Tool")
@@ -146,7 +151,15 @@ namespace S2VX.Game.Editor {
             var rotatedPosition = S2VXUtils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
-            MousePosition = translatedPosition;
+            if (NoteSnapDivisor == 0) {
+                MousePosition = translatedPosition;
+            } else { 
+                var closestSnap = new Vector2(
+                    (float)(Math.Round(translatedPosition.X * NoteSnapDivisor) / NoteSnapDivisor),
+                    (float)(Math.Round(translatedPosition.Y * NoteSnapDivisor) / NoteSnapDivisor)
+                );
+                MousePosition = closestSnap;
+            }
             return true;
         }
 
@@ -309,6 +322,30 @@ namespace S2VX.Game.Editor {
         public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
 
         public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
+
+        public void NoteSnapDivisorIncrease() {
+            if (NoteSnapDivisor == MaxNoteSnapDivisor) {
+                // From most number of snap points to Free
+                NoteSnapDivisor = 0;
+            } else {
+                NoteSnapDivisor *= 2;
+            }
+        }
+
+        public void NoteSnapDivisorDecrease() {
+            switch (NoteSnapDivisor) {
+                case 0:
+                    // From Free to most number of snap points
+                    NoteSnapDivisor = MaxNoteSnapDivisor;
+                    break;
+                case 1:
+                    // Stay at least number of snap points
+                    break;
+                default:
+                    NoteSnapDivisor /= 2;
+                    break;
+            }
+        }
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());
