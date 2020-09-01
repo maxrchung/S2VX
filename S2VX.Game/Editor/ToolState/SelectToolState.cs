@@ -37,18 +37,17 @@ namespace S2VX.Game.Editor.ToolState {
 
         private bool IsMouseOnNote(Vector2 mousePos, Note note) {
             mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
-            var storyNote = note.SquareNote;
 
             // DrawPosition is centered at (0,0). I convert it so (0,0) starts top left
-            var convertedCenterPoint = new Vector2(storyNote.DrawPosition.X + Editor.DrawWidth / 2, storyNote.DrawPosition.Y + Editor.DrawHeight / 2);
-            var topLeft = new Vector2(convertedCenterPoint.X - storyNote.DrawWidth / 2, convertedCenterPoint.Y - storyNote.DrawHeight / 2);
-            var topRight = new Vector2(convertedCenterPoint.X + storyNote.DrawWidth / 2, convertedCenterPoint.Y - storyNote.DrawHeight / 2);
-            var bottomLeft = new Vector2(convertedCenterPoint.X - storyNote.DrawWidth / 2, convertedCenterPoint.Y + storyNote.DrawHeight / 2);
+            var convertedCenterPoint = new Vector2(note.DrawPosition.X + Editor.DrawWidth / 2, note.DrawPosition.Y + Editor.DrawHeight / 2);
+            var topLeft = new Vector2(convertedCenterPoint.X - note.DrawWidth / 2, convertedCenterPoint.Y - note.DrawHeight / 2);
+            var topRight = new Vector2(convertedCenterPoint.X + note.DrawWidth / 2, convertedCenterPoint.Y - note.DrawHeight / 2);
+            var bottomLeft = new Vector2(convertedCenterPoint.X - note.DrawWidth / 2, convertedCenterPoint.Y + note.DrawHeight / 2);
 
             // https://gamedev.stackexchange.com/a/110233
-            var pointA = S2VXUtils.Rotate(new Vector2(topLeft.X - convertedCenterPoint.X, topLeft.Y - convertedCenterPoint.Y), storyNote.Rotation);
-            var pointB = S2VXUtils.Rotate(new Vector2(topRight.X - convertedCenterPoint.X, topRight.Y - convertedCenterPoint.Y), storyNote.Rotation);
-            var pointC = S2VXUtils.Rotate(new Vector2(bottomLeft.X - convertedCenterPoint.X, bottomLeft.Y - convertedCenterPoint.Y), storyNote.Rotation);
+            var pointA = S2VXUtils.Rotate(new Vector2(topLeft.X - convertedCenterPoint.X, topLeft.Y - convertedCenterPoint.Y), note.Rotation);
+            var pointB = S2VXUtils.Rotate(new Vector2(topRight.X - convertedCenterPoint.X, topRight.Y - convertedCenterPoint.Y), note.Rotation);
+            var pointC = S2VXUtils.Rotate(new Vector2(bottomLeft.X - convertedCenterPoint.X, bottomLeft.Y - convertedCenterPoint.Y), note.Rotation);
 
             // Shift origin back after rotating
             pointA = new Vector2(pointA.X + convertedCenterPoint.X, pointA.Y + convertedCenterPoint.Y);
@@ -90,12 +89,12 @@ namespace S2VX.Game.Editor.ToolState {
             SelectedNoteToTime[note] = note.EndTime;
             var noteSelection = new RelativeBox {
                 Colour = Color4.LimeGreen.Opacity(0.5f),
-                Width = note.SquareNote.Size.X + SelectionIndicatorThickness,
-                Height = note.SquareNote.Size.Y + SelectionIndicatorThickness,
-                Rotation = note.SquareNote.Rotation,
+                Width = note.Size.X + SelectionIndicatorThickness,
+                Height = note.Size.Y + SelectionIndicatorThickness,
+                Rotation = note.Rotation,
             };
-            noteSelection.X = note.SquareNote.Position.X;
-            noteSelection.Y = note.SquareNote.Position.Y;
+            noteSelection.X = note.Position.X;
+            noteSelection.Y = note.Position.Y;
             Editor.NoteSelectionIndicators.Add(noteSelection);
             NoteSelectionToNote[noteSelection] = note;
         }
@@ -161,7 +160,7 @@ namespace S2VX.Game.Editor.ToolState {
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
                     var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
-                    note.EndTime = newTime;
+                    note.UpdateEndTime(newTime);
                     selectedNoteToTimeCopy[note] = newTime;
                 }
                 SelectedNoteToTime = selectedNoteToTimeCopy;
@@ -176,7 +175,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Story.DeleteNote(note);
+                        Story.RemoveNote(note);
                     }
                     SelectedNoteToTime.Clear();
                     return true;
@@ -212,9 +211,9 @@ namespace S2VX.Game.Editor.ToolState {
                 }
             }
             foreach (var noteSelection in Editor.NoteSelectionIndicators) {
-                noteSelection.Rotation = NoteSelectionToNote[noteSelection].SquareNote.Rotation;
-                noteSelection.X = NoteSelectionToNote[noteSelection].SquareNote.Position.X;
-                noteSelection.Y = NoteSelectionToNote[noteSelection].SquareNote.Position.Y;
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
             }
         }
         public override string DisplayName() => "Select";
