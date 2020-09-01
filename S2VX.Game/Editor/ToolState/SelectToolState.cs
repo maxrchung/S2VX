@@ -125,7 +125,8 @@ namespace S2VX.Game.Editor.ToolState {
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
-                if (Editor.NotesTimeline.NoteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
+                var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
+                if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     DragTimelineNote = true;
                     selectedNoteTime = note.EndTime;
                     break;
@@ -150,9 +151,10 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void OnToolDrag(DragEvent e) {
             if (DragTimelineNote) {
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections).X;
-                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
-                var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
+                var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
+                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
                 var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
