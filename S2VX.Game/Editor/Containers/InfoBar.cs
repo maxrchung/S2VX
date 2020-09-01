@@ -2,7 +2,6 @@
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
 using S2VX.Game.Editor.UserInterface;
 using SixLabors.ImageSharp.Processing;
@@ -12,18 +11,31 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
-        private SpriteText TxtTool { get; } = new SpriteText {
+        private ToolDisplay ToolDisplay { get; } = new ToolDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
-            Font = new FontUsage("default", 30, "500")
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            Width = 0.25f,
+            TextAnchor = Anchor.TopLeft,
         };
 
-        private SpriteText TxtMousePosition { get; } = new SpriteText {
+        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new NoteSnapDivisorDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopCentre,
-            Colour = Color4.White,
-            Font = new FontUsage("default", 30, "500"),
+            Origin = Anchor.TopRight,
+            Width = 0.25f,
+            TextAnchor = Anchor.TopCentre,
+        };
+
+        private MousePositionDisplay MousePositionDisplay { get; } = new MousePositionDisplay {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.TopCentre,
+            Origin = Anchor.TopLeft,
+            Width = 0.25f,
+            TextAnchor = Anchor.TopCentre,
         };
 
         private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
@@ -31,14 +43,9 @@ namespace S2VX.Game.Editor.Containers {
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
-            Width = 0.15f,
-            TextAnchor = Anchor.TopCentre,
+            Width = 0.25f,
+            TextAnchor = Anchor.TopRight,
         };
-
-        private void SetTextSize(float value) {
-            TxtTool.Font = TxtTool.Font.With(size: value);
-            TxtMousePosition.Font = TxtMousePosition.Font.With(size: value);
-        }
 
         public const float InfoBarHeight = 0.03f;
         public const float InfoBarWidth = 1.0f;
@@ -55,16 +62,11 @@ namespace S2VX.Game.Editor.Containers {
             InternalChildren = new Drawable[]
             {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
-                TxtTool,
-                TxtMousePosition,
+                ToolDisplay,
+                NoteSnapDivisorDisplay,
+                MousePositionDisplay,
                 VolumeDisplay
             };
-        }
-
-        protected override void Update() {
-            TxtTool.Text = $"Tool: {Editor.ToolState.DisplayName()}";
-            TxtMousePosition.Text = S2VXUtils.Vector2ToString(Editor.MousePosition, 2);
-            SetTextSize(Editor.DrawWidth / 40);
         }
     }
 }

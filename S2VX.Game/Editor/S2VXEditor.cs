@@ -52,8 +52,8 @@ namespace S2VX.Game.Editor {
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
 
-        private int NoteSnapDivisor { get; set; } = 1;
-        private const int MaxNoteSnapDivisor = 4;
+        public int SnapDivisor { get; private set; } = 1;
+        private const int MaxSnapDivisor = 4;
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -111,12 +111,12 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
-                                new MenuItem("Decrease Playback Speed (Down)", PlaybackDecreaseRate),
-                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
+                                new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
+                                new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
                                 new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
                                 new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
-                                new MenuItem("Decrease Note Snapping Divisor ()", NoteSnapDivisorDecrease),
-                                new MenuItem("Increase Note Snapping Divisor ()", NoteSnapDivisorIncrease),
+                                new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
+                                new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
                             }
                         },
                         new MenuItem("Tool")
@@ -151,12 +151,12 @@ namespace S2VX.Game.Editor {
             var rotatedPosition = S2VXUtils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
-            if (NoteSnapDivisor == 0) {
+            if (SnapDivisor == 0) {
                 MousePosition = translatedPosition;
             } else { 
                 var closestSnap = new Vector2(
-                    (float)(Math.Round(translatedPosition.X * NoteSnapDivisor) / NoteSnapDivisor),
-                    (float)(Math.Round(translatedPosition.Y * NoteSnapDivisor) / NoteSnapDivisor)
+                    (float)(Math.Round(translatedPosition.X * SnapDivisor) / SnapDivisor),
+                    (float)(Math.Round(translatedPosition.Y * SnapDivisor) / SnapDivisor)
                 );
                 MousePosition = closestSnap;
             }
@@ -323,26 +323,26 @@ namespace S2VX.Game.Editor {
 
         public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
 
-        public void NoteSnapDivisorIncrease() {
-            if (NoteSnapDivisor == MaxNoteSnapDivisor) {
+        public void SnapDivisorIncrease() {
+            if (SnapDivisor == MaxSnapDivisor) {
                 // From most number of snap points to Free
-                NoteSnapDivisor = 0;
+                SnapDivisor = 0;
             } else {
-                NoteSnapDivisor *= 2;
+                SnapDivisor *= 2;
             }
         }
 
-        public void NoteSnapDivisorDecrease() {
-            switch (NoteSnapDivisor) {
+        public void SnapDivisorDecrease() {
+            switch (SnapDivisor) {
                 case 0:
                     // From Free to most number of snap points
-                    NoteSnapDivisor = MaxNoteSnapDivisor;
+                    SnapDivisor = MaxSnapDivisor;
                     break;
                 case 1:
                     // Stay at least number of snap points
                     break;
                 default:
-                    NoteSnapDivisor /= 2;
+                    SnapDivisor /= 2;
                     break;
             }
         }
