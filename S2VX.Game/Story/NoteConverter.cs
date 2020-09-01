@@ -18,6 +18,12 @@ namespace S2VX.Game.Story {
         }
 
         // Don't need to implement deserialization because the default behavior is sufficient for us
-        public override Note ReadJson(JsonReader reader, Type objectType, Note existingValue, bool hasExistingValue, JsonSerializer serializer) => throw new NotImplementedException();
+        public override Note ReadJson(
+            JsonReader reader,
+            Type objectType,
+            Note existingValue,
+            bool hasExistingValue,
+            JsonSerializer serializer
+        ) => throw new NotSupportedException();
     }
 }

@@ -93,7 +93,8 @@ namespace S2VX.Game.Editor.ToolState {
         public override void OnToolDrag(DragEvent e) {
             if (DragTimelineNote) {
                 var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections).X;
-                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                // temp until NoteTimeline Scroll on drag is implemented
+                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth);
                 var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
                 var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
