@@ -6,10 +6,10 @@ namespace S2VX.Game.Editor.Reversible {
         private double OldEndTime { get; }
         private double NewEndTime { get; }
 
-        public ReversibleUpdateNoteEndTime(Note note, double endTime) {
+        public ReversibleUpdateNoteEndTime(Note note, double oldEndTime, double newEndTime) {
             Note = note;
-            OldEndTime = note.EndTime;
-            NewEndTime = endTime;
+            OldEndTime = oldEndTime;
+            NewEndTime = newEndTime;
         }
 
         public void Undo() => Note.UpdateEndTime(OldEndTime);

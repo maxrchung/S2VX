@@ -7,10 +7,10 @@ namespace S2VX.Game.Editor.Reversible {
         private Vector2 OldCoordinates { get; }
         private Vector2 NewCoordinates { get; }
 
-        public ReversibleUpdateNoteCoordinates(Note note, Vector2 coordinates) {
+        public ReversibleUpdateNoteCoordinates(Note note, Vector2 oldCoordinates, Vector2 newCoordinates) {
             Note = note;
-            OldCoordinates = note.Coordinates;
-            NewCoordinates = coordinates;
+            OldCoordinates = oldCoordinates;
+            NewCoordinates = newCoordinates;
         }
 
         public void Undo() => Note.UpdateCoordinates(OldCoordinates);
