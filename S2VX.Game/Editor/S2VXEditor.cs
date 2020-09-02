@@ -28,8 +28,6 @@ namespace S2VX.Game.Editor {
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
 
-        public BasicMenu BasicMenu { get; private set; }
-
         private Timeline Timeline { get; } = new Timeline();
 
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
@@ -89,6 +87,14 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave)
+                            }
+                        },
+                        new MenuItem("Edit")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Undo (Ctrl+Z)", EditUndo),
+                                new MenuItem("Redo (Ctrl+Shift+Z)", EditRedo)
                             }
                         },
                         new MenuItem("View")
@@ -166,6 +172,15 @@ namespace S2VX.Game.Editor {
                 case Key.S:
                     if (e.ControlPressed) {
                         ProjectSave();
+                    }
+                    break;
+                case Key.Z:
+                    if (e.ControlPressed) {
+                        if (e.ShiftPressed) {
+                            EditRedo();
+                            break;
+                        }
+                        EditUndo();
                     }
                     break;
                 case Key.Number1: {
@@ -265,6 +280,10 @@ namespace S2VX.Game.Editor {
             Play(false);
             Story.Save(@"../../../story.json");
         }
+
+        private void EditUndo() => Reversibles.Undo();
+
+        private void EditRedo() => Reversibles.Redo();
 
         private void ViewCommandPanel() {
             if (IsCommandPanelVisible) {
