@@ -5,8 +5,8 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
-using S2VX.Game.Story;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
 using S2VX.Game.Editor.Reversible;
@@ -25,7 +25,7 @@ namespace S2VX.Game.Editor.ToolState {
         private bool DragTimelineNote { get; set; }
         private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
 
-        private static bool MouseIsOnNote(Vector2 mousePos, RelativeBox timelineNote) {
+        private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
             var rightBound = timelineNote.DrawPosition.X + timelineNote.DrawSize.X / 2;
             var topBound = timelineNote.DrawPosition.Y - timelineNote.DrawSize.Y / 2;
@@ -36,26 +36,84 @@ namespace S2VX.Game.Editor.ToolState {
             return mouseInXRange && mouseInYRange;
         }
 
+        private bool IsMouseOnNote(Vector2 mousePos, Note note) {
+            mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
+
+            // DrawPosition is centered at (0,0). I convert it so (0,0) starts top left
+            var convertedCenterPoint = new Vector2(note.DrawPosition.X + Editor.DrawWidth / 2, note.DrawPosition.Y + Editor.DrawHeight / 2);
+            var topLeft = new Vector2(convertedCenterPoint.X - note.DrawWidth / 2, convertedCenterPoint.Y - note.DrawHeight / 2);
+            var topRight = new Vector2(convertedCenterPoint.X + note.DrawWidth / 2, convertedCenterPoint.Y - note.DrawHeight / 2);
+            var bottomLeft = new Vector2(convertedCenterPoint.X - note.DrawWidth / 2, convertedCenterPoint.Y + note.DrawHeight / 2);
+
+            // https://gamedev.stackexchange.com/a/110233
+            var pointA = S2VXUtils.Rotate(new Vector2(topLeft.X - convertedCenterPoint.X, topLeft.Y - convertedCenterPoint.Y), note.Rotation);
+            var pointB = S2VXUtils.Rotate(new Vector2(topRight.X - convertedCenterPoint.X, topRight.Y - convertedCenterPoint.Y), note.Rotation);
+            var pointC = S2VXUtils.Rotate(new Vector2(bottomLeft.X - convertedCenterPoint.X, bottomLeft.Y - convertedCenterPoint.Y), note.Rotation);
+
+            // Shift origin back after rotating
+            pointA = new Vector2(pointA.X + convertedCenterPoint.X, pointA.Y + convertedCenterPoint.Y);
+            pointB = new Vector2(pointB.X + convertedCenterPoint.X, pointB.Y + convertedCenterPoint.Y);
+            pointC = new Vector2(pointC.X + convertedCenterPoint.X, pointC.Y + convertedCenterPoint.Y);
+
+            var v0 = pointC - pointA;
+            var v1 = pointB - pointA;
+            var v2 = mousePos - pointA;
+
+            var dot00 = Vector2.Dot(v0, v0);
+            var dot01 = Vector2.Dot(v0, v1);
+            var dot02 = Vector2.Dot(v0, v2);
+            var dot11 = Vector2.Dot(v1, v1);
+            var dot12 = Vector2.Dot(v1, v2);
+
+            var invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+            var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+            var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+            return u >= 0 && v >= 0 && u <= 1 && v <= 1;
+        }
+
+        private List<Note> GetVisibleStoryNotes() {
+            var visibleStoryNotes = new List<Note>();
+            foreach (var note in Story.Notes.Children) {
+                var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
+                var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
+                var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
+
+                if (noteVisibleOnEditor) {
+                    visibleStoryNotes.Add(note);
+                }
+            }
+            return visibleStoryNotes;
+        }
+
+        private void AddNoteSelection(Note note) {
+            SelectedNoteToTime[note] = note.EndTime;
+            var noteSelection = new RelativeBox {
+                Colour = Color4.LimeGreen.Opacity(0.5f),
+                Width = note.Size.X + SelectionIndicatorThickness,
+                Height = note.Size.Y + SelectionIndicatorThickness,
+                Rotation = note.Rotation,
+            };
+            noteSelection.X = note.Position.X;
+            noteSelection.Y = note.Position.Y;
+            Editor.NoteSelectionIndicators.Add(noteSelection);
+            NoteSelectionToNote[noteSelection] = note;
+        }
+
         public override bool OnToolMouseDown(MouseDownEvent e) {
             SelectedNoteToTime.Clear();
             Editor.NoteSelectionIndicators.Clear();
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
+
             foreach (var notes in Editor.NotesTimeline.NoteToTimelineNote) {
-                if (MouseIsOnNote(mousePos, notes.Value)) {
-                    var note = notes.Key;
-                    SelectedNoteToTime[notes.Key] = notes.Key.EndTime;
-                    var noteSelection = new RelativeBox {
-                        Colour = Color4.LimeGreen.Opacity(0.5f),
-                        Width = note.Size.X + SelectionIndicatorThickness,
-                        Height = note.Size.Y + SelectionIndicatorThickness,
-                        RelativePositionAxes = Axes.Both,
-                        RelativeSizeAxes = Axes.Both,
-                        Rotation = note.Rotation,
-                    };
-                    noteSelection.X = note.Position.X;
-                    noteSelection.Y = note.Position.Y;
-                    Editor.NoteSelectionIndicators.Add(noteSelection);
-                    NoteSelectionToNote[noteSelection] = note;
+                if (IsMouseOnTimelineNote(mousePos, notes.Value)) {
+                    AddNoteSelection(notes.Key);
+                    return false;
+                }
+            }
+            foreach (var note in GetVisibleStoryNotes()) {
+                if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
+                    AddNoteSelection(note);
                     return false;
                 }
             }
@@ -68,7 +126,8 @@ namespace S2VX.Game.Editor.ToolState {
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
-                if (MouseIsOnNote(mousePos, Editor.NotesTimeline.NoteToTimelineNote[note])) {
+                var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
+                if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     DragTimelineNote = true;
                     selectedNoteTime = note.EndTime;
                     break;
@@ -93,9 +152,10 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void OnToolDrag(DragEvent e) {
             if (DragTimelineNote) {
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections).X;
-                mousePosX = Math.Clamp(mousePosX, 0, Editor.NotesTimeline.TickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
-                var relativeMousePosX = mousePosX / Editor.NotesTimeline.TickBarNoteSelections.DrawWidth;
+                var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
+                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
                 var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
