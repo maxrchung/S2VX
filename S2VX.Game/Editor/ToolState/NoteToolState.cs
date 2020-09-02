@@ -22,7 +22,11 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            Story.AddNote(Editor.MousePosition, Time.Current);
+            var note = new Note {
+                Coordinates = Editor.MousePosition,
+                EndTime = Time.Current
+            };
+            Story.AddNote(note);
             return false;
         }
 
