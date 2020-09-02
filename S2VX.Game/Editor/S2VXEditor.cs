@@ -51,7 +51,7 @@ namespace S2VX.Game.Editor {
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
 
-        public ReversibleList Reversibles { get; } = new ReversibleList();
+        public ReversibleStack Reversibles { get; } = new ReversibleStack();
 
         [BackgroundDependencyLoader]
         private void Load() {

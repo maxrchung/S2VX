@@ -1,11 +1,11 @@
 ﻿namespace S2VX.Game.Editor.Reversible {
-    public class ReversibleList {
+    public class ReversibleStack {
         private ReversibleNode Head { get; set; }
         private ReversibleNode Pointer { get; set; }
         public int MaxCount { get; }
         public int CurrentCount { get; set; }
 
-        public ReversibleList(int maxCount = 100) {
+        public ReversibleStack(int maxCount = 100) {
             MaxCount = maxCount;
             Head = new ReversibleNode {
                 Value = null
