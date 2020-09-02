@@ -1,35 +1,52 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace S2VX.Game.Editor.Reversible {
+﻿namespace S2VX.Game.Editor.Reversible {
     public class ReversibleStack {
-        private int Pointer { get; set; } = -1;
-        private List<IReversible> Reversibles { get; set; } = new List<IReversible>();
+        private ReversibleNode Head { get; set; }
+        private ReversibleNode Pointer { get; set; }
+        public int MaxCount { get; }
+        public int CurrentCount { get; set; }
+
+        public ReversibleStack(int maxCount = 100) {
+            MaxCount = maxCount;
+            Head = new ReversibleNode {
+                Value = null
+            };
+            Pointer = Head;
+        }
 
         public void Push(IReversible reversible) {
+            Pointer.Next = new ReversibleNode {
+                Previous = Pointer,
+                Value = reversible
+            };
+            Pointer = Pointer.Next;
             // Execute reversible
             reversible.Redo();
 
-            // If pointer is in the middle of the list, drop all previously saved commands
-            if (Pointer != Reversibles.Count - 1) {
-                Reversibles = Reversibles.Take(Pointer + 1).ToList();
+            if (CurrentCount == MaxCount) {
+                Head = Head.Next;
+                Head.Previous = null;
+                Head.Value = null;
+            } else {
+                ++CurrentCount;
             }
-            Reversibles.Add(reversible);
-            ++Pointer;
         }
 
         public void Undo() {
-            if (Pointer == -1) {
+            if (Pointer == Head) {
                 return;
             }
-            Reversibles[Pointer--].Undo();
+            Pointer.Value.Undo();
+            Pointer = Pointer.Previous;
+            --CurrentCount;
         }
 
         public void Redo() {
-            if (Pointer == Reversibles.Count - 1) {
+            if (Pointer.Next == null) {
                 return;
             }
-            Reversibles[++Pointer].Redo();
+            Pointer = Pointer.Next;
+            Pointer.Value.Redo();
+            ++CurrentCount;
         }
     }
 }

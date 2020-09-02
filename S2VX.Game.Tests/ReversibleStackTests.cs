@@ -77,5 +77,18 @@ namespace S2VX.Game.Tests {
             reversibles.Redo();
             Assert.AreEqual(2, value.Number);
         }
+
+        [Test]
+        public void Undo3AddsWithMaxCountOf2_Is1() {
+            var reversibles = new ReversibleStack(2);
+            var value = new Value();
+            reversibles.Push(new Add1(value));
+            reversibles.Push(new Add1(value));
+            reversibles.Push(new Add1(value));
+            reversibles.Undo();
+            reversibles.Undo();
+            reversibles.Undo();
+            Assert.AreEqual(1, value.Number);
+        }
     }
 }
