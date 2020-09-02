@@ -14,22 +14,22 @@ namespace S2VX.Game.Tests {
     }
 
     [TestFixture]
-    public class ReversibleListTests {
+    public class ReversibleStackTests {
         [Test]
         public void UndoAtZeroReversibles_DoesNothing() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             reversibles.Undo();
         }
 
         [Test]
         public void RedoAtZeroReversibles_DoesNothing() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             reversibles.Redo();
         }
 
         [Test]
         public void Add1_Adds1ToValue() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
             Assert.AreEqual(1, value.Number);
@@ -37,7 +37,7 @@ namespace S2VX.Game.Tests {
 
         [Test]
         public void Add1Twice_Adds2ToValue() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
             reversibles.Push(new Add1(value));
@@ -46,7 +46,7 @@ namespace S2VX.Game.Tests {
 
         [Test]
         public void Add1Undo_Is0() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
             reversibles.Undo();
@@ -55,7 +55,7 @@ namespace S2VX.Game.Tests {
 
         [Test]
         public void Add1UndoRedo_Adds1ToValue() {
-            var reversibles = new ReversibleList();
+            var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
             reversibles.Undo();
@@ -64,8 +64,8 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Add1InMiddleOfList_RemovesLaterReversibles() {
-            var reversibles = new ReversibleList();
+        public void Add1InMiddleOfStack_RemovesLaterReversibles() {
+            var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
             reversibles.Push(new Add1(value));
@@ -80,7 +80,7 @@ namespace S2VX.Game.Tests {
 
         [Test]
         public void Undo3AddsWithMaxCountOf2_Is1() {
-            var reversibles = new ReversibleList(2);
+            var reversibles = new ReversibleStack(2);
             var value = new Value();
             reversibles.Push(new Add1(value));
             reversibles.Push(new Add1(value));
