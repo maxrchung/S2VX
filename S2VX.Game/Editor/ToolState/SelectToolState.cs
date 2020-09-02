@@ -118,7 +118,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Editor.Reversibles.Push(new ReversibleRemoveNote(note));
+                        Editor.Reversibles.Push(new ReversibleRemoveNote(Story, note));
                     }
                     SelectedNoteToTime.Clear();
                     return true;

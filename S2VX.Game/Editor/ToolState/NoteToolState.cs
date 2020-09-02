@@ -27,7 +27,7 @@ namespace S2VX.Game.Editor.ToolState {
                 Coordinates = Editor.MousePosition,
                 EndTime = Time.Current
             };
-            Editor.Reversibles.Push(new ReversibleAddNote(note));
+            Editor.Reversibles.Push(new ReversibleAddNote(Story, note));
             return false;
         }
 
