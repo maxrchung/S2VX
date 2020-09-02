@@ -83,6 +83,11 @@ namespace S2VX.Game.Story {
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
+
+            // Set approach references
+            for (var i = 0; i < notes.Count; ++i) {
+                notes[i].Approach = approaches[i];
+            }
         }
 
         public void Save(string path) {
