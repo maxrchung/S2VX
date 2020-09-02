@@ -62,5 +62,20 @@ namespace S2VX.Game.Tests {
             reversibles.Redo();
             Assert.AreEqual(1, value.Number);
         }
+
+        [Test]
+        public void Add1InMiddleOfStack_RemovesLaterReversibles() {
+            var reversibles = new ReversibleStack();
+            var value = new Value();
+            reversibles.Push(new Add1(value));
+            reversibles.Push(new Add1(value));
+            reversibles.Push(new Add1(value));
+            reversibles.Undo();
+            reversibles.Undo();
+            reversibles.Push(new Add1(value));
+            reversibles.Redo();
+            reversibles.Redo();
+            Assert.AreEqual(2, value.Number);
+        }
     }
 }
