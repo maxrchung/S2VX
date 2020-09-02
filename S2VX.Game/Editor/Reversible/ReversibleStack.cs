@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleStack {
-        private int Pointer { get; set; }
+        private int Pointer { get; set; } = -1;
         private List<IReversible> Reversibles { get; set; } = new List<IReversible>();
 
         public void Push(IReversible reversible) {
@@ -19,7 +19,7 @@ namespace S2VX.Game.Editor.Reversible {
         }
 
         public void Undo() {
-            if (Pointer == 0) {
+            if (Pointer == -1) {
                 return;
             }
             Reversibles[Pointer--].Undo();
@@ -29,7 +29,7 @@ namespace S2VX.Game.Editor.Reversible {
             if (Pointer == Reversibles.Count - 1) {
                 return;
             }
-            Reversibles[Pointer++].Redo();
+            Reversibles[++Pointer].Redo();
         }
     }
 }
