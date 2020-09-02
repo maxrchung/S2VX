@@ -57,13 +57,17 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
+            Story.Open(@"../../../story.json");
+
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Track.VolumeTo(0.10f);
 
-            Story.Open(@"../../../story.json");
-
-            var trackBasedClock = new FramedClock(Track);
-            Clock = trackBasedClock;
+            // Sets the same clock for sections dependent on the Track
+            var trackClock = new FramedClock(Track);
+            Story.Clock = trackClock;
+            NotesTimeline.Clock = trackClock;
+            Timeline.Clock = trackClock;
+            ToolContainer.Clock = trackClock;
 
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
