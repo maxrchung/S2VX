@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
@@ -22,7 +23,9 @@ namespace S2VX.Game.Editor.ToolState {
         private const float SelectionIndicatorThickness = 0.025f;
 
         private bool DragTimelineNote { get; set; }
-        private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
+        private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
+        private bool DragNote { get; set; }
+        private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
 
         private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
@@ -122,6 +125,7 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolDragStart(DragStartEvent e) {
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             var selectedNoteTime = 0d;
+            var selectedNoteCoord = new Vector2();
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
@@ -135,7 +139,22 @@ namespace S2VX.Game.Editor.ToolState {
             if (DragTimelineNote) {
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
-                    NoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                    TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                    return true;
+                }
+            }
+            foreach (var note in GetVisibleStoryNotes()) {
+                if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
+                    DragNote = true;
+                    selectedNoteCoord = note.Coordinates;
+                    break;
+                }
+            }
+            if (DragNote) {
+                foreach (var noteAndTime in SelectedNoteToTime) {
+                    var note = noteAndTime.Key;
+                    NoteToDragPointDelta[note] = note.Coordinates - selectedNoteCoord;
+                    return true;
                 }
             }
             return true;
@@ -161,9 +180,24 @@ namespace S2VX.Game.Editor.ToolState {
                 var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
                 foreach (var noteAndTime in SelectedNoteToTime) {
                     var note = noteAndTime.Key;
-                    var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
+                    var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
                     note.UpdateEndTime(newTime);
                     selectedNoteToTimeCopy[note] = newTime;
+                }
+                SelectedNoteToTime = selectedNoteToTimeCopy;
+            } else if (DragNote) {
+                var mousePos = Editor.MousePosition;
+                //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
+
+                var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                foreach (var noteAndTime in SelectedNoteToTime) {
+                    var note = noteAndTime.Key;
+                    var delta = NoteToDragPointDelta[note];
+                    //Console.WriteLine($"Delta: {delta}");
+                    var newPos = mousePos + delta;
+                    Console.WriteLine($"Current Position: {note.Coordinates}");
+                    Console.WriteLine($"New Position: {newPos}");
+                    note.UpdateCoordinates(newPos);
                 }
                 SelectedNoteToTime = selectedNoteToTimeCopy;
             }
