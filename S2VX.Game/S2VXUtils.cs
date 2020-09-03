@@ -19,16 +19,25 @@ namespace S2VX.Game {
             return rotated;
         }
 
+        public static string FloatToString(float data, int precision = 0) {
+            if (precision == 0) {
+                return $"({data})";
+            } else {
+                var formatString = "{0:0." + new string('#', precision) + "}";
+                return string.Format(CultureInfo.InvariantCulture, formatString, data);
+            }
+        }
+
         public static string Vector2ToString(Vector2 data, int precision = 0) {
             if (precision == 0) {
                 return $"({data.X},{data.Y})";
             } else {
-                var formatString = "{0:0." + new string('#', precision) + "}";
-                var x = string.Format(CultureInfo.InvariantCulture, formatString, data.X);
-                var y = string.Format(CultureInfo.InvariantCulture, formatString, data.Y);
+                var x = FloatToString(data.X, precision);
+                var y = FloatToString(data.Y, precision);
                 return $"({x},{y})";
             }
         }
+
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
         public static Vector2 Vector2FromString(string data) {
