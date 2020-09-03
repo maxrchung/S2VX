@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor {
         public DrawableTrack Track { get; private set; }
 
         public int SnapDivisor { get; private set; } = 1;
-        private const int MaxSnapDivisor = 4;
+        private const int MaxSnapDivisor = 16;
 
         [BackgroundDependencyLoader]
         private void Load() {
