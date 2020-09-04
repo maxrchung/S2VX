@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story {
@@ -15,11 +14,7 @@ namespace S2VX.Game.Story {
         public float ShowTime { get; set; } = 1000;
         public float FadeOutTime { get; set; } = 100;
 
-        public void AddNote(Vector2 position, double time) {
-            var note = new Note {
-                Coordinates = position,
-                EndTime = time
-            };
+        public void AddNote(Note note) {
             Children.Add(note);
             AddInternal(note);
         }

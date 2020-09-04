@@ -11,6 +11,7 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Story;
 using System;
@@ -26,8 +27,6 @@ namespace S2VX.Game.Editor {
         private bool IsCommandPanelVisible { get; set; }
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
-
-        public BasicMenu BasicMenu { get; private set; }
 
         private Timeline Timeline { get; } = new Timeline();
 
@@ -52,6 +51,8 @@ namespace S2VX.Game.Editor {
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
 
+        public ReversibleStack Reversibles { get; } = new ReversibleStack();
+      
         public int SnapDivisor { get; private set; } = 1;
         private const int MaxSnapDivisor = 16;
 
@@ -93,6 +94,14 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave)
+                            }
+                        },
+                        new MenuItem("Edit")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Undo (Ctrl+Z)", EditUndo),
+                                new MenuItem("Redo (Ctrl+Shift+Z)", EditRedo)
                             }
                         },
                         new MenuItem("View")
@@ -180,6 +189,15 @@ namespace S2VX.Game.Editor {
                 case Key.S:
                     if (e.ControlPressed) {
                         ProjectSave();
+                    }
+                    break;
+                case Key.Z:
+                    if (e.ControlPressed) {
+                        if (e.ShiftPressed) {
+                            EditRedo();
+                            break;
+                        }
+                        EditUndo();
                     }
                     break;
                 case Key.Number1: {
@@ -279,6 +297,10 @@ namespace S2VX.Game.Editor {
             Play(false);
             Story.Save(@"../../../story.json");
         }
+
+        private void EditUndo() => Reversibles.Undo();
+
+        private void EditRedo() => Reversibles.Redo();
 
         private void ViewCommandPanel() {
             if (IsCommandPanelVisible) {

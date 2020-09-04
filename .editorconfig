@@ -230,6 +230,9 @@ dotnet_diagnostic.IDE0051.severity = suggestion
 # IDE0010: Add missing cases
 dotnet_diagnostic.IDE0010.severity = suggestion
 
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = suggestion
+
 # MEN007: Use a single return
 dotnet_diagnostic.MEN007.severity = suggestion
 

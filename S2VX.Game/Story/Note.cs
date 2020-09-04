@@ -1,12 +1,13 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Utils;
 using osuTK;
-using System.Linq;
 
 namespace S2VX.Game.Story {
     public class Note : RelativeBox {
         public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
+
+        public Approach Approach { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -17,24 +18,14 @@ namespace S2VX.Game.Story {
             AlwaysPresent = true;
         }
 
-        public Approach FindApproach() {
-            var approach = Story.Approaches.Children.Where(a =>
-                a.EndTime == EndTime &&
-                a.Coordinates == Coordinates
-            ).First();
-            return approach;
-        }
-
         // These Update setters modify both the Note and a corresponding Approach
         public void UpdateEndTime(double endTime) {
-            var approach = FindApproach();
-            approach.EndTime = endTime;
+            Approach.EndTime = endTime;
             EndTime = endTime;
         }
 
         public void UpdateCoordinates(Vector2 coordinates) {
-            var approach = FindApproach();
-            approach.Coordinates = coordinates;
+            Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
 

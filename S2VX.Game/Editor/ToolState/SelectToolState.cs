@@ -9,6 +9,7 @@ using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
+using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Editor.ToolState {
     public class SelectToolState : S2VXToolState {
@@ -178,7 +179,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Story.RemoveNote(note);
+                        Editor.Reversibles.Push(new ReversibleRemoveNote(Story, note));
                     }
                     SelectedNoteToTime.Clear();
                     return true;

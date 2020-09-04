@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 
 namespace S2VX.Game.Editor.ToolState {
@@ -22,7 +23,11 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            Story.AddNote(Editor.MousePosition, Time.Current);
+            var note = new Note {
+                Coordinates = Editor.MousePosition,
+                EndTime = Time.Current
+            };
+            Editor.Reversibles.Push(new ReversibleAddNote(Story, note));
             return false;
         }
 
