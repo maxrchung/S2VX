@@ -6,10 +6,10 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
-using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Editor.ToolState {
     public enum DragState {
@@ -203,19 +203,12 @@ namespace S2VX.Game.Editor.ToolState {
                     }
                     case DragState.DragNote: {
                         var mousePos = Editor.MousePosition;
-                        //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
 
-                        var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
                         foreach (var noteAndTime in SelectedNoteToTime) {
                             var note = noteAndTime.Key;
-                            var delta = NoteToDragPointDelta[note];
-                            //Console.WriteLine($"Delta: {delta}");
-                            var newPos = mousePos + delta;
-                            Console.WriteLine($"Current Position: {note.Coordinates}");
-                            Console.WriteLine($"New Position: {newPos}");
+                            var newPos = mousePos + NoteToDragPointDelta[note];
                             note.UpdateCoordinates(newPos);
                         }
-                        SelectedNoteToTime = selectedNoteToTimeCopy;
                         break;
                     }
                     case DragState.None:
