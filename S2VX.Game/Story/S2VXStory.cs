@@ -28,6 +28,11 @@ namespace S2VX.Game.Story {
 
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
+        public double EditorTrackTime { get; set; }
+        public double EditorTrackVolume { get; set; }
+        public double EditorTrackPlaybackRate { get; set; }
+        public int EditorSnapDivisor { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
@@ -88,12 +93,21 @@ namespace S2VX.Game.Story {
             for (var i = 0; i < notes.Count; ++i) {
                 notes[i].Approach = approaches[i];
             }
+
+            EditorTrackTime = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackTime)].ToString());
+            EditorTrackVolume = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackVolume)].ToString());
+            EditorTrackPlaybackRate = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackPlaybackRate)].ToString());
+            EditorSnapDivisor = JsonConvert.DeserializeObject<int>(story[nameof(EditorSnapDivisor)].ToString());
         }
 
         public void Save(string path) {
             var obj = new {
                 Commands,
-                Notes = Notes.Children
+                Notes = Notes.Children,
+                EditorTrackTime,
+                EditorTrackVolume,
+                EditorTrackPlaybackRate,
+                EditorSnapDivisor,
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
