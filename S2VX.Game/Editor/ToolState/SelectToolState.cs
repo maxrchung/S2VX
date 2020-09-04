@@ -29,6 +29,7 @@ namespace S2VX.Game.Editor.ToolState {
         private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
         private DragState ToDrag { get; set; } = DragState.None;
+        private bool DelayDrag { get; set; }
 
         private const float SelectionIndicatorThickness = 0.025f;
 
@@ -179,45 +180,48 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolDrag(DragEvent e) {
-            switch (ToDrag) {
-                case DragState.DragTimelineNote: {
-                    var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
-                    var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
-                    // temp until NoteTimeline Scroll on drag is implemented
-                    mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
-                    var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
-                    var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
-                    var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
+            if (!DelayDrag) {
+                switch (ToDrag) {
+                    case DragState.DragTimelineNote: {
+                        var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+                        var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
+                        // temp until NoteTimeline Scroll on drag is implemented
+                        mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
+                        var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
+                        var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
+                        var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
-                    var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                    foreach (var noteAndTime in SelectedNoteToTime) {
-                        var note = noteAndTime.Key;
-                        var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
-                        note.UpdateEndTime(newTime);
-                        selectedNoteToTimeCopy[note] = newTime;
+                        var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                        foreach (var noteAndTime in SelectedNoteToTime) {
+                            var note = noteAndTime.Key;
+                            var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                            note.UpdateEndTime(newTime);
+                            selectedNoteToTimeCopy[note] = newTime;
+                        }
+                        SelectedNoteToTime = selectedNoteToTimeCopy;
+                        break;
                     }
-                    SelectedNoteToTime = selectedNoteToTimeCopy;
-                    break;
-                }
-                case DragState.DragNote: {
-                    var mousePos = Editor.MousePosition;
-                    //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
+                    case DragState.DragNote: {
+                        var mousePos = Editor.MousePosition;
+                        //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
 
-                    var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                    foreach (var noteAndTime in SelectedNoteToTime) {
-                        var note = noteAndTime.Key;
-                        var delta = NoteToDragPointDelta[note];
-                        //Console.WriteLine($"Delta: {delta}");
-                        var newPos = mousePos + delta;
-                        Console.WriteLine($"Current Position: {note.Coordinates}");
-                        Console.WriteLine($"New Position: {newPos}");
-                        note.UpdateCoordinates(newPos);
+                        var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                        foreach (var noteAndTime in SelectedNoteToTime) {
+                            var note = noteAndTime.Key;
+                            var delta = NoteToDragPointDelta[note];
+                            //Console.WriteLine($"Delta: {delta}");
+                            var newPos = mousePos + delta;
+                            Console.WriteLine($"Current Position: {note.Coordinates}");
+                            Console.WriteLine($"New Position: {newPos}");
+                            note.UpdateCoordinates(newPos);
+                        }
+                        SelectedNoteToTime = selectedNoteToTimeCopy;
+                        break;
                     }
-                    SelectedNoteToTime = selectedNoteToTimeCopy;
-                    break;
+                    case DragState.None:
+                        break;
                 }
-                case DragState.None:
-                    break;
+                DelayDrag = true;
             }
         }
 
@@ -245,7 +249,9 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         protected override void Update() {
+            DelayDrag = false;
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
+
             var lowerBound = Time.Current - Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
             var upperBound = Time.Current + Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
             foreach (var noteAndTime in SelectedNoteToTime) {
