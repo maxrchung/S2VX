@@ -1,9 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace S2VX.Game.Story {
     public class Approaches : CompositeDrawable {
@@ -13,20 +11,18 @@ namespace S2VX.Game.Story {
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
-        public void AddApproach(Vector2 position, double time) {
+        public Approach AddApproach(Note note) {
             var approach = new Approach {
-                Coordinates = position,
-                EndTime = time
+                Coordinates = note.Coordinates,
+                EndTime = note.EndTime
             };
             Children.Add(approach);
             AddInternal(approach);
+            return approach;
         }
 
         public void RemoveApproach(Note note) {
-            var approach = Children.Where(a =>
-                a.Coordinates == note.Coordinates &&
-                a.EndTime == note.EndTime
-            ).First();
+            var approach = note.Approach;
             Children.Remove(approach);
             RemoveInternal(approach);
         }

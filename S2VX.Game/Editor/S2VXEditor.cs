@@ -11,6 +11,7 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Story;
 using System;
@@ -26,8 +27,6 @@ namespace S2VX.Game.Editor {
         private bool IsCommandPanelVisible { get; set; }
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
-
-        public BasicMenu BasicMenu { get; private set; }
 
         private Timeline Timeline { get; } = new Timeline();
 
@@ -51,6 +50,11 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private AudioManager Audio { get; set; }
         public DrawableTrack Track { get; private set; }
+
+        public ReversibleStack Reversibles { get; } = new ReversibleStack();
+      
+        public int SnapDivisor { get; private set; } = 1;
+        private const int MaxSnapDivisor = 16;
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -92,6 +96,14 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Save (Ctrl+S)", ProjectSave)
                             }
                         },
+                        new MenuItem("Edit")
+                        {
+                            Items = new[]
+                            {
+                                new MenuItem("Undo (Ctrl+Z)", EditUndo),
+                                new MenuItem("Redo (Ctrl+Shift+Z)", EditRedo)
+                            }
+                        },
                         new MenuItem("View")
                         {
                             Items = new[]
@@ -112,10 +124,12 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
                                 new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
                                 new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
-                                new MenuItem("Decrease Playback Speed (Down)", PlaybackDecreaseRate),
-                                new MenuItem("Increase Playback Speed (Up)", PlaybackIncreaseRate),
+                                new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
+                                new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
                                 new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
                                 new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
+                                new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
+                                new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
                             }
                         },
                         new MenuItem("Tool")
@@ -150,7 +164,15 @@ namespace S2VX.Game.Editor {
             var rotatedPosition = S2VXUtils.Rotate(relativePosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var translatedPosition = scaledPosition + camera.Position;
-            MousePosition = translatedPosition;
+            if (SnapDivisor == 0) {
+                MousePosition = translatedPosition;
+            } else { 
+                var closestSnap = new Vector2(
+                    (float)(Math.Round(translatedPosition.X * SnapDivisor) / SnapDivisor),
+                    (float)(Math.Round(translatedPosition.Y * SnapDivisor) / SnapDivisor)
+                );
+                MousePosition = closestSnap;
+            }
             return true;
         }
 
@@ -167,6 +189,15 @@ namespace S2VX.Game.Editor {
                 case Key.S:
                     if (e.ControlPressed) {
                         ProjectSave();
+                    }
+                    break;
+                case Key.Z:
+                    if (e.ControlPressed) {
+                        if (e.ShiftPressed) {
+                            EditRedo();
+                            break;
+                        }
+                        EditUndo();
                     }
                     break;
                 case Key.Number1: {
@@ -267,6 +298,10 @@ namespace S2VX.Game.Editor {
             Story.Save(@"../../../story.json");
         }
 
+        private void EditUndo() => Reversibles.Undo();
+
+        private void EditRedo() => Reversibles.Redo();
+
         private void ViewCommandPanel() {
             if (IsCommandPanelVisible) {
                 CommandPanel.Hide();
@@ -313,6 +348,30 @@ namespace S2VX.Game.Editor {
         public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
 
         public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
+
+        public void SnapDivisorIncrease() {
+            if (SnapDivisor == MaxSnapDivisor) {
+                // From most number of snap points to Free
+                SnapDivisor = 0;
+            } else {
+                SnapDivisor *= 2;
+            }
+        }
+
+        public void SnapDivisorDecrease() {
+            switch (SnapDivisor) {
+                case 0:
+                    // From Free to most number of snap points
+                    SnapDivisor = MaxSnapDivisor;
+                    break;
+                case 1:
+                    // Stay at least number of snap points
+                    break;
+                default:
+                    SnapDivisor /= 2;
+                    break;
+            }
+        }
 
         private void ToolSelect() {
             SetToolState(new SelectToolState());

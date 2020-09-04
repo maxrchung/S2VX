@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK;
 using osuTK.Graphics;
 using System.Collections.Generic;
 using System.IO;
@@ -58,9 +57,10 @@ namespace S2VX.Game.Story {
             ClearActives();
         }
 
-        public void AddNote(Vector2 position, double time) {
-            Notes.AddNote(position, time);
-            Approaches.AddApproach(position, time);
+        public void AddNote(Note note) {
+            Notes.AddNote(note);
+            var approach = Approaches.AddApproach(note);
+            note.Approach = approach;
         }
 
         public void RemoveNote(Note note) {
@@ -83,6 +83,11 @@ namespace S2VX.Game.Story {
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
+
+            // Set approach references
+            for (var i = 0; i < notes.Count; ++i) {
+                notes[i].Approach = approaches[i];
+            }
         }
 
         public void Save(string path) {

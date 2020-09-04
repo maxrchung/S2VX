@@ -10,6 +10,7 @@ using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
+using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Editor.ToolState {
     public class SelectToolState : S2VXToolState {
@@ -172,7 +173,8 @@ namespace S2VX.Game.Editor.ToolState {
             if (DragTimelineNote) {
                 var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
                 var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
-                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth); // temp until NoteTimeline Scroll on drag is implemented
+                // temp until NoteTimeline Scroll on drag is implemented
+                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
                 var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
                 var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
                 var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
@@ -211,7 +213,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Editor.NoteSelectionIndicators.Clear();
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        Story.RemoveNote(note);
+                        Editor.Reversibles.Push(new ReversibleRemoveNote(Story, note));
                     }
                     SelectedNoteToTime.Clear();
                     return true;
