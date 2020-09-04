@@ -232,3 +232,12 @@ dotnet_diagnostic.IDE0010.severity = suggestion
 
 # CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = suggestion
+
+# MEN007: Use a single return
+dotnet_diagnostic.MEN007.severity = suggestion
+
+# MEN010: Avoid magic numbers
+dotnet_diagnostic.MEN010.severity = suggestion
+
+# MEN003: Method is too long
+dotnet_diagnostic.MEN003.severity = suggestion

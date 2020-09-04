@@ -39,8 +39,10 @@ namespace S2VX.Game.Editor.Containers {
             new Color4[] { Color4.White, Color4.Blue, Color4.Red, Color4.Blue },
             new Color4[] { Color4.White, Color4.Orange, Color4.Pink, Color4.Red, Color4.Pink, Color4.Orange },
             new Color4[] { Color4.White, Color4.Yellow, Color4.Blue, Color4.Yellow, Color4.Red, Color4.Yellow, Color4.Blue, Color4.Yellow },
+#pragma warning disable MEN002 // Line is too long
             new Color4[] { Color4.White, Color4.Brown, Color4.Orange, Color4.Blue, Color4.Pink, Color4.Brown, Color4.Red, Color4.Brown, Color4.Pink, Color4.Blue, Color4.Orange, Color4.Brown },
             new Color4[] { Color4.White, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Red, Color4.Brown, Color4.Yellow, Color4.Brown, Color4.Blue, Color4.Brown, Color4.Yellow, Color4.Brown },
+#pragma warning restore MEN002 // Line is too long
         };
 
         public const float TimelineHeight = 0.075f;
@@ -226,7 +228,6 @@ namespace S2VX.Game.Editor.Containers {
                         },
                     }
                 }
-
             };
         }
 
