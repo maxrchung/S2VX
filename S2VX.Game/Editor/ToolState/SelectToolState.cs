@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
@@ -13,6 +12,12 @@ using System.Collections.Generic;
 using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Editor.ToolState {
+    public enum DragState {
+        None,
+        DragTimelineNote,
+        DragNote,
+    }
+
     public class SelectToolState : S2VXToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
@@ -21,12 +26,11 @@ namespace S2VX.Game.Editor.ToolState {
         private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
 
-        private const float SelectionIndicatorThickness = 0.025f;
-
-        private bool DragTimelineNote { get; set; }
         private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
-        private bool DragNote { get; set; }
         private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
+        private DragState ToDrag { get; set; } = DragState.None;
+
+        private const float SelectionIndicatorThickness = 0.025f;
 
         private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
@@ -126,37 +130,42 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolDragStart(DragStartEvent e) {
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             var selectedNoteTime = 0d;
-            var selectedNoteCoord = new Vector2();
+            var selectedNoteCoord = Vector2.Zero;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
-                    DragTimelineNote = true;
+                    ToDrag = DragState.DragTimelineNote;
                     selectedNoteTime = note.EndTime;
                     break;
                 }
             }
-            if (DragTimelineNote) {
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
-                    return true;
+            if (ToDrag == DragState.None) {
+                foreach (var note in GetVisibleStoryNotes()) {
+                    if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
+                        ToDrag = DragState.DragNote;
+                        selectedNoteCoord = note.Coordinates;
+                        break;
+                    }
                 }
             }
-            foreach (var note in GetVisibleStoryNotes()) {
-                if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
-                    DragNote = true;
-                    selectedNoteCoord = note.Coordinates;
+
+            switch (ToDrag) {
+                case DragState.DragTimelineNote:
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                    }
                     break;
-                }
-            }
-            if (DragNote) {
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    NoteToDragPointDelta[note] = note.Coordinates - selectedNoteCoord;
-                    return true;
-                }
+                case DragState.DragNote:
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        NoteToDragPointDelta[note] = note.Coordinates - selectedNoteCoord;
+                    }
+                    break;
+                case DragState.None:
+                    break;
             }
             return true;
         }
@@ -170,42 +179,49 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolDrag(DragEvent e) {
-            if (DragTimelineNote) {
-                var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
-                // temp until NoteTimeline Scroll on drag is implemented
-                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
-                var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
-                var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
-                var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
+            switch (ToDrag) {
+                case DragState.DragTimelineNote: {
+                    var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+                    var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
+                    // temp until NoteTimeline Scroll on drag is implemented
+                    mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
+                    var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
+                    var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
+                    var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
-                var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
-                    note.UpdateEndTime(newTime);
-                    selectedNoteToTimeCopy[note] = newTime;
+                    var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                        note.UpdateEndTime(newTime);
+                        selectedNoteToTimeCopy[note] = newTime;
+                    }
+                    SelectedNoteToTime = selectedNoteToTimeCopy;
+                    break;
                 }
-                SelectedNoteToTime = selectedNoteToTimeCopy;
-            } else if (DragNote) {
-                var mousePos = Editor.MousePosition;
-                //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
+                case DragState.DragNote: {
+                    var mousePos = Editor.MousePosition;
+                    //var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor);
 
-                var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    var delta = NoteToDragPointDelta[note];
-                    //Console.WriteLine($"Delta: {delta}");
-                    var newPos = mousePos + delta;
-                    Console.WriteLine($"Current Position: {note.Coordinates}");
-                    Console.WriteLine($"New Position: {newPos}");
-                    note.UpdateCoordinates(newPos);
+                    var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        var delta = NoteToDragPointDelta[note];
+                        //Console.WriteLine($"Delta: {delta}");
+                        var newPos = mousePos + delta;
+                        Console.WriteLine($"Current Position: {note.Coordinates}");
+                        Console.WriteLine($"New Position: {newPos}");
+                        note.UpdateCoordinates(newPos);
+                    }
+                    SelectedNoteToTime = selectedNoteToTimeCopy;
+                    break;
                 }
-                SelectedNoteToTime = selectedNoteToTimeCopy;
+                case DragState.None:
+                    break;
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
+        public override void OnToolDragEnd(DragEndEvent _) => ToDrag = DragState.None;
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
