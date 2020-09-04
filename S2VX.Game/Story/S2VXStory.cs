@@ -28,10 +28,12 @@ namespace S2VX.Game.Story {
 
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
+        // Default editor settings for new projects
         public double EditorTrackTime { get; set; }
-        public double EditorTrackVolume { get; set; }
-        public double EditorTrackPlaybackRate { get; set; }
-        public int EditorSnapDivisor { get; set; }
+        public double EditorTrackVolume { get; set; } = 1.0;
+        public double EditorTrackPlaybackRate { get; set; } = 1.0;
+        public int EditorSnapDivisor { get; set; } = 1;
+        public int EditorBeatSnapDivisorIndex { get; set; } = 3;
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -98,6 +100,7 @@ namespace S2VX.Game.Story {
             EditorTrackVolume = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackVolume)].ToString());
             EditorTrackPlaybackRate = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackPlaybackRate)].ToString());
             EditorSnapDivisor = JsonConvert.DeserializeObject<int>(story[nameof(EditorSnapDivisor)].ToString());
+            EditorBeatSnapDivisorIndex = JsonConvert.DeserializeObject<int>(story[nameof(EditorBeatSnapDivisorIndex)].ToString());
         }
 
         public void Save(string path) {
@@ -108,6 +111,7 @@ namespace S2VX.Game.Story {
                 EditorTrackVolume,
                 EditorTrackPlaybackRate,
                 EditorSnapDivisor,
+                EditorBeatSnapDivisorIndex,
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);

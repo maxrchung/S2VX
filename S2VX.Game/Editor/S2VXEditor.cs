@@ -65,6 +65,7 @@ namespace S2VX.Game.Editor {
             VolumeSet(Story.EditorTrackVolume);
             PlaybackSetRate(Story.EditorTrackPlaybackRate);
             SnapDivisor = Story.EditorSnapDivisor;
+            NotesTimeline.ChangeBeatDivisorIndex(Story.EditorBeatSnapDivisorIndex);
 
             // Sets the same clock for sections dependent on the Track
             var trackClock = new FramedClock(Track);
@@ -301,6 +302,7 @@ namespace S2VX.Game.Editor {
             Story.EditorTrackVolume = Track.Volume.Value;
             Story.EditorTrackPlaybackRate = Track.Tempo.Value;
             Story.EditorSnapDivisor = SnapDivisor;
+            Story.EditorBeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
 

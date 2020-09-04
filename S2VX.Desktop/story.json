@@ -90,8 +90,9 @@
       }
     }
   ],
-  "EditorTrackTime": 11962.811791383221,
-  "EditorTrackVolume": 0.3000000014901162,
-  "EditorTrackPlaybackRate": 0.9,
-  "EditorSnapDivisor": 1
+  "EditorTrackTime": 11900.816326530614,
+  "EditorTrackVolume": 0.10000000149011617,
+  "EditorTrackPlaybackRate": 1.0,
+  "EditorSnapDivisor": 2,
+  "EditorBeatSnapDivisorIndex": 3
 }

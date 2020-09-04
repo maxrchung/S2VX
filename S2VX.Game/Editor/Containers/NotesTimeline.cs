@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor.Containers {
         public float SectionLength { get; private set; } = 2;
         public const int SecondsToMS = 1000;
 
-        private int DivisorIndex { get; set; } = 3;
+        public int DivisorIndex { get; private set; } = 3;
         public int Divisor { get; private set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
@@ -78,6 +78,8 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         public void ChangeBeatDivisor(bool increase) => DivisorIndex = Math.Clamp(DivisorIndex + (increase ? 1 : -1), 0, 7);
+
+        public void ChangeBeatDivisorIndex(int index) => DivisorIndex = index;
 
         public void HandleZoom(bool zoomIn) => SectionLength = Math.Clamp(SectionLength + (zoomIn ? -0.5f : 0.5f), 0.5f, 10f);
 
