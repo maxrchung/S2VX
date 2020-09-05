@@ -312,7 +312,7 @@ namespace S2VX.Game.Editor {
         }
 
         private void PlaybackPlay() {
-            if (Time.Current < Track.Length) {
+            if (Track.CurrentTime < Track.Length) {
                 Play(!Track.IsRunning);
             }
         }
