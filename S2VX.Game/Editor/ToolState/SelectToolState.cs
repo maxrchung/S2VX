@@ -12,12 +12,6 @@ using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.ToolState {
-    public enum DragState {
-        None,
-        DragTimelineNote,
-        DragNote,
-    }
-
     public class SelectToolState : S2VXToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
@@ -28,7 +22,7 @@ namespace S2VX.Game.Editor.ToolState {
 
         private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
-        private DragState ToDrag { get; set; } = DragState.None;
+        private SelectToolDragState ToDrag { get; set; } = SelectToolDragState.None;
         private bool DelayDrag { get; set; }
 
         private const float SelectionIndicatorThickness = 0.025f;
@@ -137,15 +131,15 @@ namespace S2VX.Game.Editor.ToolState {
                 var note = noteAndTime.Key;
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
-                    ToDrag = DragState.DragTimelineNote;
+                    ToDrag = SelectToolDragState.DragTimelineNote;
                     selectedNoteTime = note.EndTime;
                     break;
                 }
             }
-            if (ToDrag == DragState.None) {
+            if (ToDrag == SelectToolDragState.None) {
                 foreach (var note in GetVisibleStoryNotes()) {
                     if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
-                        ToDrag = DragState.DragNote;
+                        ToDrag = SelectToolDragState.DragNote;
                         selectedNoteCoord = note.Coordinates;
                         break;
                     }
@@ -153,19 +147,19 @@ namespace S2VX.Game.Editor.ToolState {
             }
 
             switch (ToDrag) {
-                case DragState.DragTimelineNote:
+                case SelectToolDragState.DragTimelineNote:
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
                         TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
                     }
                     break;
-                case DragState.DragNote:
+                case SelectToolDragState.DragNote:
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
                         NoteToDragPointDelta[note] = note.Coordinates - selectedNoteCoord;
                     }
                     break;
-                case DragState.None:
+                case SelectToolDragState.None:
                     break;
             }
             return true;
@@ -182,7 +176,7 @@ namespace S2VX.Game.Editor.ToolState {
         public override void OnToolDrag(DragEvent e) {
             if (!DelayDrag) {
                 switch (ToDrag) {
-                    case DragState.DragTimelineNote: {
+                    case SelectToolDragState.DragTimelineNote: {
                         var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
                         var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
                         // temp until NoteTimeline Scroll on drag is implemented
@@ -201,7 +195,7 @@ namespace S2VX.Game.Editor.ToolState {
                         SelectedNoteToTime = selectedNoteToTimeCopy;
                         break;
                     }
-                    case DragState.DragNote: {
+                    case SelectToolDragState.DragNote: {
                         var mousePos = Editor.MousePosition;
 
                         foreach (var noteAndTime in SelectedNoteToTime) {
@@ -211,14 +205,14 @@ namespace S2VX.Game.Editor.ToolState {
                         }
                         break;
                     }
-                    case DragState.None:
+                    case SelectToolDragState.None:
                         break;
                 }
                 DelayDrag = true;
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) => ToDrag = DragState.None;
+        public override void OnToolDragEnd(DragEndEvent _) => ToDrag = SelectToolDragState.None;
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
