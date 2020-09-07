@@ -8,6 +8,7 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
 
@@ -89,7 +90,7 @@ namespace S2VX.Game.Editor.Containers {
                 $"{TxtEndValue.Current.Value}"
             };
             var join = string.Join("|", data);
-            var command = Command.FromString(join);
+            var command = S2VXCommand.FromString(join);
             Story.AddCommand(command);
             LoadCommandsList();
         }
