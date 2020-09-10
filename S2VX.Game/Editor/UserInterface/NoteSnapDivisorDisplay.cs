@@ -28,7 +28,7 @@ namespace S2VX.Game.Editor.UserInterface {
             if (Editor.SnapDivisor == 0) {
                 TxtNoteSnapDivisor.Text = "Snap Divisor: Free";
             } else {
-                TxtNoteSnapDivisor.Text = "Snap Divisor: " + S2VXUtils.FloatToString(1.0f / Editor.SnapDivisor, 4);
+                TxtNoteSnapDivisor.Text = "Snap Divisor: " + S2VXUtils.FloatToString(1.0f / Editor.SnapDivisor);
             }
         }
 
