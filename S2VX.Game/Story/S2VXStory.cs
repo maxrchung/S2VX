@@ -4,6 +4,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
+using S2VX.Game.Editor;
 using System.Collections.Generic;
 using System.IO;
 
@@ -28,12 +29,10 @@ namespace S2VX.Game.Story {
 
         private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
 
-        // Default editor settings for new projects
-        public double EditorTrackTime { get; set; }
-        public double EditorTrackVolume { get; set; } = 1.0;
-        public double EditorTrackPlaybackRate { get; set; } = 1.0;
-        public int EditorSnapDivisor { get; set; } = 1;
-        public int EditorBeatSnapDivisorIndex { get; set; } = 3;
+        private EditorSettings EditorSettings = new EditorSettings();
+
+        public EditorSettings GetEditorSettings() => EditorSettings;
+        public void SetEditorSettings(EditorSettings value) => EditorSettings = value;
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -96,22 +95,25 @@ namespace S2VX.Game.Story {
                 notes[i].Approach = approaches[i];
             }
 
-            EditorTrackTime = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackTime)].ToString());
-            EditorTrackVolume = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackVolume)].ToString());
-            EditorTrackPlaybackRate = JsonConvert.DeserializeObject<double>(story[nameof(EditorTrackPlaybackRate)].ToString());
-            EditorSnapDivisor = JsonConvert.DeserializeObject<int>(story[nameof(EditorSnapDivisor)].ToString());
-            EditorBeatSnapDivisorIndex = JsonConvert.DeserializeObject<int>(story[nameof(EditorBeatSnapDivisorIndex)].ToString());
+            SetEditorSettings(JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString()));
+
+            //TrackTime = JsonConvert.DeserializeObject<double>(story[nameof(TrackTime)].ToString());
+            //TrackVolume = JsonConvert.DeserializeObject<double>(story[nameof(TrackVolume)].ToString());
+            //TrackPlaybackRate = JsonConvert.DeserializeObject<double>(story[nameof(TrackPlaybackRate)].ToString());
+            //SnapDivisor = JsonConvert.DeserializeObject<int>(story[nameof(SnapDivisor)].ToString());
+            //BeatSnapDivisorIndex = JsonConvert.DeserializeObject<int>(story[nameof(BeatSnapDivisorIndex)].ToString());
         }
 
         public void Save(string path) {
             var obj = new {
                 Commands,
                 Notes = Notes.Children,
-                EditorTrackTime,
-                EditorTrackVolume,
-                EditorTrackPlaybackRate,
-                EditorSnapDivisor,
-                EditorBeatSnapDivisorIndex,
+                EditorSettings = GetEditorSettings(),
+                //TrackTime,
+                //TrackVolume,
+                //TrackPlaybackRate,
+                //SnapDivisor,
+                //BeatSnapDivisorIndex,
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);

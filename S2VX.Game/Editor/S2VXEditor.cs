@@ -61,11 +61,11 @@ namespace S2VX.Game.Editor {
             Story.Open(@"../../../story.json");
 
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Seek(Story.EditorTrackTime);
-            VolumeSet(Story.EditorTrackVolume);
-            PlaybackSetRate(Story.EditorTrackPlaybackRate);
-            SnapDivisor = Story.EditorSnapDivisor;
-            NotesTimeline.ChangeBeatDivisorIndex(Story.EditorBeatSnapDivisorIndex);
+            Seek(Story.GetEditorSettings().TrackTime);
+            VolumeSet(Story.GetEditorSettings().TrackVolume);
+            PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
+            SnapDivisor = Story.GetEditorSettings().SnapDivisor;
+            NotesTimeline.DivisorIndex = Story.GetEditorSettings().BeatSnapDivisorIndex;
 
             // Sets the same clock for sections dependent on the Track
             var trackClock = new FramedClock(Track);
@@ -293,16 +293,16 @@ namespace S2VX.Game.Editor {
         private void ProjectRefresh() {
             ProjectSave();
             Story.Open(@"../../../story.json");
-            Seek(Story.EditorTrackTime);
+            Seek(Story.GetEditorSettings().TrackTime);
         }
 
         private void ProjectSave() {
             Play(false);
-            Story.EditorTrackTime = Track.CurrentTime;
-            Story.EditorTrackVolume = Track.Volume.Value;
-            Story.EditorTrackPlaybackRate = Track.Tempo.Value;
-            Story.EditorSnapDivisor = SnapDivisor;
-            Story.EditorBeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
+            Story.GetEditorSettings().TrackTime = Track.CurrentTime;
+            Story.GetEditorSettings().TrackVolume = Track.Volume.Value;
+            Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
+            Story.GetEditorSettings().SnapDivisor = SnapDivisor;
+            Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
 
