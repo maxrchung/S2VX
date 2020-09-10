@@ -3,7 +3,6 @@ using osuTK;
 
 namespace S2VX.Game.Story.Command {
     public class CameraMoveCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.CameraMove;
         public Vector2 StartValue { get; set; } = Vector2.Zero;
         public Vector2 EndValue { get; set; } = Vector2.Zero;
         public override void Apply(double time, S2VXStory story) {

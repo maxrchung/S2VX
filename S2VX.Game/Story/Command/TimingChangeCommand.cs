@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class TimingChangeCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.TimingChange;
         public float StartValue { get; set; }
         public float EndValue { get; set; }
         public override void Apply(double time, S2VXStory story) {

@@ -4,7 +4,6 @@ using osuTK;
 namespace S2VX.Game.Story.Command {
 
     public class CameraScaleCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.CameraScale;
         public Vector2 StartValue { get; set; } = new Vector2(0.1f);
         public Vector2 EndValue { get; set; } = new Vector2(0.1f);
         public override void Apply(double time, S2VXStory story) {

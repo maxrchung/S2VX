@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class GridThicknessCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.GridThickness;
         public float StartValue { get; set; } = 0.005f;
         public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {

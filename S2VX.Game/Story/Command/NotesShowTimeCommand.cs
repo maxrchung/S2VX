@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class NotesShowTimeCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.NotesShowTime;
         public float StartValue { get; set; } = 100.0f;
         public float EndValue { get; set; } = 100.0f;
         public override void Apply(double time, S2VXStory story) {

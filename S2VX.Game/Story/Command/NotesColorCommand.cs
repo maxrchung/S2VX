@@ -3,7 +3,6 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Story.Command {
     public class NotesColorCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.NotesColor;
         public Color4 StartValue { get; set; } = Color4.White;
         public Color4 EndValue { get; set; } = Color4.White;
         public override void Apply(double time, S2VXStory story) {

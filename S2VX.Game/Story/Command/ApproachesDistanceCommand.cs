@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class ApproachesDistanceCommand : S2VXCommand {
-        public override CommandType Type { get; set; } = CommandType.ApproachesDistance;
         public float StartValue { get; set; } = 0.5f;
         public float EndValue { get; set; } = 0.5f;
         public override void Apply(double time, S2VXStory story) {
