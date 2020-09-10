@@ -52,7 +52,7 @@ namespace S2VX.Game.Editor {
         public DrawableTrack Track { get; private set; }
 
         public ReversibleStack Reversibles { get; } = new ReversibleStack();
-      
+
         public int SnapDivisor { get; private set; } = 1;
         private const int MaxSnapDivisor = 16;
 
@@ -166,7 +166,7 @@ namespace S2VX.Game.Editor {
             var translatedPosition = scaledPosition + camera.Position;
             if (SnapDivisor == 0) {
                 MousePosition = translatedPosition;
-            } else { 
+            } else {
                 var closestSnap = new Vector2(
                     (float)(Math.Round(translatedPosition.X * SnapDivisor) / SnapDivisor),
                     (float)(Math.Round(translatedPosition.Y * SnapDivisor) / SnapDivisor)
@@ -312,7 +312,7 @@ namespace S2VX.Game.Editor {
         }
 
         private void PlaybackPlay() {
-            if (Time.Current < Track.Length) {
+            if (Track.CurrentTime < Track.Length) {
                 Play(!Track.IsRunning);
             }
         }
