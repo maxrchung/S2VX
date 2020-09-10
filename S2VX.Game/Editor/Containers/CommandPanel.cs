@@ -11,6 +11,8 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
@@ -57,7 +59,7 @@ namespace S2VX.Game.Editor.Containers {
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
                 var command = Story.Commands[i];
-                if (type == "All Commands" || type == command.Type.ToString()) {
+                if (type == "All Commands" || type == command.GetCommandType()) {
                     var localIndex = i;
                     CommandsList.Add(new FillFlowContainer {
                         AutoSizeAxes = Axes.Both,
@@ -111,7 +113,8 @@ namespace S2VX.Game.Editor.Containers {
             var allCommands = new List<string> {
                 "All Commands"
             };
-            allCommands.AddRange(Enum.GetNames(typeof(CommandType)));
+            var allCommandTypes = S2VXCommand.GetCommandTypes();
+            allCommands.AddRange(allCommandTypes);
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
 
