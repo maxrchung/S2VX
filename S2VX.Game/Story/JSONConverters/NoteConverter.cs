@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace S2VX.Game.Story {
+namespace S2VX.Game.Story.JSONConverters {
     // Special converter for Note serialization since we only care about EndTime and Coordinates
     public class NoteConverter : JsonConverter<Note> {
         public override void WriteJson(JsonWriter writer, Note note, JsonSerializer serializer) {
