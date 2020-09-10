@@ -81,59 +81,9 @@ namespace S2VX.Game.Story.Command {
 
         public static S2VXCommand FromJson(JObject json) {
             var type = Enum.Parse<CommandType>(json[nameof(Type)].ToString());
+            var systemType = System.Type.GetType($"S2VX.Game.Story.Command.{type}Command");
             var data = json.ToString();
-            S2VXCommand command = null;
-            switch (type) {
-                case CommandType.CameraMove:
-                    command = JsonConvert.DeserializeObject<CameraMoveCommand>(data);
-                    break;
-                case CommandType.CameraRotate:
-                    command = JsonConvert.DeserializeObject<CameraRotateCommand>(data);
-                    break;
-                case CommandType.CameraScale:
-                    command = JsonConvert.DeserializeObject<CameraScaleCommand>(data);
-                    break;
-                case CommandType.GridAlpha:
-                    command = JsonConvert.DeserializeObject<GridAlphaCommand>(data);
-                    break;
-                case CommandType.GridColor:
-                    command = JsonConvert.DeserializeObject<GridColorCommand>(data);
-                    break;
-                case CommandType.GridThickness:
-                    command = JsonConvert.DeserializeObject<GridThicknessCommand>(data);
-                    break;
-                case CommandType.BackgroundColor:
-                    command = JsonConvert.DeserializeObject<BackgroundColorCommand>(data);
-                    break;
-                case CommandType.NotesAlpha:
-                    command = JsonConvert.DeserializeObject<NotesAlphaCommand>(data);
-                    break;
-                case CommandType.NotesColor:
-                    command = JsonConvert.DeserializeObject<NotesColorCommand>(data);
-                    break;
-                case CommandType.NotesFadeInTime:
-                    command = JsonConvert.DeserializeObject<NotesFadeInTimeCommand>(data);
-                    break;
-                case CommandType.NotesShowTime:
-                    command = JsonConvert.DeserializeObject<NotesShowTimeCommand>(data);
-                    break;
-                case CommandType.NotesFadeOutTime:
-                    command = JsonConvert.DeserializeObject<NotesFadeOutTimeCommand>(data);
-                    break;
-                case CommandType.ApproachesDistance:
-                    command = JsonConvert.DeserializeObject<ApproachesDistanceCommand>(data);
-                    break;
-                case CommandType.ApproachesThickness:
-                    command = JsonConvert.DeserializeObject<ApproachesThicknessCommand>(data);
-                    break;
-                case CommandType.TimingChange:
-                    command = JsonConvert.DeserializeObject<TimingChangeCommand>(data);
-                    break;
-                case CommandType.None:
-                    break;
-                default:
-                    break;
-            }
+            var command = JsonConvert.DeserializeObject(data, systemType) as S2VXCommand;
             return command;
         }
 
