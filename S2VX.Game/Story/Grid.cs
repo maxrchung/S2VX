@@ -24,6 +24,9 @@ namespace S2VX.Game.Story {
             var camera = Story.Camera;
 
             if (Alpha <= 0 || Thickness <= 0) {
+                if (InternalChildren.Count != 0) {
+                    ClearInternal();
+                }
                 return;
             }
 
