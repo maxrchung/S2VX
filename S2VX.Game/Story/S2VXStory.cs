@@ -96,12 +96,6 @@ namespace S2VX.Game.Story {
             }
 
             SetEditorSettings(JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString()));
-
-            //TrackTime = JsonConvert.DeserializeObject<double>(story[nameof(TrackTime)].ToString());
-            //TrackVolume = JsonConvert.DeserializeObject<double>(story[nameof(TrackVolume)].ToString());
-            //TrackPlaybackRate = JsonConvert.DeserializeObject<double>(story[nameof(TrackPlaybackRate)].ToString());
-            //SnapDivisor = JsonConvert.DeserializeObject<int>(story[nameof(SnapDivisor)].ToString());
-            //BeatSnapDivisorIndex = JsonConvert.DeserializeObject<int>(story[nameof(BeatSnapDivisorIndex)].ToString());
         }
 
         public void Save(string path) {
@@ -109,11 +103,6 @@ namespace S2VX.Game.Story {
                 Commands,
                 Notes = Notes.Children,
                 EditorSettings = GetEditorSettings(),
-                //TrackTime,
-                //TrackVolume,
-                //TrackPlaybackRate,
-                //SnapDivisor,
-                //BeatSnapDivisorIndex,
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
