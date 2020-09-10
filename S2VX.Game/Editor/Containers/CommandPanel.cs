@@ -11,8 +11,6 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
