@@ -26,7 +26,9 @@ namespace S2VX.Game.Story.Command {
         public static IEnumerable<string> GetCommandTypes() {
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
-            var allCommands = types.Where(t => string.Equals(t.Namespace, "S2VX.Game.Story.Command", StringComparison.Ordinal));
+            var allCommands = types.Where(
+                t => string.Equals(t.Namespace, "S2VX.Game.Story.Command", StringComparison.Ordinal)
+            );
             var validCommands = allCommands.Where(t =>
                 // Skips compiler auto-generated classes
                 t.Name.Contains("Command", StringComparison.Ordinal)
@@ -61,16 +63,22 @@ namespace S2VX.Game.Story.Command {
 
         public override int GetHashCode() => ToString().GetHashCode(StringComparison.Ordinal);
 
-        public static bool operator ==(S2VXCommand left, S2VXCommand right) => left is null ? right is null : left.Equals(right);
+        public static bool operator ==(S2VXCommand left, S2VXCommand right) =>
+            left is null ? right is null : left.Equals(right);
 
-        public static bool operator !=(S2VXCommand left, S2VXCommand right) => !(left == right);
+        public static bool operator !=(S2VXCommand left, S2VXCommand right) =>
+            !(left == right);
 
-        public static bool operator <(S2VXCommand left, S2VXCommand right) => left is null ? right is null : left.CompareTo(right) < 0;
+        public static bool operator <(S2VXCommand left, S2VXCommand right) =>
+            left is null ? right is null : left.CompareTo(right) < 0;
 
-        public static bool operator <=(S2VXCommand left, S2VXCommand right) => left is null || left.CompareTo(right) <= 0;
+        public static bool operator <=(S2VXCommand left, S2VXCommand right) =>
+            left is null || left.CompareTo(right) <= 0;
 
-        public static bool operator >(S2VXCommand left, S2VXCommand right) => left is object && left.CompareTo(right) > 0;
+        public static bool operator >(S2VXCommand left, S2VXCommand right) =>
+            left is object && left.CompareTo(right) > 0;
 
-        public static bool operator >=(S2VXCommand left, S2VXCommand right) => left is null ? right is null : left.CompareTo(right) >= 0;
+        public static bool operator >=(S2VXCommand left, S2VXCommand right) =>
+            left is null ? right is null : left.CompareTo(right) >= 0;
     }
 }
