@@ -5,6 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
 using S2VX.Game.Story.Command;
+using S2VX.Game.Story.JSONConverters;
 using System.Collections.Generic;
 using System.IO;
 
@@ -27,7 +28,11 @@ namespace S2VX.Game.Story {
         private int NextActive { get; set; }
         private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
 
-        private static JsonConverter[] Converters { get; } = { new Vector2Converter(), new NoteConverter() };
+        private static JsonConverter[] Converters { get; } = {
+            new CommandConverter(),
+            new Vector2Converter(),
+            new NoteConverter()
+        };
 
         [BackgroundDependencyLoader]
         private void Load() {
