@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Graphics;
 using System;
 using System.Globalization;
+using System.Reflection;
 
 namespace S2VX.Game.Story.Command {
     public abstract class S2VXCommand : IComparable<S2VXCommand> {
@@ -20,58 +21,9 @@ namespace S2VX.Game.Story.Command {
         public static S2VXCommand FromString(string data) {
             var split = data.Split("|");
             var type = Enum.Parse<CommandType>(split[0]);
-            S2VXCommand command = null;
-            switch (type) {
-                case CommandType.CameraMove:
-                    command = CameraMoveCommand.FromString(split);
-                    break;
-                case CommandType.CameraRotate:
-                    command = CameraRotateCommand.FromString(split);
-                    break;
-                case CommandType.CameraScale:
-                    command = CameraScaleCommand.FromString(split);
-                    break;
-                case CommandType.GridAlpha:
-                    command = GridAlphaCommand.FromString(split);
-                    break;
-                case CommandType.GridColor:
-                    command = GridColorCommand.FromString(split);
-                    break;
-                case CommandType.GridThickness:
-                    command = GridThicknessCommand.FromString(split);
-                    break;
-                case CommandType.BackgroundColor:
-                    command = BackgroundColorCommand.FromString(split);
-                    break;
-                case CommandType.NotesAlpha:
-                    command = NotesAlphaCommand.FromString(split);
-                    break;
-                case CommandType.NotesColor:
-                    command = NotesColorCommand.FromString(split);
-                    break;
-                case CommandType.NotesFadeInTime:
-                    command = NotesFadeInTimeCommand.FromString(split);
-                    break;
-                case CommandType.NotesShowTime:
-                    command = NotesShowTimeCommand.FromString(split);
-                    break;
-                case CommandType.NotesFadeOutTime:
-                    command = NotesFadeOutTimeCommand.FromString(split);
-                    break;
-                case CommandType.ApproachesDistance:
-                    command = ApproachesDistanceCommand.FromString(split);
-                    break;
-                case CommandType.ApproachesThickness:
-                    command = ApproachesThicknessCommand.FromString(split);
-                    break;
-                case CommandType.TimingChange:
-                    command = TimingChangeCommand.FromString(split);
-                    break;
-                case CommandType.None:
-                    break;
-                default:
-                    break;
-            }
+            var systemType = System.Type.GetType($"S2VX.Game.Story.Command.{type}Command");
+            var staticMethod = systemType.GetMethod("FromString", BindingFlags.Public | BindingFlags.Static);
+            var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
             command.Type = Enum.Parse<CommandType>(split[0]);
             command.StartTime = double.Parse(split[1], CultureInfo.InvariantCulture);
             command.EndTime = double.Parse(split[2], CultureInfo.InvariantCulture);
