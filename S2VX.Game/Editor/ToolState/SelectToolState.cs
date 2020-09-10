@@ -6,10 +6,10 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
-using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Editor.ToolState {
     public class SelectToolState : S2VXToolState {
@@ -20,10 +20,12 @@ namespace S2VX.Game.Editor.ToolState {
         private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
 
-        private const float SelectionIndicatorThickness = 0.025f;
+        private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
+        private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
+        private SelectToolDragState ToDrag { get; set; } = SelectToolDragState.None;
+        private bool DelayDrag { get; set; }
 
-        private bool DragTimelineNote { get; set; }
-        private Dictionary<Note, double> NoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
+        private const float SelectionIndicatorThickness = 0.025f;
 
         private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
@@ -123,21 +125,42 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolDragStart(DragStartEvent e) {
             var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.TickBarNoteSelections);
             var selectedNoteTime = 0d;
+            var selectedNoteCoord = Vector2.Zero;
 
             foreach (var noteAndTime in SelectedNoteToTime) {
                 var note = noteAndTime.Key;
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
-                    DragTimelineNote = true;
+                    ToDrag = SelectToolDragState.DragTimelineNote;
                     selectedNoteTime = note.EndTime;
                     break;
                 }
             }
-            if (DragTimelineNote) {
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    NoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+            if (ToDrag == SelectToolDragState.None) {
+                foreach (var note in GetVisibleStoryNotes()) {
+                    if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
+                        ToDrag = SelectToolDragState.DragNote;
+                        selectedNoteCoord = note.Coordinates;
+                        break;
+                    }
                 }
+            }
+
+            switch (ToDrag) {
+                case SelectToolDragState.DragTimelineNote:
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                    }
+                    break;
+                case SelectToolDragState.DragNote:
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        NoteToDragPointDelta[note] = note.Coordinates - selectedNoteCoord;
+                    }
+                    break;
+                case SelectToolDragState.None:
+                    break;
             }
             return true;
         }
@@ -151,27 +174,45 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolDrag(DragEvent e) {
-            if (DragTimelineNote) {
-                var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
-                var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
-                // temp until NoteTimeline Scroll on drag is implemented
-                mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
-                var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
-                var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
-                var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
+            if (!DelayDrag) {
+                switch (ToDrag) {
+                    case SelectToolDragState.DragTimelineNote: {
+                        var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+                        var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
+                        // temp until NoteTimeline Scroll on drag is implemented
+                        mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
+                        var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
+                        var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
+                        var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
 
-                var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                foreach (var noteAndTime in SelectedNoteToTime) {
-                    var note = noteAndTime.Key;
-                    var newTime = GetClosestTickTime(gameTimeAtMouse) + NoteToDragPointDelta[note];
-                    note.UpdateEndTime(newTime);
-                    selectedNoteToTimeCopy[note] = newTime;
+                        var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
+                        foreach (var noteAndTime in SelectedNoteToTime) {
+                            var note = noteAndTime.Key;
+                            var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                            note.UpdateEndTime(newTime);
+                            selectedNoteToTimeCopy[note] = newTime;
+                        }
+                        SelectedNoteToTime = selectedNoteToTimeCopy;
+                        break;
+                    }
+                    case SelectToolDragState.DragNote: {
+                        var mousePos = Editor.MousePosition;
+
+                        foreach (var noteAndTime in SelectedNoteToTime) {
+                            var note = noteAndTime.Key;
+                            var newPos = mousePos + NoteToDragPointDelta[note];
+                            note.UpdateCoordinates(newPos);
+                        }
+                        break;
+                    }
+                    case SelectToolDragState.None:
+                        break;
                 }
-                SelectedNoteToTime = selectedNoteToTimeCopy;
+                DelayDrag = true;
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) => DragTimelineNote = false;
+        public override void OnToolDragEnd(DragEndEvent _) => ToDrag = SelectToolDragState.None;
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
@@ -195,7 +236,9 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         protected override void Update() {
+            DelayDrag = false;
             Editor.NotesTimeline.TickBarNoteSelections.Clear();
+
             var lowerBound = Time.Current - Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
             var upperBound = Time.Current + Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS / 2;
             foreach (var noteAndTime in SelectedNoteToTime) {
