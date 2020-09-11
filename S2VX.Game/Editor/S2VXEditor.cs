@@ -40,6 +40,7 @@ namespace S2VX.Game.Editor {
         private void SetToolState(S2VXToolState newState) {
             ToolState.HandleExit();
             ToolState = newState;
+            ToolContainer.Child = ToolState;
         }
 
         private Container ToolContainer { get; set; } = new Container {
@@ -212,6 +213,10 @@ namespace S2VX.Game.Editor {
                     ToolNote();
                     break;
                 }
+                case Key.Number3: {
+                    ToolCamera();
+                    break;
+                }
                 case Key.BracketLeft: {
                     if (e.ControlPressed) {
                         if (e.ShiftPressed) {
@@ -373,14 +378,10 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        private void ToolSelect() {
-            SetToolState(new SelectToolState());
-            ToolContainer.Child = ToolState;
-        }
+        private void ToolSelect() => SetToolState(new SelectToolState());
 
-        private void ToolNote() {
-            SetToolState(new NoteToolState());
-            ToolContainer.Child = ToolState;
-        }
+        private void ToolNote() => SetToolState(new NoteToolState());
+
+        private void ToolCamera() => SetToolState(new CameraToolState());
     }
 }
