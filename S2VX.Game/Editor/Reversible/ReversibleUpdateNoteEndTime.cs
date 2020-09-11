@@ -12,8 +12,13 @@ namespace S2VX.Game.Editor.Reversible {
             NewEndTime = newEndTime;
         }
 
-        public void Undo() => Note.UpdateEndTime(OldEndTime);
+        public void Undo() {
+            Note.UpdateEndTime(OldEndTime);
+        }
 
-        public void Redo() => Note.UpdateEndTime(NewEndTime);
+        public void Redo() {
+            Note.UpdateEndTime(NewEndTime);
+            //SelectedNoteToTime[Note] = NewEndTime;
+        }
     }
 }
