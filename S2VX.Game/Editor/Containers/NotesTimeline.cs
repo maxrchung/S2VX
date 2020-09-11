@@ -250,11 +250,13 @@ namespace S2VX.Game.Editor.Containers {
         private void AddVisibleNotes() {
             var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
             var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
+            var color = Story.Notes.Colour;
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
                     var visibleNote = new RelativeBox {
-                        Colour = Color4.White.Opacity(0.727f),
+                        Colour = color,
+                        Alpha = 0.727f,
                         Width = TimelineNoteWidth,
                         Height = TimelineNoteHeight,
                         X = (float)relativePosition,
