@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor.Containers {
         public float SectionLength { get; private set; } = 2;
         public const int SecondsToMS = 1000;
 
-        private int DivisorIndex { get; set; } = 3;
+        public int DivisorIndex { get; set; } = 3;
         public int Divisor { get; private set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
