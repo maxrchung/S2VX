@@ -21,7 +21,7 @@ namespace S2VX.Game {
 
         public static string FloatToString(float data, int precision = 0) {
             if (precision == 0) {
-                return $"({data})";
+                return $"{data}";
             } else {
                 var formatString = "{0:0." + new string('#', precision) + "}";
                 return string.Format(CultureInfo.InvariantCulture, formatString, data);
