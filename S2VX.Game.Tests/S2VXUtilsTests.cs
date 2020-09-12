@@ -6,7 +6,7 @@ namespace S2VX.Game.Tests {
     [TestFixture]
     public class S2VXUtilsTests {
         [Test]
-        public void RotateZero() {
+        public void Rotate_0() {
             var testInput = new Vector2(12.345f, -67.89f);
             var expected = testInput;
             var tolerance = 0.001;
@@ -16,7 +16,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Rotate360() {
+        public void Rotate_360() {
             var testInput = new Vector2(12.345f, -67.89f);
             var expected = testInput;
             var tolerance = 0.001;
@@ -26,7 +26,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Rotate90() {
+        public void Rotate_90() {
             var testInput = new Vector2(12.345f, -67.89f);
             var expected = new Vector2(67.89f, 12.345f);
             var tolerance = 0.001;
@@ -36,7 +36,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void FloatToStringZeroPrecision() {
+        public void FloatToString_0Precision_IsExact() {
             var testInput = 3.141593f;
             var expected = "3.141593";
             var result = S2VXUtils.FloatToString(testInput);
@@ -44,7 +44,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void FloatToStringOnePrecision() {
+        public void FloatToString_1Precision_IsRoundedTo1Place() {
             var testInput = 3.141593f;
             var expected = "3.1";
             var result = S2VXUtils.FloatToString(testInput, 1);
@@ -52,7 +52,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void FloatToStringFivePrecision() {
+        public void FloatToString_5Precision_IsRoundedTo5Places() {
             var testInput = 3.141593f;
             var expected = "3.14159";
             var result = S2VXUtils.FloatToString(testInput, 5);
@@ -60,7 +60,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Vector2ToStringZeroPrecision() {
+        public void Vector2ToString_0Precision_IsExact() {
             var testInput = new Vector2(1.234567f, -7.890123f);
             var expected = "(1.234567,-7.890123)";
             var result = S2VXUtils.Vector2ToString(testInput);
@@ -68,7 +68,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Vector2ToStringOnePrecision() {
+        public void Vector2ToString_1Precision_IsRoundedTo1Place() {
             var testInput = new Vector2(1.234567f, -7.890123f);
             var expected = "(1.2,-7.9)";
             var result = S2VXUtils.Vector2ToString(testInput, 1);
@@ -76,7 +76,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Vector2ToStringFivePrecision() {
+        public void Vector2ToString_5Precision_IsRoundedTo5Places() {
             var testInput = new Vector2(1.234567f, -7.890123f);
             var expected = "(1.23457,-7.89012)";
             var result = S2VXUtils.Vector2ToString(testInput, 5);
@@ -84,7 +84,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4ToStringBlack() {
+        public void Color4ToString_Black_Is0() {
             var testInput = Color4.Black;
             var expected = "(0,0,0)";
             var result = S2VXUtils.Color4ToString(testInput);
@@ -92,7 +92,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4ToStringWhite() {
+        public void Color4ToString_White_Is1() {
             var testInput = Color4.White;
             var expected = "(1,1,1)";
             var result = S2VXUtils.Color4ToString(testInput);
@@ -100,7 +100,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Vector2FromString() {
+        public void Vector2FromString_RandomVector() {
             var testInput = "(1.234567,-7.890123)";
             var expected = new Vector2(1.234567f, -7.890123f);
             var result = S2VXUtils.Vector2FromString(testInput);
@@ -108,7 +108,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4FromStringBlack() {
+        public void Color4FromString0_IsBlack() {
             var testInput = "(0,0,0)";
             var expected = Color4.Black;
             var result = S2VXUtils.Color4FromString(testInput);
@@ -116,7 +116,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4FromStringWhite() {
+        public void Color4FromString1_IsWhite() {
             var testInput = "(1,1,1)";
             var expected = Color4.White;
             var result = S2VXUtils.Color4FromString(testInput);
