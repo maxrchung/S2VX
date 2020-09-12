@@ -108,7 +108,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4FromString0_IsBlack() {
+        public void Color4FromString_0_IsBlack() {
             var testInput = "(0,0,0)";
             var expected = Color4.Black;
             var result = S2VXUtils.Color4FromString(testInput);
@@ -116,7 +116,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Color4FromString1_IsWhite() {
+        public void Color4FromString_1_IsWhite() {
             var testInput = "(1,1,1)";
             var expected = Color4.White;
             var result = S2VXUtils.Color4FromString(testInput);
