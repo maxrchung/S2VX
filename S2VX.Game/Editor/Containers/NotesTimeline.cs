@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor.Containers {
         public float SectionLength { get; private set; } = 2;
         public const int SecondsToMS = 1000;
 
-        private int DivisorIndex { get; set; } = 3;
+        public int DivisorIndex { get; set; } = 3;
         public int Divisor { get; private set; } = 4;
 
         private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
@@ -250,11 +250,13 @@ namespace S2VX.Game.Editor.Containers {
         private void AddVisibleNotes() {
             var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
             var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
+            var color = Story.Notes.Colour;
             foreach (var note in Story.Notes.Children) {
                 if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
                     var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
                     var visibleNote = new RelativeBox {
-                        Colour = Color4.White.Opacity(0.727f),
+                        Colour = color,
+                        Alpha = 0.727f,
                         Width = TimelineNoteWidth,
                         Height = TimelineNoteHeight,
                         X = (float)relativePosition,
