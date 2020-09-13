@@ -4,6 +4,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
+using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace S2VX.Game.Story {
             new Vector2Converter(),
             new NoteConverter()
         };
+
+        private EditorSettings EditorSettings = new EditorSettings();
+
+        public EditorSettings GetEditorSettings() => EditorSettings;
+        public void SetEditorSettings(EditorSettings value) => EditorSettings = value;
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -94,12 +100,15 @@ namespace S2VX.Game.Story {
             for (var i = 0; i < notes.Count; ++i) {
                 notes[i].Approach = approaches[i];
             }
+
+            SetEditorSettings(JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString()));
         }
 
         public void Save(string path) {
             var obj = new {
                 Commands,
-                Notes = Notes.Children
+                Notes = Notes.Children,
+                EditorSettings = GetEditorSettings(),
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);

@@ -24,13 +24,8 @@ namespace S2VX.Game.Editor.UserInterface {
                 }
             };
 
-        protected override void Update() {
-            if (Editor.SnapDivisor == 0) {
-                TxtNoteSnapDivisor.Text = "Snap Divisor: Free";
-            } else {
-                TxtNoteSnapDivisor.Text = "Snap Divisor: " + S2VXUtils.FloatToString(1.0f / Editor.SnapDivisor, 4);
-            }
-        }
+        protected override void Update() => TxtNoteSnapDivisor.Text =
+            Editor.SnapDivisor == 0 ? "Snap Divisor: Free" : "Snap Divisor: " + S2VXUtils.FloatToString(1.0f / Editor.SnapDivisor);
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {
