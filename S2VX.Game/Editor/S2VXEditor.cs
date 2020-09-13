@@ -139,6 +139,9 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Select (1)", ToolSelect),
                                 new MenuItem("Note (2)", ToolNote),
+                                new MenuItem("Camera Move (Q)", ToolCameraMove),
+                                new MenuItem("Camera Scale (W)", ToolCameraScale),
+                                new MenuItem("Camera Rotate (E)", ToolCameraRotate),
                             }
                         }
                     }
@@ -201,23 +204,26 @@ namespace S2VX.Game.Editor {
                         EditUndo();
                     }
                     break;
-                case Key.Number1: {
+                case Key.Number1:
                     if (e.ControlPressed) {
                         ViewCommandPanel();
                     } else {
                         ToolSelect();
                     }
                     break;
-                }
-                case Key.Number2: {
+                case Key.Number2:
                     ToolNote();
                     break;
-                }
-                case Key.Number3: {
-                    ToolCamera();
+                case Key.Q:
+                    ToolCameraMove();
                     break;
-                }
-                case Key.BracketLeft: {
+                case Key.W:
+                    ToolCameraScale();
+                    break;
+                case Key.E:
+                    ToolCameraRotate();
+                    break;
+                case Key.BracketLeft:
                     if (e.ControlPressed) {
                         if (e.ShiftPressed) {
                             PlaybackDecreaseBeatDivisor();
@@ -226,8 +232,7 @@ namespace S2VX.Game.Editor {
                         }
                     }
                     break;
-                }
-                case Key.BracketRight: {
+                case Key.BracketRight:
                     if (e.ControlPressed) {
                         if (e.ShiftPressed) {
                             PlaybackIncreaseBeatDivisor();
@@ -236,7 +241,6 @@ namespace S2VX.Game.Editor {
                         }
                     }
                     break;
-                }
                 case Key.Space:
                     PlaybackPlay();
                     break;
@@ -382,6 +386,11 @@ namespace S2VX.Game.Editor {
 
         private void ToolNote() => SetToolState(new NoteToolState());
 
-        private void ToolCamera() => SetToolState(new CameraToolState());
+        private void ToolCameraMove() => SetToolState(new CameraMoveToolState());
+
+        private void ToolCameraScale() => SetToolState(new CameraScaleToolState());
+
+        private void ToolCameraRotate() => SetToolState(new CameraRotateToolState());
+
     }
 }
