@@ -8,6 +8,7 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
 
@@ -56,7 +57,7 @@ namespace S2VX.Game.Editor.Containers {
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
                 var command = Story.Commands[i];
-                if (type == "All Commands" || type == command.Type.ToString()) {
+                if (type == "All Commands" || type == command.GetCommandType()) {
                     var localIndex = i;
                     CommandsList.Add(new FillFlowContainer {
                         AutoSizeAxes = Axes.Both,
@@ -89,7 +90,7 @@ namespace S2VX.Game.Editor.Containers {
                 $"{TxtEndValue.Current.Value}"
             };
             var join = string.Join("|", data);
-            var command = Command.FromString(join);
+            var command = S2VXCommand.FromString(join);
             Story.AddCommand(command);
             LoadCommandsList();
         }
@@ -110,7 +111,8 @@ namespace S2VX.Game.Editor.Containers {
             var allCommands = new List<string> {
                 "All Commands"
             };
-            allCommands.AddRange(Enum.GetNames(typeof(CommandType)));
+            var allCommandTypes = S2VXCommand.GetCommandTypes();
+            allCommands.AddRange(allCommandTypes);
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
 
