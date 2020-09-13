@@ -23,14 +23,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolDragEnd(DragEndEvent e) {
-            var time = Editor.Track.CurrentTime;
-            var startTime = OldTime;
-            var endTime = time;
-            // Allows commands when going backwards or forwards
-            if (time < OldTime) {
-                startTime = time;
-                endTime = OldTime;
-            }
+            var endTime = Editor.Track.CurrentTime;
 
             var oldPosition = e.MouseDownPosition;
             var newPosition = e.MousePosition;
@@ -52,7 +45,7 @@ namespace S2VX.Game.Editor.ToolState {
 
             var endValue = (float)(OldRotation + degreesBetween);
             var reversible = new ReversibleAddCommand(Story, new CameraRotateCommand() {
-                StartTime = startTime,
+                StartTime = OldTime,
                 EndTime = endTime,
                 StartValue = OldRotation,
                 EndValue = endValue
