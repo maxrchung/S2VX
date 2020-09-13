@@ -11,8 +11,8 @@ namespace S2VX.Game.Editor.Reversible {
             Command = command;
         }
 
-        public void Undo() => Story.AddCommand(Command);
+        public void Undo() => Story.RemoveCommand(Command);
 
-        public void Redo() => Story.RemoveCommand(Command);
+        public void Redo() => Story.AddCommand(Command);
     }
 }

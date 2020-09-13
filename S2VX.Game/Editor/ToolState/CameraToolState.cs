@@ -59,13 +59,12 @@ namespace S2VX.Game.Editor.ToolState {
             var camera = Story.Camera;
             var oldPosition = e.MouseDownPosition;
             var newPosition = e.MousePosition;
-            var relativeMidPosition = new Vector2(0.5f);
             var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var diffPosition = relativeNewPosition - relativeOldPosition;
 
             switch (DragState) {
                 case CameraToolDragState.Move: {
-                    var diffPosition = relativeNewPosition - relativeOldPosition;
                     var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
                     var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
                     var endValue = OldPosition + scaledPosition;
@@ -79,7 +78,8 @@ namespace S2VX.Game.Editor.ToolState {
                     return;
                 }
                 case CameraToolDragState.Scale: {
-                    var endValue = relativeNewPosition - relativeMidPosition;
+                    var length = diffPosition.Length;
+                    var endValue = new Vector2(length);
                     var reversible = new ReversibleAddCommand(Story, new CameraScaleCommand() {
                         StartTime = startTime,
                         EndTime = endTime,
@@ -91,9 +91,18 @@ namespace S2VX.Game.Editor.ToolState {
                 }
                 case CameraToolDragState.Rotate: {
                     var dot = Vector2.Dot(relativeOldPosition, relativeNewPosition);
-                    var magnitude = relativeOldPosition.Length + relativeNewPosition.Length;
-                    var radiansBetween = Math.Acos(dot / magnitude);
+                    var magnitude = relativeOldPosition.Length * relativeNewPosition.Length;
+
+                    // Using cross product to determine angle direction
+                    // http://stackoverflow.com/questions/11022446/direction-of-shortest-rotation-between-two-vectors
+                    var cross = Vector3.Cross(
+                        new Vector3(relativeOldPosition.X, relativeOldPosition.Y, 0),
+                        new Vector3(relativeNewPosition.X, relativeNewPosition.Y, 0)
+                    );
+                    var direction = cross.Z > 0 ? 1 : -1;
+                    var radiansBetween = direction * Math.Acos(dot / magnitude);
                     var degreesBetween = radiansBetween * 180 / Math.PI;
+
                     var endValue = (float)(OldRotation + degreesBetween);
                     var reversible = new ReversibleAddCommand(Story, new CameraRotateCommand() {
                         StartTime = startTime,
