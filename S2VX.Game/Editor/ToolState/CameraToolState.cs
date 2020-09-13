@@ -10,8 +10,9 @@ namespace S2VX.Game.Editor.ToolState {
     public class CameraToolState : S2VXToolState {
         private CameraToolDragState DragState = CameraToolDragState.Move;
 
-        private Vector2 OldPosition { get; set; }
         private double OldTime { get; set; }
+        private Vector2 OldPosition { get; set; }
+        private Vector2 OldScale { get; set; }
 
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -37,16 +38,12 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolDragStart(DragStartEvent e) {
             OldTime = Editor.Track.CurrentTime;
             OldPosition = Story.Camera.Position;
+            OldScale = Story.Camera.Scale;
             return true;
         }
 
         public override void OnToolDragEnd(DragEndEvent e) {
             var time = Editor.Track.CurrentTime;
-            // Don't add command if at the same time
-            if (time == OldTime) {
-                return;
-            }
-
             var startTime = OldTime;
             var endTime = time;
             // Allows commands when going backwards or forwards
@@ -58,14 +55,15 @@ namespace S2VX.Game.Editor.ToolState {
             var camera = Story.Camera;
             var oldPosition = e.MouseDownPosition;
             var newPosition = e.MousePosition;
+            var relativeMidPosition = new Vector2(0.5f);
             var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
-            var diffPosition = relativeNewPosition - relativeOldPosition;
-            var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
-            var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
 
             switch (DragState) {
-                case CameraToolDragState.Move:
+                case CameraToolDragState.Move: {
+                    var diffPosition = relativeNewPosition - relativeOldPosition;
+                    var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
+                    var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
                     var endValue = OldPosition + scaledPosition;
                     var reversible = new ReversibleAddCommand(Story, new CameraMoveCommand() {
                         StartTime = startTime,
@@ -75,10 +73,22 @@ namespace S2VX.Game.Editor.ToolState {
                     });
                     Editor.Reversibles.Push(reversible);
                     return;
-                case CameraToolDragState.Scale:
+                }
+                case CameraToolDragState.Scale: {
+                    var endValue = relativeNewPosition - relativeMidPosition;
+                    var reversible = new ReversibleAddCommand(Story, new CameraScaleCommand() {
+                        StartTime = startTime,
+                        EndTime = endTime,
+                        StartValue = OldScale,
+                        EndValue = endValue
+                    });
+                    Editor.Reversibles.Push(reversible);
                     return;
-                case CameraToolDragState.Rotate:
+                }
+                case CameraToolDragState.Rotate: {
+
                     return;
+                }
             }
         }
 
