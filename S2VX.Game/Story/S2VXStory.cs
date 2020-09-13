@@ -52,6 +52,11 @@ namespace S2VX.Game.Story {
             ClearActives();
         }
 
+        public void RemoveCommand(Command command) {
+            Commands.Remove(command);
+            ClearActives();
+        }
+
         public void RemoveCommand(int index) {
             Commands.RemoveAt(index);
             ClearActives();

@@ -2,12 +2,15 @@
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Input;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using System;
 
 namespace S2VX.Game.Editor.ToolState {
     public class CameraToolState : S2VXToolState {
         private CameraToolDragState DragState = CameraToolDragState.Move;
+
+        private Vector2 OldPosition { get; set; }
         private double OldTime { get; set; }
 
         [Resolved]
@@ -33,6 +36,7 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override bool OnToolDragStart(DragStartEvent e) {
             OldTime = Editor.Track.CurrentTime;
+            OldPosition = Story.Camera.Position;
             return true;
         }
 
@@ -62,6 +66,14 @@ namespace S2VX.Game.Editor.ToolState {
 
             switch (DragState) {
                 case CameraToolDragState.Move:
+                    var endValue = OldPosition + scaledPosition;
+                    var reversible = new ReversibleAddCommand(Story, new CameraMoveCommand() {
+                        StartTime = startTime,
+                        EndTime = endTime,
+                        StartValue = OldPosition,
+                        EndValue = endValue
+                    });
+                    Editor.Reversibles.Push(reversible);
                     return;
                 case CameraToolDragState.Scale:
                     return;
