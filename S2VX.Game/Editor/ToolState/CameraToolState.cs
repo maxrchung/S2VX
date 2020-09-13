@@ -3,13 +3,12 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Input;
 using S2VX.Game.Story;
+using System;
 
 namespace S2VX.Game.Editor.ToolState {
     public class CameraToolState : S2VXToolState {
-        CameraToolDragState DragState = CameraToolDragState.None;
-        Vector2 OldPosition { get; set; }
-        double OldTime { get; set; }
-        Vector2 DragStart { get; set; }
+        private CameraToolDragState DragState = CameraToolDragState.Move;
+        private double OldTime { get; set; }
 
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -17,35 +16,24 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        private void RememberOldValues() {
-            OldPosition = Editor.MousePosition;
-            OldTime = Editor.Track.CurrentTime;
-        }
-
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.ControlLeft:
                     DragState = CameraToolDragState.Move;
-                    RememberOldValues();
                     return true;
                 case Key.ShiftLeft:
                     DragState = CameraToolDragState.Scale;
-                    RememberOldValues();
                     return true;
                 case Key.AltLeft:
                     DragState = CameraToolDragState.Rotate;
-                    RememberOldValues();
                     return true;
             }
             return false;
         }
 
         public override bool OnToolDragStart(DragStartEvent e) {
-            DragStart = e.MousePosition;
-        }
-
-        public override void OnToolDrag(DragEvent e) {
-
+            OldTime = Editor.Track.CurrentTime;
+            return true;
         }
 
         public override void OnToolDragEnd(DragEndEvent e) {
@@ -63,6 +51,15 @@ namespace S2VX.Game.Editor.ToolState {
                 endTime = OldTime;
             }
 
+            var camera = Story.Camera;
+            var oldPosition = e.MouseDownPosition;
+            var newPosition = e.MousePosition;
+            var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var diffPosition = relativeNewPosition - relativeOldPosition;
+            var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
+            var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
+
             switch (DragState) {
                 case CameraToolDragState.Move:
                     return;
@@ -73,6 +70,6 @@ namespace S2VX.Game.Editor.ToolState {
             }
         }
 
-        public override string DisplayName() => "Camera";
+        public override string DisplayName() => $"Camera {DragState}";
     }
 }
