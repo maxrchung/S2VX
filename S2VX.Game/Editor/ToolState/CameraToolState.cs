@@ -13,6 +13,7 @@ namespace S2VX.Game.Editor.ToolState {
         private double OldTime { get; set; }
         private Vector2 OldPosition { get; set; }
         private Vector2 OldScale { get; set; }
+        private float OldRotation { get; set; }
 
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -37,8 +38,11 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override bool OnToolDragStart(DragStartEvent e) {
             OldTime = Editor.Track.CurrentTime;
-            OldPosition = Story.Camera.Position;
-            OldScale = Story.Camera.Scale;
+
+            var camera = Story.Camera;
+            OldPosition = camera.Position;
+            OldScale = camera.Scale;
+            OldRotation = camera.Rotation;
             return true;
         }
 
@@ -86,7 +90,18 @@ namespace S2VX.Game.Editor.ToolState {
                     return;
                 }
                 case CameraToolDragState.Rotate: {
-
+                    var dot = Vector2.Dot(relativeOldPosition, relativeNewPosition);
+                    var magnitude = relativeOldPosition.Length + relativeNewPosition.Length;
+                    var radiansBetween = Math.Acos(dot / magnitude);
+                    var degreesBetween = radiansBetween * 180 / Math.PI;
+                    var endValue = (float)(OldRotation + degreesBetween);
+                    var reversible = new ReversibleAddCommand(Story, new CameraRotateCommand() {
+                        StartTime = startTime,
+                        EndTime = endTime,
+                        StartValue = OldRotation,
+                        EndValue = endValue
+                    });
+                    Editor.Reversibles.Push(reversible);
                     return;
                 }
             }
