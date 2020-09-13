@@ -1,5 +1,4 @@
 ﻿using S2VX.Game.Story;
-using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.Reversible {
@@ -12,7 +11,6 @@ namespace S2VX.Game.Editor.Reversible {
         public ReversibleUpdateNoteEndTime(Note note, double oldEndTime, double newEndTime, Dictionary<Note, double> selectedNoteToTime) {
             Note = note;
             OldEndTime = oldEndTime;
-            Console.WriteLine(oldEndTime);
             NewEndTime = newEndTime;
             SelectedNoteToTime = selectedNoteToTime;
         }

@@ -28,10 +28,7 @@ namespace S2VX.Game.Editor.ToolState {
 
         private const float SelectionIndicatorThickness = 0.025f;
 
-        private double PrevOldEndTime { get; set; }
         private double OldEndTime { get; set; }
-
-        private Vector2 PrevOldCoords { get; set; }
         private Vector2 OldCoords { get; set; }
 
         private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
@@ -139,7 +136,6 @@ namespace S2VX.Game.Editor.ToolState {
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     ToDrag = SelectToolDragState.DragTimelineNote;
-                    PrevOldEndTime = OldEndTime;
                     OldEndTime = selectedNoteTime = note.EndTime;
                     break;
                 }
@@ -148,7 +144,6 @@ namespace S2VX.Game.Editor.ToolState {
                 foreach (var note in GetVisibleStoryNotes()) {
                     if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
                         ToDrag = SelectToolDragState.DragNote;
-                        PrevOldCoords = OldCoords;
                         OldCoords = selectedNoteCoord = note.Coordinates;
                         break;
                     }
@@ -235,6 +230,13 @@ namespace S2VX.Game.Editor.ToolState {
                     break;
                 }
                 case SelectToolDragState.DragNote: {
+                    var mousePos = Editor.MousePosition;
+
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        var newPos = mousePos + NoteToDragPointDelta[note];
+                        Editor.Reversibles.Push(new ReversibleUpdateNoteCoordinates(note, OldCoords, newPos));
+                    }
 
                     break;
                 }
