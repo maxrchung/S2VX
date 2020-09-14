@@ -1,7 +1,6 @@
 {
   "Commands": [
     {
-      "Type": 3,
       "StartValue": {
         "R": 0.5,
         "G": 0.5,
@@ -16,10 +15,10 @@
       },
       "StartTime": 0.0,
       "EndTime": 10000.0,
-      "Easing": 0
+      "Easing": 0,
+      "Type": "BackgroundColor"
     },
     {
-      "Type": 4,
       "StartValue": {
         "X": 1.0,
         "Y": 1.0
@@ -30,26 +29,26 @@
       },
       "StartTime": 0.0,
       "EndTime": 10000.0,
-      "Easing": 0
+      "Easing": 0,
+      "Type": "CameraMove"
     },
     {
-      "Type": 5,
       "StartValue": 45.0,
       "EndValue": -45.0,
       "StartTime": 0.0,
       "EndTime": 10000.0,
-      "Easing": 15
+      "Easing": 15,
+      "Type": "CameraRotate"
     },
     {
-      "Type": 15,
       "StartValue": 242.0,
       "EndValue": 242.0,
       "StartTime": 0.0,
       "EndTime": 368002.0,
-      "Easing": 0
+      "Easing": 0,
+      "Type": "TimingChange"
     },
     {
-      "Type": 11,
       "StartValue": {
         "R": 0.4,
         "G": 0.3,
@@ -64,8 +63,9 @@
       },
       "StartTime": 0.0,
       "EndTime": 368002.0,
-      "Easing": 0
-    }
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
   ],
   "Notes": [
     {
