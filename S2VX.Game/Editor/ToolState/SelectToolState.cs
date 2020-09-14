@@ -217,10 +217,10 @@ namespace S2VX.Game.Editor.ToolState {
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) {
+        public override void OnToolDragEnd(DragEndEvent e) {
             switch (ToDrag) {
                 case SelectToolDragState.DragTimelineNote: {
-                    var gameTimeAtMouse = GetGameTimeAtMouse(_.ScreenSpaceMousePosition);
+                    var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
 
                     foreach (var note in SelectedNoteToTime.Keys.ToList()) {
                         var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
