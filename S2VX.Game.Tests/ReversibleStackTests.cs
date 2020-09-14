@@ -16,19 +16,19 @@ namespace S2VX.Game.Tests {
     [TestFixture]
     public class ReversibleStackTests {
         [Test]
-        public void UndoAtZeroReversibles_DoesNothing() {
+        public void Undo_AtZeroReversibles_DoesNothing() {
             var reversibles = new ReversibleStack();
             reversibles.Undo();
         }
 
         [Test]
-        public void RedoAtZeroReversibles_DoesNothing() {
+        public void Redo_AtZeroReversibles_DoesNothing() {
             var reversibles = new ReversibleStack();
             reversibles.Redo();
         }
 
         [Test]
-        public void Add1_Adds1ToValue() {
+        public void Push_1_Is1() {
             var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
@@ -36,7 +36,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Add1Twice_Adds2ToValue() {
+        public void Push_2_Is2() {
             var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
@@ -45,7 +45,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Add1Undo_Is0() {
+        public void PushUndo_Is0() {
             var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
@@ -54,7 +54,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Add1UndoRedo_Adds1ToValue() {
+        public void PushUndoRedo_Is1() {
             var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
@@ -64,7 +64,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Add1InMiddleOfStack_RemovesLaterReversibles() {
+        public void Push_InMiddleOfStack_RemovesLaterReversibles() {
             var reversibles = new ReversibleStack();
             var value = new Value();
             reversibles.Push(new Add1(value));
@@ -79,7 +79,7 @@ namespace S2VX.Game.Tests {
         }
 
         [Test]
-        public void Undo3AddsWithMaxCountOf2_Is1() {
+        public void Push_3WithMaxCountOf2_Is1() {
             var reversibles = new ReversibleStack(2);
             var value = new Value();
             reversibles.Push(new Add1(value));

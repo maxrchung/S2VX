@@ -1,75 +1,100 @@
-﻿{
+{
   "Commands": [
     {
-      "Type": "BackgroundColor",
-      "StartTime": 0,
-      "EndTime": 10000,
       "StartValue": {
         "R": 0.5,
         "G": 0.5,
         "B": 0.5,
-        "A": 1
+        "A": 1.0
       },
       "EndValue": {
-        "R": 0.420,
+        "R": 0.42,
         "G": 0.727,
         "B": 0.69,
-        "A": 1
-      }
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
     },
     {
-      "Type": "CameraMove",
-      "StartTime": 0,
-      "EndTime": 10000,
       "StartValue": {
-        "X": 1,
-        "Y": 1
+        "X": 1.0,
+        "Y": 1.0
       },
       "EndValue": {
-        "X": 2,
-        "Y": 3
-      }
+        "X": 2.0,
+        "Y": 3.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 0,
+      "Type": "CameraMove"
     },
     {
-      "Type": "CameraRotate",
-      "StartTime": 0,
-      "EndTime": 10000,
-      "StartValue": 45,
-      "EndValue": -45,
-      "Easing": 15
+      "StartValue": 45.0,
+      "EndValue": -45.0,
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 15,
+      "Type": "CameraRotate"
     },
     {
-      "Type": "TimingChange",
-      "StartTime": 0,
-      "EndTime": 368002,
-      "StartValue": 242,
-      "EndValue": 242
+      "StartValue": 242.0,
+      "EndValue": 242.0,
+      "StartTime": 0.0,
+      "EndTime": 368002.0,
+      "Easing": 0,
+      "Type": "TimingChange"
     },
     {
-      "Type": "NotesColor",
-      "StartTime": 0,
-      "EndTime": 368002,
       "StartValue": {
         "R": 0.4,
         "G": 0.3,
         "B": 0.2,
-        "A": 1
+        "A": 1.0
       },
       "EndValue": {
-        "R": 0.420,
+        "R": 0.42,
         "G": 0.727,
         "B": 0.69,
-        "A": 1
-      }
-    }
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 368002.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
   ],
   "Notes": [
     {
-      "EndTime": 5000,
+      "EndTime": 5000.0,
       "Coordinates": {
-        "X": 3,
-        "Y": 3
+        "X": 3.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 563.7188208616781,
+      "Coordinates": {
+        "X": -2.0,
+        "Y": 1.0
+      }
+    },
+    {
+      "EndTime": 12124.308390022676,
+      "Coordinates": {
+        "X": 2.5,
+        "Y": 2.25
       }
     }
-  ]
+  ],
+  "EditorSettings": {
+    "TrackTime": 0.0,
+    "TrackVolume": 0.2,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 1,
+    "BeatSnapDivisorIndex": 3
+  }
 }

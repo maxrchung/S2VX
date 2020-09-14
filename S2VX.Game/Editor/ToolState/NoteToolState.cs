@@ -34,6 +34,7 @@ namespace S2VX.Game.Editor.ToolState {
         protected override void Update() {
             Preview.EndTime = Time.Current;
             Preview.Coordinates = Editor.MousePosition;
+            Preview.Colour = Story.Notes.Colour;
         }
 
         public override string DisplayName() => "Note";
