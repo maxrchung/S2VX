@@ -3,6 +3,7 @@ using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using System;
 
 namespace S2VX.Game.Editor.ToolState {

@@ -1,12 +1,13 @@
 ﻿using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleAddCommand : IReversible {
         private S2VXStory Story { get; set; }
 
-        private Command Command { get; }
+        private S2VXCommand Command { get; }
 
-        public ReversibleAddCommand(S2VXStory story, Command command) {
+        public ReversibleAddCommand(S2VXStory story, S2VXCommand command) {
             Story = story;
             Command = command;
         }
