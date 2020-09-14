@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor {
 
         public ReversibleStack Reversibles { get; } = new ReversibleStack();
 
-        public int SnapDivisor { get; private set; } = 1;
+        public int SnapDivisor { get; private set; }
         private const int MaxSnapDivisor = 16;
 
         [BackgroundDependencyLoader]
@@ -61,7 +61,11 @@ namespace S2VX.Game.Editor {
             Story.Open(@"../../../story.json");
 
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            Track.VolumeTo(0.10f);
+            Seek(Story.GetEditorSettings().TrackTime);
+            VolumeSet(Story.GetEditorSettings().TrackVolume);
+            PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
+            SnapDivisor = Story.GetEditorSettings().SnapDivisor;
+            NotesTimeline.DivisorIndex = Story.GetEditorSettings().BeatSnapDivisorIndex;
 
             // Sets the same clock for sections dependent on the Track
             var trackClock = new FramedClock(Track);
@@ -287,14 +291,18 @@ namespace S2VX.Game.Editor {
         }
 
         private void ProjectRefresh() {
-            Play(false);
-            Story.Save(@"../../../story.json");
+            ProjectSave();
             Story.Open(@"../../../story.json");
-            Seek(Track.CurrentTime);
+            Seek(Story.GetEditorSettings().TrackTime);
         }
 
         private void ProjectSave() {
             Play(false);
+            Story.GetEditorSettings().TrackTime = Track.CurrentTime;
+            Story.GetEditorSettings().TrackVolume = Track.Volume.Value;
+            Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
+            Story.GetEditorSettings().SnapDivisor = SnapDivisor;
+            Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
 
@@ -333,21 +341,25 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
+        private void PlaybackSetRate(double rate = 1.0) => Track.TempoTo(Math.Clamp(rate, 0.1, 1));
+
         private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.1);
 
         private void PlaybackDecreaseRate() => PlaybackDecreaseRate(0.1);
 
-        public void PlaybackIncreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value + step, 0.1, 1));
+        public void PlaybackIncreaseRate(double step = 0.1) => PlaybackSetRate(Math.Clamp(Track.Tempo.Value + step, 0.1, 1));
 
-        public void PlaybackDecreaseRate(double step = 0.1) => Track.TempoTo(Math.Clamp(Track.Tempo.Value - step, 0.1, 1));
+        public void PlaybackDecreaseRate(double step = 0.1) => PlaybackSetRate(Math.Clamp(Track.Tempo.Value - step, 0.1, 1));
 
         private void VolumeIncrease() => VolumeIncrease(0.1);
 
         private void VolumeDecrease() => VolumeDecrease(0.1);
 
-        public void VolumeIncrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value + step);
+        private void VolumeSet(double volume = 1.0) => Track.VolumeTo(volume);
 
-        public void VolumeDecrease(double step = 0.1) => Track.VolumeTo(Track.Volume.Value - step);
+        public void VolumeIncrease(double step = 0.1) => VolumeSet(Track.Volume.Value + step);
+
+        public void VolumeDecrease(double step = 0.1) => VolumeSet(Track.Volume.Value - step);
 
         public void SnapDivisorIncrease() {
             if (SnapDivisor == MaxSnapDivisor) {
