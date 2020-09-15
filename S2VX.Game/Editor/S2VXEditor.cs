@@ -85,7 +85,7 @@ namespace S2VX.Game.Editor {
                 NoteSelectionIndicators,
                 ToolContainer,
                 NotesTimeline,
-                new InfoBar(),
+                new InfoBar(),mousedown
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),
@@ -157,6 +157,8 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnMouseDown(MouseDownEvent e) => ToolState.OnToolMouseDown(e);
 
+        protected override void OnMouseUp(MouseUpEvent e) => ToolState.OnToolMouseUp(e);
+
         protected override bool OnDragStart(DragStartEvent e) => ToolState.OnToolDragStart(e);
 
         protected override void OnDrag(DragEvent e) => ToolState.OnToolDrag(e);
@@ -164,6 +166,8 @@ namespace S2VX.Game.Editor {
         protected override void OnDragEnd(DragEndEvent e) => ToolState.OnToolDragEnd(e);
 
         protected override bool OnMouseMove(MouseMoveEvent e) {
+            ToolState.OnToolMouseMove(e);
+
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - Story.DrawSize / 2) / Story.DrawWidth;
             var camera = Story.Camera;
