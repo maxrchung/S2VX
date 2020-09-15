@@ -85,7 +85,7 @@ namespace S2VX.Game.Editor {
                 NoteSelectionIndicators,
                 ToolContainer,
                 NotesTimeline,
-                new InfoBar(),mousedown
+                new InfoBar(),
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),

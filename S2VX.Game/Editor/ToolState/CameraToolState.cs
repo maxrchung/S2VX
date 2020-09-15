@@ -21,9 +21,12 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        public override bool OnToolDragStart(DragStartEvent e) => true;
 
-        public override void OnToolDragEnd(DragEndEvent e) {
+        public override bool OnToolMouseDown(MouseDownEvent e) => true;
+
+        public override void OnToolMouseMove(MouseMoveEvent e) { }
+
+        public override void OnToolMouseUp(MouseUpEvent e) {
             if (!IsRecording) {
                 return;
             }
