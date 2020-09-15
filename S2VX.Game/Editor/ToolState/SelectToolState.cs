@@ -10,6 +10,7 @@ using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Editor.ToolState {
     public class SelectToolState : S2VXToolState {
@@ -17,7 +18,7 @@ namespace S2VX.Game.Editor.ToolState {
         private S2VXStory Story { get; set; } = null;
         [Resolved]
         private S2VXEditor Editor { get; set; } = null;
-        private Dictionary<Note, double> SelectedNoteToTime { get; set; } = new Dictionary<Note, double>();
+        public Dictionary<Note, double> SelectedNoteToTime { get; private set; } = new Dictionary<Note, double>();
         private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
 
         private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
@@ -26,6 +27,9 @@ namespace S2VX.Game.Editor.ToolState {
         private bool DelayDrag { get; set; }
 
         private const float SelectionIndicatorThickness = 0.025f;
+
+        private double OldEndTime { get; set; }
+        private Vector2 OldCoords { get; set; }
 
         private static bool IsMouseOnTimelineNote(Vector2 mousePos, RelativeBox timelineNote) {
             var leftBound = timelineNote.DrawPosition.X - timelineNote.DrawSize.X / 2;
@@ -132,7 +136,7 @@ namespace S2VX.Game.Editor.ToolState {
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     ToDrag = SelectToolDragState.DragTimelineNote;
-                    selectedNoteTime = note.EndTime;
+                    OldEndTime = selectedNoteTime = note.EndTime;
                     break;
                 }
             }
@@ -140,7 +144,7 @@ namespace S2VX.Game.Editor.ToolState {
                 foreach (var note in GetVisibleStoryNotes()) {
                     if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
                         ToDrag = SelectToolDragState.DragNote;
-                        selectedNoteCoord = note.Coordinates;
+                        OldCoords = selectedNoteCoord = note.Coordinates;
                         break;
                     }
                 }
@@ -173,26 +177,27 @@ namespace S2VX.Game.Editor.ToolState {
             return gameTime + (leftOffset <= rightOffset ? -leftOffset : rightOffset);
         }
 
+        private double GetGameTimeAtMouse(Vector2 localMousePos) {
+            var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
+            var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(localMousePos), tickBarNoteSelections).X;
+            // temp until NoteTimeline Scroll on drag is implemented
+            mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
+            var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
+            var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
+            return Time.Current + gameTimeDeltaFromMiddle;
+        }
+
         public override void OnToolDrag(DragEvent e) {
             if (!DelayDrag) {
                 switch (ToDrag) {
                     case SelectToolDragState.DragTimelineNote: {
-                        var tickBarNoteSelections = Editor.NotesTimeline.TickBarNoteSelections;
-                        var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), tickBarNoteSelections).X;
-                        // temp until NoteTimeline Scroll on drag is implemented
-                        mousePosX = Math.Clamp(mousePosX, 0, tickBarNoteSelections.DrawWidth);
-                        var relativeMousePosX = mousePosX / tickBarNoteSelections.DrawWidth;
-                        var gameTimeDeltaFromMiddle = (relativeMousePosX - 0.5f) * Editor.NotesTimeline.SectionLength * NotesTimeline.SecondsToMS;
-                        var gameTimeAtMouse = Time.Current + gameTimeDeltaFromMiddle;
+                        var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
 
-                        var selectedNoteToTimeCopy = new Dictionary<Note, double>(SelectedNoteToTime);
-                        foreach (var noteAndTime in SelectedNoteToTime) {
-                            var note = noteAndTime.Key;
+                        foreach (var note in SelectedNoteToTime.Keys.ToList()) {
                             var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
                             note.UpdateEndTime(newTime);
-                            selectedNoteToTimeCopy[note] = newTime;
+                            SelectedNoteToTime[note] = newTime;
                         }
-                        SelectedNoteToTime = selectedNoteToTimeCopy;
                         break;
                     }
                     case SelectToolDragState.DragNote: {
@@ -212,7 +217,35 @@ namespace S2VX.Game.Editor.ToolState {
             }
         }
 
-        public override void OnToolDragEnd(DragEndEvent _) => ToDrag = SelectToolDragState.None;
+        public override void OnToolDragEnd(DragEndEvent e) {
+            switch (ToDrag) {
+                case SelectToolDragState.DragTimelineNote: {
+                    var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
+
+                    foreach (var note in SelectedNoteToTime.Keys.ToList()) {
+                        var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                        Editor.Reversibles.Push(new ReversibleUpdateNoteEndTime(note, OldEndTime, newTime, SelectedNoteToTime));
+                        SelectedNoteToTime[note] = newTime;
+                    }
+                    break;
+                }
+                case SelectToolDragState.DragNote: {
+                    var mousePos = Editor.MousePosition;
+
+                    foreach (var noteAndTime in SelectedNoteToTime) {
+                        var note = noteAndTime.Key;
+                        var newPos = mousePos + NoteToDragPointDelta[note];
+                        Editor.Reversibles.Push(new ReversibleUpdateNoteCoordinates(note, OldCoords, newPos));
+                    }
+
+                    break;
+                }
+                case SelectToolDragState.None:
+                    return;
+            }
+
+            ToDrag = SelectToolDragState.None;
+        }
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
