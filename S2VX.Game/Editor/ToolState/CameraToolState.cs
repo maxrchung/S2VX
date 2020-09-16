@@ -52,7 +52,7 @@ namespace S2VX.Game.Editor.ToolState {
                     Story.Camera.Scale = CalculateCameraScale(e);
                 }
                 if (e.IsPressed(MouseButton.Right)) {
-                    Story.Camera.Rotation = CalculateCameraRotate(e);
+                    Story.Camera.Rotation = CalculateCameraRotation(e);
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace S2VX.Game.Editor.ToolState {
                     break;
                 }
                 case MouseButton.Right: {
-                    var endValue = CalculateCameraRotate(e);
+                    var endValue = CalculateCameraRotation(e);
                     RotateCommand = endTime > OldTime
                         ? new CameraRotateCommand() {
                             StartTime = OldTime,
@@ -123,6 +123,10 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.S:
+                    if (IsRecording) {
+                        // Add a keyframe (i.e. End and Start again)
+                        CommitCameraToolActions();
+                    }
                     IsRecording = true;
                     InitializeStartParams();
                     return true;
@@ -133,13 +137,16 @@ namespace S2VX.Game.Editor.ToolState {
                     IsRecording = false;
                     CommitCameraToolActions();
                     return true;
+                case Key.Escape:
+                    HandleExit();
+                    break;
                 default:
                     break;
             }
             return false;
         }
 
-        public override string DisplayName() => IsRecording ? "Camera (E to end)" : "Camera (S to start)";
+        public override string DisplayName() => IsRecording ? "Camera (S)et, (E)nd, (Esc) Cancel" : "Camera (S to start)";
 
         private void InitializeStartParams() {
             MoveCommand = null;
@@ -182,7 +189,7 @@ namespace S2VX.Game.Editor.ToolState {
             return new Vector2(length);
         }
 
-        private float CalculateCameraRotate(MouseEvent e) {
+        private float CalculateCameraRotation(MouseEvent e) {
             // Transform mouse position into editor coordinates
             var oldPosition = OldMousePositionRotate;
             var newPosition = e.MousePosition;
@@ -202,6 +209,13 @@ namespace S2VX.Game.Editor.ToolState {
             var degreesBetween = radiansBetween * 180 / Math.PI;
 
             return (float)(OldRotation + degreesBetween);
+        }
+
+        public override void HandleExit() {
+            IsRecording = false;
+            Story.Camera.Position = OldPosition;
+            Story.Camera.Scale = OldScale;
+            Story.Camera.Rotation = OldRotation;
         }
     }
 }

@@ -16,34 +16,37 @@ namespace S2VX.Game.Editor.Containers {
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Width = 0.25f,
+            Width = 0.4f,
             TextAnchor = Anchor.TopLeft,
         };
 
         private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new NoteSnapDivisorDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopCentre,
-            Origin = Anchor.TopRight,
-            Width = 0.25f,
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            X = 0.4f,
+            Width = 0.2f,
             TextAnchor = Anchor.TopCentre,
         };
 
         private MousePositionDisplay MousePositionDisplay { get; } = new MousePositionDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopCentre,
+            Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Width = 0.25f,
+            X = 0.6f,
+            Width = 0.2f,
             TextAnchor = Anchor.TopCentre,
         };
 
         private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-            Width = 0.25f,
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            X = 0.8f,
+            Width = 0.2f,
             TextAnchor = Anchor.TopRight,
         };
 
