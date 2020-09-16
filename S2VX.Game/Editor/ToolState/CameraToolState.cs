@@ -33,7 +33,6 @@ namespace S2VX.Game.Editor.ToolState {
             if (!IsRecording) {
                 return;
             }
-
             var endTime = Editor.Track.CurrentTime;
 
             // Transform mouse position into editor coordinates
@@ -101,23 +100,37 @@ namespace S2VX.Game.Editor.ToolState {
             var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var endValue = OldPosition + scaledPosition;
-            MoveCommand = new CameraMoveCommand() {
-                StartTime = OldTime,
-                EndTime = endTime,
-                StartValue = OldPosition,
-                EndValue = endValue
-            };
+            MoveCommand = endTime > OldTime
+                ? new CameraMoveCommand() {
+                    StartTime = OldTime,
+                    EndTime = endTime,
+                    StartValue = OldPosition,
+                    EndValue = endValue
+                }
+                : new CameraMoveCommand() {
+                    StartTime = endTime,
+                    EndTime = OldTime,
+                    StartValue = endValue,
+                    EndValue = OldPosition
+                };
         }
 
         private void UpdateCameraScaleCommand(Vector2 diffPosition, double endTime) {
             var length = diffPosition.Length;
             var endValue = new Vector2(length);
-            ScaleCommand = new CameraScaleCommand() {
-                StartTime = OldTime,
-                EndTime = endTime,
-                StartValue = OldScale,
-                EndValue = endValue
-            };
+            ScaleCommand = endTime > OldTime
+                ? new CameraScaleCommand() {
+                    StartTime = OldTime,
+                    EndTime = endTime,
+                    StartValue = OldScale,
+                    EndValue = endValue
+                }
+                : new CameraScaleCommand() {
+                    StartTime = endTime,
+                    EndTime = OldTime,
+                    StartValue = endValue,
+                    EndValue = OldScale
+                };
         }
 
         private void UpdateCameraRotateCommand(Vector2 relativeOldPosition, Vector2 relativeNewPosition, double endTime) {
@@ -135,12 +148,19 @@ namespace S2VX.Game.Editor.ToolState {
             var degreesBetween = radiansBetween * 180 / Math.PI;
 
             var endValue = (float)(OldRotation + degreesBetween);
-            RotateCommand = new CameraRotateCommand() {
-                StartTime = OldTime,
-                EndTime = endTime,
-                StartValue = OldRotation,
-                EndValue = endValue
-            };
+            RotateCommand = endTime > OldTime
+                ? new CameraRotateCommand() {
+                    StartTime = OldTime,
+                    EndTime = endTime,
+                    StartValue = OldRotation,
+                    EndValue = endValue
+                }
+                : new CameraRotateCommand() {
+                    StartTime = endTime,
+                    EndTime = OldTime,
+                    StartValue = endValue,
+                    EndValue = OldRotation
+                };
         }
     }
 }
