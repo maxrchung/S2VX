@@ -14,6 +14,9 @@ namespace S2VX.Game.Editor.ToolState {
         private Vector2 OldScale { get; set; }
         private float OldRotation { get; set; }
         private bool IsRecording { get; set; }
+        private CameraMoveCommand MoveCommand { get; set; }
+        private CameraScaleCommand ScaleCommand { get; set; }
+        private CameraRotateCommand RotateCommand { get; set; }
 
         [Resolved]
         private S2VXEditor Editor { get; set; }
@@ -43,13 +46,13 @@ namespace S2VX.Game.Editor.ToolState {
 
             switch (e.Button) {
                 case MouseButton.Left:
-                    CreateCameraMoveCommand(camera, diffPosition, endTime);
+                    UpdateCameraMoveCommand(camera, diffPosition, endTime);
                     break;
                 case MouseButton.Middle:
-                    CreateCameraScaleCommand(diffPosition, endTime);
+                    UpdateCameraScaleCommand(diffPosition, endTime);
                     break;
                 case MouseButton.Right:
-                    CreateCameraRotateCommand(relativeOldPosition, relativeNewPosition, endTime);
+                    UpdateCameraRotateCommand(relativeOldPosition, relativeNewPosition, endTime);
                     break;
                 default:
                     break;
@@ -59,11 +62,15 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.S:
-                    RecordStartParams();
                     IsRecording = true;
+                    InitializeStartParams();
                     return true;
                 case Key.E:
+                    if (!IsRecording) {
+                        return true;
+                    }
                     IsRecording = false;
+                    CommitCameraToolActions();
                     return true;
                 default:
                     break;
@@ -73,7 +80,11 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override string DisplayName() => IsRecording ? "Camera (E to end)" : "Camera (S to start)";
 
-        private void RecordStartParams() {
+        private void InitializeStartParams() {
+            MoveCommand = null;
+            ScaleCommand = null;
+            RotateCommand = null;
+
             var camera = Story.Camera;
             OldTime = Editor.Track.CurrentTime;
             OldPosition = camera.Position;
@@ -81,32 +92,35 @@ namespace S2VX.Game.Editor.ToolState {
             OldRotation = camera.Rotation;
         }
 
-        private void CreateCameraMoveCommand(Camera camera, Vector2 diffPosition, double endTime) {
+        private void CommitCameraToolActions() {
+            var reversible = new ReversibleCameraToolActions(Story, MoveCommand, ScaleCommand, RotateCommand);
+            Editor.Reversibles.Push(reversible);
+        }
+
+        private void UpdateCameraMoveCommand(Camera camera, Vector2 diffPosition, double endTime) {
             var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
             var endValue = OldPosition + scaledPosition;
-            var reversible = new ReversibleAddCommand(Story, new CameraMoveCommand() {
+            MoveCommand = new CameraMoveCommand() {
                 StartTime = OldTime,
                 EndTime = endTime,
                 StartValue = OldPosition,
                 EndValue = endValue
-            });
-            Editor.Reversibles.Push(reversible);
+            };
         }
 
-        private void CreateCameraScaleCommand(Vector2 diffPosition, double endTime) {
+        private void UpdateCameraScaleCommand(Vector2 diffPosition, double endTime) {
             var length = diffPosition.Length;
             var endValue = new Vector2(length);
-            var reversible = new ReversibleAddCommand(Story, new CameraScaleCommand() {
+            ScaleCommand = new CameraScaleCommand() {
                 StartTime = OldTime,
                 EndTime = endTime,
                 StartValue = OldScale,
                 EndValue = endValue
-            });
-            Editor.Reversibles.Push(reversible);
+            };
         }
 
-        private void CreateCameraRotateCommand(Vector2 relativeOldPosition, Vector2 relativeNewPosition, double endTime) {
+        private void UpdateCameraRotateCommand(Vector2 relativeOldPosition, Vector2 relativeNewPosition, double endTime) {
             var dot = Vector2.Dot(relativeOldPosition, relativeNewPosition);
             var magnitude = relativeOldPosition.Length * relativeNewPosition.Length;
 
@@ -121,14 +135,12 @@ namespace S2VX.Game.Editor.ToolState {
             var degreesBetween = radiansBetween * 180 / Math.PI;
 
             var endValue = (float)(OldRotation + degreesBetween);
-            var reversible = new ReversibleAddCommand(Story, new CameraRotateCommand() {
+            RotateCommand = new CameraRotateCommand() {
                 StartTime = OldTime,
                 EndTime = endTime,
                 StartValue = OldRotation,
                 EndValue = endValue
-            });
-            Editor.Reversibles.Push(reversible);
+            };
         }
-
     }
 }
