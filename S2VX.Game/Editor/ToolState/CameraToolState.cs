@@ -18,16 +18,44 @@ namespace S2VX.Game.Editor.ToolState {
         private CameraScaleCommand ScaleCommand { get; set; }
         private CameraRotateCommand RotateCommand { get; set; }
 
+        private Vector2 OldMousePositionMove { get; set; }
+        private Vector2 OldMousePositionScale { get; set; }
+        private Vector2 OldMousePositionRotate { get; set; }
+
         [Resolved]
         private S2VXEditor Editor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        public override bool OnToolMouseDown(MouseDownEvent e) {
+            if (IsRecording) {
+                if (e.IsPressed(MouseButton.Left)) {
+                    OldMousePositionMove = e.MouseDownPosition;
+                }
+                if (e.IsPressed(MouseButton.Middle)) {
+                    OldMousePositionScale = e.MouseDownPosition;
+                }
+                if(e.IsPressed(MouseButton.Right)) {
+                    OldMousePositionRotate = e.MouseDownPosition;
+                }
+            }
+            return true;
+        }
 
-        public override bool OnToolMouseDown(MouseDownEvent e) => true;
-
-        public override void OnToolMouseMove(MouseMoveEvent e) { }
+        public override void OnToolMouseMove(MouseMoveEvent e) {
+            if (IsRecording) {
+                if (e.IsPressed(MouseButton.Left)) {
+                    Story.Camera.Position = CalculateCameraPosition(e);
+                }
+                if (e.IsPressed(MouseButton.Middle)) {
+                    Story.Camera.Scale = CalculateCameraScale(e);
+                }
+                if (e.IsPressed(MouseButton.Right)) {
+                    Story.Camera.Rotation = CalculateCameraRotate(e);
+                }
+            }
+        }
 
         public override void OnToolMouseUp(MouseUpEvent e) {
             if (!IsRecording) {
@@ -35,24 +63,58 @@ namespace S2VX.Game.Editor.ToolState {
             }
             var endTime = Editor.Track.CurrentTime;
 
-            // Transform mouse position into editor coordinates
-            var camera = Story.Camera;
-            var oldPosition = e.MouseDownPosition;
-            var newPosition = e.MousePosition;
-            var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
-            var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
-            var diffPosition = relativeNewPosition - relativeOldPosition;
-
             switch (e.Button) {
-                case MouseButton.Left:
-                    UpdateCameraMoveCommand(camera, diffPosition, endTime);
+                case MouseButton.Left: {
+                    var endValue = CalculateCameraPosition(e);
+                    MoveCommand = endTime > OldTime
+                        ? new CameraMoveCommand() {
+                            StartTime = OldTime,
+                            EndTime = endTime,
+                            StartValue = OldPosition,
+                            EndValue = endValue
+                        }
+                        : new CameraMoveCommand() {
+                            StartTime = endTime,
+                            EndTime = OldTime,
+                            StartValue = OldPosition,
+                            EndValue = endValue
+                        };
                     break;
-                case MouseButton.Middle:
-                    UpdateCameraScaleCommand(diffPosition, endTime);
+                }
+                case MouseButton.Middle: {
+                    var endValue = CalculateCameraScale(e);
+                    ScaleCommand = endTime > OldTime
+                        ? new CameraScaleCommand() {
+                            StartTime = OldTime,
+                            EndTime = endTime,
+                            StartValue = OldScale,
+                            EndValue = endValue
+                        }
+                        : new CameraScaleCommand() {
+                            StartTime = endTime,
+                            EndTime = OldTime,
+                            StartValue = endValue,
+                            EndValue = OldScale
+                        };
                     break;
-                case MouseButton.Right:
-                    UpdateCameraRotateCommand(relativeOldPosition, relativeNewPosition, endTime);
+                }
+                case MouseButton.Right: {
+                    var endValue = CalculateCameraRotate(e);
+                    RotateCommand = endTime > OldTime
+                        ? new CameraRotateCommand() {
+                            StartTime = OldTime,
+                            EndTime = endTime,
+                            StartValue = OldRotation,
+                            EndValue = endValue
+                        }
+                        : new CameraRotateCommand() {
+                            StartTime = endTime,
+                            EndTime = OldTime,
+                            StartValue = endValue,
+                            EndValue = OldRotation
+                        };
                     break;
+                }
                 default:
                     break;
             }
@@ -96,44 +158,36 @@ namespace S2VX.Game.Editor.ToolState {
             Editor.Reversibles.Push(reversible);
         }
 
-        private void UpdateCameraMoveCommand(Camera camera, Vector2 diffPosition, double endTime) {
+        private Vector2 CalculateCameraPosition(MouseEvent e) {
+            // Transform mouse position into editor coordinates
+            var camera = Story.Camera;
+            var oldPosition = OldMousePositionMove;
+            var newPosition = e.MousePosition;
+            var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var diffPosition = relativeNewPosition - relativeOldPosition;
             var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
-            var endValue = OldPosition + scaledPosition;
-            MoveCommand = endTime > OldTime
-                ? new CameraMoveCommand() {
-                    StartTime = OldTime,
-                    EndTime = endTime,
-                    StartValue = OldPosition,
-                    EndValue = endValue
-                }
-                : new CameraMoveCommand() {
-                    StartTime = endTime,
-                    EndTime = OldTime,
-                    StartValue = endValue,
-                    EndValue = OldPosition
-                };
+            return OldPosition + scaledPosition;
         }
 
-        private void UpdateCameraScaleCommand(Vector2 diffPosition, double endTime) {
+        private Vector2 CalculateCameraScale(MouseEvent e) {
+            // Transform mouse position into editor coordinates
+            var oldPosition = OldMousePositionScale;
+            var newPosition = e.MousePosition;
+            var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var diffPosition = relativeNewPosition - relativeOldPosition;
             var length = diffPosition.Length;
-            var endValue = new Vector2(length);
-            ScaleCommand = endTime > OldTime
-                ? new CameraScaleCommand() {
-                    StartTime = OldTime,
-                    EndTime = endTime,
-                    StartValue = OldScale,
-                    EndValue = endValue
-                }
-                : new CameraScaleCommand() {
-                    StartTime = endTime,
-                    EndTime = OldTime,
-                    StartValue = endValue,
-                    EndValue = OldScale
-                };
+            return new Vector2(length);
         }
 
-        private void UpdateCameraRotateCommand(Vector2 relativeOldPosition, Vector2 relativeNewPosition, double endTime) {
+        private float CalculateCameraRotate(MouseEvent e) {
+            // Transform mouse position into editor coordinates
+            var oldPosition = OldMousePositionRotate;
+            var newPosition = e.MousePosition;
+            var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
+            var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var dot = Vector2.Dot(relativeOldPosition, relativeNewPosition);
             var magnitude = relativeOldPosition.Length * relativeNewPosition.Length;
 
@@ -147,20 +201,7 @@ namespace S2VX.Game.Editor.ToolState {
             var radiansBetween = direction * Math.Acos(dot / magnitude);
             var degreesBetween = radiansBetween * 180 / Math.PI;
 
-            var endValue = (float)(OldRotation + degreesBetween);
-            RotateCommand = endTime > OldTime
-                ? new CameraRotateCommand() {
-                    StartTime = OldTime,
-                    EndTime = endTime,
-                    StartValue = OldRotation,
-                    EndValue = endValue
-                }
-                : new CameraRotateCommand() {
-                    StartTime = endTime,
-                    EndTime = OldTime,
-                    StartValue = endValue,
-                    EndValue = OldRotation
-                };
+            return (float)(OldRotation + degreesBetween);
         }
     }
 }
