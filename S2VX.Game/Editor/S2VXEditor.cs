@@ -143,9 +143,7 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Select (1)", ToolSelect),
                                 new MenuItem("Note (2)", ToolNote),
-                                new MenuItem("Camera Move (Q)", ToolCameraMove),
-                                new MenuItem("Camera Scale (W)", ToolCameraScale),
-                                new MenuItem("Camera Rotate (E)", ToolCameraRotate),
+                                new MenuItem("Camera (3)", ToolCamera),
                             }
                         }
                     }
@@ -159,6 +157,8 @@ namespace S2VX.Game.Editor {
 
         protected override bool OnMouseDown(MouseDownEvent e) => ToolState.OnToolMouseDown(e);
 
+        protected override void OnMouseUp(MouseUpEvent e) => ToolState.OnToolMouseUp(e);
+
         protected override bool OnDragStart(DragStartEvent e) => ToolState.OnToolDragStart(e);
 
         protected override void OnDrag(DragEvent e) => ToolState.OnToolDrag(e);
@@ -166,6 +166,8 @@ namespace S2VX.Game.Editor {
         protected override void OnDragEnd(DragEndEvent e) => ToolState.OnToolDragEnd(e);
 
         protected override bool OnMouseMove(MouseMoveEvent e) {
+            ToolState.OnToolMouseMove(e);
+
             var mousePosition = ToLocalSpace(e.CurrentState.Mouse.Position);
             var relativePosition = (mousePosition - Story.DrawSize / 2) / Story.DrawWidth;
             var camera = Story.Camera;
@@ -218,14 +220,8 @@ namespace S2VX.Game.Editor {
                 case Key.Number2:
                     ToolNote();
                     break;
-                case Key.Q:
-                    ToolCameraMove();
-                    break;
-                case Key.W:
-                    ToolCameraScale();
-                    break;
-                case Key.E:
-                    ToolCameraRotate();
+                case Key.Number3:
+                    ToolCamera();
                     break;
                 case Key.BracketLeft:
                     if (e.ControlPressed) {
@@ -398,11 +394,7 @@ namespace S2VX.Game.Editor {
 
         private void ToolNote() => SetToolState(new NoteToolState());
 
-        private void ToolCameraMove() => SetToolState(new CameraMoveToolState());
-
-        private void ToolCameraScale() => SetToolState(new CameraScaleToolState());
-
-        private void ToolCameraRotate() => SetToolState(new CameraRotateToolState());
+        private void ToolCamera() => SetToolState(new CameraToolState());
 
     }
 }
