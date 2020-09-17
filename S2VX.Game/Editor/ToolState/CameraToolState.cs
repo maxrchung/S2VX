@@ -213,9 +213,7 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void HandleExit() {
             IsRecording = false;
-            Story.Camera.Position = OldPosition;
-            Story.Camera.Scale = OldScale;
-            Story.Camera.Rotation = OldRotation;
+            Story.ClearActives();
         }
     }
 }
