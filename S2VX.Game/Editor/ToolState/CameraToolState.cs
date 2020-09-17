@@ -36,7 +36,7 @@ namespace S2VX.Game.Editor.ToolState {
                 if (e.IsPressed(MouseButton.Middle)) {
                     OldMousePositionScale = e.MouseDownPosition;
                 }
-                if(e.IsPressed(MouseButton.Right)) {
+                if (e.IsPressed(MouseButton.Right)) {
                     OldMousePositionRotate = e.MouseDownPosition;
                 }
             }
@@ -175,7 +175,7 @@ namespace S2VX.Game.Editor.ToolState {
             var diffPosition = relativeNewPosition - relativeOldPosition;
             var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
-            return OldPosition + scaledPosition;
+            return OldPosition - scaledPosition;
         }
 
         private Vector2 CalculateCameraScale(MouseEvent e) {
