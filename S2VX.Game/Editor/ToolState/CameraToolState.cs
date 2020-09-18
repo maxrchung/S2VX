@@ -161,7 +161,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         private void CommitCameraToolActions() {
-            var reversible = new ReversibleCameraToolActions(Story, Editor, MoveCommand, ScaleCommand, RotateCommand);
+            var reversible = new ReversibleCameraToolActions(Editor, MoveCommand, ScaleCommand, RotateCommand);
             Editor.Reversibles.Push(reversible);
         }
 
