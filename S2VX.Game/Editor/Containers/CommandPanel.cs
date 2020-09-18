@@ -52,7 +52,7 @@ namespace S2VX.Game.Editor.Containers {
                 }
             );
 
-        private void LoadCommandsList() {
+        public void LoadCommandsList() {
             CommandsList.Clear();
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
