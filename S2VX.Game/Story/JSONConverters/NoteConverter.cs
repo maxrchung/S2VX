@@ -4,8 +4,8 @@ using System;
 
 namespace S2VX.Game.Story.JSONConverters {
     // Special converter for Note serialization since we only care about EndTime and Coordinates
-    public class NoteConverter : JsonConverter<Note> {
-        public override void WriteJson(JsonWriter writer, Note note, JsonSerializer serializer) {
+    public class NoteConverter : JsonConverter<S2VXNote> {
+        public override void WriteJson(JsonWriter writer, S2VXNote note, JsonSerializer serializer) {
             var obj = new JObject {
                 { "EndTime", note.EndTime }
             };
@@ -18,10 +18,10 @@ namespace S2VX.Game.Story.JSONConverters {
         }
 
         // Don't need to implement deserialization because the default behavior is sufficient for us
-        public override Note ReadJson(
+        public override S2VXNote ReadJson(
             JsonReader reader,
             Type objectType,
-            Note existingValue,
+            S2VXNote existingValue,
             bool hasExistingValue,
             JsonSerializer serializer
         ) => throw new NotSupportedException();

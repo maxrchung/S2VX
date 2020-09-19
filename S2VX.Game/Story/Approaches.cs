@@ -11,7 +11,7 @@ namespace S2VX.Game.Story {
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
 
-        public Approach AddApproach(Note note) {
+        public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {
                 Coordinates = note.Coordinates,
                 EndTime = note.EndTime
@@ -21,7 +21,7 @@ namespace S2VX.Game.Story {
             return approach;
         }
 
-        public void RemoveApproach(Note note) {
+        public void RemoveApproach(S2VXNote note) {
             var approach = note.Approach;
             Children.Remove(approach);
             RemoveInternal(approach);

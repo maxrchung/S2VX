@@ -74,13 +74,13 @@ namespace S2VX.Game.Story {
             ClearActives();
         }
 
-        public void AddNote(Note note) {
+        public void AddNote(S2VXNote note) {
             Notes.AddNote(note);
             var approach = Approaches.AddApproach(note);
             note.Approach = approach;
         }
 
-        public void RemoveNote(Note note) {
+        public void RemoveNote(S2VXNote note) {
             Notes.RemoveNote(note);
             Approaches.RemoveApproach(note);
         }
@@ -96,7 +96,7 @@ namespace S2VX.Game.Story {
             }
             Commands.Sort();
 
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
+            var notes = JsonConvert.DeserializeObject<List<S2VXNote>>(story[nameof(Notes)].ToString());
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);

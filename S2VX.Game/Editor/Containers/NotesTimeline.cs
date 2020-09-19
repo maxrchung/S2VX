@@ -19,7 +19,7 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        public Dictionary<Note, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<Note, RelativeBox>();
+        public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<S2VXNote, RelativeBox>();
 
         private Container TickBarContent { get; } = new Container {
             RelativePositionAxes = Axes.Both,
