@@ -15,6 +15,8 @@ using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Story;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace S2VX.Game.Editor {
     public class S2VXEditor : CompositeDrawable {
@@ -59,7 +61,12 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(@"../../../story.json");
+            // Current directory behavior can depend on platform or IDE usage
+            // This snippet is a more cross platform way to get the directory
+            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var storyPath = Path.GetFullPath(Path.Combine(currentDirectory, "../../../story.json"));
+
+            Story.Open(storyPath);
 
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Seek(Story.GetEditorSettings().TrackTime);
