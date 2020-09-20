@@ -6,7 +6,10 @@ using System.Collections.Generic;
 namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
         public List<S2VXNote> Children { get; private set; } = new List<S2VXNote>();
-        public void SetChildren(List<S2VXNote> notes) => Children = notes;
+        public void SetChildren(List<S2VXNote> notes) {
+            Children = notes;
+            InternalChildren = Children;
+        }
 
         // Notes fade in, show for a period of time, then fade out
         // The note should be hit at the very end of the show time
@@ -25,9 +28,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            RelativeSizeAxes = Axes.Both;
-            InternalChildren = Children;
-        }
+        private void Load() => RelativeSizeAxes = Axes.Both;
     }
 }

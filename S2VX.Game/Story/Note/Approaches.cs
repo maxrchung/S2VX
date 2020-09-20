@@ -6,7 +6,10 @@ using System.Collections.Generic;
 namespace S2VX.Game.Story.Note {
     public class Approaches : CompositeDrawable {
         public List<Approach> Children { get; private set; } = new List<Approach>();
-        public void SetChildren(List<Approach> approaches) => Children = approaches;
+        public void SetChildren(List<Approach> approaches) {
+            Children = approaches;
+            InternalChildren = Children;
+        }
 
         public float Distance { get; set; } = 0.5f;
         public float Thickness { get; set; } = 0.005f;
@@ -31,10 +34,7 @@ namespace S2VX.Game.Story.Note {
         private S2VXStory Story { get; set; } = null;
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            RelativeSizeAxes = Axes.Both;
-            InternalChildren = Children;
-        }
+        private void Load() => RelativeSizeAxes = Axes.Both;
 
         protected override void Update() {
             var notes = Story.Notes;
