@@ -3,7 +3,7 @@ using osu.Framework.Utils;
 using osuTK;
 
 namespace S2VX.Game.Story.Note {
-    public class S2VXNote : RelativeBox {
+    public abstract class S2VXNote : RelativeBox {
         public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
