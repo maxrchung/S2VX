@@ -1,4 +1,5 @@
 ﻿using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleRemoveNote : IReversible {

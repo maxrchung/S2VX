@@ -4,6 +4,7 @@ using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.ToolState {
     public class NoteToolState : S2VXToolState {

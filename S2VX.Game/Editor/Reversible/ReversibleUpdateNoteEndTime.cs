@@ -1,4 +1,4 @@
-﻿using S2VX.Game.Story;
+﻿using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.Reversible {

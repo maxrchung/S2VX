@@ -8,6 +8,7 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 using System;
 using System.Collections.Generic;
 

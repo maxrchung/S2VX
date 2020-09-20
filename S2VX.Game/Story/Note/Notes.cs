@@ -3,7 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Story {
+namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
         public List<S2VXNote> Children { get; private set; } = new List<S2VXNote>();
         public void SetChildren(List<S2VXNote> notes) => Children = notes;

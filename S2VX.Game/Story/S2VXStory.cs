@@ -7,6 +7,7 @@ using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
+using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 using System.IO;
 

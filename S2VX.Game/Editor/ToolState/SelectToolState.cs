@@ -8,6 +8,7 @@ using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 using System;
 using System.Collections.Generic;
 using System.Linq;
