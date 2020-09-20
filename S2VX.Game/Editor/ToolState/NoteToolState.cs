@@ -11,7 +11,7 @@ namespace S2VX.Game.Editor.ToolState {
         private S2VXNote Preview { get; set; } = new EditorNote();
 
         [Resolved]
-        private S2VXEditor Editor { get; set; } = null;
+        private EditorScreen Editor { get; set; } = null;
 
         [Resolved]
         private S2VXStory Story { get; set; } = null;

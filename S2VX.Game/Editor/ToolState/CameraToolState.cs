@@ -23,7 +23,7 @@ namespace S2VX.Game.Editor.ToolState {
         private Vector2 OldMousePositionRotate { get; set; }
 
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }

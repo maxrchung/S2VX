@@ -18,7 +18,7 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
         [Resolved]
-        private S2VXEditor Editor { get; set; } = null;
+        private EditorScreen Editor { get; set; } = null;
         public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
         private Dictionary<Drawable, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, S2VXNote>();
 
