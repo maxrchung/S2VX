@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using S2VX.Game.Story.Note;
 using System;
 
 namespace S2VX.Game.Story.JSONConverters {

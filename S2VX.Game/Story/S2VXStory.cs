@@ -10,6 +10,7 @@ using S2VX.Game.Story.JSONConverters;
 using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace S2VX.Game.Story {
     // Per Microsoft docs, class names should not conflict with their namespace,
@@ -86,7 +87,7 @@ namespace S2VX.Game.Story {
             Approaches.RemoveApproach(note);
         }
 
-        public void Open(string path) {
+        public void Open(string path, bool isForEditor) {
             Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
@@ -97,7 +98,11 @@ namespace S2VX.Game.Story {
             }
             Commands.Sort();
 
-            var notes = JsonConvert.DeserializeObject<List<S2VXNote>>(story[nameof(Notes)].ToString());
+            var notes = (
+                isForEditor
+                    ? JsonConvert.DeserializeObject<IEnumerable<EditorNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
+                    : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
+            ).ToList();
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);

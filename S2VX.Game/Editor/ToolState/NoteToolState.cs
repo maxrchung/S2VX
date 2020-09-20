@@ -8,7 +8,7 @@ using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.ToolState {
     public class NoteToolState : S2VXToolState {
-        private S2VXNote Preview { get; set; } = new S2VXNote();
+        private S2VXNote Preview { get; set; } = new EditorNote();
 
         [Resolved]
         private S2VXEditor Editor { get; set; } = null;
@@ -24,7 +24,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            var note = new S2VXNote {
+            var note = new EditorNote {
                 Coordinates = Editor.MousePosition,
                 EndTime = Time.Current
             };

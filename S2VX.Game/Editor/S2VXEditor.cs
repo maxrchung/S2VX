@@ -59,7 +59,7 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(@"../../../story.json");
+            Story.Open(@"../../../story.json", true);
 
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Seek(Story.GetEditorSettings().TrackTime);
@@ -297,7 +297,7 @@ namespace S2VX.Game.Editor {
 
         private void ProjectRefresh() {
             ProjectSave();
-            Story.Open(@"../../../story.json");
+            Story.Open(@"../../../story.json", true);
             Seek(Story.GetEditorSettings().TrackTime);
         }
 
