@@ -91,14 +91,10 @@ namespace S2VX.Game.Editor.Containers {
             };
             var join = string.Join("|", data);
             var command = S2VXCommand.FromString(join);
-            Story.AddCommand(command);
-            LoadCommandsList();
+            HandleAddCommand(command);
         }
 
-        private void HandleRemoveClick(int commandIndex) {
-            Story.RemoveCommand(commandIndex);
-            LoadCommandsList();
-        }
+        private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
 
         public void HandleAddCommand(S2VXCommand command) {
             Story.AddCommand(command);
