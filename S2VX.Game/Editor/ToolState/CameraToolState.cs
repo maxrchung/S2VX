@@ -198,6 +198,7 @@ namespace S2VX.Game.Editor.ToolState {
             var length = diffPosition.Length;
             var endValue = new Vector2(length);
             if (Editor.SnapDivisor != 0) {
+                // Clamp so that the minimum scaling is not 0, and thus infinite gridlines are drawn 
                 endValue = new Vector2(
                     (float)Math.Clamp(
                         Math.Round(endValue.X * Editor.SnapDivisor / ScaleSnapMultiplier) / Editor.SnapDivisor * ScaleSnapMultiplier,
@@ -226,6 +227,7 @@ namespace S2VX.Game.Editor.ToolState {
                 new Vector3(relativeNewPosition.X, relativeNewPosition.Y, 0)
             );
             var direction = cross.Z > 0 ? 1 : -1;
+            // Clamp to remove floating point calculation error that causes the value to go slightly outside the range of valid inputs
             var radiansBetween = direction * Math.Acos(Math.Clamp(dot / magnitude, -1, 1));
             var degreesBetween = radiansBetween * 180 / Math.PI;
             var endValue = (float)(OldRotation + degreesBetween);
