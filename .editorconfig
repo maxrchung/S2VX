@@ -244,3 +244,6 @@ dotnet_diagnostic.MEN003.severity = suggestion
 
 # CA1303: Do not pass literals as localized parameters
 dotnet_diagnostic.CA1303.severity = suggestion
+
+# CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = suggestion
