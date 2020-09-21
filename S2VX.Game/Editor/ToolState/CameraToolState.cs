@@ -198,15 +198,20 @@ namespace S2VX.Game.Editor.ToolState {
             var length = diffPosition.Length;
             var endValue = new Vector2(length);
             if (Editor.SnapDivisor != 0) {
-                // Clamp so that the minimum scaling is not 0, and thus infinite gridlines are drawn 
+                // Clamp to the minimum snap so scaling is not 0 which would cause infinite gridlines to be drawn
                 endValue = new Vector2(
                     (float)Math.Clamp(
                         Math.Round(endValue.X * Editor.SnapDivisor / ScaleSnapMultiplier) / Editor.SnapDivisor * ScaleSnapMultiplier,
-                        1 / Editor.SnapDivisor, 1),
+                        ScaleSnapMultiplier / Editor.SnapDivisor, 1),
                     (float)Math.Clamp(
                         Math.Round(endValue.Y * Editor.SnapDivisor / ScaleSnapMultiplier) / Editor.SnapDivisor * ScaleSnapMultiplier,
-                        1 / Editor.SnapDivisor, 1)
+                        ScaleSnapMultiplier / Editor.SnapDivisor, 1)
                 );
+            } else {
+                // Clamp to a small non-zero value for Free snapping
+                endValue = new Vector2(
+                    (float)Math.Clamp(endValue.X, 0.01, 1),
+                    (float)Math.Clamp(endValue.Y, 0.01, 1));
             }
             return endValue;
         }
