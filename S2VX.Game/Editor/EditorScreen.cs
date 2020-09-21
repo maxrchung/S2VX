@@ -102,7 +102,8 @@ namespace S2VX.Game.Editor {
                             Items = new[]
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
-                                new MenuItem("Save (Ctrl+S)", ProjectSave)
+                                new MenuItem("Save (Ctrl+S)", ProjectSave),
+                                new MenuItem("Save (Ctrl+P)", ProjectPlay)
                             }
                         },
                         new MenuItem("Edit")
