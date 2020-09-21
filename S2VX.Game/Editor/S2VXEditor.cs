@@ -23,7 +23,7 @@ namespace S2VX.Game.Editor {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
 
-        private CommandPanel CommandPanel { get; } = new CommandPanel();
+        public CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
 
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
