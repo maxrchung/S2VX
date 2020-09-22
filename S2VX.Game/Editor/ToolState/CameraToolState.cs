@@ -22,6 +22,9 @@ namespace S2VX.Game.Editor.ToolState {
         private Vector2 OldMousePositionScale { get; set; }
         private Vector2 OldMousePositionRotate { get; set; }
 
+        private const float ScaleSnapMultiplier = 0.1f;
+        private const float RotationSnapMultiplier = 90;
+
         [Resolved]
         private EditorScreen Editor { get; set; }
 
@@ -161,7 +164,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         private void CommitCameraToolActions() {
-            var reversible = new ReversibleCameraToolActions(Story, MoveCommand, ScaleCommand, RotateCommand);
+            var reversible = new ReversibleCameraToolActions(Editor, MoveCommand, ScaleCommand, RotateCommand);
             Editor.Reversibles.Push(reversible);
         }
 
@@ -175,7 +178,14 @@ namespace S2VX.Game.Editor.ToolState {
             var diffPosition = relativeNewPosition - relativeOldPosition;
             var rotatedPosition = S2VXUtils.Rotate(diffPosition, -camera.Rotation);
             var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
-            return OldPosition - scaledPosition;
+            var endValue = OldPosition - scaledPosition;
+            if (Editor.SnapDivisor != 0) {
+                endValue = new Vector2(
+                    (float)(Math.Round(endValue.X * Editor.SnapDivisor) / Editor.SnapDivisor),
+                    (float)(Math.Round(endValue.Y * Editor.SnapDivisor) / Editor.SnapDivisor)
+                );
+            }
+            return endValue;
         }
 
         private Vector2 CalculateCameraScale(MouseEvent e) {
@@ -186,7 +196,19 @@ namespace S2VX.Game.Editor.ToolState {
             var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var diffPosition = relativeNewPosition - relativeOldPosition;
             var length = diffPosition.Length;
-            return new Vector2(length);
+            var endValue = new Vector2(length);
+            if (Editor.SnapDivisor != 0) {
+                // Clamp so that the minimum scaling is not 0, and thus infinite gridlines are drawn 
+                endValue = new Vector2(
+                    (float)Math.Clamp(
+                        Math.Round(endValue.X * Editor.SnapDivisor / ScaleSnapMultiplier) / Editor.SnapDivisor * ScaleSnapMultiplier,
+                        1 / Editor.SnapDivisor, 1),
+                    (float)Math.Clamp(
+                        Math.Round(endValue.Y * Editor.SnapDivisor / ScaleSnapMultiplier) / Editor.SnapDivisor * ScaleSnapMultiplier,
+                        1 / Editor.SnapDivisor, 1)
+                );
+            }
+            return endValue;
         }
 
         private float CalculateCameraRotation(MouseEvent e) {
@@ -205,10 +227,14 @@ namespace S2VX.Game.Editor.ToolState {
                 new Vector3(relativeNewPosition.X, relativeNewPosition.Y, 0)
             );
             var direction = cross.Z > 0 ? 1 : -1;
-            var radiansBetween = direction * Math.Acos(dot / magnitude);
+            // Clamp to remove floating point calculation error that causes the value to go slightly outside the range of valid inputs
+            var radiansBetween = direction * Math.Acos(Math.Clamp(dot / magnitude, -1, 1));
             var degreesBetween = radiansBetween * 180 / Math.PI;
-
-            return (float)(OldRotation + degreesBetween);
+            var endValue = (float)(OldRotation + degreesBetween);
+            if (Editor.SnapDivisor != 0) {
+                endValue = (float)(Math.Round(endValue * Editor.SnapDivisor / RotationSnapMultiplier) / Editor.SnapDivisor * RotationSnapMultiplier);
+            }
+            return endValue;
         }
 
         public override void HandleExit() {
