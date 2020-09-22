@@ -39,13 +39,10 @@ namespace S2VX.Game.Story {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            //Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            //Track.VolumeTo(0.05f);
+            Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track.VolumeTo(0.05f);
 
-            //Open(@"../../../story.json");
-
-            //var storyPath = @"../../../../../S2VX.Desktop/story.json";
-            Open(@"../../../../S2VX.Desktop/story.json");
+            Open(@"../../../story.json");
 
             RelativeSizeAxes = Axes.Both;
             InternalChildren = new Drawable[]
@@ -76,9 +73,9 @@ namespace S2VX.Game.Story {
 
         public void Play(bool isPlaying) {
             if (isPlaying) {
-                //Track.Start();
+                Track.Start();
             } else {
-                //Track.Stop();
+                Track.Stop();
             }
             IsPlaying = isPlaying;
         }
@@ -87,7 +84,7 @@ namespace S2VX.Game.Story {
             GameTime = 0;
             NextActive = 0;
             Actives.Clear();
-            //Track.Restart();
+            Track.Restart();
             if (!IsPlaying) {
                 Play(false);
             }
@@ -97,7 +94,7 @@ namespace S2VX.Game.Story {
             NextActive = 0;
             Actives.Clear();
             GameTime = time;
-            //Track.Seek(time);
+            Track.Seek(time);
         }
 
         public void Open(string path) {
@@ -133,11 +130,9 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
-            //if (IsPlaying) {
-            //    GameTime += Time.Elapsed;
-            //}
-
-            GameTime = Time.Current;
+            if (IsPlaying) {
+                GameTime += Time.Elapsed;
+            }
 
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= GameTime) {
