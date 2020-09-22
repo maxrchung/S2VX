@@ -8,6 +8,7 @@ using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,12 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
         [Resolved]
-        private S2VXEditor Editor { get; set; } = null;
-        public Dictionary<Note, double> SelectedNoteToTime { get; private set; } = new Dictionary<Note, double>();
-        private Dictionary<Drawable, Note> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, Note>();
+        private EditorScreen Editor { get; set; } = null;
+        public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
+        private Dictionary<Drawable, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, S2VXNote>();
 
-        private Dictionary<Note, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<Note, double>();
-        private Dictionary<Note, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<Note, Vector2>();
+        private Dictionary<S2VXNote, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, double>();
+        private Dictionary<S2VXNote, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, Vector2>();
         private SelectToolDragState ToDrag { get; set; } = SelectToolDragState.None;
         private bool DelayDrag { get; set; }
 
@@ -42,7 +43,7 @@ namespace S2VX.Game.Editor.ToolState {
             return mouseInXRange && mouseInYRange;
         }
 
-        private bool IsMouseOnNote(Vector2 mousePos, Note note) {
+        private bool IsMouseOnNote(Vector2 mousePos, S2VXNote note) {
             mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(mousePos), Editor);
 
             // DrawPosition is centered at (0,0). I convert it so (0,0) starts top left
@@ -78,8 +79,8 @@ namespace S2VX.Game.Editor.ToolState {
             return u >= 0 && v >= 0 && u <= 1 && v <= 1;
         }
 
-        private List<Note> GetVisibleStoryNotes() {
-            var visibleStoryNotes = new List<Note>();
+        private List<S2VXNote> GetVisibleStoryNotes() {
+            var visibleStoryNotes = new List<S2VXNote>();
             foreach (var note in Story.Notes.Children) {
                 var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
                 var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
@@ -92,7 +93,7 @@ namespace S2VX.Game.Editor.ToolState {
             return visibleStoryNotes;
         }
 
-        private void AddNoteSelection(Note note) {
+        private void AddNoteSelection(S2VXNote note) {
             SelectedNoteToTime[note] = note.EndTime;
             var noteSelection = new RelativeBox {
                 Colour = Color4.LimeGreen.Opacity(0.5f),

@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
@@ -17,7 +18,7 @@ using S2VX.Game.Story;
 using System;
 
 namespace S2VX.Game.Editor {
-    public class S2VXEditor : CompositeDrawable {
+    public class EditorScreen : Screen {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
         [Cached]
@@ -57,9 +58,12 @@ namespace S2VX.Game.Editor {
         public int SnapDivisor { get; private set; }
         private const int MaxSnapDivisor = 16;
 
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(@"../../../story.json");
+            Story.Open(@"../../../story.json", true);
 
             Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             Seek(Story.GetEditorSettings().TrackTime);
@@ -98,7 +102,8 @@ namespace S2VX.Game.Editor {
                             Items = new[]
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
-                                new MenuItem("Save (Ctrl+S)", ProjectSave)
+                                new MenuItem("Save (Ctrl+S)", ProjectSave),
+                                new MenuItem("Save (Ctrl+P)", ProjectPlay)
                             }
                         },
                         new MenuItem("Edit")
@@ -191,6 +196,11 @@ namespace S2VX.Game.Editor {
                 return true;
             }
             switch (e.Key) {
+                case Key.P:
+                    if (e.ControlPressed) {
+                        ProjectPlay();
+                    }
+                    break;
                 case Key.R:
                     if (e.ControlPressed) {
                         ProjectRefresh();
@@ -295,9 +305,16 @@ namespace S2VX.Game.Editor {
             Story.ClearActives();
         }
 
+        private void ProjectPlay() {
+            ProjectSave();
+            Story.Open(@"../../../story.json", false);
+            Seek(Story.GetEditorSettings().TrackTime);
+            this.Push(new PlayScreen());
+        }
+
         private void ProjectRefresh() {
             ProjectSave();
-            Story.Open(@"../../../story.json");
+            Story.Open(@"../../../story.json", true);
             Seek(Story.GetEditorSettings().TrackTime);
         }
 

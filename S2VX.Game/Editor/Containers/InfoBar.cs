@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.Processing;
 namespace S2VX.Game.Editor.Containers {
     public class InfoBar : CompositeDrawable {
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private ToolDisplay ToolDisplay { get; } = new ToolDisplay {
             RelativeSizeAxes = Axes.Both,

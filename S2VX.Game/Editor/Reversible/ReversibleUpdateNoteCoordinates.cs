@@ -1,13 +1,13 @@
 ﻿using osuTK;
-using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleUpdateNoteCoordinates : IReversible {
-        private Note Note { get; }
+        private S2VXNote Note { get; }
         private Vector2 OldCoordinates { get; }
         private Vector2 NewCoordinates { get; }
 
-        public ReversibleUpdateNoteCoordinates(Note note, Vector2 oldCoordinates, Vector2 newCoordinates) {
+        public ReversibleUpdateNoteCoordinates(S2VXNote note, Vector2 oldCoordinates, Vector2 newCoordinates) {
             Note = note;
             OldCoordinates = oldCoordinates;
             NewCoordinates = newCoordinates;

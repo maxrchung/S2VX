@@ -8,7 +8,7 @@ using System.Globalization;
 namespace S2VX.Game.Editor.UserInterface {
     public class VolumeDisplay : CompositeDrawable {
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private TextFlowContainer TxtVolume { get; set; }
 

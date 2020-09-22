@@ -2,14 +2,14 @@
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleCameraToolActions : IReversible {
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private CameraMoveCommand MoveCommand { get; set; }
         private CameraScaleCommand ScaleCommand { get; set; }
         private CameraRotateCommand RotateCommand { get; set; }
 
         public ReversibleCameraToolActions(
-            S2VXEditor editor,
+            EditorScreen editor,
             CameraMoveCommand moveCommand,
             CameraScaleCommand scaleCommand,
             CameraRotateCommand rotateCommand
