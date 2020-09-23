@@ -7,8 +7,10 @@ using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
+using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace S2VX.Game.Story {
     // Per Microsoft docs, class names should not conflict with their namespace,
@@ -74,18 +76,18 @@ namespace S2VX.Game.Story {
             ClearActives();
         }
 
-        public void AddNote(Note note) {
+        public void AddNote(S2VXNote note) {
             Notes.AddNote(note);
             var approach = Approaches.AddApproach(note);
             note.Approach = approach;
         }
 
-        public void RemoveNote(Note note) {
+        public void RemoveNote(S2VXNote note) {
             Notes.RemoveNote(note);
             Approaches.RemoveApproach(note);
         }
 
-        public void Open(string path) {
+        public void Open(string path, bool isForEditor) {
             Commands.Clear();
             var text = File.ReadAllText(path);
             var story = JObject.Parse(text);
@@ -96,7 +98,11 @@ namespace S2VX.Game.Story {
             }
             Commands.Sort();
 
-            var notes = JsonConvert.DeserializeObject<List<Note>>(story[nameof(Notes)].ToString());
+            var notes = (
+                isForEditor
+                    ? JsonConvert.DeserializeObject<IEnumerable<EditorNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
+                    : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
+            ).ToList();
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);

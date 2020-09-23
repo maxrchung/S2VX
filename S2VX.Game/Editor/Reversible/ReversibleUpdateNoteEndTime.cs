@@ -1,14 +1,14 @@
-﻿using S2VX.Game.Story;
+﻿using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleUpdateNoteEndTime : IReversible {
-        private Note Note { get; }
+        private S2VXNote Note { get; }
         private double OldEndTime { get; }
         private double NewEndTime { get; }
-        private Dictionary<Note, double> SelectedNoteToTime { get; } = new Dictionary<Note, double>();
+        private Dictionary<S2VXNote, double> SelectedNoteToTime { get; } = new Dictionary<S2VXNote, double>();
 
-        public ReversibleUpdateNoteEndTime(Note note, double oldEndTime, double newEndTime, Dictionary<Note, double> selectedNoteToTime) {
+        public ReversibleUpdateNoteEndTime(S2VXNote note, double oldEndTime, double newEndTime, Dictionary<S2VXNote, double> selectedNoteToTime) {
             Note = note;
             OldEndTime = oldEndTime;
             NewEndTime = newEndTime;

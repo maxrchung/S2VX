@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Sprites;
 namespace S2VX.Game.Editor.UserInterface {
     public class MousePositionDisplay : CompositeDrawable {
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private TextFlowContainer TxtMousePosition { get; set; }
 

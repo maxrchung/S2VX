@@ -7,7 +7,7 @@ using osu.Framework.Input.Events;
 namespace S2VX.Game.Editor.UserInterface {
     public class NoteSnapDivisorDisplay : CompositeDrawable {
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private TextFlowContainer TxtNoteSnapDivisor { get; set; }
 

@@ -4,13 +4,14 @@ using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.ToolState {
     public class NoteToolState : S2VXToolState {
-        private Note Preview { get; set; } = new Note();
+        private S2VXNote Preview { get; set; } = new EditorNote();
 
         [Resolved]
-        private S2VXEditor Editor { get; set; } = null;
+        private EditorScreen Editor { get; set; } = null;
 
         [Resolved]
         private S2VXStory Story { get; set; } = null;
@@ -23,7 +24,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            var note = new Note {
+            var note = new EditorNote {
                 Coordinates = Editor.MousePosition,
                 EndTime = Time.Current
             };

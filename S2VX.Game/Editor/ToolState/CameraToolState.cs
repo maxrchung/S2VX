@@ -26,7 +26,7 @@ namespace S2VX.Game.Editor.ToolState {
         private const float RotationSnapMultiplier = 90;
 
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }

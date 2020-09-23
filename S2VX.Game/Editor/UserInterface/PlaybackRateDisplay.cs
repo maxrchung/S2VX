@@ -8,7 +8,7 @@ using System.Globalization;
 namespace S2VX.Game.Editor.UserInterface {
     public class PlaybackRateDisplay : CompositeDrawable {
         [Resolved]
-        private S2VXEditor Editor { get; set; }
+        private EditorScreen Editor { get; set; }
 
         private TextFlowContainer TxtPlaybackRate { get; set; }
 
