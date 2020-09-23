@@ -10,6 +10,10 @@ using S2VX.Game.Story;
 
 namespace S2VX.Game {
     public class PlayScreen : Screen {
+
+        [Cached]
+        private S2VXScore Score { get; set; } = new S2VXScore();
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             var story = new S2VXStory();

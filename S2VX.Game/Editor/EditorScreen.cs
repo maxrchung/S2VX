@@ -307,8 +307,6 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPlay() {
             ProjectSave();
-            Story.Open(@"../../../story.json", false);
-            Seek(Story.GetEditorSettings().TrackTime);
             this.Push(new PlayScreen());
         }
 
