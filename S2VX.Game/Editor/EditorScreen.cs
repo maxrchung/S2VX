@@ -65,7 +65,7 @@ namespace S2VX.Game.Editor {
         private void Load() {
             Story.Open(@"../../../story.json", true);
 
-            Track = new DrawableTrack(Audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            Track = new DrawableTrack(Audio.Tracks.Get("Camellia_MEGALOVANIA_Remix"));
             Seek(Story.GetEditorSettings().TrackTime);
             VolumeSet(Story.GetEditorSettings().TrackVolume);
             PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
