@@ -14,6 +14,7 @@ using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
+using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
 
@@ -89,7 +90,7 @@ namespace S2VX.Game.Editor {
                 NoteSelectionIndicators,
                 ToolContainer,
                 NotesTimeline,
-                new InfoBar(),
+                new EditorInfoBar(),
                 new BasicMenu(Direction.Horizontal, true)
                 {
                     BackgroundColour = Color4.Black.Opacity(0.9f),

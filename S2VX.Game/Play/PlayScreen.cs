@@ -6,9 +6,10 @@ using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK.Input;
+using S2VX.Game.Play.Containers;
 using S2VX.Game.Story;
 
-namespace S2VX.Game {
+namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
 
         [Cached]
@@ -31,7 +32,8 @@ namespace S2VX.Game {
             Clock = new FramedClock(track);
             InternalChildren = new Drawable[] {
                 Story,
-                track
+                track,
+                new PlayInfoBar(),
             };
         }
 

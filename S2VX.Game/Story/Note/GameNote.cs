@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Input.Events;
 using osu.Framework.Utils;
+using S2VX.Game.Play;
 using System;
 
 namespace S2VX.Game.Story.Note {
