@@ -67,7 +67,6 @@ namespace S2VX.Game.Editor {
 
             Track = new DrawableTrack(Audio.Tracks.Get("Camellia_MEGALOVANIA_Remix"));
             Seek(Story.GetEditorSettings().TrackTime);
-            VolumeSet(Story.GetEditorSettings().TrackVolume);
             PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
             SnapDivisor = Story.GetEditorSettings().SnapDivisor;
             NotesTimeline.DivisorIndex = Story.GetEditorSettings().BeatSnapDivisorIndex;
@@ -321,7 +320,6 @@ namespace S2VX.Game.Editor {
         private void ProjectSave() {
             Play(false);
             Story.GetEditorSettings().TrackTime = Track.CurrentTime;
-            Story.GetEditorSettings().TrackVolume = Track.Volume.Value;
             Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
             Story.GetEditorSettings().SnapDivisor = SnapDivisor;
             Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
@@ -377,11 +375,13 @@ namespace S2VX.Game.Editor {
 
         private void VolumeDecrease() => VolumeDecrease(0.1);
 
-        private void VolumeSet(double volume = 1.0) => Track.VolumeTo(volume);
+        // Note that Volume is set in a special framework.ini that is unique to your computer,
+        // for example my path is: C:\Users\Wax Chug da Gwad\AppData\Roaming\S2VX\framework.ini
+        private void VolumeSet(double volume = 1.0) => Audio.Volume.Value = volume;
 
-        public void VolumeIncrease(double step = 0.1) => VolumeSet(Track.Volume.Value + step);
+        public void VolumeIncrease(double step = 0.1) => VolumeSet(Audio.Volume.Value + step);
 
-        public void VolumeDecrease(double step = 0.1) => VolumeSet(Track.Volume.Value - step);
+        public void VolumeDecrease(double step = 0.1) => VolumeSet(Audio.Volume.Value - step);
 
         public void SnapDivisorIncrease() {
             if (SnapDivisor == MaxSnapDivisor) {

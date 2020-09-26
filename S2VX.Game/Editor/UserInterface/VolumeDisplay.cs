@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -9,6 +10,9 @@ namespace S2VX.Game.Editor.UserInterface {
     public class VolumeDisplay : CompositeDrawable {
         [Resolved]
         private EditorScreen Editor { get; set; }
+
+        [Resolved]
+        private AudioManager Audio { get; set; }
 
         private TextFlowContainer TxtVolume { get; set; }
 
@@ -25,7 +29,7 @@ namespace S2VX.Game.Editor.UserInterface {
                 }
             };
 
-        protected override void Update() => TxtVolume.Text = $"Volume: {Editor.Track.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
+        protected override void Update() => TxtVolume.Text = $"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {
