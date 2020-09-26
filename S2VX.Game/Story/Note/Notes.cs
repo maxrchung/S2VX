@@ -16,7 +16,7 @@ namespace S2VX.Game.Story.Note {
         public float FadeInTime { get; set; } = 100;
         public float ShowTime { get; set; } = 1000;
         public float FadeOutTime { get; set; } = 100;
-        public int MissThreshold { get; set; } = 150;
+        public int MissThreshold { get; set; } = 200;
 
         public void AddNote(S2VXNote note) {
             Children.Add(note);

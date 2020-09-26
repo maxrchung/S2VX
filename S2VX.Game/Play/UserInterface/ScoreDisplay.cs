@@ -15,19 +15,19 @@ namespace S2VX.Game.Play.UserInterface {
 
         private TextFlowContainer TxtScore { get; set; }
 
-        public Anchor TextAnchor { get; set; }
-
         [BackgroundDependencyLoader]
-        private void Load() =>
-            InternalChildren = new Drawable[]
-            {
-                TxtScore = new TextFlowContainer(s => s.Font = new FontUsage("default", Screens.DrawWidth / 20, "500")) {
+        private void Load() {
+            Margin = new MarginPadding {
+                Horizontal = Screens.DrawWidth / 60,
+            };
+            InternalChildren = new Drawable[] {
+                TxtScore = new TextFlowContainer(s => s.Font = new FontUsage("default", Screens.DrawWidth / 20)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
-                    TextAnchor = TextAnchor,
+                    TextAnchor = Anchor.CentreRight,
                 }
             };
-
+        }
         protected override void Update() => TxtScore.Text = Score.Value.ToString(CultureInfo.InvariantCulture);
     }
 }

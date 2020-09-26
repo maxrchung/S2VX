@@ -1,6 +1,8 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Input.Events;
+using osu.Framework.Screens;
 using osu.Framework.Utils;
+using osuTK.Graphics;
 using S2VX.Game.Play;
 using System;
 
@@ -13,28 +15,37 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        private double ClickedAtTime;
+        [Resolved]
+        private ScreenStack ScreenStack { get; set; }
+
         private int TimingError;
 
-        private void RecordMiss() {
-            Score.Value += Story.Notes.MissThreshold;
-            Console.WriteLine($"{EndTime} missed, score is now {Score.Value}");
+        private void Delete() {
+            var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
+            playScreen.PlayInfoBar.RecordHitError(TimingError);
             Story.RemoveNote(this);
+        }
+
+        private void RecordMiss() {
+            var missThreshold = Story.Notes.MissThreshold;
+            TimingError = missThreshold;
+            Score.Value += missThreshold;
+            Console.WriteLine($"{EndTime} missed, score is now {Score.Value}");
+            Delete();
         }
 
         // Returns whether or not the click occurred within the MissThreshold
         private bool IsClickable() {
             var time = Time.Current;
-            ClickedAtTime = time;
-            TimingError = Math.Abs((int)(EndTime - time));
-            return TimingError <= Story.Notes.MissThreshold;
+            TimingError = (int)(time - EndTime);
+            return Math.Abs(TimingError) <= Story.Notes.MissThreshold;
         }
 
         protected override bool OnClick(ClickEvent e) {
             if (IsClickable()) {
-                Score.Value += TimingError;
-                Console.WriteLine($"{EndTime} clicked at {ClickedAtTime}, score is now {Score.Value}");
-                Story.RemoveNote(this);
+                Score.Value += Math.Abs(TimingError);
+                Console.WriteLine($"{EndTime} clicked {TimingError}ms, score is now {Score.Value}");
+                Delete();
             }
             return false;
         }
@@ -49,6 +60,7 @@ namespace S2VX.Game.Story.Note {
                 var endFadeTime = startFadeTime + notes.FadeOutTime;
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
                 Alpha = alpha;
+                Colour = Color4.Red;
                 if (time >= EndTime + notes.MissThreshold) {
                     RecordMiss();
                 }

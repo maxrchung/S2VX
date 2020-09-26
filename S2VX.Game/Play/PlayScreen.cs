@@ -18,6 +18,9 @@ namespace S2VX.Game.Play {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
 
+        [Cached]
+        public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Story.Open(@"../../../story.json", false);
@@ -33,7 +36,7 @@ namespace S2VX.Game.Play {
             InternalChildren = new Drawable[] {
                 Story,
                 track,
-                new PlayInfoBar(),
+                PlayInfoBar,
             };
         }
 
