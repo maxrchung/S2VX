@@ -41,7 +41,7 @@ namespace S2VX.Game.Story.Note {
             return Math.Abs(TimingError) <= Story.Notes.MissThreshold;
         }
 
-        protected override bool OnClick(ClickEvent e) {
+        protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
                 Score.Value += Math.Abs(TimingError);
                 Console.WriteLine($"{EndTime} clicked {TimingError}ms, score is now {Score.Value}");
