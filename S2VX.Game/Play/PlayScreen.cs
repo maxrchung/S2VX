@@ -42,6 +42,11 @@ namespace S2VX.Game.Play {
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
+                case Key.Tab:
+                    if (e.ShiftPressed) {
+                        PlayInfoBar.Alpha = 1 - PlayInfoBar.Alpha;
+                    }
+                    break;
                 case Key.Escape:
                     this.Exit();
                     return true;
