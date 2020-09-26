@@ -1,19 +1,28 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Input.Events;
-using System;
+using osu.Framework.Audio.Sample;
 
 namespace S2VX.Game.Story.Note {
     public class EditorNote : S2VXNote {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        protected override bool OnClick(ClickEvent e) {
-            var hit = Audio.Samples.Get("hit");
-            hit.Play();
+        private bool CanHit { get; set; }
+        private SampleChannel Hit { get; set; }
 
-            Console.WriteLine("EditorNote clicked");
-            return false;
+        [BackgroundDependencyLoader]
+        private void Load() => Hit = Audio.Samples.Get("hit");
+
+        protected override void Update() {
+            base.Update();
+
+            var time = Clock.CurrentTime;
+            if (time >= EndTime && CanHit) {
+                CanHit = false;
+                Hit.Play();
+            }
+            // Reset hit sound if clock is running and before end time
+            CanHit = Clock.IsRunning && time < EndTime;
         }
     }
 }
