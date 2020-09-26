@@ -4,14 +4,12 @@ using osu.Framework.Audio.Sample;
 
 namespace S2VX.Game.Story.Note {
     public class EditorNote : S2VXNote {
-        [Resolved]
-        private AudioManager Audio { get; set; }
-
         private bool CanHit { get; set; }
         private SampleChannel Hit { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() => Hit = Audio.Samples.Get("hit");
+        private void Load(AudioManager audio) =>
+            Hit = audio.Samples.Get("hit");
 
         protected override void Update() {
             base.Update();
