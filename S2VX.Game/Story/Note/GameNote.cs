@@ -34,11 +34,27 @@ namespace S2VX.Game.Story.Note {
             Delete();
         }
 
+        private GameNote GetEarliestClickableNote() {
+            var largestTimingError = -Story.Notes.MissThreshold;
+            var earliestNote = new GameNote();
+            var time = Time.Current;
+            foreach (var note in Story.Notes.Children) {
+                var timingError = (int)(time - note.EndTime);
+                if (largestTimingError <= timingError && timingError <= Story.Notes.MissThreshold) {
+                    largestTimingError = timingError;
+                    earliestNote = (GameNote)note;
+                }
+            }
+            return earliestNote;
+        }
+
         // Returns whether or not the click occurred within the MissThreshold
         private bool IsClickable() {
             var time = Time.Current;
             TimingError = (int)(time - EndTime);
-            return Math.Abs(TimingError) <= Story.Notes.MissThreshold;
+            var inMissThreshold = Math.Abs(TimingError) <= Story.Notes.MissThreshold;
+            var isEarliestNote = GetEarliestClickableNote() == this;
+            return inMissThreshold && isEarliestNote;
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
@@ -53,12 +69,33 @@ namespace S2VX.Game.Story.Note {
             if (IsClickable()) {
                 switch (e.Key) {
                     case Key.Z:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.X:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.C:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.V:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.A:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.S:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.D:
+                        Score.Value += Math.Abs(TimingError);
+                        Delete();
+                        break;
                     case Key.F:
                         Score.Value += Math.Abs(TimingError);
                         Delete();
