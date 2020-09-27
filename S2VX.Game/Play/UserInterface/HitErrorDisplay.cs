@@ -36,13 +36,9 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        protected override void Update() {
-            TxtHitError.Text = HitError.ToString(CultureInfo.InvariantCulture);
-            if (HitError > 0) {
-                HitErrorBox.Colour = Color4.Red.Opacity(0.5f);
-            } else {
-                HitErrorBox.Colour = Color4.Blue.Opacity(0.5f);
-            }
+        public void UpdateHitError(int hitError) {
+            TxtHitError.Text = hitError.ToString(CultureInfo.InvariantCulture);
+            HitErrorBox.Colour = hitError > 0 ? Color4.Red.Opacity(0.5f) : Color4.Blue.Opacity(0.5f);
         }
 
     }

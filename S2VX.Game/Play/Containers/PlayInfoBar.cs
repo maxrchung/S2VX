@@ -16,7 +16,7 @@ namespace S2VX.Game.Play.Containers {
             if (HitErrorDisplayIndex == HitErrorDisplays.Children.Count) {
                 HitErrorDisplayIndex = 0;
             }
-            nextHitErrorDisplay.HitError = timingError;
+            nextHitErrorDisplay.UpdateHitError(timingError);
         }
 
         private FillFlowContainer HitErrorDisplays { get; set; } = new FillFlowContainer {
