@@ -66,7 +66,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
-            if (IsClickable()) {
+            if (IsClickable() && IsHovered) {
                 switch (e.Key) {
                     case Key.Z:
                         Score.Value += Math.Abs(TimingError);
