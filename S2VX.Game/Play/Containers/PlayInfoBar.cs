@@ -33,6 +33,7 @@ namespace S2VX.Game.Play.Containers {
             }
         };
 
+        [Cached]
         private ScoreDisplay ScoreDisplay { get; } = new ScoreDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
