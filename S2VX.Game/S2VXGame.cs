@@ -12,7 +12,7 @@ namespace S2VX.Game {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Screens = new ScreenStack(Editor);
+            Screens.Push(Editor);
             Child = Screens;
         }
     }

@@ -65,7 +65,7 @@
       "EndTime": 368002.0,
       "Easing": 0,
       "Type": "NotesColor"
-    },
+    }
   ],
   "Notes": [
     {
@@ -87,6 +87,41 @@
       "Coordinates": {
         "X": 2.5,
         "Y": 2.25
+      }
+    },
+    {
+      "EndTime": 619.8185941043084,
+      "Coordinates": {
+        "X": -1.5,
+        "Y": 1.0
+      }
+    },
+    {
+      "EndTime": 681.7913832199547,
+      "Coordinates": {
+        "X": -1.0,
+        "Y": 1.5
+      }
+    },
+    {
+      "EndTime": 2769.0702947845803,
+      "Coordinates": {
+        "X": -1.5,
+        "Y": 1.0
+      }
+    },
+    {
+      "EndTime": 3749.297052154195,
+      "Coordinates": {
+        "X": 0.5,
+        "Y": 2.0
+      }
+    },
+    {
+      "EndTime": 4600.022675736962,
+      "Coordinates": {
+        "X": -1.5,
+        "Y": 1.0
       }
     }
   ],

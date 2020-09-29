@@ -7,7 +7,7 @@ using S2VX.Game.Editor.UserInterface;
 using SixLabors.ImageSharp.Processing;
 
 namespace S2VX.Game.Editor.Containers {
-    public class InfoBar : CompositeDrawable {
+    public class EditorInfoBar : CompositeDrawable {
         [Resolved]
         private EditorScreen Editor { get; set; }
 
