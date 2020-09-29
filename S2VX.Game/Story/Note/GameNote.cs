@@ -35,6 +35,12 @@ namespace S2VX.Game.Story.Note {
         private void Delete() {
             var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
             playScreen.PlayInfoBar.RecordHitError(TimingError);
+            if (Math.Abs(TimingError) < MissThreshold) {
+                Hit.Play();
+            } else {
+                Miss.Play();
+            }
+
             Story.RemoveNote(this);
         }
 
