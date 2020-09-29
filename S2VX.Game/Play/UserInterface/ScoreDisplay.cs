@@ -10,9 +10,6 @@ namespace S2VX.Game.Play.UserInterface {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        [Resolved]
-        private S2VXScore Score { get; set; }
-
         private TextFlowContainer TxtScore { get; set; }
 
         [BackgroundDependencyLoader]
@@ -28,6 +25,7 @@ namespace S2VX.Game.Play.UserInterface {
                 }
             };
         }
-        protected override void Update() => TxtScore.Text = Score.Value.ToString(CultureInfo.InvariantCulture);
+
+        public void UpdateScore(int score) => TxtScore.Text = score.ToString(CultureInfo.InvariantCulture);
     }
 }

@@ -12,7 +12,6 @@ namespace S2VX.Game.Play.UserInterface {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public int HitError { get; set; }
         private RelativeBox HitErrorBox { get; set; }
         private TextFlowContainer TxtHitError { get; set; }
 

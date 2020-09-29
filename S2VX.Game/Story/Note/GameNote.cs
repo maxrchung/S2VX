@@ -29,6 +29,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private ScreenStack ScreenStack { get; set; }
 
+        private const int MissThreshold = 200;
         private int TimingError;
 
         private void Delete() {
@@ -38,7 +39,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void RecordMiss() {
-            var missThreshold = Story.Notes.MissThreshold;
+            var missThreshold = MissThreshold;
             TimingError = missThreshold;
             Score.Value += missThreshold;
             Delete();
@@ -48,7 +49,7 @@ namespace S2VX.Game.Story.Note {
         private bool IsClickable() {
             var time = Time.Current;
             TimingError = (int)(time - EndTime);
-            return Math.Abs(TimingError) <= Story.Notes.MissThreshold;
+            return Math.Abs(TimingError) <= MissThreshold;
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
@@ -86,12 +87,12 @@ namespace S2VX.Game.Story.Note {
             if (time >= EndTime) {
                 // Hold the note at fully visible until after MissThreshold
                 var notes = Story.Notes;
-                var startFadeTime = EndTime + notes.MissThreshold;
+                var startFadeTime = EndTime + MissThreshold;
                 var endFadeTime = startFadeTime + notes.FadeOutTime;
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
                 Alpha = alpha;
                 Colour = Color4.Red;
-                if (time >= EndTime + notes.MissThreshold) {
+                if (time >= EndTime + MissThreshold) {
                     RecordMiss();
                 }
             }
