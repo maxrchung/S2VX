@@ -12,11 +12,14 @@ namespace S2VX.Game.Play.Containers {
         private int HitErrorDisplayIndex;
 
         public void RecordHitError(int timingError) {
-            var nextHitErrorDisplay = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex++];
+            var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex++];
+            currHit.IndicatorBox.FadeOut();
             if (HitErrorDisplayIndex == HitErrorDisplays.Children.Count) {
                 HitErrorDisplayIndex = 0;
             }
-            nextHitErrorDisplay.UpdateHitError(timingError);
+            var nextHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
+            nextHit.IndicatorBox.FadeIn();
+            currHit.UpdateHitError(timingError);
         }
 
         private FillFlowContainer HitErrorDisplays { get; set; } = new FillFlowContainer {
@@ -24,14 +27,22 @@ namespace S2VX.Game.Play.Containers {
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Children = new Drawable[]{
-                new HitErrorDisplay{ },
+            Children = new Drawable[] {
+                new HitErrorDisplay{
+                    IsInitiallySelected = true
+                },
                 new HitErrorDisplay{ },
                 new HitErrorDisplay{ },
                 new HitErrorDisplay{ },
                 new HitErrorDisplay{ },
             }
         };
+
+        private static HitErrorDisplay SelectedHitErrorDisplay() {
+            var hitError = new HitErrorDisplay();
+            hitError.IndicatorBox.Alpha = 1;
+            return hitError;
+        }
 
         [Cached]
         private ScoreDisplay ScoreDisplay { get; } = new ScoreDisplay {
