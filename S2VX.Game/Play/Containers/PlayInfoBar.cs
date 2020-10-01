@@ -44,13 +44,8 @@ namespace S2VX.Game.Play.Containers {
             return hitErrors;
         }
 
-        [Cached]
-        private ScoreDisplay ScoreDisplay { get; } = new ScoreDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-        };
+        [Resolved]
+        private ScoreInfo ScoreDisplay { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
