@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using S2VX.Game.Play.UserInterface;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Play.Containers {
     public class PlayInfoBar : CompositeDrawable {
@@ -10,15 +11,16 @@ namespace S2VX.Game.Play.Containers {
         public const float InfoBarWidth = 1.0f;
 
         private int HitErrorDisplayIndex;
+        private const int HitErrorDisplayCount = 10;
 
         public void RecordHitError(int timingError) {
-            var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex++];
+            var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             currHit.IndicatorBox.FadeOut();
-            if (HitErrorDisplayIndex == HitErrorDisplays.Children.Count) {
-                HitErrorDisplayIndex = 0;
-            }
+
+            HitErrorDisplayIndex = ++HitErrorDisplayIndex % HitErrorDisplays.Children.Count;
             var nextHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             nextHit.IndicatorBox.FadeIn();
+
             currHit.UpdateHitError(timingError);
         }
 
@@ -27,21 +29,19 @@ namespace S2VX.Game.Play.Containers {
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Children = new Drawable[] {
-                new HitErrorDisplay{
-                    IsInitiallySelected = true
-                },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-            }
+            Children = CreateHitErrorDisplays()
         };
 
-        private static HitErrorDisplay SelectedHitErrorDisplay() {
-            var hitError = new HitErrorDisplay();
-            hitError.IndicatorBox.Alpha = 1;
-            return hitError;
+        private static List<Drawable> CreateHitErrorDisplays() {
+            var hitErrors = new List<Drawable> {
+                new HitErrorDisplay {
+                    IsInitiallySelected = true
+                }
+            };
+            for (var i = 0; i < HitErrorDisplayCount - 1; ++i) {
+                hitErrors.Add(new HitErrorDisplay { });
+            }
+            return hitErrors;
         }
 
         [Cached]
