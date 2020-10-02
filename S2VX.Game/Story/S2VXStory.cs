@@ -30,20 +30,6 @@ namespace S2VX.Game.Story {
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
 
-        // Before starting the Story in the PlayScreen, we want to explicitly
-        // remove GameNotes up to some certain track time. This is so that we
-        // won't prematurely hear Miss hitsounds and calculate score.
-        public void RemoveNotesUpTo(double trackTime) {
-            int aliveIndex;
-            for (aliveIndex = 0; aliveIndex < Notes.Children.Count; ++aliveIndex) {
-                if (Notes.Children[aliveIndex].EndTime > trackTime) {
-                    break;
-                }
-            }
-            var alive = Notes.Children.Skip(aliveIndex).ToList();
-            Notes.SetChildren(alive);
-        }
-
         private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
 
         private static JsonConverter[] Converters { get; } = {
@@ -100,6 +86,20 @@ namespace S2VX.Game.Story {
         public void RemoveNote(S2VXNote note) {
             Notes.RemoveNote(note);
             Approaches.RemoveApproach(note);
+        }
+
+        // Before starting the Story in the PlayScreen, we want to explicitly
+        // remove GameNotes up to some certain track time. This is so that we
+        // won't hear Miss hitsounds and prematurely calculate score.
+        public void RemoveNotesUpTo(double trackTime) {
+            while (Notes.Children.Count > 0 && Notes.Children.First().EndTime < trackTime) {
+                // This seems somewhat inefficient since I believe Children has
+                // to be reshuffled each removal, but I don't think osu! has
+                // easy ways of removing multiple internal children at once. You
+                // can't just use Notes.SetChildren() directly because calling
+                // this would invalidate all of the existing Notes.
+                RemoveNote(Notes.Children.First());
+            }
         }
 
         public void Open(string path, bool isForEditor) {
