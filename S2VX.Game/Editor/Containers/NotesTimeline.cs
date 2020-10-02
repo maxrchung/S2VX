@@ -233,18 +233,27 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         public void SnapToTick(bool snapLeft) {
+            var tolerance = 0.02;
             var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Editor.Track.Length / numTicks;
-            var leftOffset = (Time.Current - Story.Offset) % timeBetweenTicks;
-
-            var tolerance = 0.02;
-            if (snapLeft) {
-                leftOffset = leftOffset <= tolerance ? timeBetweenTicks : leftOffset;
-                Editor.Seek(Math.Clamp(Time.Current - leftOffset, 0, Editor.Track.Length));
+            var currentTick = (Time.Current - Story.Offset) / timeBetweenTicks;
+            var nearestTick = Math.Round(currentTick);
+            var onTick = Math.Abs(nearestTick - currentTick) <= tolerance;
+            var leftTickTime = timeBetweenTicks;
+            var rightTickTime = timeBetweenTicks;
+            if (onTick) {
+                leftTickTime *= nearestTick - 1;
+                rightTickTime *= nearestTick + 1;
             } else {
-                var rightOffset = timeBetweenTicks - leftOffset;
-                rightOffset = rightOffset <= tolerance ? timeBetweenTicks : rightOffset;
-                Editor.Seek(Math.Clamp(Time.Current + rightOffset, 0, Editor.Track.Length));
+                // Current time is between two ticks
+                leftTickTime *= Math.Floor(currentTick);
+                rightTickTime *= Math.Ceiling(currentTick);
+            }
+
+            if (snapLeft) {
+                Editor.Seek(Math.Clamp(leftTickTime, 0, Editor.Track.Length));
+            } else {
+                Editor.Seek(Math.Clamp(rightTickTime, 0, Editor.Track.Length));
             }
         }
 
