@@ -7,6 +7,7 @@ using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
+using S2VX.Game.Play.UserInterface;
 using System;
 
 namespace S2VX.Game.Story.Note {
@@ -21,7 +22,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         [Resolved]
-        private S2VXScore Score { get; set; }
+        private ScoreInfo ScoreInfo { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -47,7 +48,7 @@ namespace S2VX.Game.Story.Note {
         private void RecordMiss() {
             var missThreshold = MissThreshold;
             TimingError = missThreshold;
-            Score.Value += missThreshold;
+            ScoreInfo.AddScore(missThreshold);
             Delete();
         }
 
@@ -60,7 +61,7 @@ namespace S2VX.Game.Story.Note {
 
         protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
-                Score.Value += Math.Abs(TimingError);
+                ScoreInfo.AddScore(Math.Abs(TimingError));
                 Delete();
             }
             return false;
@@ -77,7 +78,7 @@ namespace S2VX.Game.Story.Note {
                     case Key.S:
                     case Key.D:
                     case Key.F:
-                        Score.Value += Math.Abs(TimingError);
+                        ScoreInfo.AddScore(Math.Abs(TimingError));
                         Delete();
                         break;
                     default:
