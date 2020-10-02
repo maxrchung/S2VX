@@ -29,6 +29,21 @@ namespace S2VX.Game.Story {
 
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
+
+        // Before starting the Story in the PlayScreen, we want to explicitly
+        // remove GameNotes up to some certain track time. This is so that we
+        // won't prematurely hear Miss hitsounds and calculate score.
+        public void RemoveNotesUpTo(double trackTime) {
+            int aliveIndex;
+            for (aliveIndex = 0; aliveIndex < Notes.Children.Count; ++aliveIndex) {
+                if (Notes.Children[aliveIndex].EndTime > trackTime) {
+                    break;
+                }
+            }
+            var alive = Notes.Children.Skip(aliveIndex).ToList();
+            Notes.SetChildren(alive);
+        }
+
         private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
 
         private static JsonConverter[] Converters { get; } = {
