@@ -126,7 +126,8 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 939.591836734694,
+    "TrackTime": 0.0,
+    "TrackVolume": 0.2,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3
