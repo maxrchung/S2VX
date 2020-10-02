@@ -296,7 +296,7 @@ namespace S2VX.Game.Editor {
         }
 
         public void Restart() {
-            Track.Restart();
+            Track.Seek(0);
             Story.ClearActives();
         }
 
