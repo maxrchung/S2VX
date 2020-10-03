@@ -61,6 +61,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public int CompareTo(S2VXNote other) => EndTime.CompareTo(other.EndTime);
+        // Sort Notes from highest end time to lowest end time
+        public int CompareTo(S2VXNote other) => other.EndTime.CompareTo(EndTime);
     }
 }
