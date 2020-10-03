@@ -1,9 +1,11 @@
-﻿using osu.Framework.Allocation;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using osu.Framework.Allocation;
 using osu.Framework.Utils;
 using osuTK;
+using System;
 
 namespace S2VX.Game.Story.Note {
-    public abstract class S2VXNote : RelativeBox {
+    public abstract class S2VXNote : RelativeBox, IComparable<S2VXNote> {
         public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
@@ -58,5 +60,7 @@ namespace S2VX.Game.Story.Note {
                 Alpha = alpha;
             }
         }
+
+        public int CompareTo(S2VXNote other) => EndTime.CompareTo(other.EndTime);
     }
 }
