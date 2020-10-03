@@ -118,6 +118,7 @@ namespace S2VX.Game.Story {
                     ? JsonConvert.DeserializeObject<IEnumerable<EditorNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
                     : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
             ).ToList();
+            notes.Sort();
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
@@ -131,9 +132,11 @@ namespace S2VX.Game.Story {
         }
 
         public void Save(string path) {
+            var notes = Notes.Children;
+            notes.Sort();
             var obj = new {
                 Commands,
-                Notes = Notes.Children,
+                Notes = notes,
                 EditorSettings = GetEditorSettings(),
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
