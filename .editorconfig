@@ -247,3 +247,6 @@ dotnet_diagnostic.CA1303.severity = suggestion
 
 # CA2000: Dispose objects before losing scope
 dotnet_diagnostic.CA2000.severity = suggestion
+
+# CA1036: Override methods on comparable types
+dotnet_diagnostic.CA1036.severity = suggestion
