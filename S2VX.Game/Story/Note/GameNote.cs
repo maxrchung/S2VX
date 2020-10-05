@@ -52,11 +52,11 @@ namespace S2VX.Game.Story.Note {
             Delete();
         }
 
-        // Returns whether or not the click occurred within the MissThreshold
+        // Notes are clickable if they are visible on screen and not missed
         private bool IsClickable() {
             var time = Time.Current;
             TimingError = (int)(time - EndTime);
-            return Math.Abs(TimingError) <= MissThreshold;
+            return TimingError <= MissThreshold && Alpha > 0;
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
