@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osu.Framework.Utils;
@@ -10,6 +12,14 @@ using System;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
+        private SampleChannel Hit { get; set; }
+        private SampleChannel Miss { get; set; }
+
+        [BackgroundDependencyLoader]
+        private void Load(AudioManager audio) {
+            Hit = audio.Samples.Get("hit");
+            Miss = audio.Samples.Get("miss");
+        }
 
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
@@ -26,6 +36,12 @@ namespace S2VX.Game.Story.Note {
         private void Delete() {
             var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
             playScreen.PlayInfoBar.RecordHitError(TimingError);
+            if (Math.Abs(TimingError) < MissThreshold) {
+                Hit.Play();
+            } else {
+                Miss.Play();
+            }
+
             Story.RemoveNote(this);
         }
 

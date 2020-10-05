@@ -24,6 +24,7 @@ namespace S2VX.Game.Play.UserInterface {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.CentreRight,
+                    Text = Score.ToString(CultureInfo.InvariantCulture)
                 }
             };
         }
