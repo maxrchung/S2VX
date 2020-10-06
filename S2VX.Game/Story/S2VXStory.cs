@@ -27,6 +27,7 @@ namespace S2VX.Game.Story {
         public Notes Notes { get; } = new Notes();
         public Approaches Approaches { get; } = new Approaches();
 
+        public IEnumerable<S2VXCommand> DefaultCommands { get; } = S2VXCommand.GetDefaultCommands();
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
         private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
@@ -126,6 +127,13 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
+            // If at 0, apply defaults
+            if (NextActive == 0) {
+                foreach (var command in DefaultCommands) {
+                    command.Apply(0, this);
+                }
+            }
+
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);
