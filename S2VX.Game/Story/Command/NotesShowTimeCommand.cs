@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class NotesShowTimeCommand : S2VXCommand {
-        public float StartValue { get; set; } = 100.0f;
-        public float EndValue { get; set; } = 100.0f;
+        public float StartValue { get; set; } = 1000.0f;
+        public float EndValue { get; set; } = 1000.0f;
         public override void Apply(double time, S2VXStory story) {
             var showTime = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Notes.ShowTime = showTime;
