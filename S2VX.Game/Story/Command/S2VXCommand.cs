@@ -69,27 +69,5 @@ namespace S2VX.Game.Story.Command {
             var command = JsonConvert.DeserializeObject(data, systemType) as S2VXCommand;
             return command;
         }
-
-        public override bool Equals(object obj) => ReferenceEquals(this, obj);
-
-        public override int GetHashCode() => ToString().GetHashCode(StringComparison.Ordinal);
-
-        public static bool operator ==(S2VXCommand left, S2VXCommand right) =>
-            left is null ? right is null : left.Equals(right);
-
-        public static bool operator !=(S2VXCommand left, S2VXCommand right) =>
-            !(left == right);
-
-        public static bool operator <(S2VXCommand left, S2VXCommand right) =>
-            left is null ? right is null : left.CompareTo(right) < 0;
-
-        public static bool operator <=(S2VXCommand left, S2VXCommand right) =>
-            left is null || left.CompareTo(right) <= 0;
-
-        public static bool operator >(S2VXCommand left, S2VXCommand right) =>
-            left is object && left.CompareTo(right) > 0;
-
-        public static bool operator >=(S2VXCommand left, S2VXCommand right) =>
-            left is null ? right is null : left.CompareTo(right) >= 0;
     }
 }

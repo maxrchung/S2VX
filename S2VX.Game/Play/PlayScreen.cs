@@ -35,9 +35,11 @@ namespace S2VX.Game.Play {
 
             var track = new DrawableTrack(audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             var settings = Story.GetEditorSettings();
-            track.Volume.Value = settings.TrackVolume;
+            var trackTime = settings.TrackTime;
             track.Tempo.Value = settings.TrackPlaybackRate;
-            track.Seek(settings.TrackTime);
+            track.Seek(trackTime);
+            Story.RemoveNotesUpTo(trackTime);
+
             track.Start();
             Clock = new FramedClock(track);
             InternalChildren = new Drawable[] {
