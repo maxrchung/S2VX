@@ -37,6 +37,10 @@ namespace S2VX.Game.Story.Command {
             );
             var commandTypes = validCommands.Select(t => GetShortName(t.Name));
             return commandTypes;
+        public static IEnumerable<S2VXCommand> GetDefaultCommands() {
+            var commandTypes = GetCommandTypes();
+            var defaultCommands = commandTypes.Select(t => Activator.CreateInstance(t) as S2VXCommand);
+            return defaultCommands;
         }
 
         public static S2VXCommand FromString(string data) {
