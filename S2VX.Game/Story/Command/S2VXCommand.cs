@@ -17,13 +17,13 @@ namespace S2VX.Game.Story.Command {
         public int CompareTo(S2VXCommand other) => StartTime.CompareTo(other.StartTime);
 
         protected abstract string ToValues();
-        public override string ToString() => $"{GetCommandType()}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
+        public override string ToString() => $"{GetCommandName()}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
 
         public static string GetShortName(string fullName) => fullName.Replace("Command", "", StringComparison.Ordinal);
 
-        public string GetCommandType() => GetShortName(GetType().Name);
+        public string GetCommandName() => GetShortName(GetType().Name);
 
-        public static IEnumerable<string> GetCommandTypes() {
+        private static IEnumerable<Type> GetCommandTypes() {
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
             var allCommands = types.Where(
@@ -35,8 +35,15 @@ namespace S2VX.Game.Story.Command {
                 // Only get derived commands
                 && !string.Equals(t.Name, "S2VXCommand", StringComparison.Ordinal)
             );
-            var commandTypes = validCommands.Select(t => GetShortName(t.Name));
-            return commandTypes;
+            return validCommands;
+        }
+
+        public static IEnumerable<string> GetCommandNames() {
+            var commandTypes = GetCommandTypes();
+            var commandNames = commandTypes.Select(t => GetShortName(t.Name));
+            return commandNames;
+        }
+
         public static IEnumerable<S2VXCommand> GetDefaultCommands() {
             var commandTypes = GetCommandTypes();
             var defaultCommands = commandTypes.Select(t => Activator.CreateInstance(t) as S2VXCommand);
@@ -45,8 +52,8 @@ namespace S2VX.Game.Story.Command {
 
         public static S2VXCommand FromString(string data) {
             var split = data.Split("|");
-            var commandType = split[0];
-            var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandType}Command");
+            var commandName = split[0];
+            var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandName}Command");
             var staticMethod = systemType.GetMethod("FromString", BindingFlags.Public | BindingFlags.Static);
             var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
             command.StartTime = double.Parse(split[1], CultureInfo.InvariantCulture);
@@ -56,8 +63,8 @@ namespace S2VX.Game.Story.Command {
         }
 
         public static S2VXCommand FromJson(JObject json) {
-            var commandType = json["Type"].ToString();
-            var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandType}Command");
+            var commandName = json["Type"].ToString();
+            var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandName}Command");
             var data = json.ToString();
             var command = JsonConvert.DeserializeObject(data, systemType) as S2VXCommand;
             return command;

@@ -13,8 +13,8 @@ namespace S2VX.Game.Story.JSONConverters {
         public override void WriteJson(JsonWriter writer, S2VXCommand command, JsonSerializer serializer) {
             var serializedCommand = JsonConvert.SerializeObject(command, Converters);
             var obj = JObject.Parse(serializedCommand);
-            var commandType = command.GetCommandType();
-            obj.Add("Type", commandType);
+            var commandName = command.GetCommandName();
+            obj.Add("Type", commandName);
             obj.WriteTo(writer);
         }
 
