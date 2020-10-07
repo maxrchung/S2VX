@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osuTK.Graphics;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -16,6 +17,8 @@ namespace S2VX.Game.Story.Note {
         public float FadeInTime { get; set; }
         public float ShowTime { get; set; }
         public float FadeOutTime { get; set; }
+        public float OutlineThickness { get; set; }
+        public Color4 OutlineColor { get; set; }
 
         public void AddNote(S2VXNote note) {
             Children.Add(note);

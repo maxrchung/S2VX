@@ -1,15 +1,25 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 using System;
 
 namespace S2VX.Game.Story.Note {
-    public abstract class S2VXNote : RelativeBox, IComparable<S2VXNote> {
+    public abstract class S2VXNote : CompositeDrawable, IComparable<S2VXNote> {
         public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         public Approach Approach { get; set; }
+
+        private RelativeBox Outer { get; } = new RelativeBox() {
+            Size = Vector2.One,
+            Position = Vector2.Zero
+        };
+        private RelativeBox Inner { get; } = new RelativeBox() {
+            Size = Vector2.One,
+            Position = Vector2.Zero
+        };
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -18,6 +28,14 @@ namespace S2VX.Game.Story.Note {
         private void Load() {
             Alpha = 0;
             AlwaysPresent = true;
+            RelativePositionAxes = Axes.Both;
+            RelativeSizeAxes = Axes.Both;
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
+            InternalChildren = new Drawable[] {
+                Outer,
+                Inner
+            };
         }
 
         // These Update setters modify both the Note and a corresponding Approach
@@ -47,6 +65,8 @@ namespace S2VX.Game.Story.Note {
             Rotation = camera.Rotation;
             Size = camera.Scale;
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
+            Outer.Colour = notes.OutlineColor;
+            Inner.Size = Vector2.One - new Vector2(notes.OutlineThickness);
 
             var startTime = EndTime - notes.ShowTime;
             if (time >= EndTime) {
