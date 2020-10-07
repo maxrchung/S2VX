@@ -57,7 +57,7 @@ namespace S2VX.Game.Editor.Containers {
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
                 var command = Story.Commands[i];
-                if (type == "All Commands" || type == command.GetCommandType()) {
+                if (type == "All Commands" || type == command.GetCommandName()) {
                     var localIndex = i;
                     CommandsList.Add(new FillFlowContainer {
                         AutoSizeAxes = Axes.Both,
@@ -117,8 +117,8 @@ namespace S2VX.Game.Editor.Containers {
             var allCommands = new List<string> {
                 "All Commands"
             };
-            var allCommandTypes = S2VXCommand.GetCommandTypes();
-            allCommands.AddRange(allCommandTypes);
+            var allCommandNames = S2VXCommand.GetCommandNames();
+            allCommands.AddRange(allCommandNames);
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
 

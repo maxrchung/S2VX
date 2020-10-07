@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
@@ -20,13 +19,12 @@ namespace S2VX.Game.Story {
         public double Offset { get; set; }
 
         public Camera Camera { get; } = new Camera();
-        public RelativeBox Background { get; } = new RelativeBox {
-            Colour = Color4.Black,
-        };
+        public RelativeBox Background { get; } = new RelativeBox();
         public Grid Grid { get; } = new Grid();
         public Notes Notes { get; } = new Notes();
         public Approaches Approaches { get; } = new Approaches();
 
+        public IEnumerable<S2VXCommand> DefaultCommands { get; } = S2VXCommand.GetDefaultCommands();
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
 
@@ -144,6 +142,13 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
+            // If at 0, apply defaults
+            if (NextActive == 0) {
+                foreach (var command in DefaultCommands) {
+                    command.Apply(0, this);
+                }
+            }
+
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);
