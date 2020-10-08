@@ -22,7 +22,13 @@ namespace S2VX.Game.Story.Note {
 
         public void AddNote(S2VXNote note) {
             Children.Add(note);
-            AddInternal(note);
+            Sort();
+        }
+
+        public void Sort() {
+            Children.Sort();
+            ClearInternal(false);
+            InternalChildren = Children;
         }
 
         public void RemoveNote(S2VXNote note) {

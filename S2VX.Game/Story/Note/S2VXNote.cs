@@ -36,6 +36,7 @@ namespace S2VX.Game.Story.Note {
         public void UpdateEndTime(double endTime) {
             Approach.EndTime = endTime;
             EndTime = endTime;
+            Story.Notes.Sort();
         }
 
         public void UpdateCoordinates(Vector2 coordinates) {
