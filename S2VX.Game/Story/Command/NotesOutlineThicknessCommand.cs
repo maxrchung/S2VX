@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class NotesOutlineThicknessCommand : S2VXCommand {
-        public float StartValue { get; set; } = 0.15f;
-        public float EndValue { get; set; } = 0.15f;
+        public float StartValue { get; set; } = 0.005f;
+        public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {
             var value = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Notes.OutlineThickness = value;
