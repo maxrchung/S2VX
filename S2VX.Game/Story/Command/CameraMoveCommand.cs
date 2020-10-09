@@ -7,7 +7,9 @@ namespace S2VX.Game.Story.Command {
         public Vector2 EndValue { get; set; } = Vector2.Zero;
         public override void Apply(double time, S2VXStory story) {
             var position = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Camera.Position = position;
+            story.Camera.TakeCameraPositionLock(this);
+            story.Camera.SetPosition(this, position);
+            story.Camera.ReleaseCameraPositionLock(this);
         }
         protected override string ToValues() => $"{S2VXUtils.Vector2ToString(StartValue)}|{S2VXUtils.Vector2ToString(EndValue)}";
         public static CameraMoveCommand FromString(string[] split) {
