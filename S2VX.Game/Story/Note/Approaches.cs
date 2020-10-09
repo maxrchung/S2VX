@@ -11,8 +11,8 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Children;
         }
 
-        public float Distance { get; set; } = 0.5f;
-        public float Thickness { get; set; } = 0.005f;
+        public float Distance { get; set; }
+        public float Thickness { get; set; }
 
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {
