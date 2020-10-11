@@ -9,7 +9,6 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
-using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
@@ -20,7 +19,6 @@ namespace S2VX.Game.Story.Note {
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
             Miss = audio.Samples.Get("miss");
-            StoryNotesCopy = new List<S2VXNote>(Story.Notes.Children);
         }
 
         [Resolved]
@@ -29,13 +27,13 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        private static List<S2VXNote> StoryNotesCopy { get; set; }
-
         [Resolved]
         private ScreenStack ScreenStack { get; set; }
 
         private const int MissThreshold = 200;
         private int TimingError;
+
+        private static bool BlockClicking { get; set; }
 
         private void Delete() {
             var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
@@ -54,12 +52,6 @@ namespace S2VX.Game.Story.Note {
             TimingError = missThreshold;
             ScoreInfo.AddScore(missThreshold);
             Delete();
-            UpdateStoryNotesCopy();
-        }
-
-        private void UpdateStoryNotesCopy() {
-            var numNotesRemoved = StoryNotesCopy.Count - Story.Notes.Children.Count;
-            StoryNotesCopy.RemoveRange(StoryNotesCopy.Count - numNotesRemoved, numNotesRemoved);
         }
 
         // Notes are clickable if they are visible on screen, not missed, and is the earliest note
@@ -68,7 +60,7 @@ namespace S2VX.Game.Story.Note {
             // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
             TimingError = (int)Math.Round(Math.Clamp(time - EndTime, -MissThreshold, MissThreshold));
             var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
-            var earliestNote = (GameNote)StoryNotesCopy[^1];
+            var earliestNote = (GameNote)Story.Notes.Children[^1];
             var isEarliestNote = earliestNote == this;
             return inMissThreshold && isEarliestNote;
         }
@@ -76,17 +68,27 @@ namespace S2VX.Game.Story.Note {
         private void ClickNote() {
             ScoreInfo.AddScore(Math.Abs(TimingError));
             Delete();
+            BlockClicking = true;
+        }
+
+        // Unblocks clicking on the last call of OnMouseDown / OnKeyDown
+        private void CheckAndResetClicking() {
+            if (Story.Notes.Children.Count > 0 && this == Story.Notes.Children[0]) {
+                BlockClicking = false;
+            }
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
-            if (IsClickable()) {
+            if (IsClickable() && !BlockClicking) {
                 ClickNote();
             }
+
+            CheckAndResetClicking();
             return false;
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
-            if (IsClickable() && IsHovered) {
+            if (IsClickable() && IsHovered && !BlockClicking) {
                 switch (e.Key) {
                     case Key.Z:
                         ClickNote();
@@ -116,10 +118,8 @@ namespace S2VX.Game.Story.Note {
                         break;
                 }
             }
-            //Console.WriteLine($"OnKeyDwon of {EndTime} trigger right before false!");
-            if (this == Story.Notes.Children[0]) {
-                UpdateStoryNotesCopy();
-            }
+
+            CheckAndResetClicking();
             return false;
         }
 

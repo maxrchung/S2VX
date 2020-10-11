@@ -69,6 +69,195 @@
   ],
   "Notes": [
     {
+      "EndTime": 150909.09297052157,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150826.43990929704,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150743.78684807257,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150661.15646258503,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150578.50340136053,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150495.85034013606,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150413.21995464852,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150330.56689342405,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150247.9365079365,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150165.283446712,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150082.63038548754,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 150000.0,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149917.34693877553,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149834.693877551,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149752.0634920635,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149669.410430839,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149586.7573696145,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149504.126984127,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149421.47392290249,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149338.84353741497,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149256.19047619047,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149173.53741496598,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149090.90702947843,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 149008.25396825396,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 148925.6009070295,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 148842.97052154195,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "EndTime": 148760.31746031746,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
       "EndTime": 12124.308390022676,
       "Coordinates": {
         "X": 2.5,
@@ -126,9 +315,9 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 44.98866213151927,
+    "TrackTime": 0.0,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
-    "BeatSnapDivisorIndex": 3
+    "BeatSnapDivisorIndex": 2
   }
 }
