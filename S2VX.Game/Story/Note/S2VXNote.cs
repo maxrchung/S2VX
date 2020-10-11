@@ -12,8 +12,8 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        private RelativeBox Outer { get; } = new RelativeBox();
-        private RelativeBox Inner { get; } = new RelativeBox();
+        private RelativeBox BoxOuter { get; } = new RelativeBox();
+        private RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -27,8 +27,8 @@ namespace S2VX.Game.Story.Note {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             InternalChildren = new Drawable[] {
-                Outer,
-                Inner
+                BoxOuter,
+                BoxInner
             };
         }
 
@@ -62,12 +62,12 @@ namespace S2VX.Game.Story.Note {
             Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
-            Outer.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-            Inner.Size = Outer.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
+            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
+            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
 
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
-            Outer.Colour = notes.OutlineColor;
+            BoxOuter.Colour = notes.OutlineColor;
 
             var startTime = EndTime - notes.ShowTime;
             if (time >= EndTime) {
