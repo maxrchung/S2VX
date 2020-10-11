@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class TimingChangeCommand : S2VXCommand {
-        public float StartValue { get; set; }
-        public float EndValue { get; set; }
+        public float StartValue { get; set; } = 100.0f;
+        public float EndValue { get; set; } = 100.0f;
         public override void Apply(double time, S2VXStory story) {
             var bpm = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.BPM = bpm;

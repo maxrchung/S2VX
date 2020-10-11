@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using S2VX.Game.Play.UserInterface;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Play.Containers {
     public class PlayInfoBar : CompositeDrawable {
@@ -10,13 +11,17 @@ namespace S2VX.Game.Play.Containers {
         public const float InfoBarWidth = 1.0f;
 
         private int HitErrorDisplayIndex;
+        private const int HitErrorDisplayCount = 10;
 
         public void RecordHitError(int timingError) {
-            var nextHitErrorDisplay = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex++];
-            if (HitErrorDisplayIndex == HitErrorDisplays.Children.Count) {
-                HitErrorDisplayIndex = 0;
-            }
-            nextHitErrorDisplay.HitError = timingError;
+            var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
+            currHit.IndicatorBox.FadeOut();
+
+            HitErrorDisplayIndex = ++HitErrorDisplayIndex % HitErrorDisplays.Children.Count;
+            var nextHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
+            nextHit.IndicatorBox.FadeIn();
+
+            currHit.UpdateHitError(timingError);
         }
 
         private FillFlowContainer HitErrorDisplays { get; set; } = new FillFlowContainer {
@@ -24,21 +29,23 @@ namespace S2VX.Game.Play.Containers {
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Children = new Drawable[]{
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-                new HitErrorDisplay{ },
-            }
+            Children = CreateHitErrorDisplays()
         };
 
-        private ScoreDisplay ScoreDisplay { get; } = new ScoreDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-        };
+        private static List<Drawable> CreateHitErrorDisplays() {
+            var hitErrors = new List<Drawable> {
+                new HitErrorDisplay {
+                    IsInitiallySelected = true
+                }
+            };
+            for (var i = 0; i < HitErrorDisplayCount - 1; ++i) {
+                hitErrors.Add(new HitErrorDisplay { });
+            }
+            return hitErrors;
+        }
+
+        [Resolved]
+        private ScoreInfo ScoreDisplay { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {

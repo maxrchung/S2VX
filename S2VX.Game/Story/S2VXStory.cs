@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
@@ -20,15 +19,15 @@ namespace S2VX.Game.Story {
         public double Offset { get; set; }
 
         public Camera Camera { get; } = new Camera();
-        public RelativeBox Background { get; } = new RelativeBox {
-            Colour = Color4.Black,
-        };
+        public RelativeBox Background { get; } = new RelativeBox();
         public Grid Grid { get; } = new Grid();
         public Notes Notes { get; } = new Notes();
         public Approaches Approaches { get; } = new Approaches();
 
+        public IEnumerable<S2VXCommand> DefaultCommands { get; } = S2VXCommand.GetDefaultCommands();
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
+
         private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
 
         private static JsonConverter[] Converters { get; } = {
@@ -87,6 +86,20 @@ namespace S2VX.Game.Story {
             Approaches.RemoveApproach(note);
         }
 
+        // Before starting the Story in the PlayScreen, we want to explicitly
+        // remove GameNotes up to some certain track time. This is so that we
+        // won't hear Miss hitsounds and prematurely calculate score.
+        public void RemoveNotesUpTo(double trackTime) {
+            while (Notes.Children.Count > 0 && Notes.Children.Last().EndTime < trackTime) {
+                // This seems somewhat inefficient since I believe Children has
+                // to be reshuffled each removal, but I don't think osu! has
+                // easy ways of removing multiple internal children at once. You
+                // can't just use Notes.SetChildren() directly because calling
+                // this would invalidate all of the existing Notes.
+                RemoveNote(Notes.Children.Last());
+            }
+        }
+
         public void Open(string path, bool isForEditor) {
             Commands.Clear();
             var text = File.ReadAllText(path);
@@ -103,6 +116,7 @@ namespace S2VX.Game.Story {
                     ? JsonConvert.DeserializeObject<IEnumerable<EditorNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
                     : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
             ).ToList();
+            notes.Sort();
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
             Approaches.SetChildren(approaches);
@@ -116,9 +130,11 @@ namespace S2VX.Game.Story {
         }
 
         public void Save(string path) {
+            var notes = Notes.Children;
+            notes.Sort();
             var obj = new {
                 Commands,
-                Notes = Notes.Children,
+                Notes = notes,
                 EditorSettings = GetEditorSettings(),
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
@@ -126,6 +142,13 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
+            // If at 0, apply defaults
+            if (NextActive == 0) {
+                foreach (var command in DefaultCommands) {
+                    command.Apply(0, this);
+                }
+            }
+
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);

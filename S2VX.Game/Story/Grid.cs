@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story {
     public class Grid : CompositeDrawable {
-        public float Thickness { get; set; } = 0.005f;
+        public float Thickness { get; set; }
 
         private float LineLength { get; } = 2;
 

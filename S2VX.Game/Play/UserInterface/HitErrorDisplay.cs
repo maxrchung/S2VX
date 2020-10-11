@@ -12,7 +12,8 @@ namespace S2VX.Game.Play.UserInterface {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public int HitError { get; set; }
+        public bool IsInitiallySelected { get; set; }
+        public RelativeBox IndicatorBox { get; private set; }
         private RelativeBox HitErrorBox { get; set; }
         private TextFlowContainer TxtHitError { get; set; }
 
@@ -25,9 +26,15 @@ namespace S2VX.Game.Play.UserInterface {
                 Vertical = boxSize / 10,
                 Horizontal = boxSize / 10
             };
-            InternalChildren = new Drawable[]
-            {
-                HitErrorBox = new RelativeBox { },
+            InternalChildren = new Drawable[] {
+                IndicatorBox = new RelativeBox {
+                    Width = 1.2f,
+                    Height = 1.2f,
+                    Alpha = IsInitiallySelected ? 1 : 0
+                },
+                HitErrorBox = new RelativeBox {
+                    Colour = Color4.Red.Opacity(0.5f)
+                },
                 TxtHitError = new TextFlowContainer(s => s.Font = new FontUsage("default", Screens.DrawWidth / 40)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
@@ -36,13 +43,9 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        protected override void Update() {
-            TxtHitError.Text = HitError.ToString(CultureInfo.InvariantCulture);
-            if (HitError > 0) {
-                HitErrorBox.Colour = Color4.Red.Opacity(0.5f);
-            } else {
-                HitErrorBox.Colour = Color4.Blue.Opacity(0.5f);
-            }
+        public void UpdateHitError(int hitError) {
+            TxtHitError.Text = hitError.ToString(CultureInfo.InvariantCulture);
+            HitErrorBox.Colour = hitError > 0 ? Color4.Red.Opacity(0.5f) : Color4.Blue.Opacity(0.5f);
         }
 
     }

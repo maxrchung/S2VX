@@ -7,13 +7,20 @@ using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK.Input;
 using S2VX.Game.Play.Containers;
+using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
 
+        // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
         [Cached]
-        private S2VXScore Score { get; set; } = new S2VXScore();
+        private ScoreInfo ScoreInfo { get; set; } = new ScoreInfo {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.TopRight,
+            Origin = Anchor.TopRight,
+        };
 
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
@@ -28,9 +35,11 @@ namespace S2VX.Game.Play {
 
             var track = new DrawableTrack(audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
             var settings = Story.GetEditorSettings();
-            track.Volume.Value = settings.TrackVolume;
+            var trackTime = settings.TrackTime;
             track.Tempo.Value = settings.TrackPlaybackRate;
-            track.Seek(settings.TrackTime);
+            track.Seek(trackTime);
+            Story.RemoveNotesUpTo(trackTime);
+
             track.Start();
             Clock = new FramedClock(track);
             InternalChildren = new Drawable[] {

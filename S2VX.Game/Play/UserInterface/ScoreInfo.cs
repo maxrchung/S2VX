@@ -6,12 +6,11 @@ using osu.Framework.Screens;
 using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
-    public class ScoreDisplay : CompositeDrawable {
+    public class ScoreInfo : CompositeDrawable {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        [Resolved]
-        private S2VXScore Score { get; set; }
+        private int Score { get; set; }
 
         private TextFlowContainer TxtScore { get; set; }
 
@@ -25,9 +24,14 @@ namespace S2VX.Game.Play.UserInterface {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.CentreRight,
+                    Text = Score.ToString(CultureInfo.InvariantCulture)
                 }
             };
         }
-        protected override void Update() => TxtScore.Text = Score.Value.ToString(CultureInfo.InvariantCulture);
+
+        public void AddScore(int moreScore) {
+            Score += moreScore;
+            TxtScore.Text = Score.ToString(CultureInfo.InvariantCulture);
+        }
     }
 }
