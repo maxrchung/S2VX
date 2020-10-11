@@ -9,6 +9,7 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
@@ -19,6 +20,7 @@ namespace S2VX.Game.Story.Note {
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
             Miss = audio.Samples.Get("miss");
+            StoryNotesCopy = new List<S2VXNote>(Story.Notes.Children);
         }
 
         [Resolved]
@@ -26,6 +28,8 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
+
+        private static List<S2VXNote> StoryNotesCopy { get; set; }
 
         [Resolved]
         private ScreenStack ScreenStack { get; set; }
@@ -50,37 +54,33 @@ namespace S2VX.Game.Story.Note {
             TimingError = missThreshold;
             ScoreInfo.AddScore(missThreshold);
             Delete();
+            UpdateStoryNotesCopy();
         }
 
-        private GameNote GetEarliestClickableNote() {
-            var largestTimingError = -MissThreshold;
-            var earliestNote = new GameNote();
-            var time = Time.Current;
-            foreach (var note in Story.Notes.Children) {
-                var timingError = (int)(time - note.EndTime);
-                if (largestTimingError <= timingError && timingError <= MissThreshold) {
-                    largestTimingError = timingError;
-                    earliestNote = (GameNote)note;
-                }
-            }
-            return earliestNote;
+        private void UpdateStoryNotesCopy() {
+            var numNotesRemoved = StoryNotesCopy.Count - Story.Notes.Children.Count;
+            StoryNotesCopy.RemoveRange(StoryNotesCopy.Count - numNotesRemoved, numNotesRemoved);
         }
 
-        // Notes are clickable if they are visible on screen and not missed
+        // Notes are clickable if they are visible on screen, not missed, and is the earliest note
         private bool IsClickable() {
             var time = Time.Current;
             // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
             TimingError = (int)Math.Round(Math.Clamp(time - EndTime, -MissThreshold, MissThreshold));
             var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
-            var earliestNote = GetEarliestClickableNote();
+            var earliestNote = (GameNote)StoryNotesCopy[^1];
             var isEarliestNote = earliestNote == this;
-            return inMissThreshold;
+            return inMissThreshold && isEarliestNote;
+        }
+
+        private void ClickNote() {
+            ScoreInfo.AddScore(Math.Abs(TimingError));
+            Delete();
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
-                ScoreInfo.AddScore(Math.Abs(TimingError));
-                Delete();
+                ClickNote();
             }
             return false;
         }
@@ -89,40 +89,36 @@ namespace S2VX.Game.Story.Note {
             if (IsClickable() && IsHovered) {
                 switch (e.Key) {
                     case Key.Z:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.X:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.C:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.V:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.A:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.S:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.D:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     case Key.F:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     default:
                         break;
                 }
+            }
+            //Console.WriteLine($"OnKeyDwon of {EndTime} trigger right before false!");
+            if (this == Story.Notes.Children[0]) {
+                UpdateStoryNotesCopy();
             }
             return false;
         }
