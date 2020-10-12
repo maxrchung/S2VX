@@ -109,7 +109,7 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave),
                                 new MenuItem("Play (P)", ProjectPlay),
-                                new MenuItem("Quit (Ctrl+Q)", ProjectQuit),
+                                new MenuItem("Quit (Esc)", ProjectQuit),
                             }
                         },
                         new MenuItem("Edit")
@@ -202,15 +202,11 @@ namespace S2VX.Game.Editor {
                 return true;
             }
             switch (e.Key) {
-                case Key.P:
-                    if (e.ControlPressed) {
-                        ProjectPlay();
-                    }
+                case Key.Escape:
+                    ProjectQuit();
                     break;
-                case Key.Q:
-                    if (e.ControlPressed) {
-                        ProjectQuit();
-                    }
+                case Key.P:
+                    ProjectPlay();
                     break;
                 case Key.R:
                     if (e.ControlPressed) {
