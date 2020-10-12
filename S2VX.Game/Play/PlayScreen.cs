@@ -16,7 +16,7 @@ namespace S2VX.Game.Play {
 
         public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
 
-        // Need to explicitly recache screens since new ones can be recreated
+        // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
             var dependencies = new DependencyContainer(parent);
             dependencies.Cache(this);
@@ -42,7 +42,7 @@ namespace S2VX.Game.Play {
             var trackTime = settings.TrackTime;
             track.Tempo.Value = settings.TrackPlaybackRate;
             track.Seek(trackTime);
-            Story.RemoveNotesUpTo(trackTime);
+            Story.Notes.RemoveNotesUpTo(trackTime);
 
             track.Start();
             Clock = new FramedClock(track);
