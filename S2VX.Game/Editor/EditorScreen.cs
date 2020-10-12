@@ -58,9 +58,6 @@ namespace S2VX.Game.Editor {
         public int SnapDivisor { get; private set; }
         private const int MaxSnapDivisor = 16;
 
-        [Resolved]
-        private ScreenStack Screens { get; set; }
-
         // We need to explicitly cache dependencies like this so that we can
         // recache an EditorScreen whenever a new one is pushed
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {

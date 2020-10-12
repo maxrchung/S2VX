@@ -12,21 +12,25 @@ using S2VX.Game.Story;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
+        private S2VXStory Story { get; set; }
 
-        // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
-        [Cached]
-        private ScoreInfo ScoreInfo { get; set; } = new ScoreInfo {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-        };
-
-        [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
-
-        [Cached]
         public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
+
+        // Need to explicitly recache screens since new ones can be recreated
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
+            var dependencies = new DependencyContainer(parent);
+            dependencies.Cache(this);
+            dependencies.Cache(Story = new S2VXStory());
+            // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
+            dependencies.Cache(new ScoreInfo {
+                RelativeSizeAxes = Axes.Both,
+                RelativePositionAxes = Axes.Both,
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+            });
+            dependencies.Cache(PlayInfoBar = new PlayInfoBar());
+            return dependencies;
+        }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {

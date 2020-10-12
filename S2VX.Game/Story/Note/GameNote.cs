@@ -28,14 +28,13 @@ namespace S2VX.Game.Story.Note {
         private S2VXStory Story { get; set; }
 
         [Resolved]
-        private ScreenStack ScreenStack { get; set; }
+        private PlayScreen PlayScreen { get; set; }
 
         private const int MissThreshold = 200;
         private int TimingError;
 
         private void Delete() {
-            var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
-            playScreen.PlayInfoBar.RecordHitError(TimingError);
+            PlayScreen.PlayInfoBar.RecordHitError(TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {
