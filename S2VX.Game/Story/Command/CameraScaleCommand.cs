@@ -8,7 +8,9 @@ namespace S2VX.Game.Story.Command {
         public Vector2 EndValue { get; set; } = new Vector2(0.1f);
         public override void Apply(double time, S2VXStory story) {
             var scale = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Camera.Scale = scale;
+            story.Camera.TakeCameraScaleLock(this);
+            story.Camera.SetScale(this, scale);
+            story.Camera.ReleaseCameraScaleLock(this);
         }
         protected override string ToValues() => $"{S2VXUtils.Vector2ToString(StartValue)}|{S2VXUtils.Vector2ToString(EndValue)}";
         public static CameraScaleCommand FromString(string[] split) {
