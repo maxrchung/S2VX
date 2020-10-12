@@ -9,6 +9,7 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
@@ -33,7 +34,8 @@ namespace S2VX.Game.Story.Note {
         private const int MissThreshold = 200;
         private int TimingError;
 
-        private static bool BlockClicking { get; set; }
+        private bool ShouldBeRemoved { get; set; }
+
 
         private void Delete() {
             var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
@@ -43,8 +45,7 @@ namespace S2VX.Game.Story.Note {
             } else {
                 Miss.Play();
             }
-
-            Story.RemoveNote(this);
+            ShouldBeRemoved = true;
         }
 
         private void RecordMiss() {
@@ -60,7 +61,7 @@ namespace S2VX.Game.Story.Note {
             // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
             TimingError = (int)Math.Round(Math.Clamp(time - EndTime, -MissThreshold, MissThreshold));
             var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
-            var earliestNote = (GameNote)Story.Notes.Children[^1];
+            var earliestNote = Story.Notes.Children.Last();
             var isEarliestNote = earliestNote == this;
             return inMissThreshold && isEarliestNote;
         }
@@ -68,49 +69,26 @@ namespace S2VX.Game.Story.Note {
         private void ClickNote() {
             ScoreInfo.AddScore(Math.Abs(TimingError));
             Delete();
-            BlockClicking = true;
-        }
-
-        // Unblocks clicking on the last call of OnMouseDown / OnKeyDown
-        private void CheckAndResetClicking() {
-            if (Story.Notes.Children.Count > 0 && this == Story.Notes.Children[0]) {
-                BlockClicking = false;
-            }
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
-            if (IsClickable() && !BlockClicking) {
+            if (IsClickable()) {
                 ClickNote();
             }
 
-            CheckAndResetClicking();
             return false;
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
-            if (IsClickable() && IsHovered && !BlockClicking) {
+            if (IsClickable() && IsHovered) {
                 switch (e.Key) {
                     case Key.Z:
-                        ClickNote();
-                        break;
                     case Key.X:
-                        ClickNote();
-                        break;
                     case Key.C:
-                        ClickNote();
-                        break;
                     case Key.V:
-                        ClickNote();
-                        break;
                     case Key.A:
-                        ClickNote();
-                        break;
                     case Key.S:
-                        ClickNote();
-                        break;
                     case Key.D:
-                        ClickNote();
-                        break;
                     case Key.F:
                         ClickNote();
                         break;
@@ -119,11 +97,14 @@ namespace S2VX.Game.Story.Note {
                 }
             }
 
-            CheckAndResetClicking();
             return false;
         }
 
         protected override void Update() {
+            if (ShouldBeRemoved) {
+                Story.RemoveNote(this);
+            }
+
             base.Update();
             var time = Time.Current;
             if (time >= EndTime) {
