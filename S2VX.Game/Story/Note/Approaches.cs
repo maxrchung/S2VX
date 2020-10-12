@@ -39,7 +39,6 @@ namespace S2VX.Game.Story.Note {
         protected override void Update() {
             var notes = Story.Notes;
             Alpha = notes.Alpha;
-            Colour = notes.Colour;
         }
     }
 }
