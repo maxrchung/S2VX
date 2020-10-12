@@ -395,7 +395,7 @@ namespace S2VX.Game.Editor {
 
         public void VolumeDecrease(double step = 0.1) => VolumeSet(Audio.Volume.Value - step);
 
-        public void SnapDivisorIncrease() {
+        public void SnapDivisorDecrease() {
             if (SnapDivisor == MaxSnapDivisor) {
                 // From most number of snap points to Free
                 SnapDivisor = 0;
@@ -404,7 +404,7 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        public void SnapDivisorDecrease() {
+        public void SnapDivisorIncrease() {
             switch (SnapDivisor) {
                 case 0:
                     // From Free to most number of snap points
