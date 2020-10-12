@@ -22,8 +22,7 @@ namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
-        [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; }
 
         public CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
@@ -61,6 +60,15 @@ namespace S2VX.Game.Editor {
 
         [Resolved]
         private ScreenStack Screens { get; set; }
+
+        // We need to explicitly cache dependencies like this so that we can
+        // recache an EditorScreen whenever a new one is pushed
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
+            var dependencies = new DependencyContainer(parent);
+            dependencies.Cache(this);
+            dependencies.Cache(Story = new S2VXStory());
+            return dependencies;
+        }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -103,7 +111,8 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave),
-                                new MenuItem("Play (P)", ProjectPlay)
+                                new MenuItem("Play (P)", ProjectPlay),
+                                new MenuItem("Quit (Ctrl+Q)", ProjectQuit),
                             }
                         },
                         new MenuItem("Edit")
@@ -199,6 +208,11 @@ namespace S2VX.Game.Editor {
                 case Key.P:
                     if (e.ControlPressed) {
                         ProjectPlay();
+                    }
+                    break;
+                case Key.Q:
+                    if (e.ControlPressed) {
+                        ProjectQuit();
                     }
                     break;
                 case Key.R:
@@ -324,6 +338,8 @@ namespace S2VX.Game.Editor {
             Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
+
+        private void ProjectQuit() => this.Exit();
 
         private void EditUndo() => Reversibles.Undo();
 
