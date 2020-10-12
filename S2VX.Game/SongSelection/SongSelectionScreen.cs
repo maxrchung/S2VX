@@ -9,10 +9,6 @@ using S2VX.Game.Editor;
 namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
         private static Vector2 InputSize { get; } = new Vector2(100, 30);
-        private static Vector2 Spacing { get; } = new Vector2(15);
-
-        [Cached]
-        private EditorScreen Editor { get; set; } = new EditorScreen();
 
         [Resolved]
         private ScreenStack Screens { get; set; }
@@ -29,11 +25,10 @@ namespace S2VX.Game.Play {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            BtnEdit.Action = () => Screens.Push(Editor);
+            BtnEdit.Action = () => Screens.Push(new EditorScreen());
             BtnPlay.Action = () => Screens.Push(new PlayScreen());
             InternalChild = new FillFlowContainer {
                 Direction = FillDirection.Horizontal,
-                Spacing = Spacing,
                 Children = new Drawable[]
                 {
                     BtnEdit,
