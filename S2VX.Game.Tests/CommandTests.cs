@@ -9,6 +9,9 @@ using System;
 namespace S2VX.Game.Tests {
     [TestFixture]
     public class CommandTests {
+
+        private const double FloatingPointTolerance = 0.001;
+
         [Test]
         public void FromString_DoubleCommand() {
             var input = "ApproachesDistance|0.1|0.2|None|0.1|1.0";
@@ -20,12 +23,11 @@ namespace S2VX.Game.Tests {
                 EndValue = 1.0f,
             };
             var actual = (ApproachesDistanceCommand)S2VXCommand.FromString(input);
-            var tolerance = 0.001;
-            Assert.AreEqual(expected.StartTime, actual.StartTime, tolerance);
-            Assert.AreEqual(expected.EndTime, actual.EndTime, tolerance);
+            Assert.AreEqual(expected.StartTime, actual.StartTime, FloatingPointTolerance);
+            Assert.AreEqual(expected.EndTime, actual.EndTime, FloatingPointTolerance);
             Assert.AreEqual(expected.Easing, actual.Easing);
-            Assert.AreEqual(expected.StartValue, actual.StartValue, tolerance);
-            Assert.AreEqual(expected.EndValue, actual.EndValue, tolerance);
+            Assert.AreEqual(expected.StartValue, actual.StartValue, FloatingPointTolerance);
+            Assert.AreEqual(expected.EndValue, actual.EndValue, FloatingPointTolerance);
         }
 
         [Test]
@@ -39,9 +41,8 @@ namespace S2VX.Game.Tests {
                 EndValue = Color4.White,
             };
             var actual = (BackgroundColorCommand)S2VXCommand.FromString(input);
-            var tolerance = 0.001;
-            Assert.AreEqual(expected.StartTime, actual.StartTime, tolerance);
-            Assert.AreEqual(expected.EndTime, actual.EndTime, tolerance);
+            Assert.AreEqual(expected.StartTime, actual.StartTime, FloatingPointTolerance);
+            Assert.AreEqual(expected.EndTime, actual.EndTime, FloatingPointTolerance);
             Assert.AreEqual(expected.Easing, actual.Easing);
             Assert.AreEqual(expected.StartValue, actual.StartValue);
             Assert.AreEqual(expected.EndValue, actual.EndValue);
@@ -58,9 +59,8 @@ namespace S2VX.Game.Tests {
                 EndValue = Vector2.One,
             };
             var actual = (CameraMoveCommand)S2VXCommand.FromString(input);
-            var tolerance = 0.001;
-            Assert.AreEqual(expected.StartTime, actual.StartTime, tolerance);
-            Assert.AreEqual(expected.EndTime, actual.EndTime, tolerance);
+            Assert.AreEqual(expected.StartTime, actual.StartTime, FloatingPointTolerance);
+            Assert.AreEqual(expected.EndTime, actual.EndTime, FloatingPointTolerance);
             Assert.AreEqual(expected.Easing, actual.Easing);
             Assert.AreEqual(expected.StartValue, actual.StartValue);
             Assert.AreEqual(expected.EndValue, actual.EndValue);
@@ -76,8 +76,7 @@ namespace S2VX.Game.Tests {
             var inputEasing = Easing.None;
             var expected = inputStartValue;
             var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
-            var tolerance = 0.001;
-            Assert.AreEqual(expected, actual, tolerance);
+            Assert.AreEqual(expected, actual, FloatingPointTolerance);
         }
 
         [Test]
@@ -90,8 +89,7 @@ namespace S2VX.Game.Tests {
             var inputEasing = Easing.None;
             var expected = inputStartValue;
             var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
-            var tolerance = 0.001;
-            Assert.AreEqual(expected, actual, tolerance);
+            Assert.AreEqual(expected, actual, FloatingPointTolerance);
         }
 
         [Test]
