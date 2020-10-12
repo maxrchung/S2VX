@@ -108,7 +108,7 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave),
-                                new MenuItem("Play (P)", ProjectPlay),
+                                new MenuItem("Play (G)", ProjectPlay),
                                 new MenuItem("Quit (Esc)", ProjectQuit),
                             }
                         },
@@ -205,7 +205,7 @@ namespace S2VX.Game.Editor {
                 case Key.Escape:
                     ProjectQuit();
                     break;
-                case Key.P:
+                case Key.G:
                     ProjectPlay();
                     break;
                 case Key.R:
