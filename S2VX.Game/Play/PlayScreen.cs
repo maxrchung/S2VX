@@ -16,6 +16,12 @@ namespace S2VX.Game.Play {
 
         public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
 
+        // Flag denoting whether (true) to use a story's editor settings or
+        // (false) to start at 0
+        private bool IsUsingEditorSettings { get; set; }
+
+        public PlayScreen(bool isUsingEditorSettings) => IsUsingEditorSettings = isUsingEditorSettings;
+
         // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
             var dependencies = new DependencyContainer(parent);
@@ -38,19 +44,22 @@ namespace S2VX.Game.Play {
             Story.ClearActives();
 
             var track = new DrawableTrack(audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
-            var settings = Story.GetEditorSettings();
-            var trackTime = settings.TrackTime;
-            track.Tempo.Value = settings.TrackPlaybackRate;
-            track.Seek(trackTime);
-            Story.Notes.RemoveNotesUpTo(trackTime);
+            if (IsUsingEditorSettings) {
+                var settings = Story.GetEditorSettings();
+                track.Tempo.Value = settings.TrackPlaybackRate;
+                var trackTime = settings.TrackTime;
+                track.Seek(trackTime);
+                Story.Notes.RemoveNotesUpTo(trackTime);
+            }
 
-            track.Start();
             Clock = new FramedClock(track);
             InternalChildren = new Drawable[] {
                 Story,
                 track,
                 PlayInfoBar,
             };
+
+            track.Start();
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {

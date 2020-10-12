@@ -314,7 +314,7 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPlay() {
             ProjectSave();
-            this.Push(new PlayScreen());
+            this.Push(new PlayScreen(true));
         }
 
         private void ProjectRefresh() {

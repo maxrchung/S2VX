@@ -23,7 +23,7 @@ namespace S2VX.Game.Play {
         [BackgroundDependencyLoader]
         private void Load() {
             BtnEdit.Action = () => this.Push(new EditorScreen());
-            BtnPlay.Action = () => this.Push(new PlayScreen());
+            BtnPlay.Action = () => this.Push(new PlayScreen(false));
             InternalChild = new FillFlowContainer {
                 Direction = FillDirection.Horizontal,
                 Children = new Drawable[]
