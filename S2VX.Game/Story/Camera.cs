@@ -49,36 +49,30 @@ namespace S2VX.Game.Story {
         /// Takes the lock and registers the owner if it is free
         /// </summary>
         /// <param name="requestor"></param>
-        /// <returns>Lock owner</returns>
-        public object TakeCameraPositionLock(object requestor) {
+        public void TakeCameraPositionLock(object requestor) {
             if (PositionLock == null) {
                 PositionLock = requestor;
             }
-            return PositionLock;
         }
 
         /// <summary>
         /// Takes the lock and registers the owner if it is free
         /// </summary>
         /// <param name="requestor"></param>
-        /// <returns>Lock owner</returns>
-        public object TakeCameraScaleLock(object requestor) {
+        public void TakeCameraScaleLock(object requestor) {
             if (ScaleLock == null) {
                 ScaleLock = requestor;
             }
-            return ScaleLock;
         }
 
         /// <summary>
         /// Takes the lock and registers the owner if it is free
         /// </summary>
         /// <param name="requestor"></param>
-        /// <returns>Lock owner</returns>
-        public object TakeCameraRotationLock(object requestor) {
+        public void TakeCameraRotationLock(object requestor) {
             if (RotateLock == null) {
                 RotateLock = requestor;
             }
-            return RotateLock;
         }
 
         /// <summary>

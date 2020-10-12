@@ -6,7 +6,6 @@ using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
-using System.Diagnostics;
 
 namespace S2VX.Game.Editor.ToolState {
     public class CameraToolState : S2VXToolState {
@@ -38,15 +37,15 @@ namespace S2VX.Game.Editor.ToolState {
                 var camera = Story.Camera;
                 if (e.IsPressed(MouseButton.Left)) {
                     OldMousePositionMove = e.MouseDownPosition;
-                    Debug.Assert(this == camera.TakeCameraPositionLock(this));
+                    camera.TakeCameraPositionLock(this);
                 }
                 if (e.IsPressed(MouseButton.Middle)) {
                     OldMousePositionScale = e.MouseDownPosition;
-                    Debug.Assert(this == camera.TakeCameraScaleLock(this));
+                    camera.TakeCameraScaleLock(this);
                 }
                 if (e.IsPressed(MouseButton.Right)) {
                     OldMousePositionRotate = e.MouseDownPosition;
-                    Debug.Assert(this == camera.TakeCameraRotationLock(this));
+                    camera.TakeCameraRotationLock(this);
                 }
             }
             return true;
