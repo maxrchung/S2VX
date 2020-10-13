@@ -17,6 +17,7 @@ namespace S2VX.Game.Editor.ToolState {
         private CameraMoveCommand MoveCommand { get; set; }
         private CameraScaleCommand ScaleCommand { get; set; }
         private CameraRotateCommand RotateCommand { get; set; }
+        private ReversibleCameraToolActions CameraToolActions { get; set; }
 
         private Vector2 OldMousePositionMove { get; set; }
         private Vector2 OldMousePositionScale { get; set; }
@@ -33,14 +34,18 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
             if (IsRecording) {
+                var camera = Story.Camera;
                 if (e.IsPressed(MouseButton.Left)) {
                     OldMousePositionMove = e.MouseDownPosition;
+                    camera.TakeCameraPositionLock(this);
                 }
                 if (e.IsPressed(MouseButton.Middle)) {
                     OldMousePositionScale = e.MouseDownPosition;
+                    camera.TakeCameraScaleLock(this);
                 }
                 if (e.IsPressed(MouseButton.Right)) {
                     OldMousePositionRotate = e.MouseDownPosition;
+                    camera.TakeCameraRotationLock(this);
                 }
             }
             return true;
@@ -48,14 +53,15 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void OnToolMouseMove(MouseMoveEvent e) {
             if (IsRecording) {
+                var camera = Story.Camera;
                 if (e.IsPressed(MouseButton.Left)) {
-                    Story.Camera.Position = CalculateCameraPosition(e);
+                    camera.SetPosition(this, CalculateCameraPosition(e));
                 }
                 if (e.IsPressed(MouseButton.Middle)) {
-                    Story.Camera.Scale = CalculateCameraScale(e);
+                    camera.SetScale(this, CalculateCameraScale(e));
                 }
                 if (e.IsPressed(MouseButton.Right)) {
-                    Story.Camera.Rotation = CalculateCameraRotation(e);
+                    camera.SetRotation(this, CalculateCameraRotation(e));
                 }
             }
         }
@@ -66,6 +72,7 @@ namespace S2VX.Game.Editor.ToolState {
             }
             var endTime = Editor.Track.CurrentTime;
 
+            var camera = Story.Camera;
             switch (e.Button) {
                 case MouseButton.Left: {
                     var endValue = CalculateCameraPosition(e);
@@ -82,6 +89,7 @@ namespace S2VX.Game.Editor.ToolState {
                             StartValue = OldPosition,
                             EndValue = endValue
                         };
+                    camera.ReleaseCameraPositionLock(this);
                     break;
                 }
                 case MouseButton.Middle: {
@@ -99,6 +107,7 @@ namespace S2VX.Game.Editor.ToolState {
                             StartValue = endValue,
                             EndValue = OldScale
                         };
+                    camera.ReleaseCameraScaleLock(this);
                     break;
                 }
                 case MouseButton.Right: {
@@ -116,11 +125,14 @@ namespace S2VX.Game.Editor.ToolState {
                             StartValue = endValue,
                             EndValue = OldRotation
                         };
+                    camera.ReleaseCameraRotationLock(this);
                     break;
                 }
                 default:
                     break;
             }
+            RevertPreviewCameraToolActions();
+            PreviewCameraToolActions();
         }
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
@@ -155,6 +167,7 @@ namespace S2VX.Game.Editor.ToolState {
             MoveCommand = null;
             ScaleCommand = null;
             RotateCommand = null;
+            CameraToolActions = null;
 
             var camera = Story.Camera;
             OldTime = Editor.Track.CurrentTime;
@@ -164,8 +177,21 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         private void CommitCameraToolActions() {
-            var reversible = new ReversibleCameraToolActions(Editor, MoveCommand, ScaleCommand, RotateCommand);
-            Editor.Reversibles.Push(reversible);
+            RevertPreviewCameraToolActions();
+            if (CameraToolActions != null) {
+                Editor.Reversibles.Push(CameraToolActions);
+            }
+        }
+
+        private void PreviewCameraToolActions() {
+            CameraToolActions = new ReversibleCameraToolActions(Editor, MoveCommand, ScaleCommand, RotateCommand);
+            CameraToolActions.Redo();
+        }
+
+        private void RevertPreviewCameraToolActions() {
+            if (CameraToolActions != null) {
+                CameraToolActions.Undo();
+            }
         }
 
         private Vector2 CalculateCameraPosition(MouseEvent e) {
@@ -244,6 +270,10 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void HandleExit() {
             IsRecording = false;
+            Story.Camera.ReleaseCameraPositionLock(this);
+            Story.Camera.ReleaseCameraScaleLock(this);
+            Story.Camera.ReleaseCameraRotationLock(this);
+            RevertPreviewCameraToolActions();
             Story.ClearActives();
         }
     }
