@@ -90,6 +90,7 @@ namespace S2VX.Game.Editor {
             ToolContainer.Child = ToolState;
             InternalChildren = new Drawable[]
             {
+                Track,
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
