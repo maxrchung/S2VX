@@ -45,7 +45,7 @@ namespace S2VX.Game.Play.Containers {
         }
 
         [Resolved]
-        private ScoreInfo ScoreDisplay { get; set; }
+        private ScoreInfo ScoreInfo { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -57,7 +57,7 @@ namespace S2VX.Game.Play.Containers {
             InternalChildren = new Drawable[]
             {
                 HitErrorDisplays,
-                ScoreDisplay,
+                ScoreInfo,
             };
         }
     }

@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
@@ -34,6 +35,23 @@ namespace S2VX.Game.Story.Note {
         public void RemoveNote(S2VXNote note) {
             Children.Remove(note);
             RemoveInternal(note);
+        }
+
+        // Before starting the Story in the PlayScreen, we want to explicitly
+        // remove GameNotes up to some certain track time. This is so that we
+        // won't hear Miss hitsounds and prematurely calculate score.
+        public void RemoveNotesUpTo(double trackTime) {
+            int validIndex;
+            for (validIndex = 0; validIndex < Children.Count; ++validIndex) {
+                if (Children[validIndex].EndTime < trackTime) {
+                    break;
+                }
+            }
+
+            var newNotes = Children.Take(validIndex).ToList();
+            Children = newNotes;
+            ClearInternal(false);
+            InternalChildren = Children;
         }
 
         [BackgroundDependencyLoader]

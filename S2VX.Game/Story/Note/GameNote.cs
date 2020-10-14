@@ -2,13 +2,13 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Events;
-using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
@@ -28,21 +28,22 @@ namespace S2VX.Game.Story.Note {
         private S2VXStory Story { get; set; }
 
         [Resolved]
-        private ScreenStack ScreenStack { get; set; }
+        private PlayScreen PlayScreen { get; set; }
 
         private const int MissThreshold = 200;
         private int TimingError;
 
+        private bool ShouldBeRemoved { get; set; }
+
+
         private void Delete() {
-            var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
-            playScreen.PlayInfoBar.RecordHitError(TimingError);
+            PlayScreen.PlayInfoBar.RecordHitError(TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {
                 Miss.Play();
             }
-
-            Story.RemoveNote(this);
+            ShouldBeRemoved = true;
         }
 
         private void RecordMiss() {
@@ -52,24 +53,32 @@ namespace S2VX.Game.Story.Note {
             Delete();
         }
 
-        // Notes are clickable if they are visible on screen and not missed
+        // Notes are clickable if they are visible on screen, not missed, and is the earliest note
         private bool IsClickable() {
             var time = Time.Current;
-            // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run) 
+            // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
             TimingError = (int)Math.Round(Math.Clamp(time - EndTime, -MissThreshold, MissThreshold));
-            return TimingError <= MissThreshold && Alpha > 0;
+            var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
+            var earliestNote = Story.Notes.Children.Last();
+            var isEarliestNote = earliestNote == this;
+            return inMissThreshold && isEarliestNote;
+        }
+
+        private void ClickNote() {
+            ScoreInfo.AddScore(Math.Abs(TimingError));
+            Delete();
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
-                ScoreInfo.AddScore(Math.Abs(TimingError));
-                Delete();
+                ClickNote();
             }
+
             return false;
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
-            if (IsClickable()) {
+            if (IsClickable() && IsHovered) {
                 switch (e.Key) {
                     case Key.Z:
                     case Key.X:
@@ -79,17 +88,22 @@ namespace S2VX.Game.Story.Note {
                     case Key.S:
                     case Key.D:
                     case Key.F:
-                        ScoreInfo.AddScore(Math.Abs(TimingError));
-                        Delete();
+                        ClickNote();
                         break;
                     default:
                         break;
                 }
             }
+
             return false;
         }
 
         protected override void Update() {
+            // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
+            if (ShouldBeRemoved) {
+                Story.RemoveNote(this);
+            }
+
             base.Update();
             var time = Time.Current;
             if (time >= EndTime) {
