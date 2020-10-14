@@ -8,15 +8,15 @@ using S2VX.Game.Editor;
 
 namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
-        private static Vector2 InputSize { get; } = new Vector2(100, 30);
+        private static Vector2 BtnSize { get; } = new Vector2(100, 30);
 
         private Button BtnEdit { get; } = new BasicButton() {
-            Size = InputSize,
+            Size = BtnSize,
             Text = "Edit"
         };
 
         private Button BtnPlay { get; } = new BasicButton() {
-            Size = InputSize,
+            Size = BtnSize,
             Text = "Play"
         };
 
