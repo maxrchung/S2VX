@@ -86,20 +86,6 @@ namespace S2VX.Game.Story {
             Approaches.RemoveApproach(note);
         }
 
-        // Before starting the Story in the PlayScreen, we want to explicitly
-        // remove GameNotes up to some certain track time. This is so that we
-        // won't hear Miss hitsounds and prematurely calculate score.
-        public void RemoveNotesUpTo(double trackTime) {
-            while (Notes.Children.Count > 0 && Notes.Children.Last().EndTime < trackTime) {
-                // This seems somewhat inefficient since I believe Children has
-                // to be reshuffled each removal, but I don't think osu! has
-                // easy ways of removing multiple internal children at once. You
-                // can't just use Notes.SetChildren() directly because calling
-                // this would invalidate all of the existing Notes.
-                RemoveNote(Notes.Children.Last());
-            }
-        }
-
         public void Open(string path, bool isForEditor) {
             Commands.Clear();
             var text = File.ReadAllText(path);

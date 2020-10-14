@@ -2,7 +2,6 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Events;
-using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
@@ -29,7 +28,7 @@ namespace S2VX.Game.Story.Note {
         private S2VXStory Story { get; set; }
 
         [Resolved]
-        private ScreenStack ScreenStack { get; set; }
+        private PlayScreen PlayScreen { get; set; }
 
         private const int MissThreshold = 200;
         private int TimingError;
@@ -38,8 +37,7 @@ namespace S2VX.Game.Story.Note {
 
 
         private void Delete() {
-            var playScreen = (PlayScreen)ScreenStack.CurrentScreen;
-            playScreen.PlayInfoBar.RecordHitError(TimingError);
+            PlayScreen.PlayInfoBar.RecordHitError(TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {

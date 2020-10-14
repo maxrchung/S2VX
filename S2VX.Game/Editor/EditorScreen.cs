@@ -22,8 +22,7 @@ namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
-        [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; }
 
         public CommandPanel CommandPanel { get; } = new CommandPanel();
         private bool IsCommandPanelVisible { get; set; }
@@ -59,8 +58,14 @@ namespace S2VX.Game.Editor {
         public int SnapDivisor { get; private set; }
         private const int MaxSnapDivisor = 16;
 
-        [Resolved]
-        private ScreenStack Screens { get; set; }
+        // We need to explicitly cache dependencies like this so that we can
+        // recache an EditorScreen whenever a new one is pushed
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
+            var dependencies = new DependencyContainer(parent);
+            dependencies.Cache(this);
+            dependencies.Cache(Story = new S2VXStory());
+            return dependencies;
+        }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -85,6 +90,7 @@ namespace S2VX.Game.Editor {
             ToolContainer.Child = ToolState;
             InternalChildren = new Drawable[]
             {
+                Track,
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
@@ -103,7 +109,8 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                                 new MenuItem("Save (Ctrl+S)", ProjectSave),
-                                new MenuItem("Save (Ctrl+P)", ProjectPlay)
+                                new MenuItem("Play (G)", ProjectPlay),
+                                new MenuItem("Quit (Esc)", ProjectQuit),
                             }
                         },
                         new MenuItem("Edit")
@@ -196,10 +203,11 @@ namespace S2VX.Game.Editor {
                 return true;
             }
             switch (e.Key) {
-                case Key.P:
-                    if (e.ControlPressed) {
-                        ProjectPlay();
-                    }
+                case Key.Escape:
+                    ProjectQuit();
+                    break;
+                case Key.G:
+                    ProjectPlay();
                     break;
                 case Key.R:
                     if (e.ControlPressed) {
@@ -307,7 +315,7 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPlay() {
             ProjectSave();
-            this.Push(new PlayScreen());
+            this.Push(new PlayScreen(true));
         }
 
         private void ProjectRefresh() {
@@ -324,6 +332,8 @@ namespace S2VX.Game.Editor {
             Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
+
+        private void ProjectQuit() => this.Exit();
 
         private void EditUndo() => Reversibles.Undo();
 
@@ -382,7 +392,7 @@ namespace S2VX.Game.Editor {
 
         public void VolumeDecrease(double step = 0.1) => VolumeSet(Audio.Volume.Value - step);
 
-        public void SnapDivisorIncrease() {
+        public void SnapDivisorDecrease() {
             if (SnapDivisor == MaxSnapDivisor) {
                 // From most number of snap points to Free
                 SnapDivisor = 0;
@@ -391,7 +401,7 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        public void SnapDivisorDecrease() {
+        public void SnapDivisorIncrease() {
             switch (SnapDivisor) {
                 case 0:
                     // From Free to most number of snap points
