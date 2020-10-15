@@ -11,6 +11,7 @@ using S2VX.Game.Editor;
 using S2VX.Game.SongSelection.UserInterface;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
@@ -27,12 +28,22 @@ namespace S2VX.Game.Play {
             var selectionItems = new List<Drawable>();
             var dirs = RootLevelStorage.GetDirectories("");
             foreach (var dir in dirs) {
-                selectionItems.Add(new SelectedItemDisplay {
-                    Text = dir
-                });
+                if (DirectoryContainsStory(dir) || DirectoryContainsDirectories(dir)) {
+                    selectionItems.Add(new SelectedItemDisplay {
+                        Text = dir
+                    });
+                }
             }
             return selectionItems;
         }
+
+        private static bool DirectoryContainsStory(string dir) {
+            var story = RootLevelStorage.GetFiles(dir, "story.json");
+            //var song = RootLevelStorage.GetFiles(dir, "*.mp3");
+            return story.Count() == 1;
+        }
+
+        private static bool DirectoryContainsDirectories(string dir) => RootLevelStorage.GetDirectories(dir).Any();
 
         private Button BtnEdit { get; } = new BasicButton() {
             Size = InputSize,
