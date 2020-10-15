@@ -22,7 +22,7 @@ namespace S2VX.Game.Play {
         private TextFlowContainer CurSelectionPathTxt { get; set; }
 
         public static NativeStorage Storage { get; set; }
-        //private static StorageBackedResourceStore CurLevelResourceStore { get; } = new StorageBackedResourceStore(RootLevelStorage);
+        //private static StorageBackedResourceStore CurLevelResourceStore { get; } = new StorageBackedResourceStore(Storage);
 
         private FillFlowContainer SelectionItems { get; set; }
 
@@ -41,9 +41,9 @@ namespace S2VX.Game.Play {
         }
 
         private static bool DirectoryContainsStory(string dir) {
-            var story = Storage.GetFiles(dir, "story.json");
-            //var song = RootLevelStorage.GetFiles(dir, "*.mp3");
-            return story.Count() == 1;
+            var story = Storage.GetFiles(dir, "*.s2ry");
+            var song = Storage.GetFiles(dir, "audio.mp3");
+            return story.Any() && song.Count() == 1;
         }
 
         private static bool DirectoryContainsDirectories(string dir) => Storage.GetDirectories(dir).Any();
