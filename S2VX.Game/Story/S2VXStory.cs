@@ -113,12 +113,14 @@ namespace S2VX.Game.Story {
 
             EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
             MetadataSettings = JsonConvert.DeserializeObject<MetadataSettings>(story[nameof(MetadataSettings)].ToString());
-            
+            MetadataSettings.Calculate(this);
         }
 
         public void Save(string path) {
             var notes = Notes.Children;
             notes.Sort();
+            MetadataSettings.Calculate(this);
+
             var obj = new {
                 Commands,
                 Notes = notes,

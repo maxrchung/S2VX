@@ -9,11 +9,11 @@ namespace S2VX.Game.Story.Settings {
         public string StoryAuthor { get; set; }
         public string StoryChapter { get; set; }
         // Slowest BPM of song found by parsing TimingChangeCommands
-        public float SlowestBPM { get; set; } = new TimingChangeCommand().StartValue;
+        public float SlowestBPM { get; set; }
         // Fastest BPM of song
-        public float FastestBPM { get; set; } = new TimingChangeCommand().StartValue;
+        public float FastestBPM { get; set; }
         // Time difference between the earliest Note and the latest Note
-        public double SongLength { get; set; }
+        public double StoryLength { get; set; }
         public int CommandCount { get; set; }
         public int NoteCount { get; set; }
         public string ThumbnailFileName { get; set; }
@@ -35,7 +35,7 @@ namespace S2VX.Game.Story.Settings {
             if (NoteCount > 0) {
                 var min = notes.Min(n => n.EndTime);
                 var max = notes.Max(n => n.EndTime);
-                SongLength = max - min;
+                StoryLength = max - min;
             }
         }
     }
