@@ -38,6 +38,8 @@ namespace S2VX.Game.Story {
 
         public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
+        public MetadataSettings MetadataSettings { get; private set; } = new MetadataSettings();
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
@@ -110,6 +112,8 @@ namespace S2VX.Game.Story {
             }
 
             EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
+            MetadataSettings = JsonConvert.DeserializeObject<MetadataSettings>(story[nameof(MetadataSettings)].ToString());
+            
         }
 
         public void Save(string path) {
@@ -119,6 +123,7 @@ namespace S2VX.Game.Story {
                 Commands,
                 Notes = notes,
                 EditorSettings,
+                MetadataSettings
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
