@@ -72,10 +72,12 @@ namespace S2VX.Game.Editor {
             Story.Open(@"../../../story.json", true);
 
             Track = new DrawableTrack(Audio.Tracks.Get("Camellia_MEGALOVANIA_Remix"));
-            Seek(Story.GetEditorSettings().TrackTime);
-            PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
-            SnapDivisor = Story.GetEditorSettings().SnapDivisor;
-            NotesTimeline.DivisorIndex = Story.GetEditorSettings().BeatSnapDivisorIndex;
+
+            var editorSettings = Story.EditorSettings;
+            Seek(editorSettings.TrackTime);
+            PlaybackSetRate(editorSettings.TrackPlaybackRate);
+            SnapDivisor = editorSettings.SnapDivisor;
+            NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
 
             // Sets the same clock for sections dependent on the Track
             var trackClock = new FramedClock(Track);
@@ -321,15 +323,16 @@ namespace S2VX.Game.Editor {
         private void ProjectRefresh() {
             ProjectSave();
             Story.Open(@"../../../story.json", true);
-            Seek(Story.GetEditorSettings().TrackTime);
+            Seek(Story.EditorSettings.TrackTime);
         }
 
         private void ProjectSave() {
             Play(false);
-            Story.GetEditorSettings().TrackTime = Track.CurrentTime;
-            Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
-            Story.GetEditorSettings().SnapDivisor = SnapDivisor;
-            Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
+            var editorSettings = Story.EditorSettings;
+            editorSettings.TrackTime = Track.CurrentTime;
+            editorSettings.TrackPlaybackRate = Track.Tempo.Value;
+            editorSettings.SnapDivisor = SnapDivisor;
+            editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(@"../../../story.json");
         }
 

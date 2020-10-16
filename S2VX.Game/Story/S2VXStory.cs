@@ -36,10 +36,7 @@ namespace S2VX.Game.Story {
             new NoteConverter()
         };
 
-        private EditorSettings EditorSettings = new EditorSettings();
-
-        public EditorSettings GetEditorSettings() => EditorSettings;
-        public void SetEditorSettings(EditorSettings value) => EditorSettings = value;
+        public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -112,7 +109,7 @@ namespace S2VX.Game.Story {
                 notes[i].Approach = approaches[i];
             }
 
-            SetEditorSettings(JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString()));
+            EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
         }
 
         public void Save(string path) {
@@ -121,7 +118,7 @@ namespace S2VX.Game.Story {
             var obj = new {
                 Commands,
                 Notes = notes,
-                EditorSettings = GetEditorSettings(),
+                EditorSettings,
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
