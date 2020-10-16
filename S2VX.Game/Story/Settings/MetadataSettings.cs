@@ -1,6 +1,5 @@
-﻿using NUnit.Framework;
-using S2VX.Game.Story.Command;
-using System.Collections.Generic;
+﻿using S2VX.Game.Story.Command;
+using System;
 using System.Linq;
 
 namespace S2VX.Game.Story.Settings {
@@ -23,42 +22,21 @@ namespace S2VX.Game.Story.Settings {
 
         // Updates properties based on story configuration
         public void Calculate(S2VXStory story) {
+            var commands = story.Commands;
+            CommandCount = commands.Count;
             var timingCommands = story.Commands.OfType<TimingChangeCommand>();
             if (timingCommands.Any()) {
-                var min = float.MaxValue;
-                var max = float.MinValue;
-                foreach (var timingCommand in timingCommands) {
-                    foreach (var value in new float[2] { timingCommand.StartValue, timingCommand.EndValue }) {
-                        if (value < min) {
-                            min = value;
-                        }
-                        if (value > max) {
-                            max = value;
-                        }
-                    }
-                }
-                SlowestBPM = min;
-                FastestBPM = max;
+                SlowestBPM = timingCommands.Min(t => Math.Min(t.StartValue, t.EndValue));
+                FastestBPM = timingCommands.Max(t => Math.Max(t.StartValue, t.EndValue));
             }
 
-            if (story.Notes.Children.Any()) {
-                var min = double.MaxValue;
-                var max = double.MinValue;
-                foreach (var note in story.Notes.Children) {
-                    foreach (var value in new double[2] { note.EndTime, note.EndTime }) {
-                        if (value < min) {
-                            min = value;
-                        }
-                        if (value > max) {
-                            max = value;
-                        }
-                    }
-                }
+            var notes = story.Notes.Children;
+            NoteCount = notes.Count;
+            if (NoteCount > 0) {
+                var min = notes.Min(n => n.EndTime);
+                var max = notes.Max(n => n.EndTime);
                 SongLength = max - min;
             }
-            
-            CommandCount = story.Commands.Count;
-            NoteCount = story.Notes.Children.Count;
         }
     }
 }
