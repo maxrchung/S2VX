@@ -1,4 +1,4 @@
-﻿namespace S2VX.Game.Editor {
+﻿namespace S2VX.Game.Story.Settings {
     public class EditorSettings {
         // Default editor settings for new projects
         public double TrackTime { get; set; }
