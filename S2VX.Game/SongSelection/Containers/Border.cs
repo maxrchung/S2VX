@@ -8,7 +8,7 @@ using S2VX.Game.Play;
 using S2VX.Game.SongSelection.UserInterface;
 
 namespace S2VX.Game.SongSelection.Containers {
-    public class SelectionScreenBorder : CompositeDrawable {
+    public class Border : CompositeDrawable {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
@@ -18,20 +18,6 @@ namespace S2VX.Game.SongSelection.Containers {
         private BorderOuterBox BorderOuterBox { get; set; }
         private BorderInnerBox BorderInnerBox { get; set; }
         private TextFlowContainer TextContainer { get; set; }
-
-
-        //protected override bool OnHover(HoverEvent e) {
-        //    Border.Colour = Color4.Blue;
-        //    return true;
-        //}
-
-        //protected override void OnHoverLost(HoverLostEvent e) {
-        //    Border.Colour = Color4.Blue;
-        //}
-
-        //protected override bool OnClick(ClickEvent e) {
-        //    return true;
-        //}
 
         [BackgroundDependencyLoader]
         private void Load() {

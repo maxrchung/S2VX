@@ -80,31 +80,63 @@ namespace S2VX.Game.Play {
             var innerSize = 0.9f;
             var spacingMargin = 0.1f;
 
-            InternalChildren = new Drawable[] {
-                new SelectionScreenBorder {
-                    Width = fullWidth,
-                    Height = fullHeight,
-                    InnerBoxRelativeSize = innerSize,
-                    SongSelectionScreen = this,
-                    CurSelectionPath = CurSelectionPath,
-                },
-                new BasicScrollContainer {
-                    Width = fullWidth * innerSize,
-                    Height = fullHeight * innerSize,
-                    Margin = new MarginPadding {
-                        Horizontal = Width * spacingMargin,
-                        Vertical = Height * spacingMargin,
+            if (DirectoryContainsDirectories("")) {
+                InternalChildren = new Drawable[] {
+                    new Border {
+                        Width = fullWidth,
+                        Height = fullHeight,
+                        InnerBoxRelativeSize = innerSize,
+                        SongSelectionScreen = this,
+                        CurSelectionPath = CurSelectionPath,
                     },
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    Child = new FillFlowContainer {
+                    new BasicScrollContainer {
                         Width = fullWidth * innerSize,
                         Height = fullHeight * innerSize,
-                        Direction = FillDirection.Full,
-                        Children = CreateSelectionItems(),
+                        Margin = new MarginPadding {
+                            Horizontal = Width * spacingMargin,
+                            Vertical = Height * spacingMargin,
+                        },
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Child = new FillFlowContainer {
+                            Width = fullWidth * innerSize,
+                            Height = fullHeight * innerSize,
+                            Direction = FillDirection.Full,
+                            Children = CreateSelectionItems(),
+                        },
                     },
-                },
-            };
+                };
+            } else if (DirectoryContainsStory("")) {
+                InternalChildren = new Drawable[] {
+                    new Border {
+                        Width = fullWidth,
+                        Height = fullHeight,
+                        InnerBoxRelativeSize = innerSize,
+                        SongSelectionScreen = this,
+                        CurSelectionPath = CurSelectionPath,
+                    },
+                    new SongPreview {
+                        Width = fullWidth * innerSize,
+                        Height = fullHeight * innerSize,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        SongSelectionScreen = this,
+                        CurSelectionPath = CurSelectionPath,
+                    },
+                };
+            } else {
+                // INVALID
+                InternalChildren = new Drawable[] {
+                    new Border {
+                        Width = fullWidth,
+                        Height = fullHeight,
+                        InnerBoxRelativeSize = innerSize,
+                        SongSelectionScreen = this,
+                        CurSelectionPath = CurSelectionPath,
+                        Colour = Color4.Red,
+                    },
+                };
+            }
         }
 
     }

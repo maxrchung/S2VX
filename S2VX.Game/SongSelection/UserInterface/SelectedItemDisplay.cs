@@ -23,23 +23,16 @@ namespace S2VX.Game.SongSelection.UserInterface {
         private RelativeBox ThumbnailBox { get; set; }
         private RelativeBox TextShadowBox { get; set; }
         private TextFlowContainer TextContainer { get; set; }
-        private Button BtnEdit { get; set; }
-        private Button BtnPlay { get; set; }
-
 
         protected override bool OnHover(HoverEvent e) {
             SelectedIndicatorBox.Alpha = 1;
             ThumbnailBox.Alpha = 0.7f;
-            BtnEdit.Alpha = 1;
-            BtnPlay.Alpha = 1;
             return false;
         }
 
         protected override void OnHoverLost(HoverLostEvent e) {
             SelectedIndicatorBox.Alpha = 0;
             ThumbnailBox.Alpha = 1;
-            BtnEdit.Alpha = 0;
-            BtnPlay.Alpha = 0;
         }
 
         protected override bool OnClick(ClickEvent e) {
@@ -53,24 +46,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
         private void Load() {
             var boxSize = Screens.DrawWidth / 4;
             var textSize = Screens.DrawWidth / 40;
-            var btnSize = new Vector2(Screens.DrawWidth / 10, Screens.DrawWidth / 30);
-
-            BtnEdit = new BasicButton {
-                Origin = Anchor.Centre,
-                Anchor = Anchor.Centre,
-                Size = btnSize,
-                Text = "Edit",
-                Alpha = 0,
-                Action = () => SongSelectionScreen.Push(new EditorScreen()),
-            };
-            BtnPlay = new BasicButton {
-                Origin = Anchor.Centre,
-                Anchor = Anchor.Centre,
-                Size = btnSize,
-                Text = "Play",
-                Alpha = 0,
-                Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
-            };
 
             Width = boxSize;
             Height = boxSize;
@@ -103,15 +78,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     TextAnchor = Anchor.TopCentre,
                     Text = ItemName,
                 },
-                new FillFlowContainer {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    Direction = FillDirection.Horizontal,
-                    Children = new Drawable[] {
-                        BtnEdit,
-                        BtnPlay,
-                    }
-                }
             };
         }
 
