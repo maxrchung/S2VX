@@ -16,7 +16,6 @@ using System.Linq;
 
 namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
-<<<<<<< HEAD
         [Resolved]
         private ScreenStack Screens { get; set; }
         [Resolved]
@@ -67,19 +66,6 @@ namespace S2VX.Game.Play {
             }
             return false;
         }
-=======
-        private static Vector2 BtnSize { get; } = new Vector2(100, 30);
-
-        private Button BtnEdit { get; } = new BasicButton() {
-            Size = BtnSize,
-            Text = "Edit"
-        };
-
-        private Button BtnPlay { get; } = new BasicButton() {
-            Size = BtnSize,
-            Text = "Play"
-        };
->>>>>>> master
 
         [BackgroundDependencyLoader]
         private void Load() {
