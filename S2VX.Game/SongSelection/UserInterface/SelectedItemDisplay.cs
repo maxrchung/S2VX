@@ -1,11 +1,11 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
@@ -21,8 +21,9 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
         public string StoryDir { get; set; }                            // Set in SongSelectionScreen
-        public string AudioDir { get; set; }                           // Set in SongSelectionScreen
+        public string AudioDir { get; set; }                         // Set in SongSelectionScreen
         public bool IsStoryContainer { get; set; }                      // Set in SongSelectionScreen
+        public StorageBackedResourceStore CurLevelResourceStore { get; set; }// Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private RelativeBox ThumbnailBox { get; set; }
         private RelativeBox TextShadowBox { get; set; }
@@ -66,7 +67,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Size = btnSize,
                     Text = "Edit",
                     Alpha = 0,
-                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, AudioDir)),
+                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, CurLevelResourceStore, AudioDir)),
                 };
                 BtnPlay = new BasicButton {
                     Origin = Anchor.Centre,
@@ -74,16 +75,17 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Size = btnSize,
                     Text = "Play",
                     Alpha = 0,
-                    Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
+                    Action = () => SongSelectionScreen.Push(new PlayScreen(false, SongSelectionScreen.CurSelectionPath, StoryDir,
+                        CurLevelResourceStore, AudioDir)),
                 };
-            } else {
+            } else { // temporary. Remove when Song Selection metadata screen is implemented
                 BtnEdit = new BasicButton {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
                     Size = btnSize,
                     Text = "Dont Edit",
                     Alpha = 0,
-                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, AudioDir)),
+                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir)),
                 };
                 BtnPlay = new BasicButton {
                     Origin = Anchor.Centre,

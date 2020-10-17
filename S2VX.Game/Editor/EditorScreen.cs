@@ -22,15 +22,22 @@ using System;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
-        [Resolved]
+        private string AudioDir { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private string CurSelectionPath { get; set; }
         private string StoryDir { get; set; }
-        private string AudioDir { get; set; }
-        public EditorScreen(string curSelectionPath, string storyDir, string audioName) {
+        private string FullStoryDir { get; set; }
+        public EditorScreen(string curSelectionPath, string storyDir, StorageBackedResourceStore curLevelResourceStore, string audioDir) {
             CurSelectionPath = curSelectionPath;
             StoryDir = storyDir;
-            AudioDir = audioName;
+            AudioDir = audioDir;
+            CurLevelResourceStore = curLevelResourceStore;
+            FullStoryDir = CurSelectionPath + "/" + StoryDir;
+        }
+        // temporary. Remove when Song Selection metadata screen is implemented
+        public EditorScreen(string curSelectionPath, string storyDir) {
+            CurSelectionPath = curSelectionPath;
+            StoryDir = storyDir;
         }
 
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
@@ -82,9 +89,10 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(CurSelectionPath + "/" + StoryDir, true);
-            var stream = CurLevelResourceStore.GetStream(AudioDir);
-            var track = new TrackBass(stream);
+            Story.Open(FullStoryDir, true);
+            var trackStream = CurLevelResourceStore.GetStream(AudioDir);
+            var track = new TrackBass(trackStream);
+            Audio.AddItem(track);
             Track = new DrawableTrack(track);
             Seek(Story.GetEditorSettings().TrackTime);
             PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
@@ -104,6 +112,7 @@ namespace S2VX.Game.Editor {
             ToolContainer.Child = ToolState;
             InternalChildren = new Drawable[]
             {
+                Track,
                 Story,
                 NoteSelectionIndicators,
                 ToolContainer,
@@ -328,12 +337,12 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPlay() {
             ProjectSave();
-            this.Push(new PlayScreen(true));
+            this.Push(new PlayScreen(true, CurSelectionPath, StoryDir, CurLevelResourceStore, AudioDir));
         }
 
         private void ProjectRefresh() {
             ProjectSave();
-            Story.Open(@"../../../story.json", true);
+            Story.Open(FullStoryDir, true);
             Seek(Story.GetEditorSettings().TrackTime);
         }
 
@@ -343,7 +352,7 @@ namespace S2VX.Game.Editor {
             Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
             Story.GetEditorSettings().SnapDivisor = SnapDivisor;
             Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
-            Story.Save(@"../../../story.json");
+            Story.Save(FullStoryDir);
         }
 
         private void ProjectQuit() => this.Exit();

@@ -1,9 +1,7 @@
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
-using osu.Framework.Platform;
 using S2VX.Resources;
 
 namespace S2VX.Game {
@@ -17,11 +15,6 @@ namespace S2VX.Game {
         private DllResourceStore ResourceStore { get; set; }
 
         protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
-
-        [Cached]
-        private NativeStorage TestStorage { get; set; } = new NativeStorage("Stories");
-        [Cached]
-        private StorageBackedResourceStore TestCurLevelResourceStore { get; set; } = new StorageBackedResourceStore(new NativeStorage("Stories"));
 
         [BackgroundDependencyLoader]
         private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
