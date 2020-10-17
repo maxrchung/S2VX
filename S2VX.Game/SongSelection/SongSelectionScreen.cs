@@ -26,22 +26,6 @@ namespace S2VX.Game.Play {
         public static NativeStorage Storage { get; set; }
         //private static StorageBackedResourceStore CurLevelResourceStore { get; } = new StorageBackedResourceStore(Storage);
 
-        private FillFlowContainer SelectionItems { get; set; }
-
-        private List<Drawable> CreateSelectionItems() {
-            var selectionItems = new List<Drawable>();
-            var dirs = Storage.GetDirectories("");
-            foreach (var dir in dirs) {
-                if (DirectoryContainsStory(dir) || DirectoryContainsDirectories(dir)) {
-                    selectionItems.Add(new SelectedItemDisplay {
-                        ItemName = dir,
-                        SongSelectionScreen = this,
-                    });
-                }
-            }
-            return selectionItems;
-        }
-
         private static bool DirectoryContainsStory(string dir) {
             var story = Storage.GetFiles(dir, "*.s2ry");
             var song = Storage.GetFiles(dir, "audio.mp3");
@@ -59,6 +43,20 @@ namespace S2VX.Game.Play {
                     break;
             }
             return false;
+        }
+
+        private List<Drawable> CreateSelectionItems() {
+            var selectionItems = new List<Drawable>();
+            var dirs = Storage.GetDirectories("");
+            foreach (var dir in dirs) {
+                if (DirectoryContainsStory(dir) || DirectoryContainsDirectories(dir)) {
+                    selectionItems.Add(new SelectedItemDisplay {
+                        ItemName = dir,
+                        SongSelectionScreen = this,
+                    });
+                }
+            }
+            return selectionItems;
         }
 
         // Go up one level by exiting and thus popping ourself out from the ScreenStack
@@ -82,15 +80,6 @@ namespace S2VX.Game.Play {
             var innerSize = 0.9f;
             var spacingMargin = 0.1f;
 
-            SelectionItems = new FillFlowContainer {
-                RelativeSizeAxes = Axes.Both,
-                RelativePositionAxes = Axes.Both,
-                Width = 1.0f,
-                Height = 1.0f,
-                Direction = FillDirection.Full,
-                Children = CreateSelectionItems(),
-            };
-
             InternalChildren = new Drawable[] {
                 new SelectionScreenBorder {
                     Width = fullWidth,
@@ -111,10 +100,15 @@ namespace S2VX.Game.Play {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Margin = new MarginPadding {
-                                Horizontal = Width *spacingMargin,
+                                Horizontal = Width * spacingMargin,
                                 Vertical = Height * spacingMargin,
                             },
-                            Child = SelectionItems
+                            Child = new FillFlowContainer {
+                                Width = fullWidth * innerSize,
+                                Height = fullHeight * innerSize,
+                                Direction = FillDirection.Full,
+                                Children = CreateSelectionItems(),
+                            },
                         },
                     }
                 },
