@@ -21,13 +21,10 @@ namespace S2VX.Game {
         [Cached]
         private NativeStorage TestStorage { get; set; } = new NativeStorage("Stories");
         [Cached]
-        private StorageBackedResourceStore TestCurLevelResourceStore { get; set; } = new StorageBackedResourceStore(null);
+        private StorageBackedResourceStore TestCurLevelResourceStore { get; set; } = new StorageBackedResourceStore(new NativeStorage("Stories"));
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
-            TestCurLevelResourceStore = new StorageBackedResourceStore(TestStorage);
-        }
+        private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
 
         protected override void Dispose(bool isDisposing) {
             ResourceStore.Dispose();
