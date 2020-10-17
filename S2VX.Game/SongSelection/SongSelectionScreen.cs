@@ -6,7 +6,9 @@ using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
 using System.Collections.Generic;
 using System.IO;
@@ -51,16 +53,20 @@ namespace S2VX.Game.Play {
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Escape:
-                    // Up one level, unless we're already at root level
-                    if (CurSelectionPath != "Stories") {
-                        this.Exit();
-                        return true;
-                    }
-                    break;
+                    DoExit();
+                    return true;
                 default:
                     break;
             }
             return false;
+        }
+
+        // Go up one level by exiting and thus popping ourself out from the ScreenStack
+        public void DoExit() {
+            // Unless we're already at root level
+            if (CurSelectionPath != "Stories") {
+                this.Exit();
+            }
         }
 
         [BackgroundDependencyLoader]
@@ -73,7 +79,8 @@ namespace S2VX.Game.Play {
 
             var fullWidth = Screens.DrawWidth;
             var fullHeight = Screens.DrawHeight;
-            var titleSize = fullHeight / 30;
+            var innerSize = 0.9f;
+            var spacingMargin = 0.1f;
 
             SelectionItems = new FillFlowContainer {
                 RelativeSizeAxes = Axes.Both,
@@ -84,27 +91,33 @@ namespace S2VX.Game.Play {
                 Children = CreateSelectionItems(),
             };
 
-            InternalChild = new FillFlowContainer {
-                Width = fullWidth,
-                Height = fullHeight,
-                Direction = FillDirection.Full,
-                Children = new Drawable[]
-                {
-                    CurSelectionPathTxt = new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
-                        Width = fullWidth,
-                        Height = titleSize,
-                        Text = CurSelectionPath,
-                    },
-                    new BasicScrollContainer {
-                        Width = Screens.DrawWidth,
-                        Height = Screens.DrawHeight,
-                        Margin = new MarginPadding {
-                            Vertical = Width / 10,
-                            Horizontal = Width / 10
+            InternalChildren = new Drawable[] {
+                new SelectionScreenBorder {
+                    Width = fullWidth,
+                    Height = fullHeight,
+                    InnerBoxRelativeSize = innerSize,
+                    SongSelectionScreen = this,
+                    CurSelectionPath = CurSelectionPath,
+                },
+                new FillFlowContainer {
+                    Width = fullWidth * innerSize,
+                    Height = fullHeight * innerSize,
+                    Direction = FillDirection.Full,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Children = new Drawable[]
+                    {
+                        new BasicScrollContainer {
+                            Width = fullWidth * innerSize,
+                            Height = fullHeight * innerSize,
+                            Margin = new MarginPadding {
+                                Horizontal = Width *spacingMargin,
+                                Vertical = Height * spacingMargin,
+                            },
+                            Child = SelectionItems
                         },
-                        Child = SelectionItems
-                    },
-                }
+                    }
+                },
             };
         }
 
