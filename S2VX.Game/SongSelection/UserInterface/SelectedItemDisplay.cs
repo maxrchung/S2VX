@@ -19,8 +19,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
-        private RelativeBox TextShadowBox { get; set; }
-        private TextFlowContainer TextContainer { get; set; }
 
         protected override bool OnHover(HoverEvent e) {
             SelectedIndicatorBox.Alpha = 1;
@@ -67,13 +65,15 @@ namespace S2VX.Game.SongSelection.UserInterface {
                         CurSelectionPath = SongSelectionScreen.CurSelectionPath + "/" + ItemName,
                     }),
                 },
-                TextShadowBox = new RelativeBox {
+                // TextShadowBox
+                new RelativeBox {
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
                     Height = 0.2f,
                     Colour = Color4.Black.Opacity(0.5f),
                 },
-                TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
+                // TextContainer
+                new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     Y = 0.8f,

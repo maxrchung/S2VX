@@ -1,9 +1,9 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
@@ -17,14 +17,17 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private TextureStore TextureStore { get; set; }
 
-        public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
-        public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
+        public SongSelectionScreen SongSelectionScreen { get; set; }           // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }                           // Set in SongSelectionScreen
+        public string StoryDir { get; set; }                                   // Set in SongSelectionScreen
+        public string AudioDir { get; set; }                                   // Set in SongSelectionScreen
+        public StorageBackedResourceStore CurLevelResourceStore { get; set; }  // Set in SongSelectionScreen
         private TextFlowContainer TextContainer { get; set; }
-        private IconButton Thumbnail { get; set; }
         private IconButton BtnEdit { get; set; }
         private IconButton BtnPlay { get; set; }
 
         private void AddSongMetadata() {
+            // TODO: Connect these to .s2ry's metadata
             TextContainer.AddParagraph("SongTitle");
             TextContainer.AddParagraph("SongArtist");
             TextContainer.AddParagraph("StoryAuthor");
@@ -51,14 +54,16 @@ namespace S2VX.Game.SongSelection.Containers {
                 Anchor = Anchor.Centre,
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Edit,
-                Action = () => SongSelectionScreen.Push(new EditorScreen()),
+                Action = () =>
+                    SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, CurLevelResourceStore, AudioDir)),
             };
             BtnPlay = new IconButton {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Play,
-                Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
+                Action = () =>
+                    SongSelectionScreen.Push(new PlayScreen(false, SongSelectionScreen.CurSelectionPath, StoryDir, CurLevelResourceStore, AudioDir)),
             };
 
             InternalChildren = new Drawable[] {
@@ -67,7 +72,8 @@ namespace S2VX.Game.SongSelection.Containers {
                     Width = fullWidth,
                     Height = songInfoHeight,
                     Children = new Drawable[] {
-                        Thumbnail = new IconButton {
+                        // Thumbnail
+                        new IconButton {
                             Size = new Vector2(thumbnailSize),
                             Anchor = Anchor.TopLeft,
                             Origin = Anchor.TopLeft,
