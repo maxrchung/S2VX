@@ -32,7 +32,7 @@ namespace S2VX.Game.SongSelection.Containers {
 
             InternalChildren = new Drawable[] {
                 BorderOuterBox = new BorderOuterBox {
-                    SongSelectionScreen = SongSelectionScreen
+                    SongSelectionScreen = SongSelectionScreen,
                 },
                 TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
@@ -43,7 +43,7 @@ namespace S2VX.Game.SongSelection.Containers {
                     Text = CurSelectionPath,
                     TextAnchor = Anchor.CentreLeft,
                     Colour = Color4.Black,
-                    // Todo, truncate text if it's too long
+                    // TODO: truncate text if it's too long
                 },
                 BorderInnerBox = new BorderInnerBox {
                     BorderOuterBox = BorderOuterBox,

@@ -1,11 +1,10 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
-using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.SongSelection.Containers;
@@ -18,10 +17,10 @@ namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
         [Resolved]
         private ScreenStack Screens { get; set; }
+        [Resolved]
+        private AudioManager Audio { get; set; }
 
         public string CurSelectionPath { get; set; } = "Stories";
-
-        private TextFlowContainer CurSelectionPathTxt { get; set; }
 
         public static NativeStorage Storage { get; set; }
         //private static StorageBackedResourceStore CurLevelResourceStore { get; } = new StorageBackedResourceStore(Storage);
@@ -63,12 +62,14 @@ namespace S2VX.Game.Play {
         public void DoExit() {
             // Unless we're already at root level
             if (CurSelectionPath != "Stories") {
+                Audio.Samples.Get("menuback").Play();
                 this.Exit();
             }
         }
 
         [BackgroundDependencyLoader]
         private void Load() {
+            Audio.Samples.Get("menuhit").Play();
             Storage = new NativeStorage(CurSelectionPath);
             // Create the Stories root level directory if it does not exist
             if (CurSelectionPath == "Stories" && !Storage.Exists("")) {

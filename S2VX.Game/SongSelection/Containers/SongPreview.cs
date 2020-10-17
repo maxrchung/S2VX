@@ -3,7 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
@@ -14,13 +14,15 @@ namespace S2VX.Game.SongSelection.Containers {
     public class SongPreview : CompositeDrawable {
         [Resolved]
         private ScreenStack Screens { get; set; }
+        [Resolved]
+        private TextureStore TextureStore { get; set; }
 
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
         private TextFlowContainer TextContainer { get; set; }
-        private Box ThumbnailBox { get; set; }
-        private Button BtnEdit { get; set; }
-        private Button BtnPlay { get; set; }
+        private IconButton Thumbnail { get; set; }
+        private IconButton BtnEdit { get; set; }
+        private IconButton BtnPlay { get; set; }
 
         private void AddSongMetadata() {
             TextContainer.AddParagraph("SongTitle");
@@ -44,38 +46,36 @@ namespace S2VX.Game.SongSelection.Containers {
             var thumbnailSize = fullWidth * 0.3f;
             var btnSize = new Vector2(fullWidth / 5, fullHeight / 10);
 
-            BtnEdit = new BasicButton {
+            BtnEdit = new IconButton() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
-                Text = "Edit",
+                Icon = FontAwesome.Solid.Edit,
                 Action = () => SongSelectionScreen.Push(new EditorScreen()),
             };
-            BtnPlay = new BasicButton {
+            BtnPlay = new IconButton {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
-                Text = "Play",
+                Icon = FontAwesome.Solid.Play,
                 Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
             };
 
             InternalChildren = new Drawable[] {
-                // Todo add blurred background
+                // TODO: add blurred background
                 new FillFlowContainer {
                     Width = fullWidth,
                     Height = songInfoHeight,
                     Children = new Drawable[] {
-                        ThumbnailBox = new Box {
-                            // Red box as placeholder
-                            Width = thumbnailSize,
-                            Height = thumbnailSize,
+                        Thumbnail = new IconButton {
+                            Size = new Vector2(thumbnailSize),
                             Anchor = Anchor.TopLeft,
                             Origin = Anchor.TopLeft,
                             Margin = new MarginPadding {
                                 Horizontal = fullWidth * spacingMargin,
                                 Vertical = fullHeight * spacingMargin,
                             },
-                            Colour = Color4.Red,
+                            TextureName = "logo",
                         },
                         TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
                             Width = fullWidth - thumbnailSize - fullWidth * spacingMargin * 2,
@@ -85,7 +85,7 @@ namespace S2VX.Game.SongSelection.Containers {
                             },
                             TextAnchor = Anchor.TopLeft,
                             Colour = Color4.White,
-                            // Todo, truncate text if it's too long
+                            // TODO: truncate text if it's too long
                         },
                     }
                 },

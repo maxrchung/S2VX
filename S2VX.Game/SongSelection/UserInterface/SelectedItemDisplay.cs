@@ -3,12 +3,10 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
-using S2VX.Game.Editor;
 using S2VX.Game.Play;
 
 namespace S2VX.Game.SongSelection.UserInterface {
@@ -20,19 +18,19 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }
-        private RelativeBox ThumbnailBox { get; set; }
+        private IconButton Thumbnail { get; set; }
         private RelativeBox TextShadowBox { get; set; }
         private TextFlowContainer TextContainer { get; set; }
 
         protected override bool OnHover(HoverEvent e) {
             SelectedIndicatorBox.Alpha = 1;
-            ThumbnailBox.Alpha = 0.7f;
+            Thumbnail.Alpha = 0.7f;
             return false;
         }
 
         protected override void OnHoverLost(HoverLostEvent e) {
             SelectedIndicatorBox.Alpha = 0;
-            ThumbnailBox.Alpha = 1;
+            Thumbnail.Alpha = 1;
         }
 
         protected override bool OnClick(ClickEvent e) {
@@ -60,9 +58,14 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Height = 1.1f,
                     Alpha = 0
                 },
-                ThumbnailBox = new RelativeBox {
-                    // Red box as placeholder
-                    Colour = Color4.Red,
+                Thumbnail = new IconButton {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Size = new Vector2(boxSize),
+                    TextureName = "logo",
+                    Action = () => Screens.Push(new SongSelectionScreen {
+                        CurSelectionPath = SongSelectionScreen.CurSelectionPath + "/" + ItemName,
+                    }),
                 },
                 TextShadowBox = new RelativeBox {
                     Anchor = Anchor.BottomCentre,
