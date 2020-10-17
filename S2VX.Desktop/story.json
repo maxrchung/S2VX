@@ -69,20 +69,6 @@
   ],
   "Notes": [
     {
-      "EndTime": 5000.0,
-      "Coordinates": {
-        "X": 3.0,
-        "Y": 3.0
-      }
-    },
-    {
-      "EndTime": 563.7188208616781,
-      "Coordinates": {
-        "X": -2.0,
-        "Y": 1.0
-      }
-    },
-    {
       "EndTime": 12124.308390022676,
       "Coordinates": {
         "X": 2.5,
@@ -90,21 +76,14 @@
       }
     },
     {
-      "EndTime": 619.8185941043084,
+      "EndTime": 5000.0,
       "Coordinates": {
-        "X": -1.5,
-        "Y": 1.0
+        "X": 3.0,
+        "Y": 3.0
       }
     },
     {
-      "EndTime": 681.7913832199547,
-      "Coordinates": {
-        "X": -1.0,
-        "Y": 1.5
-      }
-    },
-    {
-      "EndTime": 2769.0702947845803,
+      "EndTime": 4600.022675736962,
       "Coordinates": {
         "X": -1.5,
         "Y": 1.0
@@ -118,16 +97,36 @@
       }
     },
     {
-      "EndTime": 4600.022675736962,
+      "EndTime": 2769.0702947845803,
       "Coordinates": {
         "X": -1.5,
+        "Y": 1.0
+      }
+    },
+    {
+      "EndTime": 681.7913832199547,
+      "Coordinates": {
+        "X": -1.0,
+        "Y": 1.5
+      }
+    },
+    {
+      "EndTime": 619.8185941043084,
+      "Coordinates": {
+        "X": -1.5,
+        "Y": 1.0
+      }
+    },
+    {
+      "EndTime": 563.7188208616781,
+      "Coordinates": {
+        "X": -2.0,
         "Y": 1.0
       }
     }
   ],
   "EditorSettings": {
     "TrackTime": 0.0,
-    "TrackVolume": 0.2,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3

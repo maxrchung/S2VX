@@ -1,11 +1,13 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
@@ -20,6 +22,17 @@ using System;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
+        [Resolved]
+        private StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        private string CurSelectionPath { get; set; }
+        private string StoryDir { get; set; }
+        private string AudioDir { get; set; }
+        public EditorScreen(string curSelectionPath, string storyDir, string audioName) {
+            CurSelectionPath = curSelectionPath;
+            StoryDir = storyDir;
+            AudioDir = audioName;
+        }
+
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
 
         private S2VXStory Story { get; set; }
@@ -69,9 +82,10 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(@"../../../story.json", true);
-
-            Track = new DrawableTrack(Audio.Tracks.Get("Camellia_MEGALOVANIA_Remix"));
+            Story.Open(CurSelectionPath + "/" + StoryDir, true);
+            var stream = CurLevelResourceStore.GetStream(AudioDir);
+            var track = new TrackBass(stream);
+            Track = new DrawableTrack(track);
             Seek(Story.GetEditorSettings().TrackTime);
             PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
             SnapDivisor = Story.GetEditorSettings().SnapDivisor;

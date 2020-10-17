@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -19,6 +20,9 @@ namespace S2VX.Game.SongSelection.UserInterface {
 
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
+        public string StoryDir { get; set; }                            // Set in SongSelectionScreen
+        public string AudioDir { get; set; }                           // Set in SongSelectionScreen
+        public bool IsStoryContainer { get; set; }                      // Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private RelativeBox ThumbnailBox { get; set; }
         private RelativeBox TextShadowBox { get; set; }
@@ -55,22 +59,41 @@ namespace S2VX.Game.SongSelection.UserInterface {
             var textSize = Screens.DrawWidth / 40;
             var btnSize = new Vector2(Screens.DrawWidth / 10, Screens.DrawWidth / 30);
 
-            BtnEdit = new BasicButton {
-                Origin = Anchor.Centre,
-                Anchor = Anchor.Centre,
-                Size = btnSize,
-                Text = "Edit",
-                Alpha = 0,
-                Action = () => SongSelectionScreen.Push(new EditorScreen()),
-            };
-            BtnPlay = new BasicButton {
-                Origin = Anchor.Centre,
-                Anchor = Anchor.Centre,
-                Size = btnSize,
-                Text = "Play",
-                Alpha = 0,
-                Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
-            };
+            if (IsStoryContainer) {
+                BtnEdit = new BasicButton {
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    Size = btnSize,
+                    Text = "Edit",
+                    Alpha = 0,
+                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, AudioDir)),
+                };
+                BtnPlay = new BasicButton {
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    Size = btnSize,
+                    Text = "Play",
+                    Alpha = 0,
+                    Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
+                };
+            } else {
+                BtnEdit = new BasicButton {
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    Size = btnSize,
+                    Text = "Dont Edit",
+                    Alpha = 0,
+                    Action = () => SongSelectionScreen.Push(new EditorScreen(SongSelectionScreen.CurSelectionPath, StoryDir, AudioDir)),
+                };
+                BtnPlay = new BasicButton {
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    Size = btnSize,
+                    Text = "Dont Play",
+                    Alpha = 0,
+                    Action = () => SongSelectionScreen.Push(new PlayScreen(false)),
+                };
+            }
 
             Width = boxSize;
             Height = boxSize;
