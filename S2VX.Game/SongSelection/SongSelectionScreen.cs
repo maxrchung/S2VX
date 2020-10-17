@@ -88,29 +88,21 @@ namespace S2VX.Game.Play {
                     SongSelectionScreen = this,
                     CurSelectionPath = CurSelectionPath,
                 },
-                new FillFlowContainer {
+                new BasicScrollContainer {
                     Width = fullWidth * innerSize,
                     Height = fullHeight * innerSize,
-                    Direction = FillDirection.Full,
+                    Margin = new MarginPadding {
+                        Horizontal = Width * spacingMargin,
+                        Vertical = Height * spacingMargin,
+                    },
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Children = new Drawable[]
-                    {
-                        new BasicScrollContainer {
-                            Width = fullWidth * innerSize,
-                            Height = fullHeight * innerSize,
-                            Margin = new MarginPadding {
-                                Horizontal = Width * spacingMargin,
-                                Vertical = Height * spacingMargin,
-                            },
-                            Child = new FillFlowContainer {
-                                Width = fullWidth * innerSize,
-                                Height = fullHeight * innerSize,
-                                Direction = FillDirection.Full,
-                                Children = CreateSelectionItems(),
-                            },
-                        },
-                    }
+                    Child = new FillFlowContainer {
+                        Width = fullWidth * innerSize,
+                        Height = fullHeight * innerSize,
+                        Direction = FillDirection.Full,
+                        Children = CreateSelectionItems(),
+                    },
                 },
             };
         }
