@@ -17,6 +17,7 @@ namespace S2VX.Game {
         // Can be initialized to use a Texture or FontAwesome Icon
         public string TextureName { get; set; }
         public IconUsage Icon { get; set; }
+        public float IconSize { get; set; } = 0.8f;     // As a proportion of the button
 
         public string LabelText { get; set; } = "";
         public int LabelTextSize { get; set; } = 20;
@@ -83,12 +84,11 @@ namespace S2VX.Game {
         [BackgroundDependencyLoader]
         private void Load(TextureStore store) {
             if (!Icon.Equals(new IconUsage())) {    // Equivalent to != null
-                var iconScale = 0.8f;
                 Image = new SpriteIcon {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(iconScale),
+                    Size = new Vector2(IconSize),
                     Icon = Icon,
                 };
             } else if (TextureName != null) {
