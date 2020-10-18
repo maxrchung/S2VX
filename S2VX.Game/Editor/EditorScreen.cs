@@ -94,10 +94,12 @@ namespace S2VX.Game.Editor {
             var track = new TrackBass(trackStream);
             Audio.AddItem(track);
             Track = new DrawableTrack(track);
-            Seek(Story.GetEditorSettings().TrackTime);
-            PlaybackSetRate(Story.GetEditorSettings().TrackPlaybackRate);
-            SnapDivisor = Story.GetEditorSettings().SnapDivisor;
-            NotesTimeline.DivisorIndex = Story.GetEditorSettings().BeatSnapDivisorIndex;
+
+            var editorSettings = Story.EditorSettings;
+            Seek(editorSettings.TrackTime);
+            PlaybackSetRate(editorSettings.TrackPlaybackRate);
+            SnapDivisor = editorSettings.SnapDivisor;
+            NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
 
             // Sets the same clock for sections dependent on the Track
             var trackClock = new FramedClock(Track);
@@ -343,15 +345,16 @@ namespace S2VX.Game.Editor {
         private void ProjectRefresh() {
             ProjectSave();
             Story.Open(FullStoryPath, true);
-            Seek(Story.GetEditorSettings().TrackTime);
+            Seek(Story.EditorSettings.TrackTime);
         }
 
         private void ProjectSave() {
             Play(false);
-            Story.GetEditorSettings().TrackTime = Track.CurrentTime;
-            Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
-            Story.GetEditorSettings().SnapDivisor = SnapDivisor;
-            Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
+            var editorSettings = Story.EditorSettings;
+            editorSettings.TrackTime = Track.CurrentTime;
+            editorSettings.TrackPlaybackRate = Track.Tempo.Value;
+            editorSettings.SnapDivisor = SnapDivisor;
+            editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
             Story.Save(FullStoryPath);
         }
 
