@@ -17,6 +17,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
 
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
 
@@ -33,7 +34,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
 
         protected override bool OnClick(ClickEvent e) {
             Screens.Push(new SongSelectionScreen {
-                CurSelectionPath = SongSelectionScreen.CurSelectionPath + "/" + ItemName,
+                CurSelectionPath = CurSelectionPath + "/" + ItemName,
             });
             return true;
         }
@@ -62,7 +63,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Size = new Vector2(boxSize),
                     TextureName = "logo",
                     Action = () => Screens.Push(new SongSelectionScreen {
-                        CurSelectionPath = SongSelectionScreen.CurSelectionPath + "/" + ItemName,
+                        CurSelectionPath = CurSelectionPath + "/" + ItemName,
                     }),
                 },
                 // TextShadowBox

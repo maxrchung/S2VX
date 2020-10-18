@@ -15,9 +15,6 @@ namespace S2VX.Game.SongSelection.Containers {
         public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
-        private BorderOuterBox BorderOuterBox { get; set; }
-        private BorderInnerBox BorderInnerBox { get; set; }
-        private TextFlowContainer TextContainer { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -31,10 +28,12 @@ namespace S2VX.Game.SongSelection.Containers {
             Height = fullHeight;
 
             InternalChildren = new Drawable[] {
-                BorderOuterBox = new BorderOuterBox {
+                // BorderOuterBox
+                new BorderOuterBox {
                     SongSelectionScreen = SongSelectionScreen,
                 },
-                TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
+                // TextContainer
+                new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
                     Height = borderSize,
                     Margin = new MarginPadding {
@@ -45,7 +44,8 @@ namespace S2VX.Game.SongSelection.Containers {
                     Colour = Color4.Black,
                     // TODO: truncate text if it's too long
                 },
-                BorderInnerBox = new BorderInnerBox {
+                // BorderInnerBox
+                new BorderInnerBox {
                     Colour = Color4.Black,
                     Width = InnerBoxRelativeSize,
                     Height = InnerBoxRelativeSize,

@@ -22,22 +22,22 @@ using System;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
-        private string AudioDir { get; set; }
+        private string AudioPath { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private string CurSelectionPath { get; set; }
-        private string StoryDir { get; set; }
-        private string FullStoryDir { get; set; }
-        public EditorScreen(string curSelectionPath, string storyDir, StorageBackedResourceStore curLevelResourceStore, string audioDir) {
+        private string StoryPath { get; set; }
+        private string FullStoryPath { get; set; }
+        // TODO: Remove when Song Selection metadata screen is implemented
+        public EditorScreen(string curSelectionPath, string storyPath, StorageBackedResourceStore curLevelResourceStore, string audioPath) {
             CurSelectionPath = curSelectionPath;
-            StoryDir = storyDir;
-            AudioDir = audioDir;
+            StoryPath = storyPath;
+            AudioPath = audioPath;
             CurLevelResourceStore = curLevelResourceStore;
-            FullStoryDir = CurSelectionPath + "/" + StoryDir;
+            FullStoryPath = CurSelectionPath + "/" + StoryPath;
         }
-        // temporary. Remove when Song Selection metadata screen is implemented
-        public EditorScreen(string curSelectionPath, string storyDir) {
+        public EditorScreen(string curSelectionPath, string storyPath) {
             CurSelectionPath = curSelectionPath;
-            StoryDir = storyDir;
+            StoryPath = storyPath;
         }
 
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
@@ -89,8 +89,8 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(FullStoryDir, true);
-            var trackStream = CurLevelResourceStore.GetStream(AudioDir);
+            Story.Open(FullStoryPath, true);
+            var trackStream = CurLevelResourceStore.GetStream(AudioPath);
             var track = new TrackBass(trackStream);
             Audio.AddItem(track);
             Track = new DrawableTrack(track);
@@ -337,12 +337,12 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPlay() {
             ProjectSave();
-            this.Push(new PlayScreen(true, CurSelectionPath, StoryDir, CurLevelResourceStore, AudioDir));
+            this.Push(new PlayScreen(true, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath));
         }
 
         private void ProjectRefresh() {
             ProjectSave();
-            Story.Open(FullStoryDir, true);
+            Story.Open(FullStoryPath, true);
             Seek(Story.GetEditorSettings().TrackTime);
         }
 
@@ -352,7 +352,7 @@ namespace S2VX.Game.Editor {
             Story.GetEditorSettings().TrackPlaybackRate = Track.Tempo.Value;
             Story.GetEditorSettings().SnapDivisor = SnapDivisor;
             Story.GetEditorSettings().BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
-            Story.Save(FullStoryDir);
+            Story.Save(FullStoryPath);
         }
 
         private void ProjectQuit() => this.Exit();

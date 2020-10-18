@@ -146,7 +146,5 @@ namespace S2VX.Game {
             Hover.FadeOut(HoverFadeDuration);
         }
 
-        //private void EnabledChanged(ValueChangedEvent<bool> e) =>
-        //    this.FadeColour(e.NewValue ? Color4.White : DisabledColour, DisabledFadeDuration, Easing.OutQuint);
     }
 }

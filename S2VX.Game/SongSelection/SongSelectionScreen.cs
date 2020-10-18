@@ -23,7 +23,6 @@ namespace S2VX.Game.Play {
 
         public string CurSelectionPath { get; set; } = "Stories";
 
-        private TextFlowContainer CurSelectionPathTxt { get; set; }
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
 
@@ -34,6 +33,7 @@ namespace S2VX.Game.Play {
                 selectionItems.Add(new SelectedItemDisplay {
                     ItemName = dir,
                     SongSelectionScreen = this,
+                    CurSelectionPath = CurSelectionPath,
                 });
             }
             return selectionItems;
@@ -138,8 +138,8 @@ namespace S2VX.Game.Play {
                             Origin = Anchor.Centre,
                             SongSelectionScreen = this,
                             CurSelectionPath = CurSelectionPath,
-                            StoryDir = storyDir,
-                            AudioDir = audioDir,
+                            StoryPath = storyDir,
+                            AudioPath = audioDir,
                             CurLevelResourceStore = CurLevelResourceStore,
                         },
                     };
