@@ -70,7 +70,6 @@ namespace S2VX.Game.Play {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Audio.Samples.Get("menuhit").Play();
             Storage = new NativeStorage(CurSelectionPath);
             // Create the Stories root level directory if it does not exist
             if (CurSelectionPath == "Stories" && !Storage.Exists("")) {

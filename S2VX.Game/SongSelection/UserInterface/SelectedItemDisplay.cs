@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -13,6 +14,8 @@ namespace S2VX.Game.SongSelection.UserInterface {
     public class SelectedItemDisplay : CompositeDrawable {
         [Resolved]
         private ScreenStack Screens { get; set; }
+        [Resolved]
+        private AudioManager Audio { get; set; }
 
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
         public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
@@ -31,6 +34,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
         }
 
         protected override bool OnClick(ClickEvent e) {
+            Audio.Samples.Get("menuhit").Play();
             Screens.Push(new SongSelectionScreen {
                 CurSelectionPath = CurSelectionPath + "/" + ItemName,
             });
