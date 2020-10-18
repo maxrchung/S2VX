@@ -128,7 +128,7 @@ namespace S2VX.Game {
                 Image.FlashColour(FlashColour, FlashDuration);
             }
 
-            return false;
+            return base.OnClick(e);
         }
 
         protected override bool OnHover(HoverEvent e) {

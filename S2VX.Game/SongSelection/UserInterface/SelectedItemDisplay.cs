@@ -33,14 +33,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
             Thumbnail.Alpha = 1;
         }
 
-        protected override bool OnClick(ClickEvent e) {
-            Audio.Samples.Get("menuhit").Play();
-            Screens.Push(new SongSelectionScreen {
-                CurSelectionPath = CurSelectionPath + "/" + ItemName,
-            });
-            return true;
-        }
-
         [BackgroundDependencyLoader]
         private void Load() {
             var boxSize = Screens.DrawWidth / 4;
@@ -64,9 +56,10 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Origin = Anchor.Centre,
                     Size = new Vector2(boxSize),
                     TextureName = "logo",
-                    Action = () => Screens.Push(new SongSelectionScreen {
-                        CurSelectionPath = CurSelectionPath + "/" + ItemName,
-                    }),
+                    Action = () => {
+                        Audio.Samples.Get("menuhit").Play();
+                        Screens.Push(new SongSelectionScreen { CurSelectionPath = CurSelectionPath + "/" + ItemName });
+                    },
                 },
                 // TextShadowBox
                 new RelativeBox {
