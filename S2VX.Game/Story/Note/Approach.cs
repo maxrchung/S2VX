@@ -3,9 +3,10 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
+using System;
 
 namespace S2VX.Game.Story.Note {
-    public class Approach : CompositeDrawable {
+    public class Approach : CompositeDrawable, IComparable<Approach> {
         public double EndTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
@@ -87,5 +88,8 @@ namespace S2VX.Game.Story.Note {
                 Alpha = alpha;
             }
         }
+
+        // Sort Approaches from highest end time to lowest end time
+        public int CompareTo(Approach other) => other.EndTime.CompareTo(EndTime);
     }
 }
