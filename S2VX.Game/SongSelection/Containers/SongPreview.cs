@@ -12,7 +12,9 @@ using S2VX.Game.Play;
 namespace S2VX.Game.SongSelection.Containers {
     public class SongPreview : CompositeDrawable {
 
-        public SongSelectionScreen SongSelectionScreen { get; set; }           // Set in SongSelectionScreen
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         public string CurSelectionPath { get; set; }                           // Set in SongSelectionScreen
         public string StoryPath { get; set; }                                  // Set in SongSelectionScreen
         public string AudioPath { get; set; }                                  // Set in SongSelectionScreen
@@ -50,7 +52,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Edit,
                 Action = () =>
-                    SongSelectionScreen.Push(new EditorScreen(CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                    Screens.Push(new EditorScreen(CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
             };
             BtnPlay = new IconButton {
                 Origin = Anchor.Centre,
@@ -58,7 +60,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Play,
                 Action = () =>
-                    SongSelectionScreen.Push(new PlayScreen(false, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                    Screens.Push(new PlayScreen(false, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
             };
 
             InternalChildren = new Drawable[] {

@@ -1,5 +1,4 @@
-﻿using osu.Framework.Bindables;
-using osu.Framework.Extensions.Color4Extensions;
+﻿using osu.Framework.Extensions.Color4Extensions;
 using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;

@@ -14,8 +14,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-
-        public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
         public string ItemName { get; set; }                            // Set in SongSelectionScreen
         public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
         public RelativeBox SelectedIndicatorBox { get; private set; }

@@ -32,7 +32,6 @@ namespace S2VX.Game.Play {
             foreach (var dir in dirs) {
                 selectionItems.Add(new SelectedItemDisplay {
                     ItemName = dir,
-                    SongSelectionScreen = this,
                     CurSelectionPath = CurSelectionPath,
                 });
             }
@@ -48,18 +47,20 @@ namespace S2VX.Game.Play {
         private bool DirectoryContainsDirectories(string dir) => Storage.GetDirectories(dir).Any();
 
         // Go up one level by exiting and thus popping ourself out from the ScreenStack
-        public void DoExit() {
+        public override bool OnExiting(IScreen next) {
             // Unless we're already at root level
             if (CurSelectionPath != "Stories") {
                 Audio.Samples.Get("menuback").Play();
-                this.Exit();
+                return false;
             }
+            // Block Exiting
+            return true;
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Escape:
-                    DoExit();
+                    this.Exit();
                     return true;
                 default:
                     break;
@@ -88,7 +89,6 @@ namespace S2VX.Game.Play {
                         Width = fullWidth,
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
-                        SongSelectionScreen = this,
                         CurSelectionPath = CurSelectionPath,
                     },
                     new BasicScrollContainer {
@@ -117,7 +117,6 @@ namespace S2VX.Game.Play {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            SongSelectionScreen = this,
                             CurSelectionPath = CurSelectionPath,
                             Colour = Color4.Red,
                         },
@@ -128,7 +127,6 @@ namespace S2VX.Game.Play {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            SongSelectionScreen = this,
                             CurSelectionPath = CurSelectionPath,
                         },
                         new SongPreview {
@@ -136,7 +134,6 @@ namespace S2VX.Game.Play {
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            SongSelectionScreen = this,
                             CurSelectionPath = CurSelectionPath,
                             StoryPath = storyDir,
                             AudioPath = audioDir,

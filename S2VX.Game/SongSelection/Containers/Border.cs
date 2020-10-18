@@ -4,7 +4,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK.Graphics;
-using S2VX.Game.Play;
 using S2VX.Game.SongSelection.UserInterface;
 
 namespace S2VX.Game.SongSelection.Containers {
@@ -12,8 +11,7 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public SongSelectionScreen SongSelectionScreen { get; set; }    // Set in SongSelectionScreen
-        public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }    // Set in SongSelectionScreen
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
 
         [BackgroundDependencyLoader]
@@ -29,9 +27,7 @@ namespace S2VX.Game.SongSelection.Containers {
 
             InternalChildren = new Drawable[] {
                 // BorderOuterBox
-                new BorderOuterBox {
-                    SongSelectionScreen = SongSelectionScreen,
-                },
+                new BorderOuterBox { },
                 // TextContainer
                 new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
