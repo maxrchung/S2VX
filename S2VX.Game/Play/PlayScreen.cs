@@ -14,20 +14,20 @@ using S2VX.Game.Story;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
-        private string AudioDir { get; set; }
+        private string AudioPath { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private string CurSelectionPath { get; set; }
-        private string StoryDir { get; set; }
-        private string FullStoryDir { get; set; }
-        public PlayScreen(bool isUsingEditorSettings, string curSelectionPath, string storyDir,
-            StorageBackedResourceStore curLevelResourceStore, string audioDir) {
+        private string StoryPath { get; set; }
+        private string FullStoryPath { get; set; }
+        public PlayScreen(bool isUsingEditorSettings, string curSelectionPath, string storyPath,
+            StorageBackedResourceStore curLevelResourceStore, string audioPath) {
 
             IsUsingEditorSettings = isUsingEditorSettings;
             CurSelectionPath = curSelectionPath;
-            StoryDir = storyDir;
-            AudioDir = audioDir;
+            StoryPath = storyPath;
+            AudioPath = audioPath;
             CurLevelResourceStore = curLevelResourceStore;
-            FullStoryDir = CurSelectionPath + "/" + StoryDir;
+            FullStoryPath = CurSelectionPath + "/" + StoryPath;
         }
 
         // Flag denoting whether (true) to use a story's editor settings or
@@ -58,10 +58,10 @@ namespace S2VX.Game.Play {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Story.Open(FullStoryDir, false);
+            Story.Open(FullStoryPath, false);
             Story.ClearActives();
 
-            var trackStream = CurLevelResourceStore.GetStream(AudioDir);
+            var trackStream = CurLevelResourceStore.GetStream(AudioPath);
             var trackBass = new TrackBass(trackStream);
             audio.AddItem(trackBass);
             var track = new DrawableTrack(trackBass);

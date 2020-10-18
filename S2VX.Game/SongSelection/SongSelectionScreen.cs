@@ -108,7 +108,7 @@ namespace S2VX.Game.Play {
                     },
                 };
             } else {
-                var (directoryContainsStory, storyDir, audioDir) = DirectoryContainsStory("");
+                var (directoryContainsStory, storyPath, audioPath) = DirectoryContainsStory("");
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
@@ -134,8 +134,8 @@ namespace S2VX.Game.Play {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             CurSelectionPath = CurSelectionPath,
-                            StoryPath = storyDir,
-                            AudioPath = audioDir,
+                            StoryPath = storyPath,
+                            AudioPath = audioPath,
                             CurLevelResourceStore = CurLevelResourceStore,
                         },
                     };
