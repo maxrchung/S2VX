@@ -46,7 +46,6 @@ namespace S2VX.Game.SongSelection.Containers {
                     // TODO: truncate text if it's too long
                 },
                 BorderInnerBox = new BorderInnerBox {
-                    BorderOuterBox = BorderOuterBox,
                     Colour = Color4.Black,
                     Width = InnerBoxRelativeSize,
                     Height = InnerBoxRelativeSize,
