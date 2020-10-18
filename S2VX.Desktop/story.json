@@ -315,9 +315,23 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 148293.62811791385,
+    "TrackTime": 144027.32426303855,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 2
+  },
+  "MetadataSettings": {
+    "SongTitle": null,
+    "SongArtist": null,
+    "StoryAuthor": null,
+    "StoryChapter": null,
+    "SlowestBPM": 242.0,
+    "FastestBPM": 242.0,
+    "SongLength": 150165.29131762902,
+    "CommandCount": 5,
+    "NoteCount": 35,
+    "ThumbnailFileName": null,
+    "SongFileName": null,
+    "MiscDescription": null
   }
 }

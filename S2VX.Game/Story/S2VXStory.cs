@@ -3,10 +3,10 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using S2VX.Game.Editor;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
 using S2VX.Game.Story.Note;
+using S2VX.Game.Story.Settings;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,10 +36,9 @@ namespace S2VX.Game.Story {
             new NoteConverter()
         };
 
-        private EditorSettings EditorSettings = new EditorSettings();
+        public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
-        public EditorSettings GetEditorSettings() => EditorSettings;
-        public void SetEditorSettings(EditorSettings value) => EditorSettings = value;
+        public MetadataSettings MetadataSettings { get; private set; } = new MetadataSettings();
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -112,16 +111,21 @@ namespace S2VX.Game.Story {
                 notes[i].Approach = approaches[i];
             }
 
-            SetEditorSettings(JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString()));
+            EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
+            MetadataSettings = JsonConvert.DeserializeObject<MetadataSettings>(story[nameof(MetadataSettings)].ToString());
+            MetadataSettings.Calculate(this);
         }
 
         public void Save(string path) {
             var notes = Notes.Children;
             notes.Sort();
+            MetadataSettings.Calculate(this);
+
             var obj = new {
                 Commands,
                 Notes = notes,
-                EditorSettings = GetEditorSettings(),
+                EditorSettings,
+                MetadataSettings
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
