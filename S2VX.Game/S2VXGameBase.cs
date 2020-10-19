@@ -17,7 +17,7 @@ namespace S2VX.Game {
         protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
 
         [BackgroundDependencyLoader]
-        private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(typeof(S2VXResources).Assembly));
+        private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
 
         protected override void Dispose(bool isDisposing) {
             ResourceStore.Dispose();

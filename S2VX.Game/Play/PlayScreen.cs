@@ -1,8 +1,10 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Input.Events;
+using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK.Input;
@@ -12,15 +14,31 @@ using S2VX.Game.Story;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
-        private S2VXStory Story { get; set; }
+        private string AudioPath { get; set; }
+        private StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        private string CurSelectionPath { get; set; }
+        private string StoryPath { get; set; }
+        private string FullStoryPath { get; set; }
+        public PlayScreen(bool isUsingEditorSettings, string curSelectionPath, string storyPath,
+            StorageBackedResourceStore curLevelResourceStore, string audioPath) {
 
-        public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
+            IsUsingEditorSettings = isUsingEditorSettings;
+            CurSelectionPath = curSelectionPath;
+            StoryPath = storyPath;
+            AudioPath = audioPath;
+            CurLevelResourceStore = curLevelResourceStore;
+            FullStoryPath = CurSelectionPath + "/" + StoryPath;
+        }
 
         // Flag denoting whether (true) to use a story's editor settings or
         // (false) to start at 0
         private bool IsUsingEditorSettings { get; set; }
 
         public PlayScreen(bool isUsingEditorSettings) => IsUsingEditorSettings = isUsingEditorSettings;
+
+        private S2VXStory Story { get; set; }
+
+        public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
 
         // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
@@ -40,10 +58,13 @@ namespace S2VX.Game.Play {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Story.Open(@"../../../story.json", false);
+            Story.Open(FullStoryPath, false);
             Story.ClearActives();
 
-            var track = new DrawableTrack(audio.Tracks.Get(@"Camellia_MEGALOVANIA_Remix.mp3"));
+            var trackStream = CurLevelResourceStore.GetStream(AudioPath);
+            var trackBass = new TrackBass(trackStream);
+            audio.AddItem(trackBass);
+            var track = new DrawableTrack(trackBass);
             if (IsUsingEditorSettings) {
                 var settings = Story.EditorSettings;
                 var trackTime = settings.TrackTime;
