@@ -85,6 +85,18 @@ namespace S2VX.Game.Story {
             Approaches.RemoveApproach(note);
         }
 
+        // Before starting the Story in the PlayScreen, we want to explicitly
+        // remove GameNotes up to some certain track time. This is so that we
+        // won't hear Miss hitsounds and prematurely calculate score.
+        public void RemoveNotesUpTo(double trackTime) {
+            for (var index = Notes.Children.Count - 1; index >= 0; --index) {
+                if (Notes.Children[index].EndTime > trackTime) {
+                    break;
+                }
+                RemoveNote(Notes.Children[index]);
+            }
+        }
+
         public void Open(string path, bool isForEditor) {
             Commands.Clear();
             var text = File.ReadAllText(path);
