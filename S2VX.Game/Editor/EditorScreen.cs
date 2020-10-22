@@ -27,17 +27,12 @@ namespace S2VX.Game.Editor {
         private string CurSelectionPath { get; set; }
         private string StoryPath { get; set; }
         private string FullStoryPath { get; set; }
-        // TODO: Remove when Song Selection metadata screen is implemented
         public EditorScreen(string curSelectionPath, string storyPath, StorageBackedResourceStore curLevelResourceStore, string audioPath) {
             CurSelectionPath = curSelectionPath;
             StoryPath = storyPath;
             AudioPath = audioPath;
             CurLevelResourceStore = curLevelResourceStore;
             FullStoryPath = CurSelectionPath + "/" + StoryPath;
-        }
-        public EditorScreen(string curSelectionPath, string storyPath) {
-            CurSelectionPath = curSelectionPath;
-            StoryPath = storyPath;
         }
 
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
