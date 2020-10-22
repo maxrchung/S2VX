@@ -101,7 +101,6 @@ namespace S2VX.Game.Play {
                         Origin = Anchor.Centre,
                         Child = new FillFlowContainer {
                             Width = fullWidth * innerSize,
-                            Height = fullHeight * innerSize,
                             AutoSizeAxes = Axes.Y,
                             Direction = FillDirection.Full,
                             Children = CreateSelectionItems()
