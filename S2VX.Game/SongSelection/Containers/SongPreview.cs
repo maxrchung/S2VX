@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osuTK;
@@ -15,10 +16,11 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public string CurSelectionPath { get; set; }                           // Set in SongSelectionScreen
-        public string StoryPath { get; set; }                                  // Set in SongSelectionScreen
-        public string AudioPath { get; set; }                                  // Set in SongSelectionScreen
-        public StorageBackedResourceStore CurLevelResourceStore { get; set; }  // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }                           // Must be set in SongSelectionScreen
+        public string StoryPath { get; set; }                                  // Must be set in SongSelectionScreen
+        public string AudioPath { get; set; }                                  // Must be set in SongSelectionScreen
+        public StorageBackedResourceStore CurLevelResourceStore { get; set; }  // Must be set in SongSelectionScreen
+        public Texture ThumbnailTexture { get; set; }                          // Can be set in SongSelectionScreen
         private TextFlowContainer TextContainer { get; set; }
         private IconButton BtnEdit { get; set; }
         private IconButton BtnPlay { get; set; }
@@ -78,6 +80,7 @@ namespace S2VX.Game.SongSelection.Containers {
                                 Horizontal = fullWidth * spacingMargin,
                                 Vertical = fullHeight * spacingMargin,
                             },
+                            Texture = ThumbnailTexture,
                             TextureName = "logo",
                         },
                         TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {

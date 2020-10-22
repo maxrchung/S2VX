@@ -2,6 +2,7 @@
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
@@ -30,18 +31,22 @@ namespace S2VX.Game.Play {
             var selectionItems = new List<Drawable>();
             var dirs = Storage.GetDirectories("");
             foreach (var dir in dirs) {
+                var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
                 selectionItems.Add(new SelectedItemDisplay {
                     ItemName = dir,
                     CurSelectionPath = CurSelectionPath,
+                    ThumbnailTexture = string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 });
             }
             return selectionItems;
         }
 
-        private (bool, string, string) DirectoryContainsStory(string dir) {
+        private (bool, string, string, Texture) DirectoryContainsStory(string dir) {
             var story = Storage.GetFiles(dir, "*.s2ry");
             var song = Storage.GetFiles(dir, "audio.mp3");
-            return (story.Count() == 1 && song.Count() == 1, story.FirstOrDefault(), song.FirstOrDefault());
+            var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
+            var thumbnail = string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath));
+            return (story.Count() == 1 && song.Count() == 1, story.FirstOrDefault(), song.FirstOrDefault(), thumbnail);
         }
 
         private bool DirectoryContainsDirectories(string dir) => Storage.GetDirectories(dir).Any();
@@ -108,7 +113,7 @@ namespace S2VX.Game.Play {
                     },
                 };
             } else {
-                var (directoryContainsStory, storyPath, audioPath) = DirectoryContainsStory("");
+                var (directoryContainsStory, storyPath, audioPath, thumbnailTexture) = DirectoryContainsStory("");
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
@@ -136,6 +141,7 @@ namespace S2VX.Game.Play {
                             CurSelectionPath = CurSelectionPath,
                             StoryPath = storyPath,
                             AudioPath = audioPath,
+                            ThumbnailTexture = thumbnailTexture,
                             CurLevelResourceStore = CurLevelResourceStore,
                         },
                     };
