@@ -15,17 +15,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Stories\Story\audio.mp3" />
-  </ItemGroup>
   <ItemGroup Label="Project References">
     <ProjectReference Include="..\S2VX.Game\S2VX.Game.csproj" />
   </ItemGroup>
   <ItemGroup Label="Resources">
     <EmbeddedResource Include="game.ico" />
-    <EmbeddedResource Include="Stories\Story\audio.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Menees.Analyzers" Version="2.0.4">
@@ -39,11 +33,14 @@
     <PackageReference Include="ppy.osu.Framework" Version="2020.911.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Stories\Story\audio.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Stories\Story\metadata.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Stories\Story\story.s2ry">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>
