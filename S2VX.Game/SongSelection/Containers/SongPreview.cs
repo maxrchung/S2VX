@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using Newtonsoft.Json;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -8,9 +9,12 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Play;
+using S2VX.Game.Story.Settings;
+using System.IO;
 
 namespace S2VX.Game.SongSelection.Containers {
     public class SongPreview : CompositeDrawable {
+        private const string MetadataPath = "metadata.json";
 
         [Resolved]
         private ScreenStack Screens { get; set; }
@@ -24,15 +28,17 @@ namespace S2VX.Game.SongSelection.Containers {
         private IconButton BtnPlay { get; set; }
 
         private void AddSongMetadata() {
-            // TODO: Connect these to .s2ry's metadata and play a section of the song
-            TextContainer.AddParagraph("SongTitle");
-            TextContainer.AddParagraph("SongArtist");
-            TextContainer.AddParagraph("StoryAuthor");
-            TextContainer.AddParagraph("SlowestBPM ~ FastestBPM");
-            TextContainer.AddParagraph("StoryLength");
-            TextContainer.AddParagraph("CommandCount");
-            TextContainer.AddParagraph("NoteCount");
-            TextContainer.AddParagraph("MiscDescription");
+            var metadataPath = Path.Combine(CurSelectionPath, MetadataPath);
+            var metadata = new MetadataSettings();
+            if (File.Exists(metadataPath)) {
+                var text = File.ReadAllText(metadataPath);
+                metadata = JsonConvert.DeserializeObject<MetadataSettings>(text);
+            }
+
+            TextContainer.AddParagraph($"Title: {metadata.SongTitle}");
+            TextContainer.AddParagraph($"Artist: {metadata.SongArtist}");
+            TextContainer.AddParagraph($"Author: {metadata.StoryAuthor}");
+            TextContainer.AddParagraph($"Description: {metadata.SongTitle}");
         }
 
         [BackgroundDependencyLoader]
