@@ -38,7 +38,7 @@ namespace S2VX.Game.SongSelection.Containers {
             TextContainer.AddParagraph($"Title: {metadata.SongTitle}");
             TextContainer.AddParagraph($"Artist: {metadata.SongArtist}");
             TextContainer.AddParagraph($"Author: {metadata.StoryAuthor}");
-            TextContainer.AddParagraph($"Description: {metadata.SongTitle}");
+            TextContainer.AddParagraph($"Description: {metadata.MiscDescription}");
         }
 
         [BackgroundDependencyLoader]
