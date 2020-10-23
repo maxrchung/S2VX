@@ -32,11 +32,11 @@ namespace S2VX.Game.Play {
             var dirs = Storage.GetDirectories("");
             foreach (var dir in dirs) {
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
-                selectionItems.Add(new SelectedItemDisplay {
-                    ItemName = dir,
-                    CurSelectionPath = CurSelectionPath,
-                    ThumbnailTexture = string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
-                });
+                selectionItems.Add(new SelectedItemDisplay(
+                    dir,
+                    CurSelectionPath,
+                    string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
+                ));
             }
             return selectionItems;
         }
@@ -133,16 +133,11 @@ namespace S2VX.Game.Play {
                             InnerBoxRelativeSize = innerSize,
                             CurSelectionPath = CurSelectionPath,
                         },
-                        new SongPreview {
+                        new SongPreview (CurSelectionPath, storyPath, audioPath, CurLevelResourceStore, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            CurSelectionPath = CurSelectionPath,
-                            StoryPath = storyPath,
-                            AudioPath = audioPath,
-                            ThumbnailTexture = thumbnailTexture,
-                            CurLevelResourceStore = CurLevelResourceStore,
                         },
                     };
                 }

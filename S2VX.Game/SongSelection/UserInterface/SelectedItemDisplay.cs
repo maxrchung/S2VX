@@ -18,11 +18,17 @@ namespace S2VX.Game.SongSelection.UserInterface {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        public string ItemName { get; set; }                            // Must be set in SongSelectionScreen
-        public string CurSelectionPath { get; set; }                    // Must be set in SongSelectionScreen
-        public Texture ThumbnailTexture { get; set; }                   // Can be set in SongSelectionScreen
+        public string ItemName { get; set; }
+        public string CurSelectionPath { get; set; }
+        public Texture ThumbnailTexture { get; set; }
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
+
+        public SelectedItemDisplay(string itemName, string curSelectionPath, Texture thumbnailTexture = null) {
+            ItemName = itemName;
+            CurSelectionPath = curSelectionPath;
+            ThumbnailTexture = thumbnailTexture;
+        }
 
         protected override bool OnHover(HoverEvent e) {
             SelectedIndicatorBox.Alpha = 1;

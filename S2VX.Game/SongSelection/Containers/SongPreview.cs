@@ -16,14 +16,28 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public string CurSelectionPath { get; set; }                           // Must be set in SongSelectionScreen
-        public string StoryPath { get; set; }                                  // Must be set in SongSelectionScreen
-        public string AudioPath { get; set; }                                  // Must be set in SongSelectionScreen
-        public StorageBackedResourceStore CurLevelResourceStore { get; set; }  // Must be set in SongSelectionScreen
-        public Texture ThumbnailTexture { get; set; }                          // Can be set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }
+        public string StoryPath { get; set; }
+        public string AudioPath { get; set; }
+        public StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        public Texture ThumbnailTexture { get; set; }
         private TextFlowContainer TextContainer { get; set; }
         private IconButton BtnEdit { get; set; }
         private IconButton BtnPlay { get; set; }
+
+        public SongPreview(
+            string curSelectionPath,
+            string storyPath,
+            string audioPath,
+            StorageBackedResourceStore curLevelResourceStore,
+            Texture thumbnailTexture = null
+        ) {
+            CurSelectionPath = curSelectionPath;
+            StoryPath = storyPath;
+            AudioPath = audioPath;
+            CurLevelResourceStore = curLevelResourceStore;
+            ThumbnailTexture = thumbnailTexture;
+        }
 
         private void AddSongMetadata() {
             // TODO: Connect these to .s2ry's metadata and play a section of the song
