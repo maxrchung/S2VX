@@ -38,7 +38,7 @@ namespace S2VX.Game.Story {
 
         public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
-        public MetadataSettings MetadataSettings { get; private set; } = new MetadataSettings();
+        public DifficultySettings DifficultySettings { get; private set; } = new DifficultySettings();
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -113,20 +113,20 @@ namespace S2VX.Game.Story {
             }
 
             EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
-            MetadataSettings = JsonConvert.DeserializeObject<MetadataSettings>(story[nameof(MetadataSettings)].ToString());
-            MetadataSettings.Calculate(this);
+            DifficultySettings = JsonConvert.DeserializeObject<DifficultySettings>(story[nameof(DifficultySettings)].ToString());
+            DifficultySettings.Calculate(this);
         }
 
         public void Save(string path) {
             var notes = Notes.Children;
             notes.Sort();
-            MetadataSettings.Calculate(this);
+            DifficultySettings.Calculate(this);
 
             var obj = new {
                 Commands,
                 Notes = notes,
                 EditorSettings,
-                MetadataSettings
+                DifficultySettings
             };
             var serialized = JsonConvert.SerializeObject(obj, Formatting.Indented, Converters);
             File.WriteAllText(path, serialized);
