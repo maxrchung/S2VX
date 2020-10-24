@@ -2,6 +2,7 @@
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
@@ -30,18 +31,22 @@ namespace S2VX.Game.Play {
             var selectionItems = new List<Drawable>();
             var dirs = Storage.GetDirectories("");
             foreach (var dir in dirs) {
-                selectionItems.Add(new SelectedItemDisplay {
-                    ItemName = dir,
-                    CurSelectionPath = CurSelectionPath,
-                });
+                var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
+                selectionItems.Add(new SelectedItemDisplay(
+                    dir,
+                    CurSelectionPath,
+                    string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
+                ));
             }
             return selectionItems;
         }
 
-        private (bool, string, string) DirectoryContainsStory(string dir) {
+        private (bool, string, string, Texture) DirectoryContainsStory(string dir) {
             var story = Storage.GetFiles(dir, "*.s2ry");
             var song = Storage.GetFiles(dir, "audio.mp3");
-            return (story.Count() == 1 && song.Count() == 1, story.FirstOrDefault(), song.FirstOrDefault());
+            var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
+            var thumbnail = string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath));
+            return (story.Count() == 1 && song.Count() == 1, story.FirstOrDefault(), song.FirstOrDefault(), thumbnail);
         }
 
         private bool DirectoryContainsDirectories(string dir) => Storage.GetDirectories(dir).Any();
@@ -84,11 +89,10 @@ namespace S2VX.Game.Play {
 
             if (DirectoryContainsDirectories("")) {
                 InternalChildren = new Drawable[] {
-                    new Border {
+                    new Border(CurSelectionPath) {
                         Width = fullWidth,
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
-                        CurSelectionPath = CurSelectionPath,
                     },
                     new BasicScrollContainer {
                         Width = fullWidth * innerSize,
@@ -108,35 +112,29 @@ namespace S2VX.Game.Play {
                     },
                 };
             } else {
-                var (directoryContainsStory, storyPath, audioPath) = DirectoryContainsStory("");
+                var (directoryContainsStory, storyPath, audioPath, thumbnailTexture) = DirectoryContainsStory("");
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
-                        new Border {
+                        new Border(CurSelectionPath) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            CurSelectionPath = CurSelectionPath,
                             Colour = Color4.Red,
                         },
                     };
                 } else {
                     InternalChildren = new Drawable[] {
-                        new Border {
+                        new Border(CurSelectionPath) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            CurSelectionPath = CurSelectionPath,
                         },
-                        new SongPreview {
+                        new SongPreview (CurSelectionPath, storyPath, audioPath, CurLevelResourceStore, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            CurSelectionPath = CurSelectionPath,
-                            StoryPath = storyPath,
-                            AudioPath = audioPath,
-                            CurLevelResourceStore = CurLevelResourceStore,
                         },
                     };
                 }

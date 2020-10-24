@@ -4,6 +4,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
@@ -17,10 +18,17 @@ namespace S2VX.Game.SongSelection.UserInterface {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        public string ItemName { get; set; }                            // Set in SongSelectionScreen
-        public string CurSelectionPath { get; set; }                    // Set in SongSelectionScreen
+        public string ItemName { get; set; }
+        public string CurSelectionPath { get; set; }
+        public Texture ThumbnailTexture { get; set; }
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
+
+        public SelectedItemDisplay(string itemName, string curSelectionPath, Texture thumbnailTexture = null) {
+            ItemName = itemName;
+            CurSelectionPath = curSelectionPath;
+            ThumbnailTexture = thumbnailTexture;
+        }
 
         protected override bool OnHover(HoverEvent e) {
             SelectedIndicatorBox.Alpha = 1;
@@ -55,6 +63,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Size = new Vector2(boxSize),
+                    Texture = ThumbnailTexture,
                     TextureName = "logo",
                     Action = () => {
                         Audio.Samples.Get("menuhit").Play();
