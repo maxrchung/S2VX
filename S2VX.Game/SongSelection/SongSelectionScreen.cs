@@ -89,11 +89,10 @@ namespace S2VX.Game.Play {
 
             if (DirectoryContainsDirectories("")) {
                 InternalChildren = new Drawable[] {
-                    new Border {
+                    new Border(CurSelectionPath) {
                         Width = fullWidth,
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
-                        CurSelectionPath = CurSelectionPath,
                     },
                     new BasicScrollContainer {
                         Width = fullWidth * innerSize,
@@ -117,21 +116,19 @@ namespace S2VX.Game.Play {
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
-                        new Border {
+                        new Border(CurSelectionPath) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            CurSelectionPath = CurSelectionPath,
                             Colour = Color4.Red,
                         },
                     };
                 } else {
                     InternalChildren = new Drawable[] {
-                        new Border {
+                        new Border(CurSelectionPath) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
-                            CurSelectionPath = CurSelectionPath,
                         },
                         new SongPreview (CurSelectionPath, storyPath, audioPath, CurLevelResourceStore, thumbnailTexture) {
                             Width = fullWidth * innerSize,

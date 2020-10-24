@@ -11,8 +11,12 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public string CurSelectionPath { get; set; }    // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
+
+        public Border(string curSelectionPath) {
+            CurSelectionPath = curSelectionPath;
+        }
 
         [BackgroundDependencyLoader]
         private void Load() {
