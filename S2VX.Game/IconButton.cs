@@ -11,9 +11,16 @@ using osu.Framework.Allocation;
 using osuTK;
 
 namespace S2VX.Game {
+    /// <summary>
+    /// <para>A BasicButton with an image. Can be initialized to use a Texture, TextureName (from Resources), or FontAwesome Icon.</para>
+    /// <br><c>Icon</c> will be used if <c>Icon</c> is set and all other inputs will be ignored.</br>
+    /// <br><c>Texture</c> will be used if <c>Texture</c> is set and not null.</br>
+    /// <br><c>TextureName</c> will be used if <c>Texture</c> is null and <c>TextureName</c> is set and not null.</br>
+    /// <br>The logo from Resources will be used if all of the above are null or empty.</br>
+    /// </summary>
     public class IconButton : Button {
 
-        // Can be initialized to use a Texture or FontAwesome Icon
+        public Texture Texture { get; set; }
         public string TextureName { get; set; }
         public IconUsage Icon { get; set; }
         public float IconSize { get; set; } = 0.8f;     // As a proportion of the button
@@ -95,8 +102,7 @@ namespace S2VX.Game {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = FrameworkColour.BlueGreen,
-                    Texture = store.Get(TextureName) ?? Texture.WhitePixel, // This will handle the else condition
+                    Texture = Texture ?? store.Get(TextureName) ?? Texture.WhitePixel, // This will handle the else condition
                 };
             }
             AddRange(new Drawable[] {

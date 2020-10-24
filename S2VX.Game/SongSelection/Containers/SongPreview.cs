@@ -3,6 +3,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osuTK;
@@ -19,13 +20,28 @@ namespace S2VX.Game.SongSelection.Containers {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public string CurSelectionPath { get; set; }                           // Set in SongSelectionScreen
-        public string StoryPath { get; set; }                                  // Set in SongSelectionScreen
-        public string AudioPath { get; set; }                                  // Set in SongSelectionScreen
-        public StorageBackedResourceStore CurLevelResourceStore { get; set; }  // Set in SongSelectionScreen
+        public string CurSelectionPath { get; set; }
+        public string StoryPath { get; set; }
+        public string AudioPath { get; set; }
+        public StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        public Texture ThumbnailTexture { get; set; }
         private TextFlowContainer TextContainer { get; set; }
         private IconButton BtnEdit { get; set; }
         private IconButton BtnPlay { get; set; }
+
+        public SongPreview(
+            string curSelectionPath,
+            string storyPath,
+            string audioPath,
+            StorageBackedResourceStore curLevelResourceStore,
+            Texture thumbnailTexture = null
+        ) {
+            CurSelectionPath = curSelectionPath;
+            StoryPath = storyPath;
+            AudioPath = audioPath;
+            CurLevelResourceStore = curLevelResourceStore;
+            ThumbnailTexture = thumbnailTexture;
+        }
 
         private void AddSongMetadata() {
             var metadataPath = Path.Combine(CurSelectionPath, MetadataPath);
@@ -84,6 +100,7 @@ namespace S2VX.Game.SongSelection.Containers {
                                 Horizontal = fullWidth * spacingMargin,
                                 Vertical = fullHeight * spacingMargin,
                             },
+                            Texture = ThumbnailTexture,
                             TextureName = "logo",
                         },
                         TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {

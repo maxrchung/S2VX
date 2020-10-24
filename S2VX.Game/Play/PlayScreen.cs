@@ -69,7 +69,7 @@ namespace S2VX.Game.Play {
                 var settings = Story.EditorSettings;
                 var trackTime = settings.TrackTime;
                 track.Seek(trackTime);
-                Story.Notes.RemoveNotesUpTo(trackTime);
+                Story.RemoveNotesUpTo(trackTime);
             }
 
             Clock = new FramedClock(track);
