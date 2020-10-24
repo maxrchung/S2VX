@@ -15,10 +15,10 @@ namespace S2VX.Game.Story.Note {
 
         private RelativeBox[] Lines { get; set; } = new RelativeBox[4]
         {
-            new RelativeBox(), // up	
-            new RelativeBox(), // down	
-            new RelativeBox(), // right	
-            new RelativeBox() // left	
+            new RelativeBox(), // up
+            new RelativeBox(), // down
+            new RelativeBox(), // right
+            new RelativeBox()  // left
         };
 
         [BackgroundDependencyLoader]
@@ -39,7 +39,7 @@ namespace S2VX.Game.Story.Note {
 
             if (time >= endFadeOut) {
                 Alpha = 0;
-                // Return early to save some calculations	
+                // Return early to save some calculations
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace S2VX.Game.Story.Note {
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
 
-            // Add extra thickness so corners overlap	
+            // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
             Lines[0].Position = offset + rotationY;
