@@ -32,4 +32,18 @@
     </PackageReference>
     <PackageReference Include="ppy.osu.Framework" Version="2020.911.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Stories\Story\audio.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Story\metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Story\story.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Story\thumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
