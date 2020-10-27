@@ -22,6 +22,9 @@ using System;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
+
+        public const double TrackTimeTolerance = 0.02;  // ms away from a tick or end of track will be considered to be on that tick or end of track
+
         private string AudioPath { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private string CurSelectionPath { get; set; }
@@ -322,12 +325,15 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        public void Restart() {
-            Track.Seek(0);
-            Story.ClearActives();
-        }
+        public void Restart() => Seek(0);
 
         public void Seek(double time) {
+            // This check is done for two reasons:
+            // 1. If Track.TrackLoaded is false, and therefore length is 0
+            // 2. If the track's length is truly less than track time tolerance
+            if (Track.Length >= TrackTimeTolerance) {
+                time = Math.Clamp(time, 0, Track.Length - TrackTimeTolerance);
+            }
             Track.Seek(time);
             Story.ClearActives();
         }
