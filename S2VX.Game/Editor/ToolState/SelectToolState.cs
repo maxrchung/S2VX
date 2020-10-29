@@ -82,11 +82,7 @@ namespace S2VX.Game.Editor.ToolState {
         private List<S2VXNote> GetVisibleStoryNotes() {
             var visibleStoryNotes = new List<S2VXNote>();
             foreach (var note in Story.Notes.Children) {
-                var leftTimeBound = note.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
-                var rightTimeBound = note.HitTime + Story.Notes.FadeOutTime;
-                var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
-
-                if (noteVisibleOnEditor) {
+                if (note.Alpha > 0) {
                     visibleStoryNotes.Add(note);
                 }
             }

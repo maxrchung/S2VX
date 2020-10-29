@@ -12,8 +12,8 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        private RelativeBox BoxOuter { get; } = new RelativeBox();
-        private RelativeBox BoxInner { get; } = new RelativeBox();
+        protected RelativeBox BoxOuter { get; } = new RelativeBox();
+        protected RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -33,7 +33,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         // These Update setters modify both the Note and a corresponding Approach
-        public void UpdateHitTime(double hitTime) {
+        public virtual void UpdateHitTime(double hitTime) {
             Approach.HitTime = hitTime;
             HitTime = hitTime;
             Story.Notes.Sort();
@@ -44,11 +44,24 @@ namespace S2VX.Game.Story.Note {
             Coordinates = coordinates;
         }
 
-        protected override void Update() {
+        protected void UpdatePlacement() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
 
+            Rotation = camera.Rotation;
+            Size = camera.Scale;
+
+            var cameraFactor = 1 / camera.Scale.X;
+            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
+            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
+
+            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
+            BoxOuter.Colour = notes.OutlineColor;
+        }
+
+        protected override void Update() {
+            var notes = Story.Notes;
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
 
@@ -58,16 +71,7 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            Rotation = camera.Rotation;
-            Size = camera.Scale;
-
-            var cameraFactor = 1 / camera.Scale.X;
-            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
-
-
-            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
-            BoxOuter.Colour = notes.OutlineColor;
+            UpdatePlacement();
 
             var startTime = HitTime - notes.ShowTime;
             if (time >= HitTime) {

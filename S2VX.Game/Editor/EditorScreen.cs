@@ -174,6 +174,7 @@ namespace S2VX.Game.Editor {
                             {
                                 new MenuItem("Select (1)", ToolSelect),
                                 new MenuItem("Note (2)", ToolNote),
+                                new MenuItem("Hold Note (3)", ToolHoldNote),
                                 new MenuItem("Camera (3)", ToolCamera),
                             }
                         }
@@ -258,6 +259,9 @@ namespace S2VX.Game.Editor {
                     ToolNote();
                     break;
                 case Key.Number3:
+                    ToolHoldNote();
+                    break;
+                case Key.Number4:
                     ToolCamera();
                     break;
                 case Key.BracketLeft:
@@ -439,6 +443,8 @@ namespace S2VX.Game.Editor {
         private void ToolSelect() => SetToolState(new SelectToolState());
 
         private void ToolNote() => SetToolState(new NoteToolState());
+
+        private void ToolHoldNote() => SetToolState(new HoldNoteToolState());
 
         private void ToolCamera() => SetToolState(new CameraToolState());
 
