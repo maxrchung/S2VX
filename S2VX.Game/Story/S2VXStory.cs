@@ -33,7 +33,8 @@ namespace S2VX.Game.Story {
         private static JsonConverter[] Converters { get; } = {
             new CommandConverter(),
             new Vector2Converter(),
-            new NoteConverter()
+            new HoldNoteConverter(),
+            new NoteConverter(),
         };
 
         public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
@@ -113,9 +114,15 @@ namespace S2VX.Game.Story {
                     ? JsonConvert.DeserializeObject<IEnumerable<EditorNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
                     : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story[nameof(Notes)].ToString()).Cast<S2VXNote>()
             ).ToList();
+            notes.AddRange((
+                isForEditor
+                    ? JsonConvert.DeserializeObject<IEnumerable<EditorHoldNote>>(story["HoldNotes"].ToString()).Cast<S2VXNote>()
+                    : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story["HoldNotes"].ToString()).Cast<S2VXNote>()
+            ).ToList());
             notes.Sort();
             Notes.SetChildren(notes);
             var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
+            approaches.AddRange(JsonConvert.DeserializeObject<List<Approach>>(story["HoldNotes"].ToString()));
             approaches.Sort();
             Approaches.SetChildren(approaches);
 
@@ -130,13 +137,16 @@ namespace S2VX.Game.Story {
         }
 
         public void Save(string path) {
-            var notes = Notes.Children;
+            var notes = Notes.GetNonHoldNotes();
             notes.Sort();
+            var holdNotes = Notes.GetHoldNotes();
+            holdNotes.Sort();
             DifficultySettings.Calculate(this);
 
             var obj = new {
                 Commands,
                 Notes = notes,
+                HoldNotes = holdNotes,
                 EditorSettings,
                 DifficultySettings
             };

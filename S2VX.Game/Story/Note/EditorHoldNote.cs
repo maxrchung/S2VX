@@ -5,11 +5,10 @@ using osu.Framework.Utils;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
-    public class EditorHoldNote : S2VXNote {
+    public class EditorHoldNote : HoldNote {
         private int NumHitSounds { get; set; }
         private List<double> HitSoundTimes { get; set; }
         private SampleChannel Hit { get; set; }
-        public double EndTime { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
