@@ -7,7 +7,7 @@ using System;
 
 namespace S2VX.Game.Story.Note {
     public class Approach : CompositeDrawable, IComparable<Approach> {
-        public double EndTime { get; set; }
+        public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
@@ -35,7 +35,7 @@ namespace S2VX.Game.Story.Note {
             var approaches = Story.Approaches;
 
             var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
+            var endFadeOut = HitTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
                 Alpha = 0;
@@ -43,7 +43,7 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            var startTime = EndTime - notes.ShowTime;
+            var startTime = HitTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
 
             var position = camera.Position;
@@ -53,8 +53,8 @@ namespace S2VX.Game.Story.Note {
 
             var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
 
-            var distance = time < EndTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, EndTime)
+            var distance = time < HitTime
+                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, HitTime)
                 : scale.X / 2;
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
@@ -78,8 +78,8 @@ namespace S2VX.Game.Story.Note {
             Lines[3].Rotation = rotation;
             Lines[3].Size = new Vector2(thickness, overlap);
 
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+            if (time >= HitTime) {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
                 Alpha = alpha;
             } else if (time >= startTime) {
                 Alpha = 1;
@@ -90,6 +90,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         // Sort Approaches from highest end time to lowest end time
-        public int CompareTo(Approach other) => other.EndTime.CompareTo(EndTime);
+        public int CompareTo(Approach other) => other.HitTime.CompareTo(HitTime);
     }
 }

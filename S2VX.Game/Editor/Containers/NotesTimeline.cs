@@ -264,8 +264,8 @@ namespace S2VX.Game.Editor.Containers {
             var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
             var color = Story.Notes.Colour;
             foreach (var note in Story.Notes.Children) {
-                if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
-                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
+                if (lowerBound <= note.HitTime && note.HitTime <= upperBound) {
+                    var relativePosition = (note.HitTime - lowerBound) / (SectionLength * SecondsToMS);
                     var visibleNote = new RelativeBox {
                         Colour = color,
                         Alpha = 0.727f,

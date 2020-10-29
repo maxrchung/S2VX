@@ -26,14 +26,14 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolClick(ClickEvent _) {
             var note = new EditorNote {
                 Coordinates = Editor.MousePosition,
-                EndTime = Time.Current
+                HitTime = Time.Current
             };
             Editor.Reversibles.Push(new ReversibleAddNote(Story, note));
             return false;
         }
 
         protected override void Update() {
-            Preview.EndTime = Time.Current;
+            Preview.HitTime = Time.Current;
             Preview.Coordinates = Editor.MousePosition;
             Preview.Colour = Story.Notes.Colour;
         }

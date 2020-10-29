@@ -3,7 +3,7 @@ using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 
 namespace S2VX.Game.Story.Note {
-    public class EditorNote : S2VXNote {
+    public class EditorHold : S2VXNote {
         private bool CanHit { get; set; }
         private SampleChannel Hit { get; set; }
 

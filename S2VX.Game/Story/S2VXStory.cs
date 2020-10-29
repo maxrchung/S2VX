@@ -90,7 +90,7 @@ namespace S2VX.Game.Story {
         // won't hear Miss hitsounds and prematurely calculate score.
         public void RemoveNotesUpTo(double trackTime) {
             for (var index = Notes.Children.Count - 1; index >= 0; --index) {
-                if (Notes.Children[index].EndTime > trackTime) {
+                if (Notes.Children[index].HitTime > trackTime) {
                     break;
                 }
                 RemoveNote(Notes.Children[index]);

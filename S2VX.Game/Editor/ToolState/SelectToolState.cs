@@ -82,8 +82,8 @@ namespace S2VX.Game.Editor.ToolState {
         private List<S2VXNote> GetVisibleStoryNotes() {
             var visibleStoryNotes = new List<S2VXNote>();
             foreach (var note in Story.Notes.Children) {
-                var leftTimeBound = note.EndTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
-                var rightTimeBound = note.EndTime + Story.Notes.FadeOutTime;
+                var leftTimeBound = note.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime;
+                var rightTimeBound = note.HitTime + Story.Notes.FadeOutTime;
                 var noteVisibleOnEditor = leftTimeBound <= Time.Current && Time.Current <= rightTimeBound;
 
                 if (noteVisibleOnEditor) {
@@ -94,7 +94,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         private void AddNoteSelection(S2VXNote note) {
-            SelectedNoteToTime[note] = note.EndTime;
+            SelectedNoteToTime[note] = note.HitTime;
             var noteSelection = new RelativeBox {
                 Colour = Color4.LimeGreen.Opacity(0.5f),
                 Width = note.Size.X + SelectionIndicatorThickness,
@@ -137,7 +137,7 @@ namespace S2VX.Game.Editor.ToolState {
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     ToDrag = SelectToolDragState.DragTimelineNote;
-                    OldEndTime = selectedNoteTime = note.EndTime;
+                    OldEndTime = selectedNoteTime = note.HitTime;
                     break;
                 }
             }
@@ -155,7 +155,7 @@ namespace S2VX.Game.Editor.ToolState {
                 case SelectToolDragState.DragTimelineNote:
                     foreach (var noteAndTime in SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        TimelineNoteToDragPointDelta[note] = note.EndTime - selectedNoteTime;
+                        TimelineNoteToDragPointDelta[note] = note.HitTime - selectedNoteTime;
                     }
                     break;
                 case SelectToolDragState.DragNote:
@@ -196,7 +196,7 @@ namespace S2VX.Game.Editor.ToolState {
 
                         foreach (var note in SelectedNoteToTime.Keys.ToList()) {
                             var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
-                            note.UpdateEndTime(newTime);
+                            note.UpdateHitTime(newTime);
                             SelectedNoteToTime[note] = newTime;
                         }
                         break;
@@ -225,7 +225,7 @@ namespace S2VX.Game.Editor.ToolState {
 
                     foreach (var note in SelectedNoteToTime.Keys.ToList()) {
                         var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
-                        Editor.Reversibles.Push(new ReversibleUpdateNoteEndTime(note, OldEndTime, newTime, SelectedNoteToTime));
+                        Editor.Reversibles.Push(new ReversibleUpdateNoteHitTime(note, OldEndTime, newTime, SelectedNoteToTime));
                         SelectedNoteToTime[note] = newTime;
                     }
                     break;

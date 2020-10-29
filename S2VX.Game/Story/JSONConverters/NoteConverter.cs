@@ -4,11 +4,11 @@ using S2VX.Game.Story.Note;
 using System;
 
 namespace S2VX.Game.Story.JSONConverters {
-    // Special converter for Note serialization since we only care about EndTime and Coordinates
+    // Special converter for Note serialization since we only care about HitTime and Coordinates
     public class NoteConverter : JsonConverter<S2VXNote> {
         public override void WriteJson(JsonWriter writer, S2VXNote note, JsonSerializer serializer) {
             var obj = new JObject {
-                { "EndTime", note.EndTime }
+                { "HitTime", note.HitTime }
             };
             var coordinates = new JObject {
                 { "X", note.Coordinates.X },

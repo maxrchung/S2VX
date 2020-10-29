@@ -7,7 +7,7 @@ using System;
 
 namespace S2VX.Game.Story.Note {
     public abstract class S2VXNote : CompositeDrawable, IComparable<S2VXNote> {
-        public double EndTime { get; set; }
+        public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         public Approach Approach { get; set; }
@@ -33,9 +33,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         // These Update setters modify both the Note and a corresponding Approach
-        public void UpdateEndTime(double endTime) {
-            Approach.EndTime = endTime;
-            EndTime = endTime;
+        public void UpdateHitTime(double hitTime) {
+            Approach.HitTime = hitTime;
+            HitTime = hitTime;
             Story.Notes.Sort();
         }
 
@@ -50,7 +50,7 @@ namespace S2VX.Game.Story.Note {
             var grid = Story.Grid;
 
             var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
+            var endFadeOut = HitTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
                 Alpha = 0;
@@ -69,9 +69,9 @@ namespace S2VX.Game.Story.Note {
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
             BoxOuter.Colour = notes.OutlineColor;
 
-            var startTime = EndTime - notes.ShowTime;
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+            var startTime = HitTime - notes.ShowTime;
+            if (time >= HitTime) {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
                 Alpha = alpha;
             } else if (time >= startTime) {
                 Alpha = 1;
@@ -83,6 +83,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         // Sort Notes from highest end time to lowest end time
-        public int CompareTo(S2VXNote other) => other.EndTime.CompareTo(EndTime);
+        public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);
     }
 }

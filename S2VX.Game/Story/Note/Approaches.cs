@@ -17,7 +17,7 @@ namespace S2VX.Game.Story.Note {
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {
                 Coordinates = note.Coordinates,
-                EndTime = note.EndTime
+                HitTime = note.HitTime
             };
             Children.Add(approach);
             AddInternal(approach);
