@@ -117,7 +117,7 @@ namespace S2VX.Game.Story {
             notes.AddRange((
                 isForEditor
                     ? JsonConvert.DeserializeObject<IEnumerable<EditorHoldNote>>(story["HoldNotes"].ToString()).Cast<S2VXNote>()
-                    : JsonConvert.DeserializeObject<IEnumerable<GameNote>>(story["HoldNotes"].ToString()).Cast<S2VXNote>()
+                    : JsonConvert.DeserializeObject<IEnumerable<GameHoldNote>>(story["HoldNotes"].ToString()).Cast<S2VXNote>()
             ).ToList());
             notes.Sort();
             Notes.SetChildren(notes);
