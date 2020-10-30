@@ -79,7 +79,13 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
+        private static void AddErrorIndicator() => Console.WriteLine("Error Encountered");
+
         private void HandleAddClick() {
+            if (!double.TryParse(TxtStartTime.Current.Value, out var _) || !double.TryParse(TxtEndTime.Current.Value, out var _)) {
+                AddErrorIndicator();
+                return;
+            }
             var data = new string[]
             {
                 $"{DropType.Current.Value}",
@@ -91,6 +97,10 @@ namespace S2VX.Game.Editor.Containers {
             };
             var join = string.Join("|", data);
             var command = S2VXCommand.FromString(join);
+            if (command == null) {
+                AddErrorIndicator();
+                return;
+            }
             HandleAddCommand(command);
         }
 

@@ -55,11 +55,15 @@ namespace S2VX.Game.Story.Command {
             var commandName = split[0];
             var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandName}Command");
             var staticMethod = systemType.GetMethod("FromString", BindingFlags.Public | BindingFlags.Static);
-            var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
-            command.StartTime = double.Parse(split[1], CultureInfo.InvariantCulture);
-            command.EndTime = double.Parse(split[2], CultureInfo.InvariantCulture);
-            command.Easing = Enum.Parse<Easing>(split[3]);
-            return command;
+            try {
+                var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
+                command.StartTime = double.Parse(split[1], CultureInfo.InvariantCulture);
+                command.EndTime = double.Parse(split[2], CultureInfo.InvariantCulture);
+                command.Easing = Enum.Parse<Easing>(split[3]);
+                return command;
+            } catch (TargetInvocationException) {
+                return null;
+            }
         }
 
         public static S2VXCommand FromJson(JObject json) {
