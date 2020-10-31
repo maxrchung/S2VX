@@ -19,11 +19,6 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
-        public override void UpdateHitTime(double hitTime) {
-            base.UpdateHitTime(hitTime);
-            EndTime = hitTime + 1000;   // TODO: change this
-        }
-
         protected override void Update() {
             base.Update();
 

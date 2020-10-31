@@ -29,7 +29,7 @@ namespace S2VX.Game.Editor.ToolState {
                 HitTime = Time.Current,
                 EndTime = Time.Current + 1000   // TODO: change this
             };
-            Editor.Reversibles.Push(new ReversibleAddNote(Story, note));
+            Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note));
             return false;
         }
 
