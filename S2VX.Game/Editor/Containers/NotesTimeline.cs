@@ -233,14 +233,13 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         public void SnapToTick(bool snapLeft) {
-            var tolerance = 0.02; // ms away from a tick will be considered to be on that tick
             var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Editor.Track.Length / numTicks;
             var currentTick = (Time.Current - Story.Offset) / timeBetweenTicks;
             var currentTickTime = currentTick * timeBetweenTicks;
             var nearestTick = Math.Round(currentTick);
             var nearestTickTime = nearestTick * timeBetweenTicks;
-            var onTick = Math.Abs(nearestTickTime - currentTickTime) <= tolerance;
+            var onTick = Math.Abs(nearestTickTime - currentTickTime) <= EditorScreen.TrackTimeTolerance;
             var leftTickTime = timeBetweenTicks;
             var rightTickTime = timeBetweenTicks;
             if (onTick) {
