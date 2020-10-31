@@ -193,6 +193,7 @@ namespace S2VX.Game.Editor.ToolState {
                         foreach (var note in SelectedNoteToTime.Keys.ToList()) {
                             var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
                             note.UpdateHitTime(newTime);
+
                             SelectedNoteToTime[note] = newTime;
                         }
                         break;

@@ -27,7 +27,7 @@ namespace S2VX.Game.Editor.ToolState {
             var note = new EditorHoldNote {
                 Coordinates = Editor.MousePosition,
                 HitTime = Time.Current,
-                EndTime = Time.Current + 1000   // TODO: change this
+                EndTime = Time.Current + 1000    // TODO: #216 be able to change hold duration
             };
             Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note));
             return false;

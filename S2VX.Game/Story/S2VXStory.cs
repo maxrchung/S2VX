@@ -83,8 +83,8 @@ namespace S2VX.Game.Story {
 
         public void AddNote(HoldNote note) {
             Notes.AddNote(note);
-            var releaseApproach = Approaches.AddHoldApproach(note);
-            note.ReleaseApproach = releaseApproach;
+            var approach = Approaches.AddHoldApproach(note);
+            note.Approach = approach;
         }
 
         public void RemoveNote(S2VXNote note) {
