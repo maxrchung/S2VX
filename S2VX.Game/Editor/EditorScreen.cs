@@ -178,7 +178,7 @@ namespace S2VX.Game.Editor {
                                 new MenuItem("Select (1)", ToolSelect),
                                 new MenuItem("Note (2)", ToolNote),
                                 new MenuItem("Hold Note (3)", ToolHoldNote),
-                                new MenuItem("Camera (3)", ToolCamera),
+                                new MenuItem("Camera (4)", ToolCamera),
                             }
                         }
                     }
