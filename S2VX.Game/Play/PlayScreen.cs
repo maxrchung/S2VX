@@ -65,8 +65,6 @@ namespace S2VX.Game.Play {
             var trackBass = new TrackBass(trackStream);
             audio.AddItem(trackBass);
             var track = new DrawableTrack(trackBass);
-
-
             if (IsUsingEditorSettings) {
                 var settings = Story.EditorSettings;
                 var trackTime = settings.TrackTime;
@@ -75,7 +73,6 @@ namespace S2VX.Game.Play {
             }
 
             Clock = new FramedClock(track);
-
             InternalChildren = new Drawable[] {
                 Story,
                 track,

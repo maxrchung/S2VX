@@ -5,4 +5,3 @@ namespace S2VX.Resources {
         public static Assembly ResourceAssembly => typeof(S2VXResources).Assembly;
     }
 }
-
