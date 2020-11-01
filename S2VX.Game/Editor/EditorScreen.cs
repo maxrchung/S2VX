@@ -91,7 +91,6 @@ namespace S2VX.Game.Editor {
             Track = new DrawableTrack(track);
 
             var editorSettings = Story.EditorSettings;
-            Seek(editorSettings.TrackTime);
             PlaybackSetRate(editorSettings.TrackPlaybackRate);
             SnapDivisor = editorSettings.SnapDivisor;
             NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
@@ -322,10 +321,7 @@ namespace S2VX.Game.Editor {
             }
         }
 
-        public void Restart() {
-            Track.Seek(0);
-            Story.ClearActives();
-        }
+        public void Restart() => Seek(0);
 
         public void Seek(double time) {
             Track.Seek(time);
@@ -340,7 +336,7 @@ namespace S2VX.Game.Editor {
         private void ProjectRefresh() {
             ProjectSave();
             Story.Open(FullStoryPath, true);
-            Seek(Story.EditorSettings.TrackTime);
+            Restart();
         }
 
         private void ProjectSave() {
