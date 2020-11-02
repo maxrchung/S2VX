@@ -12,6 +12,7 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
@@ -134,10 +135,6 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleAddClick() {
             ErrorContainer.Clear();
-            if (!double.TryParse(TxtStartTime.Current.Value, out var _) || !double.TryParse(TxtEndTime.Current.Value, out var _)) {
-                AddErrorIndicator();
-                return;
-            }
             var data = new string[]
             {
                 $"{DropType.Current.Value}",
@@ -148,12 +145,16 @@ namespace S2VX.Game.Editor.Containers {
                 $"{TxtEndValue.Current.Value}"
             };
             var join = string.Join("|", data);
-            var command = S2VXCommand.FromString(join);
-            if (command == null) {
+            try {
+                var command = S2VXCommand.FromString(join);
+                HandleAddCommand(command);
+            } catch (FormatException) {
                 AddErrorIndicator();
-                return;
+            } catch (TargetInvocationException) {
+                AddErrorIndicator();
+            } catch (NullReferenceException) {
+                AddErrorIndicator();
             }
-            HandleAddCommand(command);
         }
 
         private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
