@@ -51,21 +51,20 @@ namespace S2VX.Game.Story.Note {
                 var time = Time.Current;
                 var endFadeOut = note.EndTime + notes.FadeOutTime;
 
+                note.Rotation = camera.Rotation;
+                note.Size = camera.Scale;
+                note.Position = S2VXUtils.Rotate(note.Coordinates - camera.Position, note.Rotation) * note.Size.X;
+
                 if (time >= endFadeOut) {
                     note.Alpha = 0;
                     // Continue early to save some calculations
                     continue;
                 }
 
-                note.Rotation = camera.Rotation;
-                note.Size = camera.Scale;
-
                 var cameraFactor = 1 / camera.Scale.X;
                 note.BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
                 note.BoxInner.Size = note.BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
 
-
-                note.Position = S2VXUtils.Rotate(note.Coordinates - camera.Position, note.Rotation) * note.Size.X;
                 note.BoxOuter.Colour = notes.OutlineColor;
 
                 var startTime = note.EndTime - notes.ShowTime;
