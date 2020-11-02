@@ -105,7 +105,6 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            base.Update();
             var time = Time.Current;
             if (time >= EndTime) {
                 // Hold the note at fully visible until after MissThreshold

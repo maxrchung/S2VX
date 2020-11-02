@@ -52,7 +52,7 @@ namespace S2VX.Game.Story.Note {
 
                 if (time >= endFadeOut) {
                     approach.Alpha = 0;
-                    // Return early to save some calculations
+                    // Continue early to save some calculations
                     continue;
                 }
 

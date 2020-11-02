@@ -14,9 +14,7 @@ namespace S2VX.Game.SongSelection.Containers {
         public string CurSelectionPath { get; set; }
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
 
-        public Border(string curSelectionPath) {
-            CurSelectionPath = curSelectionPath;
-        }
+        public Border(string curSelectionPath) => CurSelectionPath = curSelectionPath;
 
         [BackgroundDependencyLoader]
         private void Load() {

@@ -4,7 +4,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
-using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -54,7 +53,7 @@ namespace S2VX.Game.Story.Note {
 
                 if (time >= endFadeOut) {
                     note.Alpha = 0;
-                    // Return early to save some calculations
+                    // Continue early to save some calculations
                     continue;
                 }
 
@@ -80,7 +79,6 @@ namespace S2VX.Game.Story.Note {
                     var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
                     note.Alpha = alpha;
                 }
-                Console.WriteLine($"Note Alpha: {note.Alpha}");
             }
         }
 
