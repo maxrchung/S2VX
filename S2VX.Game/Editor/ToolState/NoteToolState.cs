@@ -8,6 +8,7 @@ using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.ToolState {
     public class NoteToolState : S2VXToolState {
+        private Notes PreviewContainer { get; } = new Notes();
         private S2VXNote Preview { get; set; } = new EditorNote();
 
         [Resolved]
@@ -18,9 +19,10 @@ namespace S2VX.Game.Editor.ToolState {
 
         [BackgroundDependencyLoader]
         private void Load() {
+            PreviewContainer.AddNote(Preview);
             RelativeSizeAxes = Axes.Both;
             Size = Vector2.One;
-            Child = Preview;
+            Child = PreviewContainer;
         }
 
         public override bool OnToolClick(ClickEvent _) {

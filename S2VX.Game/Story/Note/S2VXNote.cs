@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Utils;
 using osuTK;
 using System;
 
@@ -12,16 +11,15 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        private RelativeBox BoxOuter { get; } = new RelativeBox();
-        private RelativeBox BoxInner { get; } = new RelativeBox();
+        public RelativeBox BoxOuter { get; } = new RelativeBox();
+        public RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Alpha = 0;
-            AlwaysPresent = true;
+            Alpha = 1;
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
             Anchor = Anchor.Centre;
@@ -42,44 +40,6 @@ namespace S2VX.Game.Story.Note {
         public void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
-        }
-
-        protected override void Update() {
-            var notes = Story.Notes;
-            var camera = Story.Camera;
-            var grid = Story.Grid;
-
-            var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return;
-            }
-
-            Rotation = camera.Rotation;
-            Size = camera.Scale;
-
-            var cameraFactor = 1 / camera.Scale.X;
-            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
-
-
-            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
-            BoxOuter.Colour = notes.OutlineColor;
-
-            var startTime = EndTime - notes.ShowTime;
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            } else {
-                var startFadeIn = startTime - notes.FadeInTime;
-                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                Alpha = alpha;
-            }
         }
 
         // Sort Notes from highest end time to lowest end time
