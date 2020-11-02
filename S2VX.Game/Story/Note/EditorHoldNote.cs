@@ -13,6 +13,13 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        public override void UpdateHitTime(double hitTime) {
+            base.UpdateHitTime(hitTime);
+            EndTime = hitTime + 1000;    // TODO: #216 be able to change hold duration
+            ((HoldApproach)Approach).EndTime = EndTime;
+            HitSoundTimes = new List<double>() { HitTime, EndTime };
+        }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
@@ -43,31 +50,29 @@ namespace S2VX.Game.Story.Note {
                 Alpha = 1;
             }
 
-            switch (NumHitSounds) {
-                case 2:
-                    if (time >= HitTime) {
-                        --NumHitSounds;
-                        Hit.Play();
-                    }
-                    break;
-                case 1:
-                    if (time >= EndTime) {
-                        --NumHitSounds;
-                        Hit.Play();
-                    }
-                    break;
-                case 0:
-                    break;
+            // Deduct number of hit sounds to play once we've passed each HitSoundTime
+            if (NumHitSounds > 0 && time >= HitSoundTimes[^NumHitSounds]) {
+                --NumHitSounds;
+                Hit.Play();
             }
 
             // Reset hit sound counter if clock is running and before timing points
             if (Clock.IsRunning) {
-                if (time < HitTime) {
-                    NumHitSounds = HitSoundTimes.Count;
-                } else if (time < EndTime) {
-                    NumHitSounds = HitSoundTimes.Count - 1;
+                NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
+            }
+        }
+
+        private int GetNumTimingPointsPassed() {
+            var time = Time.Current;
+            var ans = 0;
+            foreach (var hitSoundTime in HitSoundTimes) {
+                if (time >= hitSoundTime) {
+                    ++ans;
+                } else {
+                    break;
                 }
             }
+            return ans;
         }
     }
 }
