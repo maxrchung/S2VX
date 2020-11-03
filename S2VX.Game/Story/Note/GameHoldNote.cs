@@ -35,7 +35,8 @@ namespace S2VX.Game.Story.Note {
         private int HitTimingError;
         private int ReleaseTimingError;
 
-        private bool IsBeingHeld { get; set; }
+        private Key? KeyBeingHeld { get; set; }
+        private MouseButton? MouseButtonBeingHeld { get; set; }
         private bool ShouldBeRemoved { get; set; }
 
 
@@ -49,7 +50,9 @@ namespace S2VX.Game.Story.Note {
             Delete();
         }
 
-        // Notes are clickable if they are visible on screen, not missed, and is the earliest note
+        private bool IsBeingHeld() => KeyBeingHeld != null || MouseButtonBeingHeld != null;
+
+        // Notes are clickable if there is nothing already holding it, are visible on screen, not missed, and is the earliest note
         private bool IsClickable() {
             var time = Time.Current;
             // Limit timing error to be +/- MissThreshold
@@ -57,7 +60,7 @@ namespace S2VX.Game.Story.Note {
             var inMissThreshold = HitTimingError <= HitMissThreshold && Alpha > 0;
             var earliestNote = Story.Notes.Children.Last();
             var isEarliestNote = earliestNote == this;
-            return inMissThreshold && isEarliestNote;
+            return !IsBeingHeld() && inMissThreshold && isEarliestNote;
         }
 
         private void ClickNote() {
@@ -68,7 +71,6 @@ namespace S2VX.Game.Story.Note {
             } else {
                 Miss.Play();
             }
-            IsBeingHeld = true;
         }
 
         private void ReleaseNote() {
@@ -85,7 +87,8 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
-            if (!IsBeingHeld && IsClickable()) {
+            if (IsClickable()) {
+                MouseButtonBeingHeld = e.Button;
                 ClickNote();
             }
 
@@ -93,13 +96,13 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void OnMouseUp(MouseUpEvent e) {
-            if (!ShouldBeRemoved && IsBeingHeld) {
+            if (!ShouldBeRemoved && MouseButtonBeingHeld == e.Button) {
                 ReleaseNote();
             }
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
-            if (!IsBeingHeld && IsClickable() && IsHovered) {
+            if (IsClickable() && IsHovered) {
                 switch (e.Key) {
                     case Key.Z:
                     case Key.X:
@@ -109,6 +112,7 @@ namespace S2VX.Game.Story.Note {
                     case Key.S:
                     case Key.D:
                     case Key.F:
+                        KeyBeingHeld = e.Key;
                         ClickNote();
                         break;
                     default:
@@ -120,7 +124,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void OnKeyUp(KeyUpEvent e) {
-            if (!ShouldBeRemoved && IsBeingHeld) {
+            if (!ShouldBeRemoved && KeyBeingHeld == e.Key) {
                 ReleaseNote();
             }
         }
@@ -129,8 +133,8 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
 
-            // Trigger release and delete if mouse is no longer over the HoldNote during the hold
-            if (IsBeingHeld && !IsHovered || time >= EndTime + ReleaseMissThreshold) {
+            // Trigger release and delete if cursor is no longer over the HoldNote during the hold
+            if (IsBeingHeld() && !IsHovered || time >= EndTime + ReleaseMissThreshold) {
                 ReleaseNote();
             }
 
@@ -144,9 +148,9 @@ namespace S2VX.Game.Story.Note {
 
             UpdatePlacement();
 
-            if (time >= HitTime && IsBeingHeld) {
+            if (time >= HitTime && IsBeingHeld()) {
                 Alpha = 1;
-            } else if (time >= HitTime && !IsBeingHeld) {
+            } else if (time >= HitTime && !IsBeingHeld()) {
                 // Hold the note at fully visible until after MissThreshold
                 var startFadeTime = HitTime + HitMissThreshold;
                 var endFadeTime = startFadeTime + notes.FadeOutTime;
