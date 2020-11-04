@@ -26,8 +26,8 @@ namespace S2VX.Game.Story.Settings {
             var notes = story.Notes.Children;
             NoteCount = notes.Count;
             if (NoteCount > 0) {
-                var min = notes.Min(n => n.EndTime);
-                var max = notes.Max(n => n.EndTime);
+                var min = notes.Min(n => n.HitTime);
+                var max = notes.Max(n => n.HitTime);
                 StoryLength = max - min;
             }
         }
