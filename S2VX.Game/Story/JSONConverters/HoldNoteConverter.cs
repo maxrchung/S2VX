@@ -4,11 +4,11 @@ using S2VX.Game.Story.Note;
 using System;
 
 namespace S2VX.Game.Story.JSONConverters {
-    // Special converter for Note serialization since we only care about HitTime and Coordinates
-    public class NoteConverter : JsonConverter<S2VXNote> {
-        public override void WriteJson(JsonWriter writer, S2VXNote note, JsonSerializer serializer) {
+    public class HoldNoteConverter : JsonConverter<HoldNote> {
+        public override void WriteJson(JsonWriter writer, HoldNote note, JsonSerializer serializer) {
             var obj = new JObject {
-                { "HitTime", note.HitTime }
+                { "HitTime", note.HitTime },
+                { "EndTime", note.EndTime }
             };
             var coordinates = new JObject {
                 { "X", note.Coordinates.X },
@@ -19,10 +19,10 @@ namespace S2VX.Game.Story.JSONConverters {
         }
 
         // Don't need to implement deserialization because the default behavior is sufficient for us
-        public override S2VXNote ReadJson(
+        public override HoldNote ReadJson(
             JsonReader reader,
             Type objectType,
-            S2VXNote existingValue,
+            HoldNote existingValue,
             bool hasExistingValue,
             JsonSerializer serializer
         ) => throw new NotSupportedException();

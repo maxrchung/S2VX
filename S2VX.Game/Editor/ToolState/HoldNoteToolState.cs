@@ -7,8 +7,8 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Editor.ToolState {
-    public class NoteToolState : S2VXToolState {
-        private S2VXNote Preview { get; set; } = new EditorNote();
+    public class HoldNoteToolState : S2VXToolState {
+        private EditorHoldNote Preview { get; set; } = new EditorHoldNote();
 
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
@@ -24,20 +24,21 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolClick(ClickEvent _) {
-            var note = new EditorNote {
+            var note = new EditorHoldNote {
                 Coordinates = Editor.MousePosition,
-                HitTime = Time.Current
+                HitTime = Time.Current,
+                EndTime = Time.Current + 1000    // TODO: #216 be able to change hold duration
             };
-            Editor.Reversibles.Push(new ReversibleAddNote(Story, note));
+            Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note));
             return false;
         }
 
         protected override void Update() {
-            Preview.HitTime = Time.Current;
+            Preview.EndTime = Time.Current;
             Preview.Coordinates = Editor.MousePosition;
             Preview.Colour = Story.Notes.Colour;
         }
 
-        public override string DisplayName() => "Note";
+        public override string DisplayName() => "Hold Note";
     }
 }

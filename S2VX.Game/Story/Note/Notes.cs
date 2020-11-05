@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
@@ -36,6 +37,10 @@ namespace S2VX.Game.Story.Note {
             Children.Remove(note);
             RemoveInternal(note);
         }
+
+        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();
+
+        public List<HoldNote> GetHoldNotes() => Children.OfType<HoldNote>().ToList();
 
         [BackgroundDependencyLoader]
         private void Load() => RelativeSizeAxes = Axes.Both;

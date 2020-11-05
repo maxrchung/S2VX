@@ -1,20 +1,18 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
-    public class Approach : CompositeDrawable, IComparable<Approach> {
-        public double HitTime { get; set; }
-        public Vector2 Coordinates { get; set; } = Vector2.Zero;
+    public class HoldApproach : Approach {
+        public double EndTime { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private List<RelativeBox> Lines { get; set; } = new List<RelativeBox>()
+        private List<RelativeBox> ReleaseLines { get; set; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -24,27 +22,31 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Lines.ForEach(l => l.Alpha = 0);
+            ReleaseLines.ForEach(l => l.Alpha = 0);
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
-            InternalChildren = Lines;
+            var lines = InternalChildren.ToArray();
+            ClearInternal(false);
+            InternalChildren = lines.Concat(ReleaseLines).ToArray();
         }
 
         protected override void Update() {
+            base.Update();
+
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
 
             var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
+            var endFadeOut = EndTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
-                Lines.ForEach(l => l.Alpha = 0);
+                ReleaseLines.ForEach(l => l.Alpha = 0);
                 // Return early to save some calculations
                 return;
             }
 
-            var startTime = HitTime - notes.ShowTime;
+            var startTime = EndTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
 
             var position = camera.Position;
@@ -54,8 +56,8 @@ namespace S2VX.Game.Story.Note {
 
             var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
 
-            var distance = time < HitTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, HitTime)
+            var distance = time < EndTime
+                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, EndTime)
                 : scale.X / 2;
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
@@ -63,35 +65,32 @@ namespace S2VX.Game.Story.Note {
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
-            Lines[0].Position = offset + rotationY;
-            Lines[0].Rotation = rotation;
-            Lines[0].Size = new Vector2(overlap, thickness);
+            ReleaseLines[0].Position = offset + rotationY;
+            ReleaseLines[0].Rotation = rotation;
+            ReleaseLines[0].Size = new Vector2(overlap, thickness);
 
-            Lines[1].Position = offset - rotationY;
-            Lines[1].Rotation = rotation;
-            Lines[1].Size = new Vector2(overlap, thickness);
+            ReleaseLines[1].Position = offset - rotationY;
+            ReleaseLines[1].Rotation = rotation;
+            ReleaseLines[1].Size = new Vector2(overlap, thickness);
 
-            Lines[2].Position = offset + rotationX;
-            Lines[2].Rotation = rotation;
-            Lines[2].Size = new Vector2(thickness, overlap);
+            ReleaseLines[2].Position = offset + rotationX;
+            ReleaseLines[2].Rotation = rotation;
+            ReleaseLines[2].Size = new Vector2(thickness, overlap);
 
-            Lines[3].Position = offset - rotationX;
-            Lines[3].Rotation = rotation;
-            Lines[3].Size = new Vector2(thickness, overlap);
+            ReleaseLines[3].Position = offset - rotationX;
+            ReleaseLines[3].Rotation = rotation;
+            ReleaseLines[3].Size = new Vector2(thickness, overlap);
 
             float alpha;
-            if (time >= HitTime) {
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
+            if (time >= EndTime) {
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
             } else if (time >= startTime) {
                 alpha = 1;
             } else {
                 alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
             }
-            Lines.ForEach(l => l.Alpha = alpha);
-
+            ReleaseLines.ForEach(l => l.Alpha = alpha);
         }
 
-        // Sort Approaches from highest end time to lowest end time
-        public int CompareTo(Approach other) => other.HitTime.CompareTo(HitTime);
     }
 }
