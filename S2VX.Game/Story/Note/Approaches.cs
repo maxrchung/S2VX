@@ -17,7 +17,18 @@ namespace S2VX.Game.Story.Note {
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {
                 Coordinates = note.Coordinates,
-                EndTime = note.EndTime
+                HitTime = note.HitTime
+            };
+            Children.Add(approach);
+            AddInternal(approach);
+            return approach;
+        }
+
+        public HoldApproach AddHoldApproach(HoldNote note) {
+            var approach = new HoldApproach {
+                Coordinates = note.Coordinates,
+                HitTime = note.HitTime,
+                EndTime = note.EndTime,
             };
             Children.Add(approach);
             AddInternal(approach);
