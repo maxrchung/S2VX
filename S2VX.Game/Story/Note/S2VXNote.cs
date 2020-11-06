@@ -7,13 +7,13 @@ using System;
 
 namespace S2VX.Game.Story.Note {
     public abstract class S2VXNote : CompositeDrawable, IComparable<S2VXNote> {
-        public double EndTime { get; set; }
+        public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         public Approach Approach { get; set; }
 
-        private RelativeBox BoxOuter { get; } = new RelativeBox();
-        private RelativeBox BoxInner { get; } = new RelativeBox();
+        protected RelativeBox BoxOuter { get; } = new RelativeBox();
+        protected RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -33,9 +33,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         // These Update setters modify both the Note and a corresponding Approach
-        public void UpdateEndTime(double endTime) {
-            Approach.EndTime = endTime;
-            EndTime = endTime;
+        public virtual void UpdateHitTime(double hitTime) {
+            Approach.HitTime = hitTime;
+            HitTime = hitTime;
             Story.Notes.Sort();
         }
 
@@ -44,19 +44,10 @@ namespace S2VX.Game.Story.Note {
             Coordinates = coordinates;
         }
 
-        protected override void Update() {
+        protected void UpdatePlacement() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
-
-            var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return;
-            }
 
             Rotation = camera.Rotation;
             Size = camera.Scale;
@@ -65,13 +56,26 @@ namespace S2VX.Game.Story.Note {
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
 
-
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
             BoxOuter.Colour = notes.OutlineColor;
+        }
 
-            var startTime = EndTime - notes.ShowTime;
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+        protected override void Update() {
+            var notes = Story.Notes;
+            var time = Time.Current;
+            var endFadeOut = HitTime + notes.FadeOutTime;
+
+            if (time >= endFadeOut) {
+                Alpha = 0;
+                // Return early to save some calculations
+                return;
+            }
+
+            UpdatePlacement();
+
+            var startTime = HitTime - notes.ShowTime;
+            if (time >= HitTime) {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
                 Alpha = alpha;
             } else if (time >= startTime) {
                 Alpha = 1;
@@ -83,6 +87,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         // Sort Notes from highest end time to lowest end time
-        public int CompareTo(S2VXNote other) => other.EndTime.CompareTo(EndTime);
+        public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);
     }
 }
