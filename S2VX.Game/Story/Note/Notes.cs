@@ -2,9 +2,9 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
-using osuTK;
 using osuTK.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
@@ -44,42 +44,38 @@ namespace S2VX.Game.Story.Note {
 
         protected override void Update() {
             foreach (var note in Children) {
+                //if (note is EditorHoldNote holdNote)
+
+
                 var notes = Story.Notes;
-                var camera = Story.Camera;
-                var grid = Story.Grid;
-
                 var time = Time.Current;
-                var endFadeOut = note.EndTime + notes.FadeOutTime;
+                var endFadeOut = note.HitTime + notes.FadeOutTime;
 
-                note.Rotation = camera.Rotation;
-                note.Size = camera.Scale;
-                note.Position = S2VXUtils.Rotate(note.Coordinates - camera.Position, note.Rotation) * note.Size.X;
+                note.UpdatePlacement();
 
                 if (time >= endFadeOut) {
-                    note.Alpha = 0;
-                    // Continue early to save some calculations
-                    continue;
+                    Alpha = 0;
+                    // Return early to save some calculations
+                    return;
                 }
 
-                var cameraFactor = 1 / camera.Scale.X;
-                note.BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-                note.BoxInner.Size = note.BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
-
-                note.BoxOuter.Colour = notes.OutlineColor;
-
-                var startTime = note.EndTime - notes.ShowTime;
-                if (time >= note.EndTime) {
-                    var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, note.EndTime, endFadeOut);
-                    note.Alpha = alpha;
+                var startTime = note.HitTime - notes.ShowTime;
+                if (time >= note.HitTime) {
+                    var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, note.HitTime, endFadeOut);
+                    Alpha = alpha;
                 } else if (time >= startTime) {
-                    note.Alpha = 1;
+                    Alpha = 1;
                 } else {
                     var startFadeIn = startTime - notes.FadeInTime;
                     var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                    note.Alpha = alpha;
+                    Alpha = alpha;
                 }
             }
         }
+
+        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();
+
+        public List<HoldNote> GetHoldNotes() => Children.OfType<HoldNote>().ToList();
 
         [BackgroundDependencyLoader]
         private void Load() => RelativeSizeAxes = Axes.Both;

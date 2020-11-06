@@ -19,7 +19,18 @@ namespace S2VX.Game.Story.Note {
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {
                 Coordinates = note.Coordinates,
-                EndTime = note.EndTime
+                HitTime = note.HitTime
+            };
+            Children.Add(approach);
+            AddInternal(approach);
+            return approach;
+        }
+
+        public HoldApproach AddHoldApproach(HoldNote note) {
+            var approach = new HoldApproach {
+                Coordinates = note.Coordinates,
+                HitTime = note.HitTime,
+                EndTime = note.EndTime,
             };
             Children.Add(approach);
             AddInternal(approach);
@@ -45,7 +56,7 @@ namespace S2VX.Game.Story.Note {
                 var approaches = Story.Approaches;
 
                 var time = Time.Current;
-                var endFadeOut = approach.EndTime + notes.FadeOutTime;
+                var endFadeOut = approach.HitTime + notes.FadeOutTime;
 
                 if (time >= endFadeOut) {
                     approach.Alpha = 0;
@@ -53,7 +64,7 @@ namespace S2VX.Game.Story.Note {
                     continue;
                 }
 
-                var startTime = approach.EndTime - notes.ShowTime;
+                var startTime = approach.HitTime - notes.ShowTime;
                 var startFadeIn = startTime - notes.FadeInTime;
 
                 var position = camera.Position;
@@ -63,8 +74,8 @@ namespace S2VX.Game.Story.Note {
 
                 var offset = S2VXUtils.Rotate(approach.Coordinates - position, rotation) * scale;
 
-                var distance = time < approach.EndTime
-                    ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, approach.EndTime)
+                var distance = time < approach.HitTime
+                    ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, approach.HitTime)
                     : scale.X / 2;
                 var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
                 var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
@@ -88,8 +99,8 @@ namespace S2VX.Game.Story.Note {
                 approach.Lines[3].Rotation = rotation;
                 approach.Lines[3].Size = new Vector2(thickness, overlap);
 
-                if (time >= approach.EndTime) {
-                    var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, approach.EndTime, endFadeOut);
+                if (time >= approach.HitTime) {
+                    var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, approach.HitTime, endFadeOut);
                     approach.Alpha = alpha;
                 } else if (time >= startTime) {
                     approach.Alpha = 1;

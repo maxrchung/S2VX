@@ -57,7 +57,7 @@ namespace S2VX.Game.Story.Note {
         private bool IsClickable() {
             var time = Time.Current;
             // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
-            TimingError = (int)Math.Round(Math.Clamp(time - EndTime, -MissThreshold, MissThreshold));
+            TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
             var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
             var earliestNote = Story.Notes.Children.Last();
             var isEarliestNote = earliestNote == this;
@@ -106,15 +106,15 @@ namespace S2VX.Game.Story.Note {
             }
 
             var time = Time.Current;
-            if (time >= EndTime) {
+            if (time >= HitTime) {
                 // Hold the note at fully visible until after MissThreshold
                 var notes = Story.Notes;
-                var startFadeTime = EndTime + MissThreshold;
+                var startFadeTime = HitTime + MissThreshold;
                 var endFadeTime = startFadeTime + notes.FadeOutTime;
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
                 Alpha = alpha;
                 Colour = Color4.Red;
-                if (time >= EndTime + MissThreshold) {
+                if (time >= HitTime + MissThreshold) {
                     RecordMiss();
                 }
             }

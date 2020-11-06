@@ -259,21 +259,44 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private void AddVisibleNotes() {
-            var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
-            var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
+            var sectionDuration = SectionLength * SecondsToMS;
+            var lowerBound = Time.Current - sectionDuration / 2;
+            var upperBound = Time.Current + sectionDuration / 2;
             var color = Story.Notes.Colour;
             foreach (var note in Story.Notes.Children) {
-                if (lowerBound <= note.EndTime && note.EndTime <= upperBound) {
-                    var relativePosition = (note.EndTime - lowerBound) / (SectionLength * SecondsToMS);
-                    var visibleNote = new RelativeBox {
-                        Colour = color,
-                        Alpha = 0.727f,
-                        Width = TimelineNoteWidth,
-                        Height = TimelineNoteHeight,
-                        X = (float)relativePosition,
-                        Y = 0.2f,
-                        Anchor = Anchor.TopLeft,
-                    };
+                RelativeBox visibleNote = null;
+                // Clamp so that RelativeBoxes never draw outside of lower and upper bound
+                var relativePosition = Math.Clamp((note.HitTime - lowerBound) / sectionDuration, 0, 1);
+
+                if (note is EditorHoldNote holdNote) {
+                    if (lowerBound <= holdNote.EndTime && (lowerBound <= holdNote.HitTime || holdNote.EndTime <= upperBound)) {
+                        var relativeEndPosition = Math.Clamp((holdNote.EndTime - lowerBound) / sectionDuration, 0, 1);
+                        visibleNote = new RelativeBox {
+                            Colour = color,
+                            Alpha = 0.727f,
+                            Width = (float)(TimelineNoteWidth + relativeEndPosition - relativePosition),
+                            Height = TimelineNoteHeight,
+                            X = (float)relativePosition - TimelineNoteWidth / 2,
+                            Y = 0.2f,
+                            Anchor = Anchor.TopLeft,
+                            Origin = Anchor.CentreLeft,
+                        };
+                    }
+                } else {
+                    if (lowerBound <= note.HitTime && note.HitTime <= upperBound) {
+                        visibleNote = new RelativeBox {
+                            Colour = color,
+                            Alpha = 0.727f,
+                            Width = TimelineNoteWidth,
+                            Height = TimelineNoteHeight,
+                            X = (float)relativePosition,
+                            Y = 0.2f,
+                            Anchor = Anchor.TopLeft,
+                        };
+                    }
+                }
+
+                if (visibleNote != null) {
                     NoteToTimelineNote[note] = visibleNote;
                     TickBarContent.Add(visibleNote);
                 }

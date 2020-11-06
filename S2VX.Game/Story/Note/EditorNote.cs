@@ -13,12 +13,12 @@ namespace S2VX.Game.Story.Note {
 
         protected override void Update() {
             var time = Clock.CurrentTime;
-            if (time >= EndTime && CanHit) {
+            if (time >= HitTime && CanHit) {
                 CanHit = false;
                 Hit.Play();
             }
             // Reset hit sound if clock is running and before end time
-            CanHit = Clock.IsRunning && time < EndTime;
+            CanHit = Clock.IsRunning && time < HitTime;
         }
     }
 }

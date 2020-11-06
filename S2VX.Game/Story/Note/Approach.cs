@@ -7,13 +7,13 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class Approach : CompositeDrawable, IComparable<Approach> {
-        public double EndTime { get; set; }
+        public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        public List<RelativeBox> Lines { get; } = new List<RelativeBox>
+        public List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -23,12 +23,13 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Alpha = 1;
+            Lines.ForEach(l => l.Alpha = 0);
+            AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Lines;
         }
 
         // Sort Approaches from highest end time to lowest end time
-        public int CompareTo(Approach other) => other.EndTime.CompareTo(EndTime);
+        public int CompareTo(Approach other) => other.HitTime.CompareTo(HitTime);
     }
 }
