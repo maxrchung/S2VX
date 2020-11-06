@@ -43,12 +43,6 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
 
-            //if (time >= endFadeOut) {
-            //    Lines.ForEach(l => l.Alpha = 0);
-            //    // Return early to save some calculations
-            //    return;
-            //}
-
             var startTime = HitTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
 

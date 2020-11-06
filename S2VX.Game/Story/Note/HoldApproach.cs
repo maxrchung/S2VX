@@ -58,6 +58,11 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var endFadeOut = EndTime + notes.FadeOutTime;
 
+            if (time >= HitTime) {
+                // Keep the hit approach visible for the duration of the hold
+                Lines.ForEach(l => l.Alpha = 1);
+            }
+
             if (time >= endFadeOut) {
                 SetReleaseAndIndicatorLineAlpha(0);
                 // Return early to save some calculations
