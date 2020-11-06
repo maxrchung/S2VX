@@ -39,9 +39,6 @@ namespace S2VX.Game.Story.Note {
         private void Load() => RelativeSizeAxes = Axes.Both;
 
         protected override void Update() {
-            // var notes = Story.Notes;
-            // Alpha = notes.Alpha;
-
             foreach (var approach in Children) {
                 var notes = Story.Notes;
                 var camera = Story.Camera;
