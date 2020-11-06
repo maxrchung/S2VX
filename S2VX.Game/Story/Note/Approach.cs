@@ -14,13 +14,18 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private List<RelativeBox> Lines { get; set; } = new List<RelativeBox>()
+        public List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
             new RelativeBox(), // right
             new RelativeBox()  // left
         };
+
+        public Vector2 HitApproachTopLeftCorner { get; set; }
+        public Vector2 HitApproachTopRightCorner { get; set; }
+        public Vector2 HitApproachBottomLeftCorner { get; set; }
+        public Vector2 HitApproachBottomRightCorner { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -38,11 +43,11 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
 
-            if (time >= endFadeOut) {
-                Lines.ForEach(l => l.Alpha = 0);
-                // Return early to save some calculations
-                return;
-            }
+            //if (time >= endFadeOut) {
+            //    Lines.ForEach(l => l.Alpha = 0);
+            //    // Return early to save some calculations
+            //    return;
+            //}
 
             var startTime = HitTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
@@ -62,6 +67,11 @@ namespace S2VX.Game.Story.Note {
 
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
+
+            HitApproachTopLeftCorner = offset - rotationX - rotationY;
+            HitApproachTopRightCorner = offset + rotationX - rotationY;
+            HitApproachBottomLeftCorner = offset - rotationX + rotationY;
+            HitApproachBottomRightCorner = offset + rotationX + rotationY;
 
             Lines[0].Position = offset + rotationY;
             Lines[0].Rotation = rotation;
