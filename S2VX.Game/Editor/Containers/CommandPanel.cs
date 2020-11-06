@@ -148,12 +148,15 @@ namespace S2VX.Game.Editor.Containers {
             try {
                 var command = S2VXCommand.FromString(join);
                 HandleAddCommand(command);
-            } catch (FormatException) {
+            } catch (FormatException ex) {
                 AddErrorIndicator();
-            } catch (TargetInvocationException) {
+                Console.WriteLine(ex);
+            } catch (TargetInvocationException ex) {
                 AddErrorIndicator();
-            } catch (NullReferenceException) {
+                Console.WriteLine(ex);
+            } catch (NullReferenceException ex) {
                 AddErrorIndicator();
+                Console.WriteLine(ex);
             }
         }
 
