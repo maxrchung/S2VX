@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
@@ -87,7 +88,12 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Story.Open(FullStoryPath, true);
+            try {
+                Story.Open(FullStoryPath, true);
+            } catch (JsonReaderException e) {
+                Console.WriteLine(e);
+                this.Exit();
+            }
             var trackStream = CurLevelResourceStore.GetStream(AudioPath);
             var track = new TrackBass(trackStream);
             Audio.AddItem(track);
@@ -349,7 +355,12 @@ namespace S2VX.Game.Editor {
 
         private void ProjectRefresh() {
             ProjectSave();
-            Story.Open(FullStoryPath, true);
+            try {
+                Story.Open(FullStoryPath, true);
+            } catch (JsonReaderException e) {
+                Console.WriteLine(e);
+                this.Exit();
+            }
             Seek(Story.EditorSettings.TrackTime);
         }
 

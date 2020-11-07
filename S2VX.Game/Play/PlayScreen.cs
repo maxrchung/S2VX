@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using Newtonsoft.Json;
+using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
@@ -11,6 +12,7 @@ using osuTK.Input;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
+using System;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
@@ -58,7 +60,12 @@ namespace S2VX.Game.Play {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Story.Open(FullStoryPath, false);
+            try {
+                Story.Open(FullStoryPath, false);
+            } catch (JsonReaderException e) {
+                Console.WriteLine(e);
+                this.Exit();
+            }
             Story.ClearActives();
 
             var trackStream = CurLevelResourceStore.GetStream(AudioPath);
