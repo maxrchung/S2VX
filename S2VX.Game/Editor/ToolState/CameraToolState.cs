@@ -154,7 +154,7 @@ namespace S2VX.Game.Editor.ToolState {
                     return true;
                 case Key.Escape:
                     HandleExit();
-                    break;
+                    return true;
                 default:
                     break;
             }
@@ -269,11 +269,13 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void HandleExit() {
+            if (IsRecording) {
+                RevertPreviewCameraToolActions();
+            }
             IsRecording = false;
             Story.Camera.ReleaseCameraPositionLock(this);
             Story.Camera.ReleaseCameraScaleLock(this);
             Story.Camera.ReleaseCameraRotationLock(this);
-            RevertPreviewCameraToolActions();
             Story.ClearActives();
         }
     }
