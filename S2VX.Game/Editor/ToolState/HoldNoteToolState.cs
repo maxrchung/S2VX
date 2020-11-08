@@ -28,18 +28,20 @@ namespace S2VX.Game.Editor.ToolState {
             Child = Preview;
         }
 
-        public override bool OnToolClick(ClickEvent _) {
+        public override bool OnToolClick(ClickEvent e) {
             if (!IsRecording) {
                 HitTime = Time.Current;
                 Coordinates = Editor.MousePosition;
             } else {
                 var endTime = Time.Current;
-                var note = new EditorHoldNote {
-                    Coordinates = Coordinates,
-                    HitTime = HitTime,
-                    EndTime = endTime
-                };
-                Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note));
+                if (endTime > HitTime) {
+                    var note = new EditorHoldNote {
+                        Coordinates = Coordinates,
+                        HitTime = HitTime,
+                        EndTime = endTime
+                    };
+                    Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note));
+                }
             }
 
             IsRecording = !IsRecording;
