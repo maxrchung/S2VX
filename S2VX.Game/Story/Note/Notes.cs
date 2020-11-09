@@ -46,7 +46,6 @@ namespace S2VX.Game.Story.Note {
             foreach (var note in Children) {
                 //if (note is EditorHoldNote holdNote)
 
-
                 var notes = Story.Notes;
                 var time = Time.Current;
                 var endFadeOut = note.HitTime + notes.FadeOutTime;

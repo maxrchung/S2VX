@@ -27,15 +27,13 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void Update() {
-            base.Update();
-
             // For EditorHold notes, override alpha between HitTime and EndTime
             var notes = Story.Notes;
             var time = Time.Current;
             var endFadeOut = EndTime + notes.FadeOutTime;
             var startTime = HitTime - notes.ShowTime;
 
-            UpdatePlacement();
+            //UpdatePlacement();
 
             if (time >= endFadeOut) {
                 Alpha = 0;
