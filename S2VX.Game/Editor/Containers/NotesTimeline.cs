@@ -271,15 +271,15 @@ namespace S2VX.Game.Editor.Containers {
                 if (note is EditorHoldNote holdNote) {
                     if (lowerBound <= holdNote.EndTime && (lowerBound <= holdNote.HitTime || holdNote.EndTime <= upperBound)) {
                         var relativeEndPosition = Math.Clamp((holdNote.EndTime - lowerBound) / sectionDuration, 0, 1);
+                        var width = (float)(TimelineNoteWidth + relativeEndPosition - relativePosition);
                         visibleNote = new RelativeBox {
                             Colour = color,
                             Alpha = 0.727f,
-                            Width = (float)(TimelineNoteWidth + relativeEndPosition - relativePosition),
+                            Width = width,
                             Height = TimelineNoteHeight,
-                            X = (float)relativePosition - TimelineNoteWidth / 2,
+                            X = (float)relativePosition - TimelineNoteWidth / 2 + width / 2,
                             Y = 0.2f,
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.CentreLeft,
+                            Anchor = Anchor.TopLeft
                         };
                     }
                 } else {
