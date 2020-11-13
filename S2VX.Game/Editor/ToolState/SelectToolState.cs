@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
@@ -262,13 +261,10 @@ namespace S2VX.Game.Editor.ToolState {
             return false;
         }
 
-        public override void HandleExit() {
-            ClearNoteSelection();
-        }
+        public override void HandleExit() => ClearNoteSelection();
 
-        protected override void Update() {
-            DelayDrag = false;
-        }
+        protected override void Update() => DelayDrag = false;
+
         public override string DisplayName() => "Select";
     }
 }

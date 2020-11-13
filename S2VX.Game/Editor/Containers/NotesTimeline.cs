@@ -304,13 +304,9 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
-        public void AddNoteTimelineSelection(S2VXNote note) {
-            SelectedNoteToTime[note] = note.HitTime;
-        }
+        public void AddNoteTimelineSelection(S2VXNote note) => SelectedNoteToTime[note] = note.HitTime;
 
-        public void ClearNoteTimelineSelection() {
-            SelectedNoteToTime.Clear();
-        }
+        public void ClearNoteTimelineSelection() => SelectedNoteToTime.Clear();
 
         protected override void Update() {
             NoteToTimelineNote.Clear();
