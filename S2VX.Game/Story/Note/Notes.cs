@@ -44,30 +44,63 @@ namespace S2VX.Game.Story.Note {
 
         protected override void Update() {
             foreach (var note in Children) {
-                //if (note is EditorHoldNote holdNote)
+                if (note is EditorHoldNote holdNote) {
+                    // For EditorHold notes, override alpha between HitTime and EndTime
+                    var notes = Story.Notes;
+                    var time = Time.Current;
+                    var endFadeOut = holdNote.EndTime + notes.FadeOutTime;
+                    var startTime = holdNote.HitTime - notes.ShowTime;
 
-                var notes = Story.Notes;
-                var time = Time.Current;
-                var endFadeOut = note.HitTime + notes.FadeOutTime;
+                    holdNote.UpdatePlacement();
 
-                note.UpdatePlacement();
+                    if (time >= endFadeOut) {
+                        Alpha = 0;
+                        // Return early to save some calculations
+                        return;
+                    }
 
-                if (time >= endFadeOut) {
-                    Alpha = 0;
-                    // Return early to save some calculations
-                    return;
-                }
+                    if (time >= holdNote.EndTime) {
+                        var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, holdNote.EndTime, endFadeOut);
+                        Alpha = alpha;
+                    } else if (time >= startTime) {
+                        Alpha = 1;
+                    }
 
-                var startTime = note.HitTime - notes.ShowTime;
-                if (time >= note.HitTime) {
-                    var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, note.HitTime, endFadeOut);
-                    Alpha = alpha;
-                } else if (time >= startTime) {
-                    Alpha = 1;
+                    // Deduct number of hit sounds to play once we've passed each HitSoundTime
+                    if (holdNote.NumHitSounds > 0 && time >= holdNote.HitSoundTimes[^holdNote.NumHitSounds]) {
+                        --holdNote.NumHitSounds;
+                        holdNote.Hit.Play();
+                    }
+
+                    // Reset hit sound counter if clock is running and before timing points
+                    if (Clock.IsRunning) {
+                        holdNote.NumHitSounds = holdNote.HitSoundTimes.Count - holdNote.GetNumTimingPointsPassed();
+                    }
+
                 } else {
-                    var startFadeIn = startTime - notes.FadeInTime;
-                    var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                    Alpha = alpha;
+                    var notes = Story.Notes;
+                    var time = Time.Current;
+                    var endFadeOut = note.HitTime + notes.FadeOutTime;
+
+                    note.UpdatePlacement();
+
+                    if (time >= endFadeOut) {
+                        Alpha = 0;
+                        // Return early to save some calculations
+                        return;
+                    }
+
+                    var startTime = note.HitTime - notes.ShowTime;
+                    if (time >= note.HitTime) {
+                        var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, note.HitTime, endFadeOut);
+                        Alpha = alpha;
+                    } else if (time >= startTime) {
+                        Alpha = 1;
+                    } else {
+                        var startFadeIn = startTime - notes.FadeInTime;
+                        var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
+                        Alpha = alpha;
+                    }
                 }
             }
         }
