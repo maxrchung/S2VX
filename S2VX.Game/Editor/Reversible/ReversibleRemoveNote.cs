@@ -22,6 +22,11 @@ namespace S2VX.Game.Editor.Reversible {
             }
         }
 
-        public void Redo() => Story.RemoveNote(Note);
+        public void Redo() {
+            Story.RemoveNote(Note);
+            if (Editor.ToolState is SelectToolState selectTool) {
+                selectTool.ClearNoteSelection();
+            }
+        }
     }
 }
