@@ -269,7 +269,7 @@ namespace S2VX.Game.Editor.Containers {
                 var relativePosition = Math.Clamp((note.HitTime - lowerBound) / sectionDuration, 0, 1);
 
                 if (note is EditorHoldNote holdNote) {
-                    if (lowerBound <= holdNote.EndTime && (lowerBound <= holdNote.HitTime || holdNote.EndTime <= upperBound)) {
+                    if (holdNote.HitTime <= upperBound && holdNote.EndTime >= lowerBound) {
                         var relativeEndPosition = Math.Clamp((holdNote.EndTime - lowerBound) / sectionDuration, 0, 1);
                         visibleNote = new RelativeBox {
                             Colour = color,
