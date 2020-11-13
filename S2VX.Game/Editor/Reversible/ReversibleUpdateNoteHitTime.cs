@@ -4,7 +4,6 @@ using S2VX.Game.Story.Note;
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleUpdateNoteHitTime : IReversible {
         private EditorScreen Editor { get; set; }
-
         private S2VXNote Note { get; }
         private double OldHitTime { get; }
         private double NewHitTime { get; }

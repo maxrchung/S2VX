@@ -3,7 +3,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
-using S2VX.Game.Editor;
 using System;
 
 namespace S2VX.Game.Story.Note {
@@ -18,8 +17,6 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
-        [Resolved]
-        private EditorScreen Editor { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
