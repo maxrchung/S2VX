@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
+using osuTK.Input;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
@@ -16,6 +17,10 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
+        private bool IsRecording { get; set; }
+        private Vector2 Coordinates { get; set; }
+        private double HitTime { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
@@ -23,22 +28,52 @@ namespace S2VX.Game.Editor.ToolState {
             Child = Preview;
         }
 
-        public override bool OnToolClick(ClickEvent _) {
-            var note = new EditorHoldNote {
-                Coordinates = Editor.MousePosition,
-                HitTime = Time.Current,
-                EndTime = Time.Current + 1000    // TODO: #216 be able to change hold duration
-            };
-            Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
+        public override bool OnToolClick(ClickEvent e) {
+            if (!IsRecording) {
+                HitTime = Time.Current;
+                Coordinates = Editor.MousePosition;
+            } else {
+                var endTime = Time.Current;
+                if (endTime > HitTime) {
+                    var note = new EditorHoldNote {
+                        Coordinates = Coordinates,
+                        HitTime = HitTime,
+                        EndTime = endTime
+                    };
+                    Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
+                }
+            }
+
+            IsRecording = !IsRecording;
+            return true;
+        }
+
+        public override bool OnToolKeyDown(KeyDownEvent e) {
+            switch (e.Key) {
+                case Key.Escape:
+                    IsRecording = false;
+                    return true;
+                default:
+                    break;
+            }
             return false;
         }
 
         protected override void Update() {
-            Preview.EndTime = Time.Current;
-            Preview.Coordinates = Editor.MousePosition;
             Preview.Colour = Story.Notes.Colour;
+
+            if (!IsRecording) {
+                Preview.Coordinates = Editor.MousePosition;
+                Preview.HitTime = Time.Current;
+                Preview.EndTime = Time.Current;
+            } else {
+                Preview.Coordinates = Coordinates;
+                Preview.HitTime = HitTime;
+                Preview.EndTime = Time.Current;
+            }
         }
 
-        public override string DisplayName() => "Hold Note";
+        public override string DisplayName() =>
+            IsRecording ? "Hold Note (Click to End, Esc to Cancel)" : "Hold Note (Click to Start)";
     }
 }
