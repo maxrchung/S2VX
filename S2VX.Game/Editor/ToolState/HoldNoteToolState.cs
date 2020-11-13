@@ -51,8 +51,11 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Escape:
-                    IsRecording = false;
-                    return true;
+                    if (IsRecording) {
+                        IsRecording = false;
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }
