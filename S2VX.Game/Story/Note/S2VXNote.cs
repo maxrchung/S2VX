@@ -42,13 +42,8 @@ namespace S2VX.Game.Story.Note {
             Coordinates = coordinates;
         }
 
-        public void UpdatePlacement() {
-            var notes = Story.Notes;
-            var camera = Story.Camera;
+        public void UpdatePlacement(Camera camera, Notes notes) {
             var grid = Story.Grid;
-
-            Rotation = camera.Rotation;
-            Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);

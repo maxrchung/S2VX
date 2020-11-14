@@ -45,17 +45,21 @@ namespace S2VX.Game.Story.Note {
         private void UpdateEditorHoldNote(EditorHoldNote holdNote) {
             // For EditorHold notes, override alpha between HitTime and EndTime
             var notes = Story.Notes;
+            var camera = Story.Camera;
             var time = Time.Current;
             var endFadeOut = holdNote.EndTime + notes.FadeOutTime;
             var startTime = holdNote.HitTime - notes.ShowTime;
 
-            holdNote.UpdatePlacement();
+            holdNote.Rotation = camera.Rotation;
+            holdNote.Size = camera.Scale;
 
             if (time >= endFadeOut) {
                 holdNote.Alpha = 0;
                 // Return early to save some calculations
                 return;
             }
+
+            holdNote.UpdatePlacement(camera, notes);
 
             if (time >= holdNote.EndTime) {
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, holdNote.EndTime, endFadeOut);
@@ -78,16 +82,20 @@ namespace S2VX.Game.Story.Note {
 
         private void UpdateNote(S2VXNote note) {
             var notes = Story.Notes;
+            var camera = Story.Camera;
             var time = Time.Current;
             var endFadeOut = note.HitTime + notes.FadeOutTime;
 
-            note.UpdatePlacement();
+            note.Rotation = camera.Rotation;
+            note.Size = camera.Scale;
 
             if (time >= endFadeOut) {
                 note.Alpha = 0;
                 // Return early to save some calculations
                 return;
             }
+
+            note.UpdatePlacement(camera, notes);
 
             var startTime = note.HitTime - notes.ShowTime;
             if (time >= note.HitTime) {
