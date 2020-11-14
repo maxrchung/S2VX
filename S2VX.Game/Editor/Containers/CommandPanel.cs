@@ -3,6 +3,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
@@ -11,6 +12,7 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
@@ -38,6 +40,11 @@ namespace S2VX.Game.Editor.Containers {
         private readonly FillFlowContainer CommandsList = new FillFlowContainer {
             AutoSizeAxes = Axes.Both,
             Direction = FillDirection.Vertical
+        };
+
+        private Container ErrorContainer { get; } = new Container {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
         };
 
         private void AddInput(string text, Drawable input) => InputBar.Add(
@@ -79,7 +86,55 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
+        private void AddErrorIndicator() {
+            ErrorContainer.Add(new Box {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Anchor = Anchor.TopCentre,
+                Origin = Anchor.Centre,
+                Colour = Color4.Red,
+                Width = 0.95f,
+                Height = 0.0025f,
+                Y = .0555f,
+                X = -.025f,
+            });
+            ErrorContainer.Add(new Box {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Anchor = Anchor.TopCentre,
+                Origin = Anchor.Centre,
+                Colour = Color4.Red,
+                Width = 0.95f,
+                Height = 0.0025f,
+                Y = .095f,
+                X = -.025f,
+            });
+            ErrorContainer.Add(new Box {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Anchor = Anchor.TopLeft,
+                Origin = Anchor.Centre,
+                Colour = Color4.Red,
+                Width = 0.0025f,
+                Height = 0.04f,
+                Y = .075f,
+                X = 0,
+            });
+            ErrorContainer.Add(new Box {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.Centre,
+                Colour = Color4.Red,
+                Width = 0.0025f,
+                Height = 0.04f,
+                Y = .075f,
+                X = -.051f,
+            });
+        }
+
         private void HandleAddClick() {
+            ErrorContainer.Clear();
             var data = new string[]
             {
                 $"{DropType.Current.Value}",
@@ -90,8 +145,19 @@ namespace S2VX.Game.Editor.Containers {
                 $"{TxtEndValue.Current.Value}"
             };
             var join = string.Join("|", data);
-            var command = S2VXCommand.FromString(join);
-            HandleAddCommand(command);
+            try {
+                var command = S2VXCommand.FromString(join);
+                HandleAddCommand(command);
+            } catch (FormatException ex) {
+                AddErrorIndicator();
+                Console.WriteLine(ex);
+            } catch (TargetInvocationException ex) {
+                AddErrorIndicator();
+                Console.WriteLine(ex);
+            } catch (NullReferenceException ex) {
+                AddErrorIndicator();
+                Console.WriteLine(ex);
+            }
         }
 
         private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
@@ -106,7 +172,10 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        private void HandleTypeSelect(ValueChangedEvent<string> e) => LoadCommandsList();
+        private void HandleTypeSelect(ValueChangedEvent<string> e) {
+            ErrorContainer.Clear();
+            LoadCommandsList();
+        }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -156,7 +225,8 @@ namespace S2VX.Game.Editor.Containers {
                         new SpriteText { Text = "Command Panel" },
                         InputBar
                     }
-                }
+                },
+                ErrorContainer
             };
         }
 
