@@ -58,7 +58,7 @@ namespace S2VX.Game.Story.Note {
             var endFadeOut = approachTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
-                approachLines.ForEach(l => l.Alpha = 0); // Lines vs ReleaseLines
+                approachLines.ForEach(l => l.Alpha = 0);
                 // Return early to save some calculations
                 return;
             }
