@@ -146,7 +146,7 @@ namespace S2VX.Game.Story.Note {
 
             base.Update();
 
-            UpdatePlacement(Story.Camera, notes);
+            UpdatePlacement();
 
             if (time >= HitTime && IsBeingHeld()) {
                 Alpha = 1;
