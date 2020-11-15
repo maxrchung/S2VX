@@ -11,8 +11,8 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        public RelativeBox BoxOuter { get; } = new RelativeBox();
-        public RelativeBox BoxInner { get; } = new RelativeBox();
+        private RelativeBox BoxOuter { get; } = new RelativeBox();
+        private RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
