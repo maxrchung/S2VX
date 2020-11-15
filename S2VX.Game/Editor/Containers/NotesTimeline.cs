@@ -20,13 +20,14 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
         public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<S2VXNote, RelativeBox>();
 
         private Container TickBarContent { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
-        public Container TickBarNoteSelections { get; } = new Container {
+        public Container NoteSelectionIndicators { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
@@ -119,7 +120,7 @@ namespace S2VX.Game.Editor.Containers {
                             Anchor = Anchor.TopCentre,
                             Y = 0.1f,
                         },
-                        TickBarNoteSelections,
+                        NoteSelectionIndicators,
                         TickBarContent,
                     }
                 },
@@ -269,7 +270,7 @@ namespace S2VX.Game.Editor.Containers {
                 var relativePosition = Math.Clamp((note.HitTime - lowerBound) / sectionDuration, 0, 1);
 
                 if (note is EditorHoldNote holdNote) {
-                    if (lowerBound <= holdNote.EndTime && (lowerBound <= holdNote.HitTime || holdNote.EndTime <= upperBound)) {
+                    if (holdNote.HitTime <= upperBound && holdNote.EndTime >= lowerBound) {
                         var relativeEndPosition = Math.Clamp((holdNote.EndTime - lowerBound) / sectionDuration, 0, 1);
                         var width = (float)(TimelineNoteWidth + relativeEndPosition - relativePosition);
                         visibleNote = new RelativeBox {
@@ -303,9 +304,14 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
+        public void AddNoteTimelineSelection(S2VXNote note) => SelectedNoteToTime[note] = note.HitTime;
+
+        public void ClearNoteTimelineSelection() => SelectedNoteToTime.Clear();
+
         protected override void Update() {
             NoteToTimelineNote.Clear();
             TickBarContent.Clear();
+            NoteSelectionIndicators.Clear();
 
             var totalSeconds = Editor.Track.Length / SecondsToMS;
             var bps = Story.BPM / 60f;
@@ -349,6 +355,25 @@ namespace S2VX.Game.Editor.Containers {
 
             TextSize = Story.DrawWidth / 60;
             TxtBeatSnapDivisor.Text = $"1/{Divisor}";
+
+            var lowerBound = Time.Current - SectionLength * SecondsToMS / 2;
+            var upperBound = Time.Current + SectionLength * SecondsToMS / 2;
+            foreach (var noteAndTime in SelectedNoteToTime) {
+                if (lowerBound <= noteAndTime.Value && noteAndTime.Value <= upperBound) {
+                    var relativePosition = (noteAndTime.Value - lowerBound) / (SectionLength * SecondsToMS);
+                    var indication = new RelativeBox {
+                        Colour = Color4.LimeGreen.Opacity(0.727f),
+                        Width = TimelineNoteWidth + 0.009727f,
+                        Height = TimelineNoteHeight + 0.1f,
+                        X = (float)relativePosition,
+                        Y = 0.2f,
+                        Anchor = Anchor.TopLeft,
+                        RelativePositionAxes = Axes.Both,
+                        RelativeSizeAxes = Axes.Both,
+                    };
+                    NoteSelectionIndicators.Add(indication);
+                }
+            }
 
             AddVisibleNotes();
         }
