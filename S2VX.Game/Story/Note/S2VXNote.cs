@@ -32,7 +32,7 @@ namespace S2VX.Game.Story.Note {
             };
         }
 
-        // These Update setters modify both the Note and a corresponding Approach
+        // These Update setters modify the Note, the corresponding Approach, and the selection in NotesTimeline
         public virtual void UpdateHitTime(double hitTime) {
             Approach.HitTime = hitTime;
             HitTime = hitTime;

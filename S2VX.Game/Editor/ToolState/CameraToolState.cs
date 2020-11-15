@@ -153,8 +153,11 @@ namespace S2VX.Game.Editor.ToolState {
                     CommitCameraToolActions();
                     return true;
                 case Key.Escape:
-                    HandleExit();
-                    return true;
+                    if (IsRecording) {
+                        HandleExit();
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }
