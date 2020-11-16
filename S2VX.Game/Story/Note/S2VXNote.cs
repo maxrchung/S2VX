@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Utils;
 using osuTK;
 using System;
 
@@ -35,6 +36,32 @@ namespace S2VX.Game.Story.Note {
             Approach.HitTime = hitTime;
             HitTime = hitTime;
             Story.Notes.Sort();
+        }
+
+        public virtual void UpdateNote() {
+            var notes = Story.Notes;
+            var time = Time.Current;
+            var endFadeOut = HitTime + notes.FadeOutTime;
+
+            UpdatePlacement();
+
+            if (time >= endFadeOut) {
+                Alpha = 0;
+                // Return early to save some calculations
+                return;
+            }
+
+            var startTime = HitTime - notes.ShowTime;
+            if (time >= HitTime) {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
+                Alpha = alpha;
+            } else if (time >= startTime) {
+                Alpha = 1;
+            } else {
+                var startFadeIn = startTime - notes.FadeInTime;
+                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
+                Alpha = alpha;
+            }
         }
 
         public void UpdateCoordinates(Vector2 coordinates) {
