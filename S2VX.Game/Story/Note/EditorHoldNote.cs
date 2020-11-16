@@ -21,6 +21,8 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateNote() {
+            base.UpdateNote();
+
             // For EditorHold notes, override alpha between HitTime and EndTime
             var notes = Story.Notes;
             var time = Time.Current;
