@@ -14,13 +14,26 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private List<RelativeBox> Lines { get; } = new List<RelativeBox>()
+        public List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
             new RelativeBox(), // right
             new RelativeBox()  // left
         };
+
+        public Vector2 HitApproachTopLeftCorner { get; private set; }
+        public Vector2 HitApproachTopRightCorner { get; private set; }
+        public Vector2 HitApproachBottomLeftCorner { get; private set; }
+        public Vector2 HitApproachBottomRightCorner { get; private set; }
+
+        [BackgroundDependencyLoader]
+        private void Load() {
+            Lines.ForEach(l => l.Alpha = 0);
+            AlwaysPresent = true;
+            RelativeSizeAxes = Axes.Both;
+            InternalChildren = Lines;
+        }
 
         public virtual void UpdateApproach() {
             var notes = Story.Notes;
@@ -29,12 +42,6 @@ namespace S2VX.Game.Story.Note {
 
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
-
-            if (time >= endFadeOut) {
-                Lines.ForEach(l => l.Alpha = 0);
-                // Return early to save some calculations
-                return;
-            }
 
             var startTime = HitTime - notes.ShowTime;
             var startFadeIn = startTime - notes.FadeInTime;
@@ -54,6 +61,11 @@ namespace S2VX.Game.Story.Note {
 
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
+
+            HitApproachTopLeftCorner = offset - rotationX - rotationY;
+            HitApproachTopRightCorner = offset + rotationX - rotationY;
+            HitApproachBottomLeftCorner = offset - rotationX + rotationY;
+            HitApproachBottomRightCorner = offset + rotationX + rotationY;
 
             Lines[0].Position = offset + rotationY;
             Lines[0].Rotation = rotation;
@@ -80,14 +92,6 @@ namespace S2VX.Game.Story.Note {
                 alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
             }
             Lines.ForEach(l => l.Alpha = alpha);
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load() {
-            Lines.ForEach(l => l.Alpha = 0);
-            AlwaysPresent = true;
-            RelativeSizeAxes = Axes.Both;
-            InternalChildren = Lines;
         }
 
         // Sort Approaches from highest end time to lowest end time

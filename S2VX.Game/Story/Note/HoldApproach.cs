@@ -20,6 +20,34 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
+        private List<RelativeBox> HoldIndicatorLines { get; set; } = new List<RelativeBox>()
+        {
+            new RelativeBox(), // top left
+            new RelativeBox(), // top right
+            new RelativeBox(), // bottom left
+            new RelativeBox()  // bottom right
+        };
+
+        private Vector2 ReleaseApproachTopLeftCorner { get; set; }
+        private Vector2 ReleaseApproachTopRightCorner { get; set; }
+        private Vector2 ReleaseApproachBottomLeftCorner { get; set; }
+        private Vector2 ReleaseApproachBottomRightCorner { get; set; }
+
+        [BackgroundDependencyLoader]
+        private void Load() {
+            SetReleaseAndIndicatorLineAlpha(0);
+            AlwaysPresent = true;
+            RelativeSizeAxes = Axes.Both;
+            var lines = InternalChildren.ToArray();
+            ClearInternal(false);
+            InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
+        }
+
+        private void SetReleaseAndIndicatorLineAlpha(float alpha) {
+            ReleaseLines.ForEach(l => l.Alpha = alpha);
+            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
+        }
+
         public override void UpdateApproach() {
             base.UpdateApproach();
 
@@ -31,13 +59,20 @@ namespace S2VX.Game.Story.Note {
             var endFadeOut = EndTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {
-                ReleaseLines.ForEach(l => l.Alpha = 0);
+                SetReleaseAndIndicatorLineAlpha(0);
                 // Return early to save some calculations
                 return;
             }
 
-            var startTime = EndTime - notes.ShowTime;
-            var startFadeIn = startTime - notes.FadeInTime;
+            if (time >= HitTime) {
+                // Keep the hit approach visible for the duration of the hold
+                Lines.ForEach(l => l.Alpha = 1);
+            }
+
+            var startIndicatorTime = HitTime - notes.ShowTime;
+            var startIndicatorFadeIn = startIndicatorTime - notes.FadeInTime;
+            var startReleaseTime = EndTime - notes.ShowTime;
+            var startReleaseFadeIn = startReleaseTime - notes.FadeInTime;
 
             var position = camera.Position;
             var rotation = camera.Rotation;
@@ -47,7 +82,7 @@ namespace S2VX.Game.Story.Note {
             var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
 
             var distance = time < EndTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, EndTime)
+                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startReleaseFadeIn, EndTime)
                 : scale.X / 2;
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
@@ -71,25 +106,52 @@ namespace S2VX.Game.Story.Note {
             ReleaseLines[3].Rotation = rotation;
             ReleaseLines[3].Size = new Vector2(thickness, overlap);
 
-            float alpha;
-            if (time >= EndTime) {
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-            } else if (time >= startTime) {
-                alpha = 1;
-            } else {
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-            }
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
-        }
+            ReleaseApproachTopLeftCorner = offset - rotationX - rotationY;
+            ReleaseApproachTopRightCorner = offset + rotationX - rotationY;
+            ReleaseApproachBottomLeftCorner = offset - rotationX + rotationY;
+            ReleaseApproachBottomRightCorner = offset + rotationX + rotationY;
 
-        [BackgroundDependencyLoader]
-        private void Load() {
-            ReleaseLines.ForEach(l => l.Alpha = 0);
-            AlwaysPresent = true;
-            RelativeSizeAxes = Axes.Both;
-            var lines = InternalChildren.ToArray();
-            ClearInternal(false);
-            InternalChildren = lines.Concat(ReleaseLines).ToArray();
+            var topLeftPosition = (ReleaseApproachTopLeftCorner + HitApproachTopLeftCorner) / 2;
+            var topRightPosition = (ReleaseApproachTopRightCorner + HitApproachTopRightCorner) / 2;
+            var bottomLeftPosition = (ReleaseApproachBottomLeftCorner + HitApproachBottomLeftCorner) / 2;
+            var bottomRightPosition = (ReleaseApproachBottomRightCorner + HitApproachBottomRightCorner) / 2;
+            var indicatorLength = Vector2.Distance(ReleaseApproachTopLeftCorner, HitApproachTopLeftCorner);
+
+            HoldIndicatorLines[0].Position = topLeftPosition;
+            HoldIndicatorLines[0].Rotation = rotation - 45;
+            HoldIndicatorLines[0].Size = new Vector2(thickness, indicatorLength);
+
+            HoldIndicatorLines[1].Position = topRightPosition;
+            HoldIndicatorLines[1].Rotation = rotation + 45;
+            HoldIndicatorLines[1].Size = new Vector2(thickness, indicatorLength);
+
+            HoldIndicatorLines[2].Position = bottomLeftPosition;
+            HoldIndicatorLines[2].Rotation = rotation + 45;
+            HoldIndicatorLines[2].Size = new Vector2(thickness, indicatorLength);
+
+            HoldIndicatorLines[3].Position = bottomRightPosition;
+            HoldIndicatorLines[3].Rotation = rotation - 45;
+            HoldIndicatorLines[3].Size = new Vector2(thickness, indicatorLength);
+
+            float indicatorAlpha;
+            if (time >= EndTime) {
+                indicatorAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+            } else if (time >= startIndicatorTime) {
+                indicatorAlpha = 1;
+            } else {
+                indicatorAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startIndicatorTime);
+            }
+            HoldIndicatorLines.ForEach(l => l.Alpha = indicatorAlpha);
+
+            float releaseAlpha;
+            if (time >= EndTime) {
+                releaseAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+            } else if (time >= startReleaseTime) {
+                releaseAlpha = 1;
+            } else {
+                releaseAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startReleaseFadeIn, startReleaseTime);
+            }
+            ReleaseLines.ForEach(l => l.Alpha = releaseAlpha);
         }
     }
 }
