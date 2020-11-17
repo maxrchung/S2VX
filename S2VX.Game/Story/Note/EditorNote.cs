@@ -11,7 +11,7 @@ namespace S2VX.Game.Story.Note {
         private void Load(AudioManager audio) =>
             Hit = audio.Samples.Get("hit");
 
-        protected override void Update() {
+        public override void UpdateNote() {
             var time = Clock.CurrentTime;
             if (time >= HitTime && CanHit) {
                 CanHit = false;

@@ -20,6 +20,7 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
+            //Size = Vector2.Zero;
             Alpha = 1;
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;

@@ -129,7 +129,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        protected override void Update() {
+        public override void UpdateNote() {
             var time = Time.Current;
             var notes = Story.Notes;
 
@@ -138,13 +138,12 @@ namespace S2VX.Game.Story.Note {
                 ReleaseNote();
             }
 
+            base.UpdateNote();
+
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
             if (ShouldBeRemoved) {
-                Story.RemoveNote(this);
                 return;
             }
-
-            base.Update();
 
             UpdatePlacement();
 
