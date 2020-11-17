@@ -14,7 +14,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        public List<RelativeBox> Lines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -22,10 +22,10 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
-        public Vector2 HitApproachTopLeftCorner { get; private set; }
-        public Vector2 HitApproachTopRightCorner { get; private set; }
-        public Vector2 HitApproachBottomLeftCorner { get; private set; }
-        public Vector2 HitApproachBottomRightCorner { get; private set; }
+        protected Vector2 HitApproachTopLeftCorner { get; private set; }
+        protected Vector2 HitApproachTopRightCorner { get; private set; }
+        protected Vector2 HitApproachBottomLeftCorner { get; private set; }
+        protected Vector2 HitApproachBottomRightCorner { get; private set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
