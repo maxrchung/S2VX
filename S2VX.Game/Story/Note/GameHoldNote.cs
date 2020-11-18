@@ -96,6 +96,10 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void OnMouseUp(MouseUpEvent e) {
+            if (IsDisposed) {
+                return;
+            }
+
             if (!ShouldBeRemoved && MouseButtonBeingHeld == e.Button) {
                 ReleaseNote();
             }
@@ -124,6 +128,10 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void OnKeyUp(KeyUpEvent e) {
+            if (IsDisposed) {
+                return;
+            }
+
             if (!ShouldBeRemoved && KeyBeingHeld == e.Key) {
                 ReleaseNote();
             }

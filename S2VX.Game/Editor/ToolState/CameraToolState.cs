@@ -67,6 +67,10 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolMouseUp(MouseUpEvent e) {
+            if (IsDisposed) {
+                return;
+            }
+
             if (!IsRecording) {
                 return;
             }
