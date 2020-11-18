@@ -20,7 +20,6 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            //Size = Vector2.Zero;
             Alpha = 1;
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
@@ -39,7 +38,8 @@ namespace S2VX.Game.Story.Note {
             Story.Notes.Sort();
         }
 
-        public virtual void UpdateNote() {
+        /// <returns> Returns if this note should be removed. </returns>
+        public virtual bool UpdateNote() {
             var notes = Story.Notes;
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
@@ -49,7 +49,7 @@ namespace S2VX.Game.Story.Note {
             if (time >= endFadeOut) {
                 Alpha = 0;
                 // Return early to save some calculations
-                return;
+                return false;
             }
 
             var startTime = HitTime - notes.ShowTime;
@@ -63,6 +63,7 @@ namespace S2VX.Game.Story.Note {
                 var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
                 Alpha = alpha;
             }
+            return false;
         }
 
         public void UpdateCoordinates(Vector2 coordinates) {

@@ -20,7 +20,7 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
-        public override void UpdateNote() {
+        public override bool UpdateNote() {
             base.UpdateNote();
 
             // For EditorHold notes, override alpha between HitTime and EndTime
@@ -34,7 +34,7 @@ namespace S2VX.Game.Story.Note {
             if (time >= endFadeOut) {
                 Alpha = 0;
                 // Return early to save some calculations
-                return;
+                return false;
             }
 
             if (time >= EndTime) {
@@ -54,6 +54,7 @@ namespace S2VX.Game.Story.Note {
             if (Clock.IsRunning) {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
+            return false;
         }
 
         [BackgroundDependencyLoader]

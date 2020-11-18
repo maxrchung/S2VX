@@ -41,7 +41,20 @@ namespace S2VX.Game.Story.Note {
             RemoveInternal(note);
         }
 
-        protected override void Update() => Children.ForEach(note => note.UpdateNote());
+        protected override void Update() {
+            // Children.ForEach(note => note.UpdateNote());
+            var notesToRemove = new List<S2VXNote>();
+
+            foreach (var note in Children) {
+                if (note.UpdateNote()) {
+                    notesToRemove.Add(note);
+                }
+            }
+
+            foreach (var note in notesToRemove) {
+                Story.RemoveNote(note);
+            }
+        }
 
         public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();
 
