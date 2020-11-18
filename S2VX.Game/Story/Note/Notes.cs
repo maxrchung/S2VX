@@ -42,7 +42,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void Update() {
-            // Children.ForEach(note => note.UpdateNote());
             var notesToRemove = new List<S2VXNote>();
 
             foreach (var note in Children) {

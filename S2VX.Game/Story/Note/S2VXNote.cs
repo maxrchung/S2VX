@@ -38,6 +38,9 @@ namespace S2VX.Game.Story.Note {
             Story.Notes.Sort();
         }
 
+        /// <summary>
+        /// Updates placement and alpha for note.
+        /// </summary>
         /// <returns> Returns if this note should be removed. </returns>
         public virtual bool UpdateNote() {
             var notes = Story.Notes;

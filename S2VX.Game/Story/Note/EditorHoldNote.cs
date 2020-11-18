@@ -13,6 +13,12 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [BackgroundDependencyLoader]
+        private void Load(AudioManager audio) {
+            Hit = audio.Samples.Get("hit");
+            HitSoundTimes = new List<double>() { HitTime, EndTime };
+        }
+
         public override void UpdateHitTime(double hitTime) {
             base.UpdateHitTime(hitTime);
             EndTime = hitTime + 1000;    // TODO: #216 be able to change hold duration
@@ -57,13 +63,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
-        }
-
-        public int GetNumTimingPointsPassed() {
+        private int GetNumTimingPointsPassed() {
             var time = Time.Current;
             var ans = 0;
             foreach (var hitSoundTime in HitSoundTimes) {
