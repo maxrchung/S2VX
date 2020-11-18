@@ -95,6 +95,11 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
+        /// <summary>
+        /// Mouse up needs to have a dispose check because it's possible to
+        /// leave the current screen and have the on mouse up trigger on the
+        /// next screen.
+        /// </summary>
         protected override void OnMouseUp(MouseUpEvent e) {
             if (IsDisposed) {
                 return;
