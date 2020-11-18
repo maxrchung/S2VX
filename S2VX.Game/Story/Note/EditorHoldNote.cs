@@ -13,6 +13,12 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [BackgroundDependencyLoader]
+        private void Load(AudioManager audio) {
+            Hit = audio.Samples.Get("hit");
+            HitSoundTimes = new List<double>() { HitTime, EndTime };
+        }
+
         public override void UpdateHitTime(double hitTime) {
             base.UpdateHitTime(hitTime);
             EndTime = hitTime + 1000;    // TODO: #216 be able to change hold duration
@@ -20,14 +26,8 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
-        [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
-        }
-
-        protected override void Update() {
-            base.Update();
+        public override bool UpdateNote() {
+            base.UpdateNote();
 
             // For EditorHold notes, override alpha between HitTime and EndTime
             var notes = Story.Notes;
@@ -35,13 +35,13 @@ namespace S2VX.Game.Story.Note {
             var endFadeOut = EndTime + notes.FadeOutTime;
             var startTime = HitTime - notes.ShowTime;
 
+            UpdatePlacement();
+
             if (time >= endFadeOut) {
                 Alpha = 0;
                 // Return early to save some calculations
-                return;
+                return false;
             }
-
-            UpdatePlacement();
 
             if (time >= EndTime) {
                 var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
@@ -60,6 +60,7 @@ namespace S2VX.Game.Story.Note {
             if (Clock.IsRunning) {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
+            return false;
         }
 
         private int GetNumTimingPointsPassed() {

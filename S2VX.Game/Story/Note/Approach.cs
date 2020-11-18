@@ -14,7 +14,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        public List<RelativeBox> Lines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -22,10 +22,10 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
-        public Vector2 HitApproachTopLeftCorner { get; set; }
-        public Vector2 HitApproachTopRightCorner { get; set; }
-        public Vector2 HitApproachBottomLeftCorner { get; set; }
-        public Vector2 HitApproachBottomRightCorner { get; set; }
+        protected Vector2 HitApproachTopLeftCorner { get; private set; }
+        protected Vector2 HitApproachTopRightCorner { get; private set; }
+        protected Vector2 HitApproachBottomLeftCorner { get; private set; }
+        protected Vector2 HitApproachBottomRightCorner { get; private set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -35,7 +35,7 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Lines;
         }
 
-        protected override void Update() {
+        public virtual void UpdateApproach() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -92,7 +92,6 @@ namespace S2VX.Game.Story.Note {
                 alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
             }
             Lines.ForEach(l => l.Alpha = alpha);
-
         }
 
         // Sort Approaches from highest end time to lowest end time

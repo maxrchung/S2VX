@@ -12,7 +12,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private List<RelativeBox> ReleaseLines { get; set; } = new List<RelativeBox>()
+        private List<RelativeBox> ReleaseLines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -28,15 +28,10 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // bottom right
         };
 
-        public Vector2 ReleaseApproachTopLeftCorner { get; set; }
-        public Vector2 ReleaseApproachTopRightCorner { get; set; }
-        public Vector2 ReleaseApproachBottomLeftCorner { get; set; }
-        public Vector2 ReleaseApproachBottomRightCorner { get; set; }
-
-        private void SetReleaseAndIndicatorLineAlpha(float alpha) {
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
-        }
+        private Vector2 ReleaseApproachTopLeftCorner { get; set; }
+        private Vector2 ReleaseApproachTopRightCorner { get; set; }
+        private Vector2 ReleaseApproachBottomLeftCorner { get; set; }
+        private Vector2 ReleaseApproachBottomRightCorner { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -48,8 +43,13 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        protected override void Update() {
-            base.Update();
+        private void SetReleaseAndIndicatorLineAlpha(float alpha) {
+            ReleaseLines.ForEach(l => l.Alpha = alpha);
+            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
+        }
+
+        public override void UpdateApproach() {
+            base.UpdateApproach();
 
             var notes = Story.Notes;
             var camera = Story.Camera;
@@ -153,6 +153,5 @@ namespace S2VX.Game.Story.Note {
             }
             ReleaseLines.ForEach(l => l.Alpha = releaseAlpha);
         }
-
     }
 }

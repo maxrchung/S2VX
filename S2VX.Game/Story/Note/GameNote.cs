@@ -98,14 +98,14 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        protected override void Update() {
+        public override bool UpdateNote() {
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
             if (ShouldBeRemoved) {
-                Story.RemoveNote(this);
-                return;
+                return true;
             }
 
-            base.Update();
+            base.UpdateNote();
+
             var time = Time.Current;
             if (time >= HitTime) {
                 // Hold the note at fully visible until after MissThreshold
@@ -119,6 +119,7 @@ namespace S2VX.Game.Story.Note {
                     RecordMiss();
                 }
             }
+            return false;
         }
     }
 }

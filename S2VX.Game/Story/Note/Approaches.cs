@@ -47,9 +47,6 @@ namespace S2VX.Game.Story.Note {
         [BackgroundDependencyLoader]
         private void Load() => RelativeSizeAxes = Axes.Both;
 
-        protected override void Update() {
-            var notes = Story.Notes;
-            Alpha = notes.Alpha;
-        }
+        protected override void Update() => Children.ForEach(approach => approach.UpdateApproach());
     }
 }

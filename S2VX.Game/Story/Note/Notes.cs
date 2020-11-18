@@ -14,6 +14,9 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Children;
         }
 
+        [Resolved]
+        private S2VXStory Story { get; set; }
+
         // Notes fade in, show for a period of time, then fade out
         // The note should be hit at the very end of the show time
         public float FadeInTime { get; set; }
@@ -36,6 +39,20 @@ namespace S2VX.Game.Story.Note {
         public void RemoveNote(S2VXNote note) {
             Children.Remove(note);
             RemoveInternal(note);
+        }
+
+        protected override void Update() {
+            var notesToRemove = new List<S2VXNote>();
+
+            foreach (var note in Children) {
+                if (note.UpdateNote()) {
+                    notesToRemove.Add(note);
+                }
+            }
+
+            foreach (var note in notesToRemove) {
+                Story.RemoveNote(note);
+            }
         }
 
         public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();

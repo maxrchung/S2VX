@@ -12,16 +12,15 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        protected RelativeBox BoxOuter { get; } = new RelativeBox();
-        protected RelativeBox BoxInner { get; } = new RelativeBox();
+        private RelativeBox BoxOuter { get; } = new RelativeBox();
+        private RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Alpha = 0;
-            AlwaysPresent = true;
+            Alpha = 1;
             RelativePositionAxes = Axes.Both;
             RelativeSizeAxes = Axes.Both;
             Anchor = Anchor.Centre;
@@ -39,12 +38,43 @@ namespace S2VX.Game.Story.Note {
             Story.Notes.Sort();
         }
 
+        /// <summary>
+        /// Updates placement and alpha for note.
+        /// </summary>
+        /// <returns> Returns if this note should be removed. </returns>
+        public virtual bool UpdateNote() {
+            var notes = Story.Notes;
+            var time = Time.Current;
+            var endFadeOut = HitTime + notes.FadeOutTime;
+
+            UpdatePlacement();
+
+            if (time >= endFadeOut) {
+                Alpha = 0;
+                // Return early to save some calculations
+                return false;
+            }
+
+            var startTime = HitTime - notes.ShowTime;
+            if (time >= HitTime) {
+                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
+                Alpha = alpha;
+            } else if (time >= startTime) {
+                Alpha = 1;
+            } else {
+                var startFadeIn = startTime - notes.FadeInTime;
+                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
+                Alpha = alpha;
+            }
+            return false;
+        }
+
         public void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
 
-        protected void UpdatePlacement() {
+        public void UpdatePlacement() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
@@ -58,32 +88,6 @@ namespace S2VX.Game.Story.Note {
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
             BoxOuter.Colour = notes.OutlineColor;
-        }
-
-        protected override void Update() {
-            var notes = Story.Notes;
-            var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return;
-            }
-
-            UpdatePlacement();
-
-            var startTime = HitTime - notes.ShowTime;
-            if (time >= HitTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            } else {
-                var startFadeIn = startTime - notes.FadeInTime;
-                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                Alpha = alpha;
-            }
         }
 
         // Sort Notes from highest end time to lowest end time
