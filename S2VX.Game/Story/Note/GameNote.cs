@@ -105,7 +105,6 @@ namespace S2VX.Game.Story.Note {
             }
 
             base.UpdateNote();
-            Console.WriteLine("GameNote Update called");
 
             var time = Time.Current;
             if (time >= HitTime) {
