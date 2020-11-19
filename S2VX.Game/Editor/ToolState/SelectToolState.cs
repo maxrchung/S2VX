@@ -252,10 +252,6 @@ namespace S2VX.Game.Editor.ToolState {
                     foreach (var noteAndTime in NotesTimeline.SelectedNoteToTime) {
                         var note = noteAndTime.Key;
                         note.ReversibleRemove(Story, Editor);
-                        //if (note is HoldNote holdNote) {
-
-                        //}
-                        //Editor.Reversibles.Push(new ReversibleRemoveNote(Story, note, Editor));
                     }
                     ClearNoteSelection();
                     return true;
