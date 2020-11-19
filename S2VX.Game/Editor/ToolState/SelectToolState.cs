@@ -155,7 +155,9 @@ namespace S2VX.Game.Editor.ToolState {
                 case SelectToolDragState.DragTimelineNote:
                     foreach (var noteAndTime in NotesTimeline.SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        TimelineNoteToDragPointDelta[note] = note.HitTime - selectedNoteTime;
+                        var mouseTime = note.HitTime - selectedNoteTime + GetGameTimeAtMouse(e.ScreenSpaceMouseDownPosition);
+                        Console.WriteLine($"mouseTime: {mouseTime}, noteHitTime = {note.HitTime}");
+                        TimelineNoteToDragPointDelta[note] = mouseTime - note.HitTime;
                     }
                     break;
                 case SelectToolDragState.DragNote:
@@ -194,7 +196,7 @@ namespace S2VX.Game.Editor.ToolState {
                     case SelectToolDragState.DragTimelineNote: {
                         var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
                         foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                            var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                            var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                             note.UpdateHitTime(newTime);
                             NotesTimeline.AddNoteTimelineSelection(note);
                         }
@@ -223,7 +225,7 @@ namespace S2VX.Game.Editor.ToolState {
                     var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
 
                     foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                        var newTime = GetClosestTickTime(gameTimeAtMouse) + TimelineNoteToDragPointDelta[note];
+                        var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                         Editor.Reversibles.Push(new ReversibleUpdateNoteHitTime(note, OldEndTime, newTime, Editor));
                     }
                     break;
