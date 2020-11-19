@@ -22,8 +22,8 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateHitTime(double hitTime) {
+            EndTime = hitTime + EndTime - HitTime;
             base.UpdateHitTime(hitTime);
-            EndTime = hitTime + 1000;    // TODO: #216 be able to change hold duration
             ((HoldApproach)Approach).EndTime = EndTime;
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
