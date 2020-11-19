@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
+using S2VX.Game.Editor;
 using System;
 
 namespace S2VX.Game.Story.Note {
@@ -92,5 +93,10 @@ namespace S2VX.Game.Story.Note {
 
         // Sort Notes from highest end time to lowest end time
         public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);
+
+        /// <summary>
+        /// Pushes a Reversible to the Editor Reversibles stack
+        /// </summary>
+        public virtual void ReversibleRemove(S2VXStory story, EditorScreen editor) { }
     }
 }
