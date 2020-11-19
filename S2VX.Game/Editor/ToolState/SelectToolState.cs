@@ -156,7 +156,6 @@ namespace S2VX.Game.Editor.ToolState {
                     foreach (var noteAndTime in NotesTimeline.SelectedNoteToTime) {
                         var note = noteAndTime.Key;
                         var mouseTime = note.HitTime - selectedNoteTime + GetGameTimeAtMouse(e.ScreenSpaceMouseDownPosition);
-                        Console.WriteLine($"mouseTime: {mouseTime}, noteHitTime = {note.HitTime}");
                         TimelineNoteToDragPointDelta[note] = mouseTime - note.HitTime;
                     }
                     break;
