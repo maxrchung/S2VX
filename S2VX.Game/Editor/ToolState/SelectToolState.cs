@@ -128,7 +128,7 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override bool OnToolDragStart(DragStartEvent e) {
-            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMousePosition), Editor.NotesTimeline.NoteSelectionIndicators);
+            var mousePos = ToSpaceOfOtherDrawable(ToLocalSpace(e.ScreenSpaceMouseDownPosition), Editor.NotesTimeline.NoteSelectionIndicators);
             var selectedNoteTime = 0d;
             var selectedNoteCoord = Vector2.Zero;
 
