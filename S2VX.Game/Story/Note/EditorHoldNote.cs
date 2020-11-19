@@ -2,6 +2,8 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Utils;
+using S2VX.Game.Editor;
+using S2VX.Game.Editor.Reversible;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -75,5 +77,8 @@ namespace S2VX.Game.Story.Note {
             }
             return ans;
         }
+
+        public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
+            editor.Reversibles.Push(new ReversibleRemoveHoldNote(story, this, editor));
     }
 }

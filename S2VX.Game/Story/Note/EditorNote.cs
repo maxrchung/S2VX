@@ -1,6 +1,8 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using S2VX.Game.Editor;
+using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Story.Note {
     public class EditorNote : S2VXNote {
@@ -21,5 +23,8 @@ namespace S2VX.Game.Story.Note {
             CanHit = Clock.IsRunning && time < HitTime;
             return base.UpdateNote();
         }
+
+        public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
+            editor.Reversibles.Push(new ReversibleRemoveNote(story, this, editor));
     }
 }
