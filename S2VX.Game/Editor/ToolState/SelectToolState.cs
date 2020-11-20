@@ -19,6 +19,7 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
         private NotesTimeline NotesTimeline { get; set; }
+        private Dictionary<RelativeBox, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<RelativeBox, S2VXNote>();
 
         private Dictionary<S2VXNote, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, double>();
         private Dictionary<S2VXNote, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, Vector2>();
@@ -101,11 +102,13 @@ namespace S2VX.Game.Editor.ToolState {
             noteSelection.X = note.Position.X;
             noteSelection.Y = note.Position.Y;
             Editor.NoteSelectionIndicators.Add(noteSelection);
+            NoteSelectionToNote[noteSelection] = note;
         }
 
         public void ClearNoteSelection() {
             NotesTimeline.ClearNoteTimelineSelection();
             Editor.NoteSelectionIndicators.Clear();
+            NoteSelectionToNote.Clear();
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
@@ -264,7 +267,15 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void HandleExit() => ClearNoteSelection();
 
-        protected override void Update() => DelayDrag = false;
+        protected override void Update() {
+            DelayDrag = false;
+
+            foreach (var noteSelection in Editor.NoteSelectionIndicators) {
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
+            }
+        }
 
         public override string DisplayName() => "Select";
     }

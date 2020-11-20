@@ -52,7 +52,7 @@ namespace S2VX.Game.Editor {
 
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
 
-        public Container NoteSelectionIndicators { get; } = new Container {
+        public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
