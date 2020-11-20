@@ -28,7 +28,7 @@ namespace S2VX.Game.Story {
         public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
         private int NextActive { get; set; }
 
-        private HashSet<S2VXCommand> Actives { get; set; } = new HashSet<S2VXCommand>();
+        private List<S2VXCommand> Actives { get; set; } = new List<S2VXCommand>();
 
         private static JsonConverter[] Converters { get; } = {
             new CommandConverter(),
@@ -168,12 +168,20 @@ namespace S2VX.Game.Story {
                 }
             }
 
+            var isActiveAdded = false;
             // Add new active commands
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);
+                isActiveAdded = true;
             }
 
-            var newActives = new HashSet<S2VXCommand>();
+            // Actives need to be sorted by endTime to be processed retroactively
+            // Commands (0-10000, 4000-5000, 6000-7000). Command with 10000 needs to be applied last.
+            if (isActiveAdded) {
+                Actives = Actives.OrderBy(command => command.EndTime).ToList();
+            }
+
+            var newActives = new List<S2VXCommand>();
             foreach (var active in Actives) {
                 // Run active commands
                 active.Apply(Time.Current, this);
