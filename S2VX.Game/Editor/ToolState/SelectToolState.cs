@@ -109,6 +109,7 @@ namespace S2VX.Game.Editor.ToolState {
         public void ClearNoteSelection() {
             NotesTimeline.ClearNoteTimelineSelection();
             Editor.NoteSelectionIndicators.Clear();
+            NoteSelectionToNote.Clear();
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
