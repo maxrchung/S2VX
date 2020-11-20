@@ -1,5 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
@@ -19,6 +20,7 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
         private NotesTimeline NotesTimeline { get; set; }
+        private Dictionary<Drawable, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, S2VXNote>();
 
         private Dictionary<S2VXNote, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, double>();
         private Dictionary<S2VXNote, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, Vector2>();
@@ -101,6 +103,7 @@ namespace S2VX.Game.Editor.ToolState {
             noteSelection.X = note.Position.X;
             noteSelection.Y = note.Position.Y;
             Editor.NoteSelectionIndicators.Add(noteSelection);
+            NoteSelectionToNote[noteSelection] = note;
         }
 
         public void ClearNoteSelection() {
@@ -264,7 +267,15 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void HandleExit() => ClearNoteSelection();
 
-        protected override void Update() => DelayDrag = false;
+        protected override void Update() {
+            DelayDrag = false;
+
+            foreach (var noteSelection in Editor.NoteSelectionIndicators) {
+                noteSelection.Rotation = NoteSelectionToNote[noteSelection].Rotation;
+                noteSelection.X = NoteSelectionToNote[noteSelection].Position.X;
+                noteSelection.Y = NoteSelectionToNote[noteSelection].Position.Y;
+            }
+        }
 
         public override string DisplayName() => "Select";
     }
