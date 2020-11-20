@@ -177,6 +177,7 @@ namespace S2VX.Game.Story {
 
             // Actives need to be sorted by endTime to be processed retroactively
             // Commands (0-10000, 4000-5000, 6000-7000). Command with 10000 needs to be applied last.
+            // Commands 4000-5000 and 6000-7000 will be effectively ignored.
             if (isActiveAdded) {
                 Actives = Actives.OrderBy(command => command.EndTime).ToList();
             }
