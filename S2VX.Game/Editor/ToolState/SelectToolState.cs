@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
@@ -20,7 +19,7 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
         private NotesTimeline NotesTimeline { get; set; }
-        private Dictionary<Drawable, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<Drawable, S2VXNote>();
+        private Dictionary<RelativeBox, S2VXNote> NoteSelectionToNote { get; set; } = new Dictionary<RelativeBox, S2VXNote>();
 
         private Dictionary<S2VXNote, double> TimelineNoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, double>();
         private Dictionary<S2VXNote, Vector2> NoteToDragPointDelta { get; set; } = new Dictionary<S2VXNote, Vector2>();
