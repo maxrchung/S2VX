@@ -30,8 +30,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateCoordinates(Vector2 coordinates) {
-            EndCoordinates = coordinates + EndCoordinates - Coordinates;
-            base.UpdateCoordinates(coordinates);
+            var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
+            base.UpdateCoordinates(startCoordinates);
+            EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
             ((HoldApproach)Approach).EndCoordinates = EndCoordinates;
         }
 
