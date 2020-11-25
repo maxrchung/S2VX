@@ -9,6 +9,8 @@ namespace S2VX.Game.Story.Note {
     public class HoldApproach : Approach {
         public double EndTime { get; set; }
 
+        public Vector2 EndCoordinates { get; set; }
+
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
@@ -49,7 +51,8 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateApproach() {
-            base.UpdateApproach();
+            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            UpdatePlacement(coordinates);
 
             var notes = Story.Notes;
             var camera = Story.Camera;
@@ -79,7 +82,7 @@ namespace S2VX.Game.Story.Note {
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
 
-            var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
+            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
 
             var distance = time < EndTime
                 ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startReleaseFadeIn, EndTime)

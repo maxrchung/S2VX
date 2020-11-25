@@ -37,7 +37,8 @@ namespace S2VX.Game.Story.Note {
             var endFadeOut = EndTime + notes.FadeOutTime;
             var startTime = HitTime - notes.ShowTime;
 
-            UpdatePlacement();
+            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            UpdatePlacement(coordinates);
 
             if (time >= endFadeOut) {
                 Alpha = 0;
