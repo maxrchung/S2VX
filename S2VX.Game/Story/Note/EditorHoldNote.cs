@@ -2,6 +2,7 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Utils;
+using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
 using System.Collections.Generic;
@@ -26,6 +27,12 @@ namespace S2VX.Game.Story.Note {
             base.UpdateHitTime(hitTime);
             ((HoldApproach)Approach).EndTime = EndTime;
             HitSoundTimes = new List<double>() { HitTime, EndTime };
+        }
+
+        public override void UpdateCoordinates(Vector2 coordinates) {
+            EndCoordinates = coordinates + EndCoordinates - Coordinates;
+            base.UpdateCoordinates(coordinates);
+            ((HoldApproach)Approach).EndCoordinates = EndCoordinates;
         }
 
         public override bool UpdateNote() {

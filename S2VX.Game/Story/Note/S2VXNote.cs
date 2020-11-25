@@ -70,7 +70,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        public void UpdateCoordinates(Vector2 coordinates) {
+        public virtual void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
