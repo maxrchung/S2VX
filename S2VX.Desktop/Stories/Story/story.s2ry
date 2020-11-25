@@ -97,6 +97,10 @@
       "Coordinates": {
         "X": 1.0,
         "Y": 1.0
+      },
+      "EndCoordinates": {
+        "X": 3.0,
+        "Y": 3.0
       }
     }
   ],
