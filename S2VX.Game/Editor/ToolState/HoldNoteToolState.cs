@@ -67,9 +67,16 @@ namespace S2VX.Game.Editor.ToolState {
 
         protected override void Update() {
             Preview.Colour = Story.Notes.Colour;
-            Preview.Coordinates = Editor.MousePosition;
-            Preview.HitTime = IsRecording ? HitTime : Time.Current;
-            Preview.EndTime = Time.Current;
+
+            if (IsRecording) {
+                Preview.EndTime = Time.Current;
+                Preview.EndCoordinates = Editor.MousePosition;
+            } else {
+                Preview.HitTime = Time.Current;
+                Preview.EndTime = Time.Current;
+                Preview.Coordinates = Editor.MousePosition;
+                Preview.EndCoordinates = Editor.MousePosition;
+            }
         }
 
         public override string DisplayName() =>
