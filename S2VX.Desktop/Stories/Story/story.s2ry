@@ -93,7 +93,7 @@
   "HoldNotes": [
     {
       "HitTime": 991.7233560090702,
-      "EndTime": 1921.4739229024945,
+      "EndTime": 1983.469387755102,
       "Coordinates": {
         "X": 1.0,
         "Y": 1.0
@@ -105,7 +105,7 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 1921.4739229024945,
+    "TrackTime": 929.7505668934241,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3
