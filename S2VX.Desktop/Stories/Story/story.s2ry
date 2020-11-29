@@ -1,4 +1,4 @@
-﻿{
+{
   "Commands": [
     {
       "StartValue": {
@@ -92,8 +92,8 @@
   ],
   "HoldNotes": [
     {
-      "HitTime": 991.7233560090,
-      "EndTime": 1991.7233560090,
+      "HitTime": 991.7233560090702,
+      "EndTime": 1921.4739229024945,
       "Coordinates": {
         "X": 1.0,
         "Y": 1.0
@@ -105,7 +105,7 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 0,
+    "TrackTime": 1921.4739229024945,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3
@@ -113,8 +113,8 @@
   "DifficultySettings": {
     "SlowestBPM": 242.0,
     "FastestBPM": 242.0,
-    "StoryLength": 11560.589569160999,
+    "StoryLength": 428.0045351473922,
     "CommandCount": 5,
-    "NoteCount": 8
+    "NoteCount": 4
   }
 }
