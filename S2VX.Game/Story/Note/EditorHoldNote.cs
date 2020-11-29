@@ -30,6 +30,11 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateCoordinates(Vector2 coordinates) {
+            // Prevent changes at end time or else we'll get some wild interpolation
+            if (EndTime - Time.Current <= EditorScreen.TrackTimeTolerance) {
+                return;
+            }
+
             var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
             base.UpdateCoordinates(startCoordinates);
             EndCoordinates = startCoordinates + EndCoordinates - Coordinates;

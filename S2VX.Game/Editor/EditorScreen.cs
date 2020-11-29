@@ -24,7 +24,7 @@ using System;
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
 
-        public const double TrackTimeTolerance = 0.02;  // ms away from a tick or end of track will be considered to be on that tick or end of track
+        public const double TrackTimeTolerance = 0.03;  // ms away from a tick or end of track will be considered to be on that tick or end of track
 
         private string AudioPath { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
