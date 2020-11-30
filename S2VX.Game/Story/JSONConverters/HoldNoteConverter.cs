@@ -8,13 +8,19 @@ namespace S2VX.Game.Story.JSONConverters {
         public override void WriteJson(JsonWriter writer, HoldNote note, JsonSerializer serializer) {
             var obj = new JObject {
                 { "HitTime", note.HitTime },
-                { "EndTime", note.EndTime }
+                { "EndTime", note.EndTime },
             };
             var coordinates = new JObject {
                 { "X", note.Coordinates.X },
                 { "Y", note.Coordinates.Y }
             };
             obj.Add("Coordinates", coordinates);
+
+            var endCoordinates = new JObject {
+                { "X", note.EndCoordinates.X },
+                { "Y", note.EndCoordinates.Y }
+            };
+            obj.Add("EndCoordinates", endCoordinates);
             obj.WriteTo(writer);
         }
 

@@ -35,7 +35,9 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Lines;
         }
 
-        public virtual void UpdateApproach() {
+        public virtual void UpdateApproach() => UpdatePlacement(Coordinates);
+
+        protected void UpdatePlacement(Vector2 coordinates) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -51,7 +53,7 @@ namespace S2VX.Game.Story.Note {
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
 
-            var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
+            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
 
             var distance = time < HitTime
                 ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, HitTime)

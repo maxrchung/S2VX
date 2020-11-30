@@ -13,8 +13,8 @@ namespace S2VX.Game.Story.Note {
 
         public Approach Approach { get; set; }
 
-        private RelativeBox BoxOuter { get; } = new RelativeBox();
-        private RelativeBox BoxInner { get; } = new RelativeBox();
+        protected RelativeBox BoxOuter { get; } = new RelativeBox();
+        protected RelativeBox BoxInner { get; } = new RelativeBox();
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -48,7 +48,7 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var endFadeOut = HitTime + notes.FadeOutTime;
 
-            UpdatePlacement();
+            UpdatePlacement(Coordinates);
 
             if (time >= endFadeOut) {
                 Alpha = 0;
@@ -70,12 +70,12 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        public void UpdateCoordinates(Vector2 coordinates) {
+        public virtual void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
 
-        public void UpdatePlacement() {
+        protected void UpdatePlacement(Vector2 coordinates) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
@@ -87,7 +87,7 @@ namespace S2VX.Game.Story.Note {
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
 
-            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
+            Position = S2VXUtils.Rotate(coordinates - camera.Position, Rotation) * Size.X;
             BoxOuter.Colour = notes.OutlineColor;
         }
 

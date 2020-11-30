@@ -2,6 +2,7 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Utils;
+using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
 using System.Collections.Generic;
@@ -28,6 +29,18 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
+        public override void UpdateCoordinates(Vector2 coordinates) {
+            // Prevent changes at end time or else we'll get some wild interpolation
+            if (EndTime - Time.Current <= EditorScreen.TrackTimeTolerance) {
+                return;
+            }
+
+            var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
+            base.UpdateCoordinates(startCoordinates);
+            EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
+            ((HoldApproach)Approach).EndCoordinates = EndCoordinates;
+        }
+
         public override bool UpdateNote() {
             base.UpdateNote();
 
@@ -37,7 +50,8 @@ namespace S2VX.Game.Story.Note {
             var endFadeOut = EndTime + notes.FadeOutTime;
             var startTime = HitTime - notes.ShowTime;
 
-            UpdatePlacement();
+            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            UpdatePlacement(coordinates);
 
             if (time >= endFadeOut) {
                 Alpha = 0;

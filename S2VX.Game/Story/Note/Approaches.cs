@@ -29,6 +29,7 @@ namespace S2VX.Game.Story.Note {
                 Coordinates = note.Coordinates,
                 HitTime = note.HitTime,
                 EndTime = note.EndTime,
+                EndCoordinates = note.EndCoordinates
             };
             Children.Add(approach);
             AddInternal(approach);

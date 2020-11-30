@@ -40,7 +40,8 @@ namespace S2VX.Game.Editor.ToolState {
                     var note = new EditorHoldNote {
                         Coordinates = Coordinates,
                         HitTime = HitTime,
-                        EndTime = endTime
+                        EndTime = endTime,
+                        EndCoordinates = Editor.MousePosition
                     };
                     Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
                 }
@@ -67,14 +68,14 @@ namespace S2VX.Game.Editor.ToolState {
         protected override void Update() {
             Preview.Colour = Story.Notes.Colour;
 
-            if (!IsRecording) {
-                Preview.Coordinates = Editor.MousePosition;
+            if (IsRecording) {
+                Preview.EndTime = Time.Current;
+                Preview.EndCoordinates = Editor.MousePosition;
+            } else {
                 Preview.HitTime = Time.Current;
                 Preview.EndTime = Time.Current;
-            } else {
-                Preview.Coordinates = Coordinates;
-                Preview.HitTime = HitTime;
-                Preview.EndTime = Time.Current;
+                Preview.Coordinates = Editor.MousePosition;
+                Preview.EndCoordinates = Editor.MousePosition;
             }
         }
 
