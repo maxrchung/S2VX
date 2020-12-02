@@ -7,7 +7,7 @@ namespace S2VX.Game.Story.Command {
         public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {
             var value = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Notes.OutlineThickness = value;
+            story.Notes.GetNonHoldNotes().ForEach(note => note.OutlineThickness = value);
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static NotesOutlineThicknessCommand FromString(string[] split) {
