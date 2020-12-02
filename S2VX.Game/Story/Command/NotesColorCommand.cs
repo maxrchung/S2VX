@@ -7,7 +7,7 @@ namespace S2VX.Game.Story.Command {
         public Color4 EndValue { get; set; } = Color4.White;
         public override void Apply(double time, S2VXStory story) {
             var color = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Notes.Colour = color;
+            story.Notes.GetNonHoldNotes().ForEach(note => note.Colour = color);
         }
         protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
         public static NotesColorCommand FromString(string[] split) {

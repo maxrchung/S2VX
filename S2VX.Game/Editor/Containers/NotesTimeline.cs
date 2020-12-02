@@ -263,9 +263,9 @@ namespace S2VX.Game.Editor.Containers {
             var sectionDuration = SectionLength * SecondsToMS;
             var lowerBound = Time.Current - sectionDuration / 2;
             var upperBound = Time.Current + sectionDuration / 2;
-            var color = Story.Notes.Colour;
             foreach (var note in Story.Notes.Children) {
                 RelativeBox visibleNote = null;
+                var color = note.Colour;
                 // Clamp so that RelativeBoxes never draw outside of lower and upper bound
                 var relativePosition = Math.Clamp((note.HitTime - lowerBound) / sectionDuration, 0, 1);
 
