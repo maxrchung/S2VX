@@ -65,6 +65,24 @@
       "EndTime": 368002.0,
       "Easing": 0,
       "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.8,
+        "G": 0.9,
+        "B": 1.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.727,
+        "B": 0.69,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 368002.0,
+      "Easing": 0,
+      "Type": "HoldNotesColor"
     }
   ],
   "Notes": [
