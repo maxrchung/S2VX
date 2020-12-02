@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osuTK.Graphics;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.JSONConverters;
 using S2VX.Game.Story.Note;
@@ -40,6 +41,9 @@ namespace S2VX.Game.Story {
         public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
         public DifficultySettings DifficultySettings { get; private set; } = new DifficultySettings();
+
+        public Color4 PreviewNoteColor { get; set; }
+        public Color4 PreviewHoldNoteColor { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
