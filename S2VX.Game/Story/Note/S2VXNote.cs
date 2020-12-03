@@ -89,8 +89,13 @@ namespace S2VX.Game.Story.Note {
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
             Position = S2VXUtils.Rotate(coordinates - camera.Position, Rotation) * Size.X;
-            BoxOuter.Colour = OutlineColor;
         }
+
+        public Color4 GetColor() => BoxInner.Colour;
+
+        public void SetColor(Color4 color) => BoxInner.Colour = color;
+
+        public void SetOutlineColor(Color4 color) => BoxOuter.Colour = color;
 
         // Sort Notes from highest end time to lowest end time
         public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);
