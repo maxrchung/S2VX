@@ -10,8 +10,8 @@ namespace S2VX.Game.Story.Command {
             story.Notes.GetHoldNotes().ForEach(note => note.OutlineThickness = value);
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
-        public static NotesOutlineThicknessCommand FromString(string[] split) {
-            var command = new NotesOutlineThicknessCommand() {
+        public static HoldNotesOutlineThicknessCommand FromString(string[] split) {
+            var command = new HoldNotesOutlineThicknessCommand() {
                 StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
                 EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
             };

@@ -10,8 +10,8 @@ namespace S2VX.Game.Story.Command {
             story.Notes.GetHoldNotes().ForEach(note => note.SetOutlineColor(value));
         }
         protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
-        public static NotesOutlineColorCommand FromString(string[] split) {
-            var command = new NotesOutlineColorCommand() {
+        public static HoldNotesOutlineColorCommand FromString(string[] split) {
+            var command = new HoldNotesOutlineColorCommand() {
                 StartValue = S2VXUtils.Color4FromString(split[4]),
                 EndValue = S2VXUtils.Color4FromString(split[5]),
             };
