@@ -15,6 +15,32 @@
       "Type": "CameraMove"
     },
     {
+      "StartValue": 800.0,
+      "EndValue": 800.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesShowTime"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
       "StartValue": {
         "R": 0.02745,
         "G": 0.2118,
@@ -49,14 +75,6 @@
       "EndTime": 0.0,
       "Easing": 0,
       "Type": "NotesOutlineColor"
-    },
-    {
-      "StartValue": 0.7,
-      "EndValue": 0.7,
-      "StartTime": 0.0,
-      "EndTime": 0.0,
-      "Easing": 0,
-      "Type": "NotesAlpha"
     },
     {
       "StartValue": {
@@ -104,29 +122,39 @@
     },
     {
       "StartValue": {
-        "R": 0.0,
-        "G": 0.1686,
-        "B": 0.2118,
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
         "A": 1.0
       },
       "EndValue": {
-        "R": 0.0,
-        "G": 0.1686,
-        "B": 0.2118,
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
         "A": 1.0
       },
       "StartTime": 0.0,
       "EndTime": 0.0,
       "Easing": 0,
-      "Type": "BackgroundColor"
+      "Type": "HoldNotesColor"
     },
     {
-      "StartValue": 800.0,
-      "EndValue": 800.0,
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
       "StartTime": 0.0,
       "EndTime": 0.0,
       "Easing": 0,
-      "Type": "NotesShowTime"
+      "Type": "HoldApproachesColor"
     },
     {
       "StartValue": 0.01,
@@ -187,40 +215,20 @@
       "Type": "HoldNotesOutlineColor"
     },
     {
-      "StartValue": {
-        "R": 0.1647,
-        "G": 0.6314,
-        "B": 0.5961,
-        "A": 1.0
-      },
-      "EndValue": {
-        "R": 0.1647,
-        "G": 0.6314,
-        "B": 0.5961,
-        "A": 1.0
-      },
+      "StartValue": 0.7,
+      "EndValue": 0.7,
       "StartTime": 0.0,
       "EndTime": 0.0,
       "Easing": 0,
-      "Type": "HoldNotesColor"
+      "Type": "NotesAlpha"
     },
     {
-      "StartValue": {
-        "R": 0.1647,
-        "G": 0.6314,
-        "B": 0.5961,
-        "A": 1.0
-      },
-      "EndValue": {
-        "R": 0.1647,
-        "G": 0.6314,
-        "B": 0.5961,
-        "A": 1.0
-      },
+      "StartValue": 0.7,
+      "EndValue": 0.7,
       "StartTime": 0.0,
       "EndTime": 0.0,
       "Easing": 0,
-      "Type": "HoldApproachesColor"
+      "Type": "HoldNotesAlpha"
     }
   ],
   "Notes": [
@@ -270,7 +278,7 @@
     "SlowestBPM": 242.0,
     "FastestBPM": 242.0,
     "StoryLength": 433.8842975206611,
-    "CommandCount": 17,
+    "CommandCount": 18,
     "NoteCount": 4
   }
 }

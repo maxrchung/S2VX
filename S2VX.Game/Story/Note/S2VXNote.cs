@@ -97,6 +97,8 @@ namespace S2VX.Game.Story.Note {
 
         public void SetOutlineColor(Color4 color) => BoxOuter.Colour = color;
 
+        public void SetAlpha(float alpha) => BoxInner.Alpha = alpha;
+
         // Sort Notes from highest end time to lowest end time
         public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);
 
