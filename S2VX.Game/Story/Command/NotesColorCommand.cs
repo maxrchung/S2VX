@@ -3,8 +3,8 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Story.Command {
     public class NotesColorCommand : S2VXCommand {
-        public Color4 StartValue { get; set; } = Color4.White;
-        public Color4 EndValue { get; set; } = Color4.White;
+        public Color4 StartValue { get; set; } = S2VXColorConstants.BrickRed;
+        public Color4 EndValue { get; set; } = S2VXColorConstants.BrickRed;
         public override void Apply(double time, S2VXStory story) {
             var value = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Notes.GetNonHoldNotes().ForEach(note => note.SetColor(value));
