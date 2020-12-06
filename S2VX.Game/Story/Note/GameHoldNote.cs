@@ -158,8 +158,7 @@ namespace S2VX.Game.Story.Note {
 
             base.UpdateNote();
 
-            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdatePlacement(coordinates);
+            UpdatePlacement();
 
             if (time >= HitTime && IsBeingHeld()) {
                 Alpha = 1;

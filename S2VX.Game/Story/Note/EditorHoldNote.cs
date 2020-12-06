@@ -51,7 +51,8 @@ namespace S2VX.Game.Story.Note {
             var startTime = HitTime - notes.ShowTime;
 
             var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdatePlacement(coordinates);
+            UpdatePlacement();
+            UpdateSliderPaths();
 
             if (time >= endFadeOut) {
                 Alpha = 0;
