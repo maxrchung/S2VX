@@ -3,8 +3,8 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Story.Command {
     public class GridColorCommand : S2VXCommand {
-        public Color4 StartValue { get; set; } = Color4.White;
-        public Color4 EndValue { get; set; } = Color4.White;
+        public Color4 StartValue { get; set; } = S2VXColorConstants.LightBlack;
+        public Color4 EndValue { get; set; } = S2VXColorConstants.LightBlack;
         public override void Apply(double time, S2VXStory story) {
             var color = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Grid.Colour = color;
