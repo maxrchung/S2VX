@@ -1,11 +1,11 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
 using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public abstract class HoldNote : S2VXNote {
@@ -19,25 +19,11 @@ namespace S2VX.Game.Story.Note {
         private ScreenStack Screens { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            AddInternal(SliderPath1);
-            AddInternal(SliderPath2);
-            AddInternal(StartPath);
-            AddInternal(EndPath);
-        }
+        private void Load() => AddInternal(SliderPath);
 
-        private static Path CreatePath() => new Path() {
-            Colour = Color4.Red,
-            Anchor = Anchor.Centre
+        private Path SliderPath { get; set; } = new Path() {
+            Colour = Color4.Red
         };
-
-        private Path StartPath { get; set; } = CreatePath();
-
-        private Path SliderPath1 { get; set; } = CreatePath();
-
-        private Path SliderPath2 { get; set; } = CreatePath();
-
-        private Path EndPath { get; set; } = CreatePath();
 
         protected override void UpdatePlacement() {
             var notes = Story.Notes;
@@ -64,38 +50,52 @@ namespace S2VX.Game.Story.Note {
 
         protected void UpdateSliderPaths() {
             var pathRadius = 5;
-            StartPath.PathRadius = pathRadius;
-            EndPath.PathRadius = pathRadius;
-
-            StartPath.Position = new Vector2(-pathRadius);
-            EndPath.Position = new Vector2(-pathRadius);
-            EndPath.Colour = Color4.Aqua;
+            SliderPath.PathRadius = pathRadius;
+            // Account for path radius by setting Position
+            SliderPath.Position = new Vector2(-pathRadius);
 
             var drawWidth = Screens.DrawWidth;
             var camera = Story.Camera;
             var noteWidth = camera.Scale.X * drawWidth;
             var noteHalf = noteWidth / 2;
-            StartPath.Vertices = new List<Vector2>() {
-                new Vector2(0),
-                new Vector2(250, 50),
-                new Vector2(-noteHalf, -noteHalf),
-                new Vector2(noteHalf, -noteHalf),
-                new Vector2(noteHalf, noteHalf),
-                new Vector2(-noteHalf, noteHalf),
-                new Vector2(-noteHalf, -noteHalf),
-            };
 
             var currCoordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            var deltaPosition = (EndCoordinates - Coordinates) * noteWidth;
-            EndPath.Vertices = new List<Vector2>() {
-                new Vector2(0),
-                new Vector2(250, 50),
+            var deltaPosition = (EndCoordinates - currCoordinates) * noteWidth;
+            var midPosition = deltaPosition / 2;
+
+            var vertices = new List<Vector2>() {
                 new Vector2(-noteHalf, -noteHalf),
                 new Vector2(noteHalf, -noteHalf),
                 new Vector2(noteHalf, noteHalf),
                 new Vector2(-noteHalf, noteHalf),
-                new Vector2(-noteHalf, -noteHalf),
+                deltaPosition + new Vector2(-noteHalf, -noteHalf),
+                deltaPosition + new Vector2(noteHalf, -noteHalf),
+                deltaPosition + new Vector2(noteHalf, noteHalf),
+                deltaPosition + new Vector2(-noteHalf, noteHalf)
             };
+
+            // Sort based on descending distance to midPosition
+            vertices.Sort((left, right) =>
+                (right - midPosition).LengthSquared.CompareTo(
+                    (left - midPosition).LengthSquared
+                )
+            );
+
+            // Drop the last 2 (the closest) vertices
+            vertices.RemoveAt(vertices.Count - 1);
+            vertices.RemoveAt(vertices.Count - 1);
+
+            // Sort based on relative angle to unit vector
+            vertices.Sort((left, right) =>
+                S2VXUtils.AngleBetween(Vector2.UnitX, left - midPosition).CompareTo(
+                    S2VXUtils.AngleBetween(Vector2.UnitX, right - midPosition)
+                )
+            );
+
+            // Connect last vertex back to first
+            vertices.Add(vertices.First());
+
+            SliderPath.Vertices = vertices;
         }
     }
 }
