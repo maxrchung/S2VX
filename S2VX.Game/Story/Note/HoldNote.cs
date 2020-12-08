@@ -49,16 +49,16 @@ namespace S2VX.Game.Story.Note {
             var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
             SliderPath.PathRadius = pathRadius;
 
-            var camera = Story.Camera;
-            // Account for pathRadius in note width calculation
-            var noteWidth = camera.Scale.X * drawWidth - pathRadius * 2;
-
             var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
             var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var camera = Story.Camera;
+            var noteWidth = camera.Scale.X * drawWidth;
             var deltaPosition = (EndCoordinates - currCoordinates) * noteWidth;
 
             var midPosition = deltaPosition / 2;
-            var noteHalf = noteWidth / 2;
+            // Account for pathRadius in note width calculation
+            var fittedWidth = camera.Scale.X * drawWidth - pathRadius * 2;
+            var noteHalf = fittedWidth / 2;
 
             var vertices = new List<Vector2>() {
                 new Vector2(-noteHalf, -noteHalf),
