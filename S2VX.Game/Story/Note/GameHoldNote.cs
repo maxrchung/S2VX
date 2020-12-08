@@ -153,7 +153,7 @@ namespace S2VX.Game.Story.Note {
             }
 
             UpdatePlacement();
-            UpdateAlpha();
+            UpdateColor();
 
             if (!IsBeingHeld() && time >= HitTime + HitMissThreshold) {
                 RecordMiss();
@@ -161,7 +161,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        protected override void UpdateAlpha() {
+        protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
 
@@ -171,7 +171,7 @@ namespace S2VX.Game.Story.Note {
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
             }
-            // Show time (to Hit time) to End time
+            // Show time to End time
             else if (time < EndTime) {
                 Alpha = 1;
             }
@@ -184,14 +184,7 @@ namespace S2VX.Game.Story.Note {
                 Alpha = 0;
             }
 
-            if (time >= HitTime && IsBeingHeld()) {
-                Alpha = 1;
-            } else if (time >= HitTime && !IsBeingHeld()) {
-                // Hold the note at fully visible until after MissThreshold
-                var startFadeTime = HitTime + HitMissThreshold;
-                var endFadeTime = startFadeTime + Story.Notes.FadeOutTime;
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
-                Alpha = alpha;
+            if (time >= HitTime && !IsBeingHeld()) {
                 Colour = Color4.Red;
             }
         }

@@ -105,7 +105,7 @@ namespace S2VX.Game.Story.Note {
             }
 
             UpdatePlacement();
-            UpdateAlpha();
+            UpdateColor();
 
             if (Time.Current >= HitTime + MissThreshold) {
                 RecordMiss();
@@ -113,7 +113,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        protected override void UpdateAlpha() {
+        protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
             // Fade in time to Show time
@@ -122,25 +122,21 @@ namespace S2VX.Game.Story.Note {
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
             }
-            // Show time to Hit time
-            else if (time < HitTime) {
+            // Show time to Hit time with miss threshold time
+            // Hold the note at fully visible until after MissThreshold
+            else if (time < HitTime + MissThreshold) {
                 Alpha = 1;
             }
-            // Hit time to Fade out time
-            else if (time < HitTime + notes.FadeOutTime) {
-                var startTime = HitTime;
-                var endTime = HitTime + notes.FadeOutTime;
+            // Hit time with miss threshold time to Fade out time
+            else if (time < HitTime + MissThreshold + notes.FadeOutTime) {
+                var startTime = HitTime + MissThreshold;
+                var endTime = HitTime + MissThreshold + notes.FadeOutTime;
                 Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
             }
 
             if (time >= HitTime) {
-                // Hold the note at fully visible until after MissThreshold
-                var startFadeTime = HitTime + MissThreshold;
-                var endFadeTime = startFadeTime + notes.FadeOutTime;
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
-                Alpha = alpha;
                 Colour = Color4.Red;
             }
         }
