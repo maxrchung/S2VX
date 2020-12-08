@@ -49,13 +49,26 @@ namespace S2VX.Game.Story.Note {
             var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
             SliderPath.PathRadius = pathRadius;
 
-            var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
-            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var time = Time.Current;
+            var notes = Story.Notes;
             var camera = Story.Camera;
             var noteWidth = camera.Scale.X * drawWidth;
-            var deltaPosition = (EndCoordinates - currCoordinates) * noteWidth;
+            Vector2 endPosition;
+            // If between Fade in time and Hit time, then snake out the slider end
+            if (time < HitTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
+                var snakeCoordinates = Interpolation.ValueAt(clampedTime, Vector2.Zero, EndCoordinates - Coordinates, startTime, HitTime);
+                endPosition = snakeCoordinates * noteWidth;
+            }
+            // Otherwise, snake in the slider start
+            else {
+                var clampedTime = MathHelper.Clamp(time, HitTime, EndTime);
+                var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+                endPosition = (EndCoordinates - currCoordinates) * noteWidth;
+            }
 
-            var midPosition = deltaPosition / 2;
+            var midPosition = endPosition / 2;
             // Account for pathRadius in note width calculation
             var fittedWidth = camera.Scale.X * drawWidth - pathRadius * 2;
             var noteHalf = fittedWidth / 2;
@@ -65,10 +78,10 @@ namespace S2VX.Game.Story.Note {
                 new Vector2(noteHalf, -noteHalf),
                 new Vector2(noteHalf, noteHalf),
                 new Vector2(-noteHalf, noteHalf),
-                deltaPosition + new Vector2(-noteHalf, -noteHalf),
-                deltaPosition + new Vector2(noteHalf, -noteHalf),
-                deltaPosition + new Vector2(noteHalf, noteHalf),
-                deltaPosition + new Vector2(-noteHalf, noteHalf)
+                endPosition + new Vector2(-noteHalf, -noteHalf),
+                endPosition + new Vector2(noteHalf, -noteHalf),
+                endPosition + new Vector2(noteHalf, noteHalf),
+                endPosition + new Vector2(-noteHalf, noteHalf)
             };
 
             // Sort based on descending distance to midPosition
