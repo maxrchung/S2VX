@@ -85,9 +85,8 @@ namespace S2VX.Game.Story.Note {
 
             var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
 
-            var distance = time < EndTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startReleaseFadeIn, EndTime)
-                : scale.X / 2;
+            clampedTime = MathHelper.Clamp(time, startReleaseFadeIn, EndTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startReleaseFadeIn, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
 
@@ -150,10 +149,10 @@ namespace S2VX.Game.Story.Note {
             float releaseAlpha;
             if (time >= EndTime) {
                 releaseAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-            } else if (time >= startReleaseTime) {
+            } else if (time >= startIndicatorTime) {
                 releaseAlpha = 1;
             } else {
-                releaseAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startReleaseFadeIn, startReleaseTime);
+                releaseAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startReleaseTime);
             }
             ReleaseLines.ForEach(l => l.Alpha = releaseAlpha);
         }
