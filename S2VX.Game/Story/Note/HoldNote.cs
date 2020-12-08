@@ -3,7 +3,6 @@ using osu.Framework.Graphics.Lines;
 using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK;
-using osuTK.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,31 +21,30 @@ namespace S2VX.Game.Story.Note {
         private void Load() => AddInternal(SliderPath);
 
         private Path SliderPath { get; set; } = new Path() {
-            Colour = Color4.Red
+            // Show slider path behind note
+            Depth = 100
         };
 
         protected override void UpdatePlacement() {
-            var camera = Story.Camera;
-            var grid = Story.Grid;
+            UpdateIndicator();
+            UpdateSliderPath();
+        }
 
+        private void UpdateIndicator() {
+            var camera = Story.Camera;
             Rotation = camera.Rotation;
             Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
-            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
+            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
-            if (Time.Current < HitTime) {
-                Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
-            } else if (Time.Current < EndTime) {
-                var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-                Position = S2VXUtils.Rotate(coordinates - camera.Position, Rotation) * Size.X;
-            } else {
-                Position = S2VXUtils.Rotate(EndCoordinates - camera.Position, Rotation) * Size.X;
-            }
+            var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * Size.X;
         }
 
-        protected void UpdateSliderPaths() {
+        private void UpdateSliderPath() {
             var drawWidth = Screens.DrawWidth;
             var camera = Story.Camera;
             var noteWidth = camera.Scale.X * drawWidth;
@@ -56,8 +54,10 @@ namespace S2VX.Game.Story.Note {
             // Account for path radius by setting Position
             SliderPath.Position = new Vector2(-pathRadius);
 
-            var currCoordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
             var deltaPosition = (EndCoordinates - currCoordinates) * noteWidth;
+
             var midPosition = deltaPosition / 2;
             var noteHalf = noteWidth / 2;
 

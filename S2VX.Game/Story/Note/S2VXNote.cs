@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor;
@@ -41,42 +40,20 @@ namespace S2VX.Game.Story.Note {
             Story.Notes.Sort();
         }
 
-        /// <summary>
-        /// Updates placement and alpha for note.
-        /// </summary>
-        /// <returns> Returns if this note should be removed. </returns>
-        public virtual bool UpdateNote() {
-            var notes = Story.Notes;
-            var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
-
-            UpdatePlacement();
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return false;
-            }
-
-            var startTime = HitTime - notes.ShowTime;
-            if (time >= HitTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            } else {
-                var startFadeIn = startTime - notes.FadeInTime;
-                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                Alpha = alpha;
-            }
-            return false;
-        }
-
         public virtual void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
 
+        /// <summary>
+        /// Main entrypoint for a note's Update functionality.
+        /// </summary>
+        /// <returns> Returns if this note should be removed.</returns>
+        public abstract bool UpdateNote();
+
+        /// <summary>
+        /// Updates a note's position/size
+        /// </summary>
         protected virtual void UpdatePlacement() {
             var camera = Story.Camera;
             var grid = Story.Grid;
@@ -90,6 +67,11 @@ namespace S2VX.Game.Story.Note {
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
+
+        /// <summary>
+        /// Updates a note's alpha
+        /// </summary>
+        protected abstract void UpdateAlpha();
 
         public Color4 GetColor() => BoxInner.Colour;
 
