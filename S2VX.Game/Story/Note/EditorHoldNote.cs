@@ -43,7 +43,7 @@ namespace S2VX.Game.Story.Note {
 
         public override bool UpdateNote() {
             UpdatePlacement();
-            UpdateAlpha();
+            UpdateColor();
 
             var time = Time.Current;
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
@@ -59,7 +59,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        protected override void UpdateAlpha() {
+        protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
             // Fade in time to Show time

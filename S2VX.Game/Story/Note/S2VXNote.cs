@@ -52,7 +52,7 @@ namespace S2VX.Game.Story.Note {
         public abstract bool UpdateNote();
 
         /// <summary>
-        /// Updates a note's position/size
+        /// Updates a note's position/rotation/size
         /// </summary>
         protected virtual void UpdatePlacement() {
             var camera = Story.Camera;
@@ -69,9 +69,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         /// <summary>
-        /// Updates a note's alpha
+        /// Updates a note's color/alpha
         /// </summary>
-        protected abstract void UpdateAlpha();
+        protected abstract void UpdateColor();
 
         public Color4 GetColor() => BoxInner.Colour;
 

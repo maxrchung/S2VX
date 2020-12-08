@@ -19,7 +19,7 @@ namespace S2VX.Game.Story.Note {
 
         public override bool UpdateNote() {
             UpdatePlacement();
-            UpdateAlpha();
+            UpdateColor();
 
             var time = Clock.CurrentTime;
             if (time >= HitTime && CanHit) {
@@ -31,7 +31,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        protected override void UpdateAlpha() {
+        protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
             // Fade in time to Show time
