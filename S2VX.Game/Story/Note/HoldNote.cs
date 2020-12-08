@@ -33,7 +33,6 @@ namespace S2VX.Game.Story.Note {
         private void UpdateIndicator() {
             var camera = Story.Camera;
             Rotation = camera.Rotation;
-            Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
@@ -41,7 +40,7 @@ namespace S2VX.Game.Story.Note {
 
             var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
             var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
-            Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * Size.X;
+            Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * camera.Scale.X;
         }
 
         private void UpdateSliderPath() {
