@@ -51,14 +51,15 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override void UpdateApproach() {
-            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            var time = Time.Current;
+            var clampedTime = MathHelper.Clamp(time, HitTime, EndTime);
+            var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
             UpdatePlacement(coordinates);
 
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
 
-            var time = Time.Current;
             var endFadeOut = EndTime + notes.FadeOutTime;
 
             if (time >= endFadeOut) {

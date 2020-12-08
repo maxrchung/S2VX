@@ -55,9 +55,8 @@ namespace S2VX.Game.Story.Note {
 
             var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
 
-            var distance = time < HitTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, HitTime)
-                : scale.X / 2;
+            var clampedTime = MathHelper.Clamp(time, startFadeIn, HitTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startFadeIn, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
 
