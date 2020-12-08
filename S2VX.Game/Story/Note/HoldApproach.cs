@@ -37,7 +37,6 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            SetReleaseAndIndicatorLineAlpha(0);
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             var lines = InternalChildren.ToArray();
@@ -45,7 +44,8 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        private void SetReleaseAndIndicatorLineAlpha(float alpha) {
+        private void SetLineAlpha(float alpha) {
+            Lines.ForEach(l => l.Alpha = alpha);
             ReleaseLines.ForEach(l => l.Alpha = alpha);
             HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
         }
@@ -78,8 +78,8 @@ namespace S2VX.Game.Story.Note {
                 alpha = 0;
             }
             Lines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
             ReleaseLines.ForEach(l => l.Alpha = alpha);
+            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
         }
 
         protected override void UpdatePosition() {
