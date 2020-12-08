@@ -46,13 +46,12 @@ namespace S2VX.Game.Story.Note {
 
         private void UpdateSliderPath() {
             var drawWidth = Screens.DrawWidth;
-            var camera = Story.Camera;
-            var noteWidth = camera.Scale.X * drawWidth;
-
             var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
             SliderPath.PathRadius = pathRadius;
-            // Account for path radius by setting Position
-            SliderPath.Position = new Vector2(-pathRadius);
+
+            var camera = Story.Camera;
+            // Account for pathRadius in note width calculation
+            var noteWidth = camera.Scale.X * drawWidth - pathRadius * 2;
 
             var clampedTime = MathHelper.Clamp(Time.Current, HitTime, EndTime);
             var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
