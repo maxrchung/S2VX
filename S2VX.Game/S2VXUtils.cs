@@ -39,7 +39,6 @@ namespace S2VX.Game {
 
             var rot = Math.Acos(dot);
 
-            // http://stackoverflow.com/questions/11022446/direction-of-shortest-rotation-between-two-vectors
             // Use cross vector3 to determine direction
             var cross = Vector3.Cross(new Vector3(n1.X, n1.Y, 0), new Vector3(n2.X, n2.Y, 0));
             return cross.Z > 0 ? -rot : rot;
