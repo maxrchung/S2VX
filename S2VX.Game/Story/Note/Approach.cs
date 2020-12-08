@@ -22,14 +22,13 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
-        protected Vector2 HitApproachTopLeftCorner { get; set; }
-        protected Vector2 HitApproachTopRightCorner { get; set; }
-        protected Vector2 HitApproachBottomLeftCorner { get; set; }
-        protected Vector2 HitApproachBottomRightCorner { get; set; }
+        protected Vector2 HitApproachTopLeftCorner { get; private set; }
+        protected Vector2 HitApproachTopRightCorner { get; private set; }
+        protected Vector2 HitApproachBottomLeftCorner { get; private set; }
+        protected Vector2 HitApproachBottomRightCorner { get; private set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Lines.ForEach(l => l.Alpha = 0);
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Lines;
