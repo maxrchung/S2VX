@@ -136,25 +136,16 @@ namespace S2VX.Game.Story.Note {
             HoldIndicatorLines[3].Rotation = rotation - 45;
             HoldIndicatorLines[3].Size = new Vector2(thickness, indicatorLength);
 
-            float indicatorAlpha;
+            float alpha;
             if (time >= EndTime) {
-                indicatorAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
             } else if (time >= startIndicatorTime) {
-                indicatorAlpha = 1;
+                alpha = 1;
             } else {
-                indicatorAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startIndicatorTime);
+                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startIndicatorTime);
             }
-            HoldIndicatorLines.ForEach(l => l.Alpha = indicatorAlpha);
-
-            float releaseAlpha;
-            if (time >= EndTime) {
-                releaseAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-            } else if (time >= startIndicatorTime) {
-                releaseAlpha = 1;
-            } else {
-                releaseAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startReleaseTime);
-            }
-            ReleaseLines.ForEach(l => l.Alpha = releaseAlpha);
+            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
+            ReleaseLines.ForEach(l => l.Alpha = alpha);
         }
     }
 }
