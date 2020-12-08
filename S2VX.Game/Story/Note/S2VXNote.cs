@@ -62,12 +62,13 @@ namespace S2VX.Game.Story.Note {
         protected virtual void UpdatePosition() {
             var camera = Story.Camera;
             Rotation = camera.Rotation;
+            Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
-            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * camera.Scale.X;
+            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
 
         public Color4 GetColor() => BoxInner.Colour;
