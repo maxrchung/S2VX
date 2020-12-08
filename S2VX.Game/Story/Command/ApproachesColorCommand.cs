@@ -3,11 +3,11 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Story.Command {
     public class ApproachesColorCommand : S2VXCommand {
-        public Color4 StartValue { get; set; } = Color4.Blue;
-        public Color4 EndValue { get; set; } = Color4.Blue;
+        public Color4 StartValue { get; set; } = S2VXColorConstants.BrickRed;
+        public Color4 EndValue { get; set; } = S2VXColorConstants.BrickRed;
         public override void Apply(double time, S2VXStory story) {
             var value = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Approaches.Colour = value;
+            story.Notes.GetNonHoldNotes().ForEach(note => note.Approach.Colour = value);
         }
         protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
         public static ApproachesColorCommand FromString(string[] split) {

@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
+using osuTK.Graphics;
 using S2VX.Game.Editor;
 using System;
 
@@ -10,8 +11,9 @@ namespace S2VX.Game.Story.Note {
     public abstract class S2VXNote : CompositeDrawable, IComparable<S2VXNote> {
         public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
-
         public Approach Approach { get; set; }
+        public float OutlineThickness { get; set; }
+        public Color4 OutlineColor { get; set; }
 
         protected RelativeBox BoxOuter { get; } = new RelativeBox();
         protected RelativeBox BoxInner { get; } = new RelativeBox();
@@ -76,7 +78,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected virtual void UpdatePlacement() {
-            var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
 
@@ -85,11 +86,18 @@ namespace S2VX.Game.Story.Note {
 
             var cameraFactor = 1 / camera.Scale.X;
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
+            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
-            BoxOuter.Colour = notes.OutlineColor;
         }
+
+        public Color4 GetColor() => BoxInner.Colour;
+
+        public void SetColor(Color4 color) => BoxInner.Colour = color;
+
+        public void SetOutlineColor(Color4 color) => BoxOuter.Colour = color;
+
+        public void SetAlpha(float alpha) => BoxInner.Alpha = alpha;
 
         // Sort Notes from highest end time to lowest end time
         public int CompareTo(S2VXNote other) => other.HitTime.CompareTo(HitTime);

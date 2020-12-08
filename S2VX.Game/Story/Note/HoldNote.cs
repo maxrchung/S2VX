@@ -26,7 +26,6 @@ namespace S2VX.Game.Story.Note {
         };
 
         protected override void UpdatePlacement() {
-            var notes = Story.Notes;
             var camera = Story.Camera;
             var grid = Story.Grid;
 
@@ -35,7 +34,7 @@ namespace S2VX.Game.Story.Note {
 
             var cameraFactor = 1 / camera.Scale.X;
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
-            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(notes.OutlineThickness);
+            BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
             if (Time.Current < HitTime) {
                 Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
@@ -45,7 +44,6 @@ namespace S2VX.Game.Story.Note {
             } else {
                 Position = S2VXUtils.Rotate(EndCoordinates - camera.Position, Rotation) * Size.X;
             }
-            BoxOuter.Colour = notes.OutlineColor;
         }
 
         protected void UpdateSliderPaths() {

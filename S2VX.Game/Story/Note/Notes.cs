@@ -22,8 +22,10 @@ namespace S2VX.Game.Story.Note {
         public float FadeInTime { get; set; }
         public float ShowTime { get; set; }
         public float FadeOutTime { get; set; }
-        public float OutlineThickness { get; set; }
-        public Color4 OutlineColor { get; set; }
+
+        // Used by Note and HoldNote Tools, set by Commands
+        public Color4 PreviewNoteColor { get; set; }
+        public Color4 PreviewHoldNoteColor { get; set; }
 
         public void AddNote(S2VXNote note) {
             Children.Add(note);

@@ -2,24 +2,6 @@
   "Commands": [
     {
       "StartValue": {
-        "R": 0.5,
-        "G": 0.5,
-        "B": 0.5,
-        "A": 1.0
-      },
-      "EndValue": {
-        "R": 0.42,
-        "G": 0.727,
-        "B": 0.69,
-        "A": 1.0
-      },
-      "StartTime": 0.0,
-      "EndTime": 10000.0,
-      "Easing": 0,
-      "Type": "BackgroundColor"
-    },
-    {
-      "StartValue": {
         "X": 1.0,
         "Y": 1.0
       },
@@ -33,12 +15,162 @@
       "Type": "CameraMove"
     },
     {
-      "StartValue": 45.0,
-      "EndValue": -45.0,
+      "StartValue": 800.0,
+      "EndValue": 800.0,
       "StartTime": 0.0,
-      "EndTime": 10000.0,
-      "Easing": 15,
-      "Type": "CameraRotate"
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesShowTime"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": 0.008,
+      "EndValue": 0.008,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldApproachesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineThickness"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineThickness"
     },
     {
       "StartValue": 242.0,
@@ -49,41 +181,73 @@
       "Type": "TimingChange"
     },
     {
+      "StartValue": 45.0,
+      "EndValue": -45.0,
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 15,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": 0.4,
+      "EndValue": 0.4,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesDistance"
+    },
+    {
       "StartValue": {
-        "R": 0.4,
-        "G": 0.3,
-        "B": 0.2,
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
         "A": 1.0
       },
       "EndValue": {
-        "R": 0.42,
-        "G": 0.727,
-        "B": 0.69,
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
         "A": 1.0
       },
       "StartTime": 0.0,
-      "EndTime": 368002.0,
+      "EndTime": 0.0,
       "Easing": 0,
-      "Type": "NotesColor"
+      "Type": "HoldNotesOutlineColor"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesAlpha"
     }
   ],
   "Notes": [
     {
-      "HitTime": 681.7913832199547,
+      "HitTime": 929.7520661157025,
       "Coordinates": {
         "X": -1.0,
         "Y": 1.5
       }
     },
     {
-      "HitTime": 619.8185941043084,
+      "HitTime": 867.7685950413223,
       "Coordinates": {
         "X": -1.5,
         "Y": 1.0
       }
     },
     {
-      "HitTime": 563.7188208616781,
+      "HitTime": 805.7851239669423,
       "Coordinates": {
         "X": -2.0,
         "Y": 1.0
@@ -92,8 +256,8 @@
   ],
   "HoldNotes": [
     {
-      "HitTime": 991.7233560090702,
-      "EndTime": 1983.469387755102,
+      "HitTime": 1239.6694214876034,
+      "EndTime": 2231.415453233635,
       "Coordinates": {
         "X": 1.0,
         "Y": 1.0
@@ -105,7 +269,7 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 929.7505668934241,
+    "TrackTime": 0.0,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3
@@ -113,8 +277,8 @@
   "DifficultySettings": {
     "SlowestBPM": 242.0,
     "FastestBPM": 242.0,
-    "StoryLength": 428.0045351473922,
-    "CommandCount": 5,
+    "StoryLength": 433.8842975206611,
+    "CommandCount": 18,
     "NoteCount": 4
   }
 }
