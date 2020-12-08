@@ -46,7 +46,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         /// <summary>
-        /// Main entrypoint for a note's Update functionality.
+        /// Main entrypoint for a note's Update functionality
         /// </summary>
         /// <returns> Returns if this note should be removed.</returns>
         public abstract bool UpdateNote();
@@ -56,13 +56,11 @@ namespace S2VX.Game.Story.Note {
         /// </summary>
         protected virtual void UpdatePosition() {
             var camera = Story.Camera;
-            var grid = Story.Grid;
-
             Rotation = camera.Rotation;
             Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
-            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
+            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;

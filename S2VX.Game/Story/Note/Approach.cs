@@ -22,10 +22,10 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
-        protected Vector2 HitApproachTopLeftCorner { get; private set; }
-        protected Vector2 HitApproachTopRightCorner { get; private set; }
-        protected Vector2 HitApproachBottomLeftCorner { get; private set; }
-        protected Vector2 HitApproachBottomRightCorner { get; private set; }
+        protected Vector2 HitApproachTopLeftCorner { get; set; }
+        protected Vector2 HitApproachTopRightCorner { get; set; }
+        protected Vector2 HitApproachBottomLeftCorner { get; set; }
+        protected Vector2 HitApproachBottomRightCorner { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -35,34 +35,37 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Lines;
         }
 
-        public virtual void UpdateApproach() => UpdatePlacement(Coordinates);
+        /// <summary>
+        /// Main entrypoint for an approach's Update functionality
+        /// </summary>
+        public virtual void UpdateApproach() {
+            UpdatePosition();
+            UpdateColor();
+        }
 
-        protected void UpdatePlacement(Vector2 coordinates) {
+        /// <summary>
+        /// Updates an approach's position/rotation/size
+        /// </summary>
+        protected virtual void UpdatePosition() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
-
-            var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
-
-            var startTime = HitTime - notes.ShowTime;
-            var startFadeIn = startTime - notes.FadeInTime;
-
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
 
-            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
-
-            var clampedTime = MathHelper.Clamp(time, startFadeIn, HitTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startFadeIn, HitTime);
+            var time = Time.Current;
+            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+            var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
 
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
+            var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
             HitApproachTopLeftCorner = offset - rotationX - rotationY;
             HitApproachTopRightCorner = offset + rotationX - rotationY;
             HitApproachBottomLeftCorner = offset - rotationX + rotationY;
@@ -83,14 +86,32 @@ namespace S2VX.Game.Story.Note {
             Lines[3].Position = offset - rotationX;
             Lines[3].Rotation = rotation;
             Lines[3].Size = new Vector2(thickness, overlap);
+        }
 
+        /// <summary>
+        /// Updates an approach's color/alpha
+        /// </summary>
+        protected virtual void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
             float alpha;
-            if (time >= HitTime) {
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
-            } else if (time >= startTime) {
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time to Hit time
+            else if (time < HitTime) {
                 alpha = 1;
+            }
+            // Hit time to Fade out time
+            else if (time < HitTime + notes.FadeOutTime) {
+                var startTime = HitTime;
+                var endTime = HitTime + notes.FadeOutTime;
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
             } else {
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
+                alpha = 0;
             }
             Lines.ForEach(l => l.Alpha = alpha);
         }
