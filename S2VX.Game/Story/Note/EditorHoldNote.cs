@@ -42,7 +42,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override bool UpdateNote() {
-            UpdatePlacement();
+            UpdatePosition();
             UpdateColor();
 
             var time = Time.Current;

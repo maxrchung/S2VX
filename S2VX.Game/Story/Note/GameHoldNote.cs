@@ -152,7 +152,7 @@ namespace S2VX.Game.Story.Note {
                 return true;
             }
 
-            UpdatePlacement();
+            UpdatePosition();
             UpdateColor();
 
             if (!IsBeingHeld() && time >= HitTime + HitMissThreshold) {

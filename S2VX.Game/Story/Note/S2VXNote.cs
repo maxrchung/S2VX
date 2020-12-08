@@ -54,7 +54,7 @@ namespace S2VX.Game.Story.Note {
         /// <summary>
         /// Updates a note's position/rotation/size
         /// </summary>
-        protected virtual void UpdatePlacement() {
+        protected virtual void UpdatePosition() {
             var camera = Story.Camera;
             var grid = Story.Grid;
 

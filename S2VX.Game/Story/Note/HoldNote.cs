@@ -25,7 +25,7 @@ namespace S2VX.Game.Story.Note {
             Depth = 100
         };
 
-        protected override void UpdatePlacement() {
+        protected override void UpdatePosition() {
             UpdateIndicator();
             UpdateSliderPath();
         }
