@@ -44,51 +44,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         /// <summary>
-        /// Updates an approach's position/rotation/size
-        /// </summary>
-        protected virtual void UpdatePosition() {
-            var notes = Story.Notes;
-            var camera = Story.Camera;
-            var approaches = Story.Approaches;
-            var position = camera.Position;
-            var rotation = camera.Rotation;
-            var scale = camera.Scale;
-            var thickness = approaches.Thickness;
-
-            var time = Time.Current;
-            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-            var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
-            var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
-            var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
-
-            // Add extra thickness so corners overlap
-            var overlap = distance * 2 + thickness;
-
-            var offset = S2VXUtils.Rotate(Coordinates - position, rotation) * scale;
-            HitApproachTopLeftCorner = offset - rotationX - rotationY;
-            HitApproachTopRightCorner = offset + rotationX - rotationY;
-            HitApproachBottomLeftCorner = offset - rotationX + rotationY;
-            HitApproachBottomRightCorner = offset + rotationX + rotationY;
-
-            Lines[0].Position = offset + rotationY;
-            Lines[0].Rotation = rotation;
-            Lines[0].Size = new Vector2(overlap, thickness);
-
-            Lines[1].Position = offset - rotationY;
-            Lines[1].Rotation = rotation;
-            Lines[1].Size = new Vector2(overlap, thickness);
-
-            Lines[2].Position = offset + rotationX;
-            Lines[2].Rotation = rotation;
-            Lines[2].Size = new Vector2(thickness, overlap);
-
-            Lines[3].Position = offset - rotationX;
-            Lines[3].Rotation = rotation;
-            Lines[3].Size = new Vector2(thickness, overlap);
-        }
-
-        /// <summary>
         /// Updates an approach's color/alpha
         /// </summary>
         protected virtual void UpdateColor() {
@@ -114,6 +69,56 @@ namespace S2VX.Game.Story.Note {
                 alpha = 0;
             }
             Lines.ForEach(l => l.Alpha = alpha);
+        }
+
+        /// <summary>
+        /// Updates an approach's position/rotation/size
+        /// </summary>
+        protected virtual void UpdatePosition() => UpdateInnerApproachPosition(Coordinates);
+
+        /// <summary>
+        /// Both Approach and HoldApproach use this helper to set the inner approach's position
+        /// </summary>
+        /// <param name="coordinates">S2VX coordinates that the approach is closing onto</param>
+        protected void UpdateInnerApproachPosition(Vector2 coordinates) {
+            var notes = Story.Notes;
+            var camera = Story.Camera;
+            var approaches = Story.Approaches;
+            var position = camera.Position;
+            var rotation = camera.Rotation;
+            var scale = camera.Scale;
+            var thickness = approaches.Thickness;
+            var time = Time.Current;
+
+            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+            var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
+            var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
+            var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
+            // Add extra thickness so corners overlap
+            var overlap = distance * 2 + thickness;
+
+            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
+            HitApproachTopLeftCorner = offset - rotationX - rotationY;
+            HitApproachTopRightCorner = offset + rotationX - rotationY;
+            HitApproachBottomLeftCorner = offset - rotationX + rotationY;
+            HitApproachBottomRightCorner = offset + rotationX + rotationY;
+
+            Lines[0].Position = offset + rotationY;
+            Lines[0].Rotation = rotation;
+            Lines[0].Size = new Vector2(overlap, thickness);
+
+            Lines[1].Position = offset - rotationY;
+            Lines[1].Rotation = rotation;
+            Lines[1].Size = new Vector2(overlap, thickness);
+
+            Lines[2].Position = offset + rotationX;
+            Lines[2].Rotation = rotation;
+            Lines[2].Size = new Vector2(thickness, overlap);
+
+            Lines[3].Position = offset - rotationX;
+            Lines[3].Rotation = rotation;
+            Lines[3].Size = new Vector2(thickness, overlap);
         }
 
         // Sort Approaches from highest end time to lowest end time

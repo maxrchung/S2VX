@@ -94,45 +94,18 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var clampedTime = MathHelper.Clamp(time, HitTime, EndTime);
             var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            UpdateInnerApproachPosition(coordinates);
 
-            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-            clampedTime = MathHelper.Clamp(time, startTime, HitTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
+            // Calculate outer approach values
+            var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
+            clampedTime = MathHelper.Clamp(time, startTime, EndTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
             var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
-            HitApproachTopLeftCorner = offset - rotationX - rotationY;
-            HitApproachTopRightCorner = offset + rotationX - rotationY;
-            HitApproachBottomLeftCorner = offset - rotationX + rotationY;
-            HitApproachBottomRightCorner = offset + rotationX + rotationY;
-
-            Lines[0].Position = offset + rotationY;
-            Lines[0].Rotation = rotation;
-            Lines[0].Size = new Vector2(overlap, thickness);
-
-            Lines[1].Position = offset - rotationY;
-            Lines[1].Rotation = rotation;
-            Lines[1].Size = new Vector2(overlap, thickness);
-
-            Lines[2].Position = offset + rotationX;
-            Lines[2].Rotation = rotation;
-            Lines[2].Size = new Vector2(thickness, overlap);
-
-            Lines[3].Position = offset - rotationX;
-            Lines[3].Rotation = rotation;
-            Lines[3].Size = new Vector2(thickness, overlap);
-
-            startTime = EndTime - notes.ShowTime - notes.FadeInTime;
-            clampedTime = MathHelper.Clamp(time, startTime, EndTime);
-            distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
-            rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
-            rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
-            // Add extra thickness so corners overlap
-            overlap = distance * 2 + thickness;
-
             ReleaseLines[0].Position = offset + rotationY;
             ReleaseLines[0].Rotation = rotation;
             ReleaseLines[0].Size = new Vector2(overlap, thickness);
