@@ -152,8 +152,8 @@ namespace S2VX.Game.Story.Note {
                 return true;
             }
 
-            UpdatePosition();
             UpdateColor();
+            UpdatePosition();
 
             if (!IsBeingHeld() && time >= HitTime + HitMissThreshold) {
                 RecordMiss();

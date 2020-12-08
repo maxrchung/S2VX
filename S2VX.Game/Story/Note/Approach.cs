@@ -39,8 +39,8 @@ namespace S2VX.Game.Story.Note {
         /// Main entrypoint for an approach's Update functionality
         /// </summary>
         public virtual void UpdateApproach() {
-            UpdatePosition();
             UpdateColor();
+            UpdatePosition();
         }
 
         /// <summary>

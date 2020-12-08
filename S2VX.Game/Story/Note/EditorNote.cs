@@ -18,8 +18,8 @@ namespace S2VX.Game.Story.Note {
             Hit = audio.Samples.Get("hit");
 
         public override bool UpdateNote() {
-            UpdatePosition();
             UpdateColor();
+            UpdatePosition();
 
             var time = Clock.CurrentTime;
             if (time >= HitTime && CanHit) {

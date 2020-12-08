@@ -52,6 +52,11 @@ namespace S2VX.Game.Story.Note {
         public abstract bool UpdateNote();
 
         /// <summary>
+        /// Updates a note's color/alpha
+        /// </summary>
+        protected abstract void UpdateColor();
+
+        /// <summary>
         /// Updates a note's position/rotation/size
         /// </summary>
         protected virtual void UpdatePosition() {
@@ -65,11 +70,6 @@ namespace S2VX.Game.Story.Note {
 
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
-
-        /// <summary>
-        /// Updates a note's color/alpha
-        /// </summary>
-        protected abstract void UpdateColor();
 
         public Color4 GetColor() => BoxInner.Colour;
 

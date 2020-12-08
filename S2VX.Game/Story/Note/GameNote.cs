@@ -104,8 +104,8 @@ namespace S2VX.Game.Story.Note {
                 return true;
             }
 
-            UpdatePosition();
             UpdateColor();
+            UpdatePosition();
 
             if (Time.Current >= HitTime + MissThreshold) {
                 RecordMiss();

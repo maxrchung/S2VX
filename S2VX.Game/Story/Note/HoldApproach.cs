@@ -55,6 +55,33 @@ namespace S2VX.Game.Story.Note {
             UpdatePosition();
         }
 
+        protected override void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            float alpha;
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time to End time
+            else if (time < EndTime) {
+                alpha = 1;
+            }
+            // End time to Fade out time
+            else if (time < EndTime + notes.FadeOutTime) {
+                var startTime = HitTime;
+                var endTime = HitTime + notes.FadeOutTime;
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+            } else {
+                alpha = 0;
+            }
+            Lines.ForEach(l => l.Alpha = alpha);
+            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
+            ReleaseLines.ForEach(l => l.Alpha = alpha);
+        }
+
         protected override void UpdatePosition() {
             var notes = Story.Notes;
             var camera = Story.Camera;
@@ -148,33 +175,6 @@ namespace S2VX.Game.Story.Note {
             HoldIndicatorLines[3].Position = bottomRightPosition;
             HoldIndicatorLines[3].Rotation = rotation - 45;
             HoldIndicatorLines[3].Size = new Vector2(thickness, indicatorLength);
-        }
-
-        protected override void UpdateColor() {
-            var time = Time.Current;
-            var notes = Story.Notes;
-            float alpha;
-            // Fade in time to Show time
-            if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-                var endTime = HitTime - notes.ShowTime;
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
-            }
-            // Show time to End time
-            else if (time < EndTime) {
-                alpha = 1;
-            }
-            // End time to Fade out time
-            else if (time < EndTime + notes.FadeOutTime) {
-                var startTime = HitTime;
-                var endTime = HitTime + notes.FadeOutTime;
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
-            } else {
-                alpha = 0;
-            }
-            Lines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
         }
     }
 }

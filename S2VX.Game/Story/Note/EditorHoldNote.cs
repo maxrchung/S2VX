@@ -42,8 +42,8 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override bool UpdateNote() {
-            UpdatePosition();
             UpdateColor();
+            UpdatePosition();
 
             var time = Time.Current;
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
