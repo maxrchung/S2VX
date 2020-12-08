@@ -47,19 +47,19 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected void UpdateSliderPaths() {
-            var pathRadius = 5;
+            var drawWidth = Screens.DrawWidth;
+            var camera = Story.Camera;
+            var noteWidth = camera.Scale.X * drawWidth;
+
+            var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
             SliderPath.PathRadius = pathRadius;
             // Account for path radius by setting Position
             SliderPath.Position = new Vector2(-pathRadius);
 
-            var drawWidth = Screens.DrawWidth;
-            var camera = Story.Camera;
-            var noteWidth = camera.Scale.X * drawWidth;
-            var noteHalf = noteWidth / 2;
-
             var currCoordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
             var deltaPosition = (EndCoordinates - currCoordinates) * noteWidth;
             var midPosition = deltaPosition / 2;
+            var noteHalf = noteWidth / 2;
 
             var vertices = new List<Vector2>() {
                 new Vector2(-noteHalf, -noteHalf),
