@@ -58,7 +58,7 @@ namespace S2VX.Game.Story.Note {
             Vector2 endPosition;
             // If between Fade in time and Hit time, then snake out the slider end
             if (time < HitTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var startTime = HitTime - (EndTime - HitTime);
                 var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
                 var snakeCoordinates = Interpolation.ValueAt(clampedTime, Vector2.Zero, EndCoordinates - Coordinates, startTime, HitTime);
                 endPosition = snakeCoordinates * noteWidth;
