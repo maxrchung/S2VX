@@ -44,12 +44,6 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        private void SetLineAlpha(float alpha) {
-            Lines.ForEach(l => l.Alpha = alpha);
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
-        }
-
         public override void UpdateApproach() {
             UpdateColor();
             UpdatePosition();
