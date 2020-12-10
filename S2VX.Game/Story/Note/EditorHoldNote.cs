@@ -29,6 +29,15 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
+        public override void UpdateEndTime(double endTime) {
+            if (endTime < HitTime) {
+                return;
+            }
+            EndTime = endTime;
+            ((HoldApproach)Approach).EndTime = EndTime;
+            HitSoundTimes = new List<double>() { HitTime, EndTime };
+        }
+
         public override void UpdateCoordinates(Vector2 coordinates) {
             // Prevent changes at end time or else we'll get some wild interpolation
             if (EndTime - Time.Current <= EditorScreen.TrackTimeTolerance) {

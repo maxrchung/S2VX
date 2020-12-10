@@ -41,6 +41,9 @@ namespace S2VX.Game.Story.Note {
             Story.Notes.Sort();
         }
 
+        // For HoldNotes
+        public virtual void UpdateEndTime(double endTime) { }
+
         /// <summary>
         /// Updates placement and alpha for note.
         /// </summary>

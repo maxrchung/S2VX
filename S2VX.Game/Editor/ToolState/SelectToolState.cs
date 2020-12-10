@@ -28,6 +28,7 @@ namespace S2VX.Game.Editor.ToolState {
 
         private const float SelectionIndicatorThickness = 0.025f;
 
+        private double OldHitTime { get; set; }
         private double OldEndTime { get; set; }
         private Vector2 OldCoords { get; set; }
 
@@ -140,7 +141,10 @@ namespace S2VX.Game.Editor.ToolState {
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
                 if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
                     ToDrag = SelectToolDragState.DragTimelineNote;
-                    OldEndTime = selectedNoteTime = note.HitTime;
+                    OldHitTime = selectedNoteTime = note.HitTime;
+                    if (note is HoldNote holdNote && IsMouseOnEndOfHoldNote(holdNote, e.ScreenSpaceMousePosition)) {
+                        OldEndTime = holdNote.EndTime;
+                    }
                     break;
                 }
             }
@@ -192,6 +196,13 @@ namespace S2VX.Game.Editor.ToolState {
             return Time.Current + gameTimeDeltaFromMiddle;
         }
 
+        private static bool IsMouseOnEndOfHoldNote(S2VXNote note, Vector2 mousePos) {
+            if (note != null && mousePos != Vector2.Zero) {
+                return true;
+            }
+            return false;
+        }
+
         public override void OnToolDrag(DragEvent e) {
             if (!DelayDrag) {
                 switch (ToDrag) {
@@ -199,7 +210,12 @@ namespace S2VX.Game.Editor.ToolState {
                         var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
                         foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
                             var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
-                            note.UpdateHitTime(newTime);
+                            if (note is HoldNote holdNote && IsMouseOnEndOfHoldNote(holdNote, e.ScreenSpaceMousePosition)) {
+                                var oldDuration = OldEndTime - OldHitTime;
+                                holdNote.UpdateEndTime(newTime + oldDuration);
+                            } else {
+                                note.UpdateHitTime(newTime);
+                            }
                             NotesTimeline.AddNoteTimelineSelection(note);
                         }
                         break;
@@ -228,7 +244,12 @@ namespace S2VX.Game.Editor.ToolState {
 
                     foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
                         var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
-                        Editor.Reversibles.Push(new ReversibleUpdateNoteHitTime(note, OldEndTime, newTime, Editor));
+                        if (note is HoldNote holdNote && IsMouseOnEndOfHoldNote(holdNote, e.ScreenSpaceMousePosition)) {
+                            var oldDuration = OldEndTime - OldHitTime;
+                            Editor.Reversibles.Push(new ReversibleUpdateNoteEndTime(note, OldEndTime, newTime + oldDuration, Editor));
+                        } else {
+                            Editor.Reversibles.Push(new ReversibleUpdateNoteHitTime(note, OldHitTime, newTime, Editor));
+                        }
                     }
                     break;
                 }
