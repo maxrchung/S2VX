@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Utils;
 using osuTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -86,13 +87,13 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
 
             var time = Time.Current;
-            var clampedTime = MathHelper.Clamp(time, HitTime, EndTime);
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
             var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
             UpdateInnerApproachPosition(coordinates);
 
             // Calculate outer approach values
             var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
-            clampedTime = MathHelper.Clamp(time, startTime, EndTime);
+            clampedTime = Math.Clamp(time, startTime, EndTime);
             var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);

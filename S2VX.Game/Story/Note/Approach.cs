@@ -90,7 +90,7 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
 
             var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-            var clampedTime = MathHelper.Clamp(time, startTime, HitTime);
+            var clampedTime = Math.Clamp(time, startTime, HitTime);
             var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
