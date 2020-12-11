@@ -95,12 +95,10 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        /// <summary>
-        /// Mouse up needs to have a dispose check because it's possible to
-        /// leave the current screen and have the on mouse up trigger on the
-        /// next screen.
-        /// </summary>
         protected override void OnMouseUp(MouseUpEvent e) {
+            // Mouse up needs to have a dispose check because it's possible to
+            // leave the current screen and have the on mouse up trigger on the
+            // next screen.
             if (IsDisposed) {
                 return;
             }
@@ -144,8 +142,6 @@ namespace S2VX.Game.Story.Note {
 
         public override bool UpdateNote() {
             var time = Time.Current;
-            var notes = Story.Notes;
-
             // Trigger release and delete if cursor is no longer over the HoldNote during the hold
             if (IsBeingHeld() && !IsHovered || time >= EndTime + ReleaseMissThreshold) {
                 ReleaseNote();
@@ -156,25 +152,41 @@ namespace S2VX.Game.Story.Note {
                 return true;
             }
 
-            base.UpdateNote();
+            UpdateColor();
+            UpdatePosition();
 
-            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdatePlacement(coordinates);
-
-            if (time >= HitTime && IsBeingHeld()) {
-                Alpha = 1;
-            } else if (time >= HitTime && !IsBeingHeld()) {
-                // Hold the note at fully visible until after MissThreshold
-                var startFadeTime = HitTime + HitMissThreshold;
-                var endFadeTime = startFadeTime + notes.FadeOutTime;
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startFadeTime, endFadeTime);
-                Alpha = alpha;
-                Colour = Color4.Red;
-                if (time >= HitTime + HitMissThreshold) {
-                    RecordMiss();
-                }
+            if (!IsBeingHeld() && time >= HitTime + HitMissThreshold) {
+                RecordMiss();
             }
             return false;
+        }
+
+        protected override void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time to End time
+            else if (time < EndTime) {
+                Alpha = 1;
+            }
+            // End time to Fade out time
+            else if (time < EndTime + notes.FadeOutTime) {
+                var startTime = EndTime;
+                var endTime = EndTime + notes.FadeOutTime;
+                Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+            } else {
+                Alpha = 0;
+            }
+
+            if (time >= HitTime && !IsBeingHeld()) {
+                Colour = Color4.Red;
+            }
         }
     }
 }

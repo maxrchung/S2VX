@@ -19,6 +19,31 @@ namespace S2VX.Game {
             return rotated;
         }
 
+        // Porting some random S2RYBRUH code for calculating signed angle between 2 vectors
+        // https://github.com/maxrchung/S2RYBRUH/blob/master/S2RYBRUH/S2RYBRUH/Vector2.cpp#L45
+        // http://stackoverflow.com/questions/11022446/direction-of-shortest-rotation-between-two-vectors
+        public static double AngleBetween(Vector2 v1, Vector2 v2) {
+            if (v1.LengthSquared == 0 || v2.LengthSquared == 0) {
+                return 0;
+            }
+
+            var n1 = v1.Normalized();
+            var n2 = v2.Normalized();
+
+            if (n1 == n2) {
+                return 0;
+            }
+
+            var dot = Vector2.Dot(n1, n2);
+            Math.Clamp(dot, -1.0f, 1.0f);
+
+            var rot = Math.Acos(dot);
+
+            // Use cross vector3 to determine direction
+            var cross = Vector3.Cross(new Vector3(n1.X, n1.Y, 0), new Vector3(n2.X, n2.Y, 0));
+            return cross.Z > 0 ? -rot : rot;
+        }
+
         public static string FloatToString(float data, int precision = 0) {
             if (precision == 0) {
                 return $"{data}";

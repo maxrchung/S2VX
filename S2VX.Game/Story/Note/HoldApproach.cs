@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Utils;
 using osuTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,7 +38,6 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            SetReleaseAndIndicatorLineAlpha(0);
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             var lines = InternalChildren.ToArray();
@@ -45,54 +45,62 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        private void SetReleaseAndIndicatorLineAlpha(float alpha) {
+        public override void UpdateApproach() {
+            UpdateColor();
+            UpdatePosition();
+        }
+
+        protected override void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            float alpha;
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time to End time
+            else if (time < EndTime) {
+                alpha = 1;
+            }
+            // End time to Fade out time
+            else if (time < EndTime + notes.FadeOutTime) {
+                var startTime = HitTime;
+                var endTime = HitTime + notes.FadeOutTime;
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+            } else {
+                alpha = 0;
+            }
+            Lines.ForEach(l => l.Alpha = alpha);
             ReleaseLines.ForEach(l => l.Alpha = alpha);
             HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
         }
 
-        public override void UpdateApproach() {
-            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdatePlacement(coordinates);
-
+        protected override void UpdatePosition() {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
-
-            var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
-
-            if (time >= endFadeOut) {
-                SetReleaseAndIndicatorLineAlpha(0);
-                // Return early to save some calculations
-                return;
-            }
-
-            if (time >= HitTime) {
-                // Keep the hit approach visible for the duration of the hold
-                Lines.ForEach(l => l.Alpha = 1);
-            }
-
-            var startIndicatorTime = HitTime - notes.ShowTime;
-            var startIndicatorFadeIn = startIndicatorTime - notes.FadeInTime;
-            var startReleaseTime = EndTime - notes.ShowTime;
-            var startReleaseFadeIn = startReleaseTime - notes.FadeInTime;
-
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
 
-            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
+            var time = Time.Current;
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
+            var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            UpdateInnerApproachPosition(coordinates);
 
-            var distance = time < EndTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startReleaseFadeIn, EndTime)
-                : scale.X / 2;
+            // Calculate outer approach values
+            var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
+            clampedTime = Math.Clamp(time, startTime, EndTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
-
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
+            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
             ReleaseLines[0].Position = offset + rotationY;
             ReleaseLines[0].Rotation = rotation;
             ReleaseLines[0].Size = new Vector2(overlap, thickness);
@@ -135,26 +143,6 @@ namespace S2VX.Game.Story.Note {
             HoldIndicatorLines[3].Position = bottomRightPosition;
             HoldIndicatorLines[3].Rotation = rotation - 45;
             HoldIndicatorLines[3].Size = new Vector2(thickness, indicatorLength);
-
-            float indicatorAlpha;
-            if (time >= EndTime) {
-                indicatorAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-            } else if (time >= startIndicatorTime) {
-                indicatorAlpha = 1;
-            } else {
-                indicatorAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startIndicatorFadeIn, startIndicatorTime);
-            }
-            HoldIndicatorLines.ForEach(l => l.Alpha = indicatorAlpha);
-
-            float releaseAlpha;
-            if (time >= EndTime) {
-                releaseAlpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-            } else if (time >= startReleaseTime) {
-                releaseAlpha = 1;
-            } else {
-                releaseAlpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startReleaseFadeIn, startReleaseTime);
-            }
-            ReleaseLines.ForEach(l => l.Alpha = releaseAlpha);
         }
     }
 }
