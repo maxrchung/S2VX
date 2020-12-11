@@ -3,5 +3,6 @@
         None,
         DragTimelineNote,
         DragNote,
+        DragHoldNoteEndTime,
     }
 }
