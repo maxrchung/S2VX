@@ -12,6 +12,15 @@ namespace S2VX.Game.Story.Note {
     public abstract class HoldNote : S2VXNote {
         public double EndTime { get; set; }
         public Vector2 EndCoordinates { get; set; }
+        protected HoldApproach HoldApproach { get; set; }
+        public override Approach Approach {
+            get => HoldApproach;
+            set {
+                if (value is HoldApproach holdApproach) {
+                    HoldApproach = holdApproach;
+                }
+            }
+        }
 
         [Resolved]
         private S2VXStory Story { get; set; }

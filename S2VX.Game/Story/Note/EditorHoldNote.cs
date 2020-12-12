@@ -25,7 +25,7 @@ namespace S2VX.Game.Story.Note {
         public override void UpdateHitTime(double hitTime) {
             EndTime = hitTime + EndTime - HitTime;
             base.UpdateHitTime(hitTime);
-            ((HoldApproach)Approach).EndTime = EndTime;
+            HoldApproach.EndTime = EndTime;
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
@@ -34,7 +34,7 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
             EndTime = endTime;
-            ((HoldApproach)Approach).EndTime = EndTime;
+            HoldApproach.EndTime = EndTime;
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
@@ -47,7 +47,7 @@ namespace S2VX.Game.Story.Note {
             var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
             base.UpdateCoordinates(startCoordinates);
             EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
-            ((HoldApproach)Approach).EndCoordinates = EndCoordinates;
+            HoldApproach.EndCoordinates = EndCoordinates;
         }
 
         public override bool UpdateNote() {

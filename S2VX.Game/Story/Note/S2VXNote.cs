@@ -10,7 +10,7 @@ namespace S2VX.Game.Story.Note {
     public abstract class S2VXNote : CompositeDrawable, IComparable<S2VXNote> {
         public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
-        public Approach Approach { get; set; }
+        public virtual Approach Approach { get; set; }
         public float OutlineThickness { get; set; }
         public Color4 OutlineColor { get; set; }
 
