@@ -29,41 +29,75 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Lines.ForEach(l => l.Alpha = 0);
             AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             InternalChildren = Lines;
         }
 
-        public virtual void UpdateApproach() => UpdatePlacement(Coordinates);
+        /// <summary>
+        /// Main entrypoint for an approach's Update functionality
+        /// </summary>
+        public virtual void UpdateApproach() {
+            UpdateColor();
+            UpdatePosition();
+        }
 
-        protected void UpdatePlacement(Vector2 coordinates) {
+        /// <summary>
+        /// Updates an approach's color/alpha
+        /// </summary>
+        protected virtual void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            float alpha;
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time to Hit time
+            else if (time < HitTime) {
+                alpha = 1;
+            }
+            // Hit time to Fade out time
+            else if (time < HitTime + notes.FadeOutTime) {
+                var startTime = HitTime;
+                var endTime = HitTime + notes.FadeOutTime;
+                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+            } else {
+                alpha = 0;
+            }
+            Lines.ForEach(l => l.Alpha = alpha);
+        }
+
+        /// <summary>
+        /// Updates an approach's position/rotation/size
+        /// </summary>
+        protected virtual void UpdatePosition() => UpdateInnerApproachPosition(Coordinates);
+
+        /// <summary>
+        /// Both Approach and HoldApproach use this helper to set the inner approach's position
+        /// </summary>
+        /// <param name="coordinates">S2VX coordinates that the approach is closing onto</param>
+        protected void UpdateInnerApproachPosition(Vector2 coordinates) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
-
-            var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
-
-            var startTime = HitTime - notes.ShowTime;
-            var startFadeIn = startTime - notes.FadeInTime;
-
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale;
             var thickness = approaches.Thickness;
+            var time = Time.Current;
 
-            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
-
-            var distance = time < HitTime
-                ? Interpolation.ValueAt(time, approaches.Distance, scale.X / 2, startFadeIn, HitTime)
-                : scale.X / 2;
+            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+            var clampedTime = Math.Clamp(time, startTime, HitTime);
+            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
-
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
+            var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
             HitApproachTopLeftCorner = offset - rotationX - rotationY;
             HitApproachTopRightCorner = offset + rotationX - rotationY;
             HitApproachBottomLeftCorner = offset - rotationX + rotationY;
@@ -84,16 +118,6 @@ namespace S2VX.Game.Story.Note {
             Lines[3].Position = offset - rotationX;
             Lines[3].Rotation = rotation;
             Lines[3].Size = new Vector2(thickness, overlap);
-
-            float alpha;
-            if (time >= HitTime) {
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
-            } else if (time >= startTime) {
-                alpha = 1;
-            } else {
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-            }
-            Lines.ForEach(l => l.Alpha = alpha);
         }
 
         // Sort Approaches from highest end time to lowest end time

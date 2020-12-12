@@ -51,30 +51,10 @@ namespace S2VX.Game.Story.Note {
         }
 
         public override bool UpdateNote() {
-            base.UpdateNote();
+            UpdateColor();
+            UpdatePosition();
 
-            // For EditorHold notes, override alpha between HitTime and EndTime
-            var notes = Story.Notes;
             var time = Time.Current;
-            var endFadeOut = EndTime + notes.FadeOutTime;
-            var startTime = HitTime - notes.ShowTime;
-
-            var coordinates = Interpolation.ValueAt(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdatePlacement(coordinates);
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return false;
-            }
-
-            if (time >= EndTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, EndTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            }
-
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
             if (NumHitSounds > 0 && time >= HitSoundTimes[^NumHitSounds]) {
                 --NumHitSounds;
@@ -86,6 +66,29 @@ namespace S2VX.Game.Story.Note {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
             return false;
+        }
+
+        protected override void UpdateColor() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            // Fade in time to Show time
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var endTime = HitTime - notes.ShowTime;
+                Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+            }
+            // Show time (to Hit time) to End time
+            else if (time < EndTime) {
+                Alpha = 1;
+            }
+            // End time to Fade out time
+            else if (time < EndTime + notes.FadeOutTime) {
+                var startTime = EndTime;
+                var endTime = EndTime + notes.FadeOutTime;
+                Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+            } else {
+                Alpha = 0;
+            }
         }
 
         private int GetNumTimingPointsPassed() {

@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor;
@@ -44,54 +43,35 @@ namespace S2VX.Game.Story.Note {
         // For HoldNotes
         public virtual void UpdateEndTime(double endTime) { }
 
-        /// <summary>
-        /// Updates placement and alpha for note.
-        /// </summary>
-        /// <returns> Returns if this note should be removed. </returns>
-        public virtual bool UpdateNote() {
-            var notes = Story.Notes;
-            var time = Time.Current;
-            var endFadeOut = HitTime + notes.FadeOutTime;
-
-            UpdatePlacement(Coordinates);
-
-            if (time >= endFadeOut) {
-                Alpha = 0;
-                // Return early to save some calculations
-                return false;
-            }
-
-            var startTime = HitTime - notes.ShowTime;
-            if (time >= HitTime) {
-                var alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, HitTime, endFadeOut);
-                Alpha = alpha;
-            } else if (time >= startTime) {
-                Alpha = 1;
-            } else {
-                var startFadeIn = startTime - notes.FadeInTime;
-                var alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startFadeIn, startTime);
-                Alpha = alpha;
-            }
-            return false;
-        }
-
         public virtual void UpdateCoordinates(Vector2 coordinates) {
             Approach.Coordinates = coordinates;
             Coordinates = coordinates;
         }
 
-        protected void UpdatePlacement(Vector2 coordinates) {
-            var camera = Story.Camera;
-            var grid = Story.Grid;
+        /// <summary>
+        /// Main entrypoint for a note's Update functionality
+        /// </summary>
+        /// <returns> Returns if this note should be removed.</returns>
+        public abstract bool UpdateNote();
 
+        /// <summary>
+        /// Updates a note's color/alpha
+        /// </summary>
+        protected abstract void UpdateColor();
+
+        /// <summary>
+        /// Updates a note's position/rotation/size
+        /// </summary>
+        protected virtual void UpdatePosition() {
+            var camera = Story.Camera;
             Rotation = camera.Rotation;
             Size = camera.Scale;
 
             var cameraFactor = 1 / camera.Scale.X;
-            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(grid.Thickness);
+            BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
-            Position = S2VXUtils.Rotate(coordinates - camera.Position, Rotation) * Size.X;
+            Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
 
         public Color4 GetColor() => BoxInner.Colour;
