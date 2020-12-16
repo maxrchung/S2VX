@@ -97,7 +97,7 @@ namespace S2VX.Game.Play {
                     }
                     break;
                 case Key.Escape:
-                    this.Exit();
+                    this.Push(new LeaveScreen());
                     return true;
             }
             return false;
