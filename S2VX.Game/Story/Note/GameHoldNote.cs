@@ -42,7 +42,6 @@ namespace S2VX.Game.Story.Note {
         private void Delete() {
             ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
             ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
-            Console.WriteLine(ScoreBefore + " " + ScoreDuring + " " + ScoreAfter);
             var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
             ScoreInfo.AddScore(totalScore);
             PlayScreen.PlayInfoBar.RecordHitError(totalScore);
