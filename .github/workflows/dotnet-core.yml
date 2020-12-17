@@ -3,7 +3,7 @@ name: .NET Core
 on: push
 
 jobs:
-  build:
+  ci:
     runs-on: ${{ matrix.os }}
     env:
       DOTNET_NOLOGO: true
