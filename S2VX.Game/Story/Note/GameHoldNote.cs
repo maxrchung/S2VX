@@ -21,14 +21,19 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
+        private enum HoldNoteState {
+            NotVisibleBefore,
+            VisibleBefore,
+            During,
+            VisibleAfter
+        }
         private const int MissThreshold = 200;
         private SampleChannel Hit { get; set; }
         private SampleChannel Miss { get; set; }
-        private double TimeOfLastUpdate { get; set; }
         private int ScoreBefore { get; set; }
         private int ScoreDuring { get; set; }
         private int ScoreAfter { get; set; }
-        private HoldNoteState HoldNoteState { get; set; } = HoldNoteState.NotVisibleBefore;
+        private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
         private Key? KeyBeingHeld { get; set; }
         private MouseButton? MouseButtonBeingHeld { get; set; }
         private bool ShouldBeRemoved { get; set; }
@@ -43,7 +48,6 @@ namespace S2VX.Game.Story.Note {
             ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
             ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
             var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
-            ScoreInfo.AddScore(totalScore);
             PlayScreen.PlayInfoBar.RecordHitError(totalScore);
             ShouldBeRemoved = true;
         }
@@ -52,7 +56,7 @@ namespace S2VX.Game.Story.Note {
 
         // Note is clickable if in a visible state and is the earliest note
         private bool IsClickable() {
-            var isVisible = HoldNoteState != HoldNoteState.NotVisibleBefore;
+            var isVisible = State != HoldNoteState.NotVisibleBefore;
             var isEarliestNote = Story.Notes.Children.Last() == this;
             return isVisible && isEarliestNote;
         }
@@ -174,33 +178,39 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        protected void UpdateScore() {
+        private void UpdateScore() {
             var time = Time.Current;
             var notes = Story.Notes;
             if (time < notes.ShowTime - notes.FadeInTime) {
-                HoldNoteState = HoldNoteState.NotVisibleBefore;
+                State = HoldNoteState.NotVisibleBefore;
             } else if (time < HitTime) {
-                HoldNoteState = HoldNoteState.VisibleBefore;
+                State = HoldNoteState.VisibleBefore;
             } else if (time <= EndTime) {
-                HoldNoteState = HoldNoteState.During;
+                State = HoldNoteState.During;
+            } else if (!ShouldBeRemoved) {
+                State = HoldNoteState.VisibleAfter;
             } else {
-                HoldNoteState = HoldNoteState.VisibleAfter;
+                // So we don't add to score in the few ms between calling Delete() and the note actually being removed
+                return;
             }
+            var elapsed = (int)Math.Round(Time.Elapsed);
             if (IsHovered && IsBeingHeld()) {
-                switch (HoldNoteState) {
+                switch (State) {
                     case HoldNoteState.VisibleBefore:
-                        ScoreBefore += (int)Math.Round(time - TimeOfLastUpdate);
+                        ScoreBefore += elapsed;
+                        ScoreInfo.AddScore(elapsed);
                         break;
                     case HoldNoteState.VisibleAfter:
-                        ScoreAfter += (int)Math.Round(time - TimeOfLastUpdate);
+                        ScoreAfter += elapsed;
+                        ScoreInfo.AddScore(elapsed);
                         break;
                     default:
                         break;
                 }
-            } else if (HoldNoteState == HoldNoteState.During) {
-                ScoreDuring += (int)Math.Round(time - TimeOfLastUpdate);
+            } else if (State == HoldNoteState.During) {
+                ScoreDuring += elapsed;
+                ScoreInfo.AddScore(elapsed);
             }
-            TimeOfLastUpdate = time;
         }
     }
 }
