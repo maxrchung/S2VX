@@ -11,16 +11,14 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-
     steps:
+    - name: Checkout
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Install dependencies
-      run: dotnet restore --verbosity normal
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
     - name: Test
-      run: dotnet test --no-restore
+      run: dotnet test --no-build
