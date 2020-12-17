@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 3.1.x
     - name: Install dependencies
-      run: dotnet restore --verbosity detailed
+      run: dotnet restore --verbosity normal
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
     - name: Test
