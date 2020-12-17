@@ -374,7 +374,7 @@ namespace S2VX.Game.Editor {
             Story.Save(FullStoryPath);
         }
 
-        private void ProjectQuit() => this.Exit();
+        private void ProjectQuit() => this.Push(new LeaveScreen());
 
         private void EditUndo() => Reversibles.Undo();
 
