@@ -23,4 +23,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
     - name: Test
-      run: dotnet test --no-build
+      run: dotnet test --no-restore
