@@ -1,9 +1,9 @@
-name: Continuous Integration
+name: Run continuous integration
 
 on:
   push:
     branches-ignore:
-      - master
+    - master
 
 jobs:
   continuous-integration:
@@ -11,7 +11,10 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os:
+        - windows-latest
+        - ubuntu-latest
+        - macos-latest
 
     env:
       DOTNET_NOLOGO: true
