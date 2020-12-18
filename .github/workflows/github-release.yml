@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
@@ -15,7 +15,7 @@ jobs:
 
     - name: Set current date
       id: set-current-date
-      run: echo "::set-output name=current-date::$(Get-Date -Format yyyyMMdd)"
+      run: echo "::set-output name=current-date::$(date +'%Y%m%d')"
 
     - name: Publish S2VX.Desktop
       run: |
@@ -24,21 +24,18 @@ jobs:
         Compress-Archive -Path ./Stories, ./bin/Release/netcoreapp3.1/publish/S2VX.exe -DestinationPath ./S2VX.zip
 
     - name: Publish release
-      id: publish-release
-      runs-on: ubuntu-latest
-      steps:
-        - uses: release-drafter/release-drafter@v5
-          with:
-            publish: true
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: release-drafter/release-drafter@v5
+      with:
+        publish: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.publish-release.outputs.upload_url }}
         asset_path: ./S2VX.zip
         asset_name: S2VX.zip
         asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
