@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set current date
-      run: echo "CURRENT_DATE=$(Get-Date -Format yyyy/MM/dd)"
+      run: echo "CURRENT_DATE=$(Get-Date -Format yyyy/MM/dd)" >> $GITHUB_ENV
 
     - name: Create Release
       id: create-release
