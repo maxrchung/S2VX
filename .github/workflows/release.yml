@@ -13,11 +13,8 @@ jobs:
     - name: Set current date
       run: echo "CURRENT_DATE=$(Get-Date -Format yyyy/MM/dd)" >> $GITHUB_ENV
 
-    - name: Create Release
-      id: create-release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.CURRENT_DATE }}
-        release_name: ${{ env.CURRENT_DATE }}
+    - name: Echo 1
+      run: echo $CURRENT_DATE
+
+    - name: Echo 2
+      run: echo ${{ env.CURRENT_DATE }}
