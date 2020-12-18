@@ -13,7 +13,7 @@ jobs:
 
     - name: Set current date
       id: set-current-date
-      run: echo "::set-output name=current-date::$(Get-Date -Format yyyy/MM/dd)"
+      run: echo "::set-output name=current-date::$(Get-Date -Format yyyyMMdd)"
 
     - name: Create Release
       id: create-release
