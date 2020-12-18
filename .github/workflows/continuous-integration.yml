@@ -3,7 +3,7 @@ name: Run continuous integration
 on:
   push:
     branches-ignore:
-    - master
+    - release
 
 jobs:
   continuous-integration:
