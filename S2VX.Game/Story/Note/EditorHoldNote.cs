@@ -1,10 +1,15 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Lines;
+using osu.Framework.Graphics.Shapes;
+using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
+using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -16,11 +21,35 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
             HitSoundTimes = new List<double>() { HitTime, EndTime };
+            AddInternal(AnchorPath);
+            //AddInternal(HeadAnchor);
+            AddInternal(TailAnchor);
         }
+
+        private Path AnchorPath { get; set; } = new Path() {
+            Anchor = Anchor.Centre
+        };
+
+        private Box HeadAnchor { get; set; } = new Box() {
+            Colour = S2VXColorConstants.BrickRed,
+            RelativeSizeAxes = Axes.Both,
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+        };
+
+        private Box TailAnchor { get; set; } = new Box() {
+            Colour = S2VXColorConstants.BrickRed,
+            RelativeSizeAxes = Axes.Both,
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+        };
 
         public override void UpdateHitTime(double hitTime) {
             EndTime = hitTime + EndTime - HitTime;
@@ -48,6 +77,7 @@ namespace S2VX.Game.Story.Note {
             base.UpdateCoordinates(startCoordinates);
             EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
             HoldApproach.EndCoordinates = EndCoordinates;
+            // CHANGE tail anchor point here
         }
 
         public override bool UpdateNote() {
@@ -65,6 +95,30 @@ namespace S2VX.Game.Story.Note {
             if (Clock.IsRunning) {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
+
+            HeadAnchor.Size = Size;
+            TailAnchor.Size = Size;
+            var startCoordinates = Interpolation.ValueAt(HitTime, Coordinates, EndCoordinates, Time.Current, EndTime);
+            //EndCoordinates = startCoordinates + EndCoordinates - Coordinates; assuming this is actual coordinates
+            //realtive to the editorscreen
+
+            var camera = Story.Camera;
+            AnchorPath.PathRadius = OutlineThickness * Screens.DrawWidth / 2;
+            var noteWidth = camera.Scale.X * Screens.DrawWidth;
+
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var endPosition = (EndCoordinates - currCoordinates) * noteWidth;
+
+            var vertices = new List<Vector2>() {
+                new Vector2(0, 0),
+                endPosition,
+            };
+
+            //TailAnchor.Position = endPosition;
+            TailAnchor.Position = new Vector2(1, 1);
+            AnchorPath.Vertices = vertices;
+            AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);
             return false;
         }
 
