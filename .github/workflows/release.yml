@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set current date
-      run: echo "CURRENT_DATE=$(Get-Date -Format yyyy/MM/dd)" >> $GITHUB_ENV
+      run: echo "CURRENT_DATE=test" >> $GITHUB_ENV
 
     - name: Echo 1
       run: echo $CURRENT_DATE
