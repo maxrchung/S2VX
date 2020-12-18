@@ -13,10 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set current date
-      id: set-current-date
-      run: echo "::set-output name=current-date::$(date +'%Y%m%d')"
-
     - name: Publish S2VX.Desktop
       run: |
         cd S2VX.Desktop
