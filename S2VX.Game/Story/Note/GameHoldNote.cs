@@ -8,6 +8,7 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace S2VX.Game.Story.Note {
@@ -30,12 +31,14 @@ namespace S2VX.Game.Story.Note {
         private const int MissThreshold = 200;
         private SampleChannel Hit { get; set; }
         private SampleChannel Miss { get; set; }
+        private bool HitSoundHasBeenPlayed { get; set; }
+        private bool ReleaseSoundHasBeenPlayed { get; set; }
         private int ScoreBefore { get; set; }
         private int ScoreDuring { get; set; }
         private int ScoreAfter { get; set; }
         private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
-        private Key? KeyBeingHeld { get; set; }
-        private MouseButton? MouseButtonBeingHeld { get; set; }
+        private HashSet<Key> KeysBeingHeld { get; } = new HashSet<Key>();
+        private HashSet<MouseButton> MouseButtonsBeingHeld { get; } = new HashSet<MouseButton>();
         private bool ShouldBeRemoved { get; set; }
 
         [BackgroundDependencyLoader]
@@ -52,7 +55,7 @@ namespace S2VX.Game.Story.Note {
             ShouldBeRemoved = true;
         }
 
-        private bool IsBeingHeld() => KeyBeingHeld != null || MouseButtonBeingHeld != null;
+        private bool IsBeingHeld() => KeysBeingHeld.Count > 0 || MouseButtonsBeingHeld.Count > 0;
 
         // Note is clickable if in a visible state and is the earliest note
         private bool IsClickable() {
@@ -61,30 +64,34 @@ namespace S2VX.Game.Story.Note {
             return isVisible && isEarliestNote;
         }
 
-        private void ClickNote() {
-            if (!IsBeingHeld()) {
+        private void HitNoteSound() {
+            if (!HitSoundHasBeenPlayed) {
                 var time = Time.Current;
                 if (Math.Abs(HitTime - time) < MissThreshold) {
                     Hit.Play();
                 } else {
                     Miss.Play();
                 }
+                HitSoundHasBeenPlayed = true;
             }
         }
 
-        private void ReleaseNote() {
-            var time = Time.Current;
-            if (Math.Abs(EndTime - time) < MissThreshold) {
-                Hit.Play();
-            } else {
-                Miss.Play();
+        private void ReleaseNoteSound() {
+            if (!IsBeingHeld() && !ReleaseSoundHasBeenPlayed) {
+                var time = Time.Current;
+                if (Math.Abs(EndTime - time) < MissThreshold) {
+                    Hit.Play();
+                } else {
+                    Miss.Play();
+                }
+                ReleaseSoundHasBeenPlayed = true;
             }
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
-                ClickNote();
-                MouseButtonBeingHeld = e.Button;
+                HitNoteSound();
+                MouseButtonsBeingHeld.Add(e.Button);
             }
 
             return false;
@@ -98,9 +105,10 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            if (!ShouldBeRemoved && MouseButtonBeingHeld == e.Button) {
-                MouseButtonBeingHeld = null;
-                ReleaseNote();
+            if (!ShouldBeRemoved && MouseButtonsBeingHeld.Contains(e.Button)) {
+                MouseButtonsBeingHeld.Remove(e.Button);
+                ReleaseNoteSound();
+                Console.WriteLine(MouseButtonsBeingHeld.Count);
             }
         }
 
@@ -115,8 +123,8 @@ namespace S2VX.Game.Story.Note {
                     case Key.S:
                     case Key.D:
                     case Key.F:
-                        ClickNote();
-                        KeyBeingHeld = e.Key;
+                        HitNoteSound();
+                        KeysBeingHeld.Add(e.Key);
                         break;
                     default:
                         break;
@@ -131,9 +139,10 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            if (!ShouldBeRemoved && KeyBeingHeld == e.Key) {
-                KeyBeingHeld = null;
-                ReleaseNote();
+            if (!ShouldBeRemoved && KeysBeingHeld.Contains(e.Key)) {
+                KeysBeingHeld.Remove(e.Key);
+                ReleaseNoteSound();
+                Console.WriteLine(KeysBeingHeld.Count);
             }
         }
 
