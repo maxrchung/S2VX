@@ -10,9 +10,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+
     - name: Set current date
       id: set-current-date
       run: echo "::set-output name=current-date::$(Get-Date -Format yyyy/MM/dd)"
 
-    - name: Echo 1
-      run: echo ${{ steps.set-current-date.outputs.current-date }}
+    - name: Create Release
+      id: create-release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.set-current-date.outputs.current-date }}
