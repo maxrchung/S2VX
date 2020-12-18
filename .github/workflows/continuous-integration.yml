@@ -1,26 +1,36 @@
-name: .NET Core
+name: Continuous Integration
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
-  ci:
+  continuous-integration:
     runs-on: ${{ matrix.os }}
-    env:
-      DOTNET_NOLOGO: true
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
+
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
+
+    - name: Build project
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
-    - name: Test
+
+    - name: Test project
       run: dotnet test --no-restore
