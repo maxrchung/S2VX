@@ -34,3 +34,10 @@ jobs:
 
     - name: Test
       run: dotnet test --no-restore
+
+  update-release-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
