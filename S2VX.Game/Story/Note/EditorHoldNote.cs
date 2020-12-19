@@ -28,28 +28,20 @@ namespace S2VX.Game.Story.Note {
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
             HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HeadAnchor = new EditorHoldNoteAnchor(this, true);
+            TailAnchor = new EditorHoldNoteAnchor(this, false);
             AddInternal(AnchorPath);
-            //AddInternal(HeadAnchor);
+            AddInternal(HeadAnchor);
             AddInternal(TailAnchor);
         }
 
         private Path AnchorPath { get; set; } = new Path() {
-            Anchor = Anchor.Centre
+            Anchor = Anchor.Centre,
         };
 
-        private Box HeadAnchor { get; set; } = new Box() {
-            Colour = S2VXColorConstants.BrickRed,
-            RelativeSizeAxes = Axes.Both,
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-        };
+        private EditorHoldNoteAnchor HeadAnchor { get; set; }
 
-        private Box TailAnchor { get; set; } = new Box() {
-            Colour = S2VXColorConstants.BrickRed,
-            RelativeSizeAxes = Axes.Both,
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-        };
+        private EditorHoldNoteAnchor TailAnchor { get; set; }
 
         public override void UpdateHitTime(double hitTime) {
             EndTime = hitTime + EndTime - HitTime;
@@ -77,7 +69,11 @@ namespace S2VX.Game.Story.Note {
             base.UpdateCoordinates(startCoordinates);
             EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
             HoldApproach.EndCoordinates = EndCoordinates;
-            // CHANGE tail anchor point here
+        }
+
+        public void UpdateEndCoordinates(Vector2 coordinates) {
+            EndCoordinates = coordinates;
+            HoldApproach.EndCoordinates = EndCoordinates;
         }
 
         public override bool UpdateNote() {
@@ -99,8 +95,6 @@ namespace S2VX.Game.Story.Note {
             HeadAnchor.Size = Size;
             TailAnchor.Size = Size;
             var startCoordinates = Interpolation.ValueAt(HitTime, Coordinates, EndCoordinates, Time.Current, EndTime);
-            //EndCoordinates = startCoordinates + EndCoordinates - Coordinates; assuming this is actual coordinates
-            //realtive to the editorscreen
 
             var camera = Story.Camera;
             AnchorPath.PathRadius = OutlineThickness * Screens.DrawWidth / 2;
@@ -115,9 +109,9 @@ namespace S2VX.Game.Story.Note {
                 endPosition,
             };
 
-            //TailAnchor.Position = endPosition;
-            TailAnchor.Position = new Vector2(1, 1);
+            TailAnchor.Position = endPosition;
             AnchorPath.Vertices = vertices;
+            // Explained in HoldNote.cs UpdateSliderPath() Lol
             AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);
             return false;
         }
