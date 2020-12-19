@@ -1,4 +1,4 @@
-name: Check pull requests are valid
+name: Check pull request is valid
 
 on:
   pull_request:
