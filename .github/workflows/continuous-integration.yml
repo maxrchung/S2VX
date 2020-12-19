@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         os:
-        - windows-latest
+        # Windows pipeline is having issues, see issue #290
+        # - windows-latest
         - ubuntu-latest
         - macos-latest
 
