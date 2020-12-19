@@ -14,17 +14,17 @@ jobs:
 
     steps:
     - name: Release cannot be source branch
-      if: ${{ github.head_ref == "release" }}
+      if: ${{ github.head_ref == 'release' }}
       run: exit error
 
     - name: Master can only merge to release
-      if: ${{ github.head_ref == "master" && github.base_ref != "release" }}
+      if: ${{ github.head_ref == 'master' && github.base_ref != 'release' }}
       run: exit error
 
     - name: Release must have a version label
-      if: ${{ github.base_ref == "release" }}
+      if: ${{ github.base_ref == 'release' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
         count: 1
-        labels: "major, minor, patch"
+        labels: major, minor, patch
