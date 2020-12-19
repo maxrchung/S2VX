@@ -17,8 +17,12 @@ jobs:
       if: ${{ github.head_ref == 'release' }}
       run: exit error
 
-    - name: Master can only merge to release
+    - name: Master cannot merge to non-release branches
       if: ${{ github.head_ref == 'master' && github.base_ref != 'release' }}
+      run: exit error
+
+    - name: Non-release branches cannot merge to release
+      if: ${{ github.head_ref != 'master' && github.base_ref == 'release' }}
       run: exit error
 
     - name: Release must have a version label
