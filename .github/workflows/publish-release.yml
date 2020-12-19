@@ -6,7 +6,7 @@ on:
     - release
 
 jobs:
-  release:
+  publish-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,14 +19,14 @@ jobs:
         dotnet publish -p:PublishProfile=win-x64
         Compress-Archive -Path ./Stories, ./bin/Release/netcoreapp3.1/publish/S2VX.exe -DestinationPath ./S2VX.zip
 
-    - name: Publish release
+    - name: Publish release to GitHub
       uses: release-drafter/release-drafter@v5
       with:
         publish: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload Release Asset
+    - name: Upload release asset
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.publish-release.outputs.upload_url }}

@@ -1,4 +1,4 @@
-name: Check pull request is valid
+name: Validate pull request rules
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
     - synchronize
 
 jobs:
-  check-rules:
+  validate-pull-request:
     runs-on: ubuntu-latest
 
     steps:
