@@ -12,8 +12,7 @@ jobs:
     strategy:
       matrix:
         os:
-        # Windows pipeline is having issues, see issue #290
-        # - windows-latest
+        - windows-latest
         - ubuntu-latest
         - macos-latest
 
@@ -30,6 +29,12 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
+    # Addresses Windows pipeline issue as described here: https://github.com/actions/setup-dotnet/issues/155#issuecomment-748452076
+    - name: Clean output
+      run: dotnet clean ./S2VX.sln --configuration Release
+    - name: Clear NuGet
+      run: dotnet nuget locals all --clear
+
     - name: Install dependencies
       run: dotnet restore
 
@@ -37,4 +42,4 @@ jobs:
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
 
     - name: Test project
-      run: dotnet test --no-restore
+      run: dotnet test --configuration Release --no-build
