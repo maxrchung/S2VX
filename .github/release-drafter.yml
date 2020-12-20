@@ -1,16 +1,16 @@
-name-template: '$RESOLVED_VERSION'
-tag-template: '$RESOLVED_VERSION'
+name-template: $RESOLVED_VERSION
+tag-template: $RESOLVED_VERSION
 
 version-resolver:
   major:
     labels:
-    - 'major'
+    - major
   minor:
     labels:
-    - 'minor'
+    - minor
   patch:
     labels:
-    - 'patch'
+    - patch
 
 template: |
   ## Changes
