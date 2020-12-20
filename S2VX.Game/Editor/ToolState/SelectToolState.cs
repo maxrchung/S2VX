@@ -155,7 +155,6 @@ namespace S2VX.Game.Editor.ToolState {
                     OldHitTime = selectedNoteTime = note.HitTime;
                     if (note is HoldNote holdNote && IsMouseOnEndOfHoldNote(mousePos, holdNote)) {
                         OldEndTime = holdNote.EndTime;
-                        ToDrag = SelectToolDragState.DragHoldNoteEndTime;
                     }
                     break;
                 }

@@ -4,9 +4,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
 using osuTK;
 using S2VX.Game.Editor;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Story.Note {
     public class EditorHoldNoteAnchor : Box {
@@ -15,6 +13,7 @@ namespace S2VX.Game.Story.Note {
         private EditorHoldNote Note { get; set; }
         private bool IsHead { get; set; }
         private Vector2 OldCoords { get; set; }
+
         public EditorHoldNoteAnchor(EditorHoldNote note, bool isHead) {
             Colour = S2VXColorConstants.BrickRed;
             RelativeSizeAxes = Axes.Both;
@@ -25,11 +24,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override bool OnDragStart(DragStartEvent e) {
-            if (IsHead) {
-                OldCoords = Note.Coordinates;
-            } else {
-                OldCoords = Note.EndCoordinates;
-            }
+            OldCoords = IsHead ? Note.Coordinates : Note.EndCoordinates;
             return true;
         }
 
@@ -42,11 +37,13 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void OnDragEnd(DragEndEvent e) {
-            //if (IsHead) {
-            //    Editor.Reversibles.Push(new ReversibleUpdateNoteCoordinates(note, OldCoords, newPos));
-            //} else {
-            //}
-            // Make UpdateEndCoordinates reverseible later
+            var mousePos = Editor.MousePosition;
+
+            if (IsHead) {
+                Editor.Reversibles.Push(new ReversibleUpdateNoteCoordinates(Note, OldCoords, mousePos));
+            } else {
+                Editor.Reversibles.Push(new ReversibleUpdateHoldNoteEndCoordinates(Note, OldCoords, mousePos));
+            }
         }
     }
 }

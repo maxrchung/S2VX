@@ -3,13 +3,11 @@ using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
-using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -59,26 +57,32 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
-        public override void UpdateCoordinates(Vector2 coordinates) {
-            // Prevent changes at end time or else we'll get some wild interpolation
-            if (EndTime - Time.Current <= EditorScreen.TrackTimeTolerance) {
-                return;
-            }
-
-            var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
-            base.UpdateCoordinates(startCoordinates);
-            EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
-            HoldApproach.EndCoordinates = EndCoordinates;
-        }
-
         public void UpdateEndCoordinates(Vector2 coordinates) {
             EndCoordinates = coordinates;
             HoldApproach.EndCoordinates = EndCoordinates;
         }
 
+        private void UpdateAnchorPath() {
+            HeadAnchor.Size = Size;
+            TailAnchor.Size = Size;
+            AnchorPath.PathRadius = OutlineThickness * Screens.DrawWidth / 2;
+            var endPosition = GetVertexEndPosition(Story.Camera.Scale.X * Screens.DrawWidth, Time.Current);
+
+            var vertices = new List<Vector2>() {
+                new Vector2(0, 0),
+                endPosition,
+            };
+
+            TailAnchor.Position = endPosition;
+            AnchorPath.Vertices = vertices;
+            // Explained in HoldNote.cs UpdateSliderPath() Lol
+            AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);
+        }
+
         public override bool UpdateNote() {
             UpdateColor();
             UpdatePosition();
+            UpdateAnchorPath();
 
             var time = Time.Current;
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
@@ -92,27 +96,6 @@ namespace S2VX.Game.Story.Note {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
 
-            HeadAnchor.Size = Size;
-            TailAnchor.Size = Size;
-            var startCoordinates = Interpolation.ValueAt(HitTime, Coordinates, EndCoordinates, Time.Current, EndTime);
-
-            var camera = Story.Camera;
-            AnchorPath.PathRadius = OutlineThickness * Screens.DrawWidth / 2;
-            var noteWidth = camera.Scale.X * Screens.DrawWidth;
-
-            var clampedTime = Math.Clamp(time, HitTime, EndTime);
-            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
-            var endPosition = (EndCoordinates - currCoordinates) * noteWidth;
-
-            var vertices = new List<Vector2>() {
-                new Vector2(0, 0),
-                endPosition,
-            };
-
-            TailAnchor.Position = endPosition;
-            AnchorPath.Vertices = vertices;
-            // Explained in HoldNote.cs UpdateSliderPath() Lol
-            AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);
             return false;
         }
 
