@@ -1,9 +1,6 @@
 name: Publish GitHub release and artifact
 
-on:
-  push:
-    branches:
-    - release
+on: push
 
 jobs:
   publish-release:
@@ -17,7 +14,7 @@ jobs:
       run: |
         cd S2VX.Desktop
         dotnet publish -p:PublishProfile=win-x64
-        Compress-Archive -Path ./Stories, ./bin/Release/netcoreapp3.1/publish/S2VX.exe -DestinationPath ./S2VX.zip
+        zip -r S2VX.zip Stories bin/Release/netcoreapp3.1/publish/S2VX.exe
 
     - name: Publish release to GitHub
       uses: release-drafter/release-drafter@v5
