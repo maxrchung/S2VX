@@ -1,0 +1,46 @@
+name: Run continuous integration
+
+on:
+  push:
+    branches-ignore:
+    - master
+    - release
+
+jobs:
+  continuous-integration:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+        - windows-latest
+        - ubuntu-latest
+        - macos-latest
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    # Addresses Windows pipeline issue as described here: https://github.com/actions/setup-dotnet/issues/155#issuecomment-748452076
+    - name: Clean output
+      run: dotnet clean ./S2VX.sln --configuration Release
+    - name: Clear NuGet
+      run: dotnet nuget locals all --clear
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnAsError
+
+    - name: Test project
+      run: dotnet test --configuration Release --no-build

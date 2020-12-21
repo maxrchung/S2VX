@@ -8,19 +8,11 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameHoldNote : HoldNote {
-        private SampleChannel Hit { get; set; }
-        private SampleChannel Miss { get; set; }
-
-        [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            Miss = audio.Samples.Get("miss");
-        }
-
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
 
@@ -30,66 +22,76 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        private const int HitMissThreshold = 200;
-        private const int ReleaseMissThreshold = 200;
-        private int HitTimingError;
-        private int ReleaseTimingError;
-
-        private Key? KeyBeingHeld { get; set; }
-        private MouseButton? MouseButtonBeingHeld { get; set; }
+        private enum HoldNoteState {
+            NotVisibleBefore,
+            VisibleBefore,
+            During,
+            VisibleAfter
+        }
+        private const int MissThreshold = 200;
+        private SampleChannel Hit { get; set; }
+        private SampleChannel Miss { get; set; }
+        private bool HitSoundHasBeenPlayed { get; set; }
+        private bool ReleaseSoundHasBeenPlayed { get; set; }
+        private int ScoreBefore { get; set; }
+        private int ScoreDuring { get; set; }
+        private int ScoreAfter { get; set; }
+        private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
+        private HashSet<Key> KeysBeingHeld { get; } = new HashSet<Key>();
+        private HashSet<MouseButton> MouseButtonsBeingHeld { get; } = new HashSet<MouseButton>();
         private bool ShouldBeRemoved { get; set; }
 
-
-        private void Delete() => ShouldBeRemoved = true;
-
-        private void RecordMiss() {
-            var missThreshold = HitMissThreshold;
-            ScoreInfo.AddScore(missThreshold);
-            PlayScreen.PlayInfoBar.RecordHitError(missThreshold);
-            Miss.Play();
-            Delete();
+        [BackgroundDependencyLoader]
+        private void Load(AudioManager audio) {
+            Hit = audio.Samples.Get("hit");
+            Miss = audio.Samples.Get("miss");
         }
 
-        private bool IsBeingHeld() => KeyBeingHeld != null || MouseButtonBeingHeld != null;
+        private void Delete() {
+            ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
+            ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
+            var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
+            PlayScreen.PlayInfoBar.RecordHitError(totalScore);
+            ShouldBeRemoved = true;
+        }
 
-        // Notes are clickable if there is nothing already holding it, are visible on screen, not missed, and is the earliest note
+        private bool IsBeingHeld() => KeysBeingHeld.Count > 0 || MouseButtonsBeingHeld.Count > 0;
+
+        // Note is clickable if in a visible state and is the earliest note
         private bool IsClickable() {
-            var time = Time.Current;
-            // Limit timing error to be +/- MissThreshold
-            HitTimingError = (int)Math.Round(Math.Clamp(time - HitTime, -HitMissThreshold, HitMissThreshold));
-            var inMissThreshold = HitTimingError <= HitMissThreshold && Alpha > 0;
-            var earliestNote = Story.Notes.Children.Last();
-            var isEarliestNote = earliestNote == this;
-            return !IsBeingHeld() && inMissThreshold && isEarliestNote;
+            var isVisible = State != HoldNoteState.NotVisibleBefore;
+            var isEarliestNote = Story.Notes.Children.Last() == this;
+            return isVisible && isEarliestNote;
         }
 
-        private void ClickNote() {
-            ScoreInfo.AddScore(Math.Abs(HitTimingError));
-            PlayScreen.PlayInfoBar.RecordHitError(HitTimingError);
-            if (Math.Abs(HitTimingError) < HitMissThreshold) {
-                Hit.Play();
-            } else {
-                Miss.Play();
+        private void HitNoteSound() {
+            if (!HitSoundHasBeenPlayed) {
+                var time = Time.Current;
+                if (Math.Abs(HitTime - time) < MissThreshold) {
+                    Hit.Play();
+                } else {
+                    Miss.Play();
+                }
+                HitSoundHasBeenPlayed = true;
             }
         }
 
-        private void ReleaseNote() {
-            var time = Time.Current;
-            ReleaseTimingError = (int)Math.Round(Math.Clamp(time - EndTime, -ReleaseMissThreshold, ReleaseMissThreshold));
-            ScoreInfo.AddScore(Math.Abs(ReleaseTimingError));
-            if (Math.Abs(ReleaseTimingError) < ReleaseMissThreshold) {
-                Hit.Play();
-            } else {
-                Miss.Play();
+        private void ReleaseNoteSound() {
+            if (!IsBeingHeld() && !ReleaseSoundHasBeenPlayed) {
+                var time = Time.Current;
+                if (Math.Abs(EndTime - time) < MissThreshold) {
+                    Hit.Play();
+                } else {
+                    Miss.Play();
+                }
+                ReleaseSoundHasBeenPlayed = true;
             }
-            PlayScreen.PlayInfoBar.RecordHitError(ReleaseTimingError);
-            Delete();
         }
 
         protected override bool OnMouseDown(MouseDownEvent e) {
             if (IsClickable()) {
-                MouseButtonBeingHeld = e.Button;
-                ClickNote();
+                HitNoteSound();
+                MouseButtonsBeingHeld.Add(e.Button);
             }
 
             return false;
@@ -103,8 +105,10 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            if (!ShouldBeRemoved && MouseButtonBeingHeld == e.Button) {
-                ReleaseNote();
+            if (!ShouldBeRemoved && MouseButtonsBeingHeld.Contains(e.Button)) {
+                MouseButtonsBeingHeld.Remove(e.Button);
+                ReleaseNoteSound();
+                Console.WriteLine(MouseButtonsBeingHeld.Count);
             }
         }
 
@@ -119,8 +123,8 @@ namespace S2VX.Game.Story.Note {
                     case Key.S:
                     case Key.D:
                     case Key.F:
-                        KeyBeingHeld = e.Key;
-                        ClickNote();
+                        HitNoteSound();
+                        KeysBeingHeld.Add(e.Key);
                         break;
                     default:
                         break;
@@ -135,18 +139,14 @@ namespace S2VX.Game.Story.Note {
                 return;
             }
 
-            if (!ShouldBeRemoved && KeyBeingHeld == e.Key) {
-                ReleaseNote();
+            if (!ShouldBeRemoved && KeysBeingHeld.Contains(e.Key)) {
+                KeysBeingHeld.Remove(e.Key);
+                ReleaseNoteSound();
+                Console.WriteLine(KeysBeingHeld.Count);
             }
         }
 
         public override bool UpdateNote() {
-            var time = Time.Current;
-            // Trigger release and delete if cursor is no longer over the HoldNote during the hold
-            if (IsBeingHeld() && !IsHovered || time >= EndTime + ReleaseMissThreshold) {
-                ReleaseNote();
-            }
-
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
             if (ShouldBeRemoved) {
                 return true;
@@ -154,10 +154,7 @@ namespace S2VX.Game.Story.Note {
 
             UpdateColor();
             UpdatePosition();
-
-            if (!IsBeingHeld() && time >= HitTime + HitMissThreshold) {
-                RecordMiss();
-            }
+            UpdateScore();
             return false;
         }
 
@@ -182,10 +179,46 @@ namespace S2VX.Game.Story.Note {
                 Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
+                Delete();
             }
 
             if (time >= HitTime && !IsBeingHeld()) {
                 Colour = Color4.Red;
+            }
+        }
+
+        private void UpdateScore() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            if (time < notes.ShowTime - notes.FadeInTime) {
+                State = HoldNoteState.NotVisibleBefore;
+            } else if (time < HitTime) {
+                State = HoldNoteState.VisibleBefore;
+            } else if (time <= EndTime) {
+                State = HoldNoteState.During;
+            } else if (!ShouldBeRemoved) {
+                State = HoldNoteState.VisibleAfter;
+            } else {
+                // So we don't add to score in the few ms between calling Delete() and the note actually being removed
+                return;
+            }
+            var elapsed = (int)Math.Round(Time.Elapsed);
+            if (IsHovered && IsBeingHeld()) {
+                switch (State) {
+                    case HoldNoteState.VisibleBefore:
+                        ScoreBefore += elapsed;
+                        ScoreInfo.AddScore(elapsed);
+                        break;
+                    case HoldNoteState.VisibleAfter:
+                        ScoreAfter += elapsed;
+                        ScoreInfo.AddScore(elapsed);
+                        break;
+                    default:
+                        break;
+                }
+            } else if (State == HoldNoteState.During) {
+                ScoreDuring += elapsed;
+                ScoreInfo.AddScore(elapsed);
             }
         }
     }
