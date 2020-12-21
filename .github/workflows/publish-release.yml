@@ -15,15 +15,14 @@ jobs:
         cd S2VX.Desktop
         dotnet publish -p:PublishProfile=win-x64
         zip -r S2VX.zip Stories bin/Release/netcoreapp3.1/publish/S2VX.exe
-        ls
 
     - name: Publish release to GitHub
       id: release-drafter
       uses: release-drafter/release-drafter@v5
       with:
-        name: 0.0.0
-        tag: 0.0.0
-        version: 0.0.0
+        name: 1.0.0
+        tag: 1.0.0
+        version: 1.0.0
         publish: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
