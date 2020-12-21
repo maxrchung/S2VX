@@ -23,6 +23,7 @@ jobs:
       with:
         name: 0.0.0
         tag: 0.0.0
+        version: 0.0.0
         publish: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,6 +35,5 @@ jobs:
         asset_path: ./S2VX.Desktop/S2VX.zip
         asset_name: S2VX.zip
         asset_content_type: application/zip
-      run: ls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
