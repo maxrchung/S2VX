@@ -17,6 +17,7 @@ jobs:
         zip -r S2VX.zip Stories bin/Release/netcoreapp3.1/publish/S2VX.exe
 
     - name: Publish release to GitHub
+      id: release-drafter
       uses: release-drafter/release-drafter@v5
       with:
         publish: true
@@ -26,7 +27,7 @@ jobs:
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       with:
-        upload_url: ${{ steps.publish-release.outputs.upload_url }}
+        upload_url: ${{ steps.release-drafter.outputs.upload_url }}
         asset_path: ./S2VX.zip
         asset_name: S2VX.zip
         asset_content_type: application/zip
