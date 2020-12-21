@@ -14,7 +14,8 @@ jobs:
       run: |
         cd S2VX.Desktop
         dotnet publish -p:PublishProfile=win-x64
-        zip -r S2VX.zip Stories bin/Release/netcoreapp3.1/publish/S2VX.exe
+        zip -j S2VX.zip bin/Release/netcoreapp3.1/publish/S2VX.exe
+        zip -r S2VX.zip Stories
 
     - name: Publish release to GitHub
       id: release-drafter
