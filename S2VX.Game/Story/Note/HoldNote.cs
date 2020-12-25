@@ -64,7 +64,7 @@ namespace S2VX.Game.Story.Note {
 
         private void UpdateSliderPath() {
             var drawWidth = Screens.DrawWidth;
-            var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
+            var pathRadius = OutlineThickness * drawWidth / 2;
             SliderPath.PathRadius = pathRadius;
 
             var time = Time.Current;

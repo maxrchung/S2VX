@@ -8,6 +8,7 @@ using osu.Framework.Utils;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
+using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -62,17 +63,30 @@ namespace S2VX.Game.Story.Note {
             HoldApproach.EndCoordinates = EndCoordinates;
         }
 
+        private Vector2 GetVertexStartPosition(float noteWidth, double time) {
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            return (Coordinates - currCoordinates) * noteWidth;
+        }
+
         private void UpdateAnchorPath() {
             HeadAnchor.Size = Size;
             TailAnchor.Size = Size;
-            AnchorPath.PathRadius = OutlineThickness * Screens.DrawWidth / 2;
-            var endPosition = GetVertexEndPosition(Story.Camera.Scale.X * Screens.DrawWidth, Time.Current);
+
+            var time = Time.Current;
+            var drawWidth = Screens.DrawWidth;
+            AnchorPath.PathRadius = OutlineThickness * drawWidth / 2;
+            var camera = Story.Camera;
+            var noteWidth = camera.Scale.X * drawWidth;
+            var endPosition = GetVertexEndPosition(noteWidth, time);
+            var startPosition = GetVertexStartPosition(noteWidth, time);
 
             var vertices = new List<Vector2>() {
-                new Vector2(0, 0),
+                startPosition,
                 endPosition,
             };
 
+            HeadAnchor.Position = startPosition;
             TailAnchor.Position = endPosition;
             AnchorPath.Vertices = vertices;
             // Explained in HoldNote.cs UpdateSliderPath() Lol
