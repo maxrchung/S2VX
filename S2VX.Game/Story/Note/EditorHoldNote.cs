@@ -23,6 +23,19 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private ScreenStack Screens { get; set; }
 
+        private bool IsSelected { get; set; }
+
+        public bool IsFlaggedToToggleSelection { get; set; } // Temp. Used as delayed removal
+
+        public void ToggleSelection(bool isSelected) {
+            IsSelected = isSelected;
+            if (IsSelected) {
+                HeadAnchor.Alpha = TailAnchor.Alpha = AnchorPath.Alpha = 1;
+            } else {
+                HeadAnchor.Alpha = TailAnchor.Alpha = AnchorPath.Alpha = 0;
+            }
+        }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
@@ -36,6 +49,7 @@ namespace S2VX.Game.Story.Note {
 
         private Path AnchorPath { get; set; } = new Path() {
             Anchor = Anchor.Centre,
+            Alpha = 0,
         };
 
         private EditorHoldNoteAnchor HeadAnchor { get; set; }
@@ -96,7 +110,9 @@ namespace S2VX.Game.Story.Note {
         public override bool UpdateNote() {
             UpdateColor();
             UpdatePosition();
-            UpdateAnchorPath();
+            if (IsSelected) {
+                UpdateAnchorPath();
+            }
 
             var time = Time.Current;
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
