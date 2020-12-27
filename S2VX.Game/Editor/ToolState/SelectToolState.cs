@@ -121,17 +121,6 @@ namespace S2VX.Game.Editor.ToolState {
             NotesTimeline.ClearNoteTimelineSelection();
             Editor.NoteSelectionIndicators.Clear();
             NoteSelectionToNote.Clear();
-            // Temp fix to hide anchors & anchorpath when deselected
-            foreach (var note in Story.Notes.Children) {
-                if (note is EditorHoldNote holdNote) {
-                    if (holdNote.IsFlaggedToToggleSelection) {
-                        holdNote.ToggleSelection(false);
-                        holdNote.IsFlaggedToToggleSelection = false;
-                    } else {
-                        holdNote.IsFlaggedToToggleSelection = true;
-                    }
-                }
-            }
         }
 
         public override bool OnToolMouseDown(MouseDownEvent e) {
@@ -147,11 +136,6 @@ namespace S2VX.Game.Editor.ToolState {
             foreach (var note in GetVisibleStoryNotes()) {
                 if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
                     AddNoteSelection(note);
-                    // Temp fix to allow EditorHoldNote anchors and anchorPath to show
-                    if (note is EditorHoldNote holdNote) {
-                        holdNote.IsFlaggedToToggleSelection = false;
-                        holdNote.ToggleSelection(true);
-                    }
                     return false;
                 }
             }

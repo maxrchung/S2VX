@@ -21,12 +21,6 @@ namespace S2VX.Game.Story.Note {
             Origin = Anchor.Centre;
             Note = note;
             IsHead = isHead;
-            Alpha = 0;
-        }
-
-        protected override bool OnClick(ClickEvent e) {
-            Note.IsFlaggedToToggleSelection = false;
-            return false;
         }
 
         protected override bool OnDragStart(DragStartEvent e) {
