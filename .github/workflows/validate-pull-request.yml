@@ -32,11 +32,3 @@ jobs:
         mode: exactly
         count: 1
         labels: major, minor, patch
-
-    - name: Non-release pull requests cannot have a version label
-      if: ${{ github.base_ref != 'release' }}
-      uses: mheap/github-action-required-labels@v1
-      with:
-        mode: exactly
-        count: 0
-        labels: major, minor, patch
