@@ -56,9 +56,15 @@ namespace S2VX.Game.Story.Note {
             Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * Size.X;
         }
 
+        protected Vector2 GetVertexEndPosition(float noteWidth, double time) {
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            return (EndCoordinates - currCoordinates) * noteWidth;
+        }
+
         private void UpdateSliderPath() {
             var drawWidth = Screens.DrawWidth;
-            var pathRadius = OutlineThickness * Screens.DrawWidth / 2;
+            var pathRadius = OutlineThickness * drawWidth / 2;
             SliderPath.PathRadius = pathRadius;
 
             var time = Time.Current;
@@ -75,9 +81,7 @@ namespace S2VX.Game.Story.Note {
             }
             // Otherwise, snake in the slider start
             else {
-                var clampedTime = Math.Clamp(time, HitTime, EndTime);
-                var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
-                endPosition = (EndCoordinates - currCoordinates) * noteWidth;
+                endPosition = GetVertexEndPosition(noteWidth, time);
             }
 
             var midPosition = endPosition / 2;
