@@ -1,6 +1,14 @@
 name-template: $RESOLVED_VERSION
 tag-template: $RESOLVED_VERSION
 
+categories:
+- title: '🚀 Features'
+  labels:
+  - 'feature'
+- title: '🐛 Bugs'
+  labels:
+  - 'bug'
+
 version-resolver:
   major:
     labels:
