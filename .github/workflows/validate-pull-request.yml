@@ -17,12 +17,12 @@ jobs:
       if: ${{ github.head_ref == 'release' }}
       run: exit error
 
-    - name: Master cannot merge to non-release branches
+    - name: Master cannot merge to feature branches
       if: ${{ github.head_ref == 'master' && github.base_ref != 'release' }}
       run: exit error
 
-    - name: Non-release branches cannot merge to release
-      if: ${{ github.head_ref != 'master' && github.base_ref == 'release' }}
+    - name: Feature branches cannot merge to release
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' && github.base_ref == 'release' }}
       run: exit error
 
     - name: Release must have a version label
@@ -33,10 +33,26 @@ jobs:
         count: 1
         labels: major, minor, patch
 
-    - name: Non-release pull requests cannot have a version label
-      if: ${{ github.base_ref != 'release' }}
+    - name: Release cannot have a category label
+      if: ${{ github.base_ref == 'release' }}
+      uses: mheap/github-action-required-labels@v1
+      with:
+        mode: exactly
+        count: 0
+        labels: feature, bug
+
+    - name: Feature pull requests cannot have a version label
+      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
         count: 0
         labels: major, minor, patch
+
+    - name: Feature pull requests must have a category label
+      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
+      uses: mheap/github-action-required-labels@v1
+      with:
+        mode: exactly
+        count: 1
+        labels: feature, bug
