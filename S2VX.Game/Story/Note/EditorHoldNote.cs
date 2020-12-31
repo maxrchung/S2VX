@@ -1,10 +1,14 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Lines;
+using osu.Framework.Screens;
 using osu.Framework.Utils;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
+using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -16,11 +20,27 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = audio.Samples.Get("hit");
             HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HeadAnchor = new EditorHoldNoteAnchor(this, true);
+            TailAnchor = new EditorHoldNoteAnchor(this, false);
+            AddInternal(AnchorPath);
+            AddInternal(HeadAnchor);
+            AddInternal(TailAnchor);
         }
+
+        private Path AnchorPath { get; set; } = new Path() {
+            Anchor = Anchor.Centre,
+        };
+
+        private EditorHoldNoteAnchor HeadAnchor { get; set; }
+
+        private EditorHoldNoteAnchor TailAnchor { get; set; }
 
         public override void UpdateHitTime(double hitTime) {
             EndTime = hitTime + EndTime - HitTime;
@@ -38,21 +58,45 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new List<double>() { HitTime, EndTime };
         }
 
-        public override void UpdateCoordinates(Vector2 coordinates) {
-            // Prevent changes at end time or else we'll get some wild interpolation
-            if (EndTime - Time.Current <= EditorScreen.TrackTimeTolerance) {
-                return;
-            }
-
-            var startCoordinates = Interpolation.ValueAt(HitTime, coordinates, EndCoordinates, Time.Current, EndTime);
-            base.UpdateCoordinates(startCoordinates);
-            EndCoordinates = startCoordinates + EndCoordinates - Coordinates;
+        public void UpdateEndCoordinates(Vector2 coordinates) {
+            EndCoordinates = coordinates;
             HoldApproach.EndCoordinates = EndCoordinates;
+        }
+
+        private Vector2 GetVertexStartPosition(float noteWidth, double time) {
+            var clampedTime = Math.Clamp(time, HitTime, EndTime);
+            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            return (Coordinates - currCoordinates) * noteWidth;
+        }
+
+        private void UpdateAnchorPath() {
+            HeadAnchor.Size = Size;
+            TailAnchor.Size = Size;
+
+            var time = Time.Current;
+            var drawWidth = Screens.DrawWidth;
+            AnchorPath.PathRadius = OutlineThickness * drawWidth / 2;
+            var camera = Story.Camera;
+            var noteWidth = camera.Scale.X * drawWidth;
+            var endPosition = GetVertexEndPosition(noteWidth, time);
+            var startPosition = GetVertexStartPosition(noteWidth, time);
+
+            var vertices = new List<Vector2>() {
+                startPosition,
+                endPosition,
+            };
+
+            HeadAnchor.Position = startPosition;
+            TailAnchor.Position = endPosition;
+            AnchorPath.Vertices = vertices;
+            // Explained in HoldNote.cs UpdateSliderPath() Lol
+            AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);
         }
 
         public override bool UpdateNote() {
             UpdateColor();
             UpdatePosition();
+            UpdateAnchorPath();
 
             var time = Time.Current;
             // Deduct number of hit sounds to play once we've passed each HitSoundTime
@@ -65,6 +109,7 @@ namespace S2VX.Game.Story.Note {
             if (Clock.IsRunning) {
                 NumHitSounds = HitSoundTimes.Count - GetNumTimingPointsPassed();
             }
+
             return false;
         }
 

@@ -163,6 +163,7 @@ namespace S2VX.Game.Editor.ToolState {
             if (ToDrag == SelectToolDragState.None) {
                 foreach (var note in GetVisibleStoryNotes()) {
                     if (IsMouseOnNote(e.ScreenSpaceMousePosition, note)) {
+                        if (note is HoldNote holdNote) { continue; } // Temp fix to stop dragging holdnote preview
                         ToDrag = SelectToolDragState.DragNote;
                         OldCoords = selectedNoteCoord = note.Coordinates;
                         break;
