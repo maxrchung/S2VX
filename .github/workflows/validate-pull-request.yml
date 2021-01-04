@@ -56,3 +56,6 @@ jobs:
         mode: exactly
         count: 1
         labels: feature, bug
+        
+    - name: Verify Linked Issue
+      uses: hattan/verify-linked-issue-action@v1.1.1
