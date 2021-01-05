@@ -37,10 +37,3 @@ jobs:
         asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Release must have Release in title
-      if: ${{ github.head_ref == 'release' }}
-      uses: deepakputhraya/action-pr-title@master
-      with:
-        allowed_prefixes: 'Release'
-        prefix_case_sensitive: true
