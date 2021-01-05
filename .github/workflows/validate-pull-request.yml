@@ -43,7 +43,7 @@ jobs:
         labels: feature, bug
 
     - name: Feature pull requests cannot have a version label
-      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
@@ -51,7 +51,7 @@ jobs:
         labels: major, minor, patch
 
     - name: Feature pull requests must have a category label
-      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
