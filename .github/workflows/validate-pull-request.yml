@@ -7,6 +7,7 @@ on:
     - labeled
     - unlabeled
     - synchronize
+    - edited
 
 jobs:
   validate-pull-request:
@@ -42,7 +43,7 @@ jobs:
         labels: feature, bug
 
     - name: Feature pull requests cannot have a version label
-      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
@@ -50,9 +51,21 @@ jobs:
         labels: major, minor, patch
 
     - name: Feature pull requests must have a category label
-      if: ${{ github.base_ref != 'release' && github.base_ref != 'master' }}
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
         count: 1
         labels: feature, bug
+        
+    - name: Pull requests must link an issue
+      uses: hattan/verify-linked-issue-action@v1.1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Release must have Release in title
+      if: ${{ github.base_ref == 'release' }}
+      uses: deepakputhraya/action-pr-title@master
+      with:
+        allowed_prefixes: 'Release'
+        prefix_case_sensitive: true
