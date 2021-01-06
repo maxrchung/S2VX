@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public Vector2 StartValue { get; set; } = Vector2.Zero;
         public Vector2 EndValue { get; set; } = Vector2.Zero;
         public override void Apply(double time, S2VXStory story) {
-            var position = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var position = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Camera.TakeCameraPositionLock(this);
             story.Camera.SetPosition(this, position);
             story.Camera.ReleaseCameraPositionLock(this);

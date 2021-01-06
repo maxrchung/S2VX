@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public float StartValue { get; set; } = 0.005f;
         public float EndValue { get; set; } = 0.005f;
         public override void Apply(double time, S2VXStory story) {
-            var thickness = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var thickness = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Grid.Thickness = thickness;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";

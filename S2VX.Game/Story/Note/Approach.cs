@@ -53,7 +53,7 @@ namespace S2VX.Game.Story.Note {
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+                alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to Hit time
             else if (time < HitTime) {
@@ -63,7 +63,7 @@ namespace S2VX.Game.Story.Note {
             else if (time < HitTime + notes.FadeOutTime) {
                 var startTime = HitTime;
                 var endTime = HitTime + notes.FadeOutTime;
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+                alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 alpha = 0;
             }
@@ -90,8 +90,7 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
 
             var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-            var clampedTime = Math.Clamp(time, startTime, HitTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, HitTime);
+            var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
             // Add extra thickness so corners overlap

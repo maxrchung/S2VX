@@ -7,7 +7,7 @@ namespace S2VX.Game.Story.Command {
         public Vector2 StartValue { get; set; } = new Vector2(0.1f);
         public Vector2 EndValue { get; set; } = new Vector2(0.1f);
         public override void Apply(double time, S2VXStory story) {
-            var scale = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var scale = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Camera.TakeCameraScaleLock(this);
             story.Camera.SetScale(this, scale);
             story.Camera.ReleaseCameraScaleLock(this);

@@ -51,14 +51,12 @@ namespace S2VX.Game.Story.Note {
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
-            var clampedTime = Math.Clamp(Time.Current, HitTime, EndTime);
-            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var currCoordinates = S2VXUtils.ClampedInterpolation(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
             Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * Size.X;
         }
 
         protected Vector2 GetVertexEndPosition(float noteWidth, double time) {
-            var clampedTime = Math.Clamp(time, HitTime, EndTime);
-            var currCoordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var currCoordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
             return (EndCoordinates - currCoordinates) * noteWidth;
         }
 
@@ -75,8 +73,7 @@ namespace S2VX.Game.Story.Note {
             // If between Fade in time and Hit time, then snake out the slider end
             if (time < HitTime) {
                 var startTime = HitTime - (EndTime - HitTime);
-                var clampedTime = Math.Clamp(time, startTime, HitTime);
-                var snakeCoordinates = Interpolation.ValueAt(clampedTime, Vector2.Zero, EndCoordinates - Coordinates, startTime, HitTime);
+                var snakeCoordinates = S2VXUtils.ClampedInterpolation(time, Vector2.Zero, EndCoordinates - Coordinates, startTime, HitTime);
                 endPosition = snakeCoordinates * noteWidth;
             }
             // Otherwise, snake in the slider start

@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public float StartValue { get; set; } = 100.0f;
         public float EndValue { get; set; } = 100.0f;
         public override void Apply(double time, S2VXStory story) {
-            var fadeOutTime = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var fadeOutTime = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Notes.FadeOutTime = fadeOutTime;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";

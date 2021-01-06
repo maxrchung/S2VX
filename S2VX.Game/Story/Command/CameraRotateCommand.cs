@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public float StartValue { get; set; }
         public float EndValue { get; set; }
         public override void Apply(double time, S2VXStory story) {
-            var rotation = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var rotation = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Camera.TakeCameraRotationLock(this);
             story.Camera.SetRotation(this, rotation);
             story.Camera.ReleaseCameraRotationLock(this);

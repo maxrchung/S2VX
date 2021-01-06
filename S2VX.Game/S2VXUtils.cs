@@ -1,4 +1,5 @@
-﻿using osu.Framework.Utils;
+﻿using osu.Framework.Graphics;
+using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using System;
@@ -78,6 +79,46 @@ namespace S2VX.Game {
                 float.Parse(split[2], CultureInfo.InvariantCulture),
                 1
             );
+        }
+
+        public static float ClampedInterpolation(double time, float val1, float val2,
+            double startTime, double endTime, Easing easing = Easing.None) {
+            if (time <= startTime) {
+                return val1;
+            } else if (time >= endTime) {
+                return val2;
+            }
+            return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
+        }
+
+        public static double ClampedInterpolation(double time, double val1, double val2,
+            double startTime, double endTime, Easing easing = Easing.None) {
+            if (time <= startTime) {
+                return val1;
+            } else if (time >= endTime) {
+                return val2;
+            }
+            return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
+        }
+
+        public static Vector2 ClampedInterpolation(double time, Vector2 val1, Vector2 val2,
+            double startTime, double endTime, Easing easing = Easing.None) {
+            if (time <= startTime) {
+                return val1;
+            } else if (time >= endTime) {
+                return val2;
+            }
+            return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
+        }
+
+        public static Color4 ClampedInterpolation(double time, Color4 val1, Color4 val2,
+            double startTime, double endTime, Easing easing = Easing.None) {
+            if (time <= startTime) {
+                return val1;
+            } else if (time >= endTime) {
+                return val2;
+            }
+            return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
         }
     }
 }
