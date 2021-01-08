@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public float StartValue { get; set; } = 1;
         public float EndValue { get; set; } = 1;
         public override void Apply(double time, S2VXStory story) {
-            var alpha = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var alpha = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Grid.Alpha = alpha;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";

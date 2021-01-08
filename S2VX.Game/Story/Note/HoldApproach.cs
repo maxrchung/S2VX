@@ -58,7 +58,7 @@ namespace S2VX.Game.Story.Note {
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+                alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to End time
             else if (time < EndTime) {
@@ -68,7 +68,7 @@ namespace S2VX.Game.Story.Note {
             else if (time < EndTime + notes.FadeOutTime) {
                 var startTime = HitTime;
                 var endTime = HitTime + notes.FadeOutTime;
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+                alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 alpha = 0;
             }
@@ -87,14 +87,12 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
 
             var time = Time.Current;
-            var clampedTime = Math.Clamp(time, HitTime, EndTime);
-            var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var coordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
             UpdateInnerApproachPosition(coordinates);
 
             // Calculate outer approach values
             var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
-            clampedTime = Math.Clamp(time, startTime, EndTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
+            var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
             // Add extra thickness so corners overlap

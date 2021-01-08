@@ -166,7 +166,7 @@ namespace S2VX.Game.Story.Note {
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to End time
             else if (time < EndTime) {
@@ -176,7 +176,7 @@ namespace S2VX.Game.Story.Note {
             else if (time < EndTime + notes.FadeOutTime) {
                 var startTime = EndTime;
                 var endTime = EndTime + notes.FadeOutTime;
-                Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
                 Delete();

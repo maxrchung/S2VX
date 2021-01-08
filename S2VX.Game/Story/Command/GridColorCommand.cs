@@ -6,7 +6,7 @@ namespace S2VX.Game.Story.Command {
         public Color4 StartValue { get; set; } = S2VXColorConstants.LightBlack;
         public Color4 EndValue { get; set; } = S2VXColorConstants.LightBlack;
         public override void Apply(double time, S2VXStory story) {
-            var color = Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
+            var color = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Grid.Colour = color;
         }
         protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
