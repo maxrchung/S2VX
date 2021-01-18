@@ -2,16 +2,15 @@ name-template: $RESOLVED_VERSION
 tag-template: $RESOLVED_VERSION
 
 categories:
-- title: '🐞 BIGBUG'
-  labels:
-  - 'BIGBUG'
-- title: '🐛 Bug'
-  labels:
-  - 'bug'
-- title: '🚀 Feature'
+- title: '🚀 Features'
   labels:
   - 'feature'
-
+- title: '🐞 BIGBUGS'
+  labels:
+  - 'BIGBUG'
+- title: '🐛 Bugs'
+  labels:
+  - 'bug'
 
 version-resolver:
   major:
