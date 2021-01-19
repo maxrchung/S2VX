@@ -1,5 +1,4 @@
-﻿using osu.Framework.Utils;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace S2VX.Game.Story.Command {
     public class NotesFadeOutTimeCommand : S2VXCommand {

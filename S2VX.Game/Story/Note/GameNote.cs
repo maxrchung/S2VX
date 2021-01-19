@@ -2,7 +2,6 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Events;
-using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;

@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
-using osu.Framework.Utils;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
 

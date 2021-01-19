@@ -1,8 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Utils;
 using osuTK;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,28 +51,24 @@ namespace S2VX.Game.Story.Note {
         protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
-            float alpha;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to End time
             else if (time < EndTime) {
-                alpha = 1;
+                Alpha = 1;
             }
             // End time to Fade out time
             else if (time < EndTime + notes.FadeOutTime) {
                 var startTime = HitTime;
                 var endTime = HitTime + notes.FadeOutTime;
-                alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
-                alpha = 0;
+                Alpha = 0;
             }
-            Lines.ForEach(l => l.Alpha = alpha);
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
         }
 
         protected override void UpdatePosition() {
