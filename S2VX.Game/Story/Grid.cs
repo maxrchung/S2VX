@@ -36,8 +36,8 @@ namespace S2VX.Game.Story {
             var startDistance = scale / 2;
             var endDistance = LineLength / 2;
             var distanceIncrement = scale;
-
             var lineIndex = 0;
+
             for (var distance = startDistance; distance <= endDistance; distance += distanceIncrement) {
                 var up = unitY * distance + cameraOffset;
                 var down = -unitY * distance + cameraOffset;
