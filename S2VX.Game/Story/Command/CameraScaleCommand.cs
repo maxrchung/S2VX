@@ -1,5 +1,4 @@
-﻿using osu.Framework.Utils;
-using osuTK;
+﻿using osuTK;
 
 namespace S2VX.Game.Story.Command {
 

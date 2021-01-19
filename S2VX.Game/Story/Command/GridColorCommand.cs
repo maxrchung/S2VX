@@ -1,5 +1,4 @@
-﻿using osu.Framework.Utils;
-using osuTK.Graphics;
+﻿using osuTK.Graphics;
 
 namespace S2VX.Game.Story.Command {
     public class GridColorCommand : S2VXCommand {

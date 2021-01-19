@@ -4,11 +4,9 @@ using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
 using osu.Framework.Screens;
-using osu.Framework.Utils;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
-using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {

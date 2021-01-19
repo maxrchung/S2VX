@@ -2,9 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
 using osu.Framework.Screens;
-using osu.Framework.Utils;
 using osuTK;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
