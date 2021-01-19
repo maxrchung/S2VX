@@ -3,7 +3,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
 using System;
-using System.Collections.Generic;
 
 namespace S2VX.Game.Story {
     public class Grid : CompositeDrawable {
@@ -21,63 +20,76 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
-            var camera = Story.Camera;
-
-            if (Alpha <= 0 || Thickness <= 0) {
+            if (IsHidden()) {
                 if (InternalChildren.Count != 0) {
                     ClearInternal();
                 }
                 return;
             }
 
+            var camera = Story.Camera;
             var position = camera.Position;
             var rotation = camera.Rotation;
             var scale = camera.Scale.X;
 
-            var closest = new Vector2(
+            var cameraOffset = CalculateCameraOffset(position, rotation, scale);
+            var unitX = S2VXUtils.Rotate(new Vector2(1, 0), rotation);
+            var unitY = S2VXUtils.Rotate(new Vector2(0, 1), rotation);
+
+            var startDistance = scale / 2;
+            var endDistance = LineLength / 2;
+            var distanceIncrement = scale;
+
+            var lineIndex = 0;
+            for (var distance = startDistance; distance <= endDistance; distance += distanceIncrement) {
+                var up = unitY * distance + cameraOffset;
+                var down = -unitY * distance + cameraOffset;
+                var right = unitX * distance + cameraOffset;
+                var left = -unitX * distance + cameraOffset;
+
+                UpdateLineProperties(lineIndex++, up, LineLength, Thickness, rotation);
+                UpdateLineProperties(lineIndex++, down, LineLength, Thickness, rotation);
+                UpdateLineProperties(lineIndex++, right, Thickness, LineLength, rotation);
+                UpdateLineProperties(lineIndex++, left, Thickness, LineLength, rotation);
+            }
+
+            CheckAndRemoveLines(lineIndex);
+        }
+
+        private bool IsHidden() => Alpha <= 0 || Thickness <= 0;
+
+        private static Vector2 CalculateCameraOffset(Vector2 position, float rotation, float scale) {
+            var closestCoordinate = new Vector2(
                 (float)Math.Round(position.X),
                 (float)Math.Round(position.Y)
             );
-            var offset = S2VXUtils.Rotate(closest - position, rotation) * scale;
+            var offset = S2VXUtils.Rotate(closestCoordinate - position, rotation) * scale;
+            return offset;
+        }
 
-            var rotationX = S2VXUtils.Rotate(new Vector2(1, 0), rotation);
-            var rotationY = S2VXUtils.Rotate(new Vector2(0, 1), rotation);
+        private void UpdateLineProperties(int index, Vector2 position, float width, float height, float rotation) {
+            CheckAndAddLine(index);
 
-            var grid = new List<Drawable>();
+            var line = InternalChildren[index];
+            line.Position = position;
+            line.Width = width;
+            line.Height = height;
+            line.Rotation = rotation;
+        }
 
-            for (var i = scale / 2; i <= LineLength / 2; i += scale) {
-                var up = rotationY * i + offset;
-                var down = -rotationY * i + offset;
-                var right = rotationX * i + offset;
-                var left = -rotationX * i + offset;
-
-                grid.Add(new RelativeBox {
-                    Position = up,
-                    Width = LineLength,
-                    Height = Thickness,
-                    Rotation = rotation
-                });
-                grid.Add(new RelativeBox {
-                    Position = down,
-                    Width = LineLength,
-                    Height = Thickness,
-                    Rotation = rotation
-                });
-                grid.Add(new RelativeBox {
-                    Position = right,
-                    Width = Thickness,
-                    Height = LineLength,
-                    Rotation = rotation
-                });
-                grid.Add(new RelativeBox {
-                    Position = left,
-                    Width = Thickness,
-                    Height = LineLength,
-                    Rotation = rotation
-                });
+        private void CheckAndAddLine(int index) {
+            if (InternalChildren.Count <= index) {
+                AddInternal(new RelativeBox());
             }
+        }
 
-            InternalChildren = grid;
+        private void CheckAndRemoveLines(int count) {
+            if (InternalChildren.Count > count) {
+                var numberToRemove = InternalChildren.Count - count;
+                for (var i = 0; i < numberToRemove; ++i) {
+                    RemoveInternal(InternalChildren[InternalChildren.Count - 1]);
+                }
+            }
         }
     }
 }
