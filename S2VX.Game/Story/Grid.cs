@@ -14,10 +14,7 @@ namespace S2VX.Game.Story {
         private S2VXStory Story { get; set; } = null;
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            RelativeSizeAxes = Axes.Both;
-            AlwaysPresent = true;
-        }
+        private void Load() => RelativeSizeAxes = Axes.Both;
 
         protected override void Update() {
             if (IsHidden()) {
