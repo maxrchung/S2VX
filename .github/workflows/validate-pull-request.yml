@@ -56,8 +56,8 @@ jobs:
       with:
         mode: exactly
         count: 1
-        labels: feature, bug
-        
+        labels: feature, bug, BIGBUG
+
     - name: Pull requests must link an issue
       uses: hattan/verify-linked-issue-action@v1.1.1
       env:
