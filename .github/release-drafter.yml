@@ -5,6 +5,9 @@ categories:
 - title: '🚀 Features'
   labels:
   - 'feature'
+- title: '🐞 BIGBUGS'
+  labels:
+  - 'BIGBUG'
 - title: '🐛 Bugs'
   labels:
   - 'bug'
