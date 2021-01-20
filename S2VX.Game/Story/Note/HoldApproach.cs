@@ -36,7 +36,6 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             var lines = InternalChildren.ToArray();
             ClearInternal(false);
