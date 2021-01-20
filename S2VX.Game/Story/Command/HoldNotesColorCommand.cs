@@ -12,8 +12,8 @@ namespace S2VX.Game.Story.Command {
         protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
         public static HoldNotesColorCommand FromString(string[] split) {
             var command = new HoldNotesColorCommand() {
-                StartValue = S2VXUtils.Color4FromString(split[4]),
-                EndValue = S2VXUtils.Color4FromString(split[5]),
+                StartValue = S2VXUtils.StringToColor4(split[4]),
+                EndValue = S2VXUtils.StringToColor4(split[5]),
             };
             return command;
         }
