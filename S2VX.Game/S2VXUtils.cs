@@ -78,7 +78,7 @@ namespace S2VX.Game {
             // https://docs.microsoft.com/en-us/dotnet/api/system.double.isnan?view=net-5.0#remarks
             return
                 float.IsNaN(value) || float.IsInfinity(value)
-                ? throw new ArgumentOutOfRangeException(nameof(data))
+                ? throw new ArgumentException("Failed to parse value.", nameof(data))
                 : value;
         }
 
@@ -86,7 +86,7 @@ namespace S2VX.Game {
             var value = double.Parse(data, CultureInfo.InvariantCulture);
             return
                 double.IsNaN(value) || double.IsInfinity(value)
-                ? throw new ArgumentOutOfRangeException(nameof(data))
+                ? throw new ArgumentException("Failed to parse value.", nameof(data))
                 : value;
         }
 
