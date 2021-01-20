@@ -67,9 +67,9 @@ namespace S2VX.Game {
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
         // Addresses https://github.com/maxrchung/S2VX/pull/341. Since .NET Core
-        // 3.0, values that are too large are rounded to Infinity. This can
-        // cause crashes within our code since arithmetic can't be done with
-        // Infinity. To address this, we're using our own parse functions that
+        // 3.0, values that are too large or small are rounded to infinity. This
+        // can cause crashes within our code since arithmetic can't be done with
+        // infinity. To address this, we're using our own parse functions that
         // throw an exception if parsing returns bad values. See these remarks
         // for more details: https://docs.microsoft.com/en-us/dotnet/api/system.single.parse?view=net-5.0#remarks
         public static float StringToFloat(string data) {
