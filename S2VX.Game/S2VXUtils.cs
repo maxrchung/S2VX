@@ -66,14 +66,28 @@ namespace S2VX.Game {
 
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
+        // Addresses https://github.com/maxrchung/S2VX/pull/341. Since .NET Core
+        // 3.0, values that are too large are rounded to Infinity. This can
+        // cause crashes within our code since arithmetic can't be done with
+        // Infinity. To address this, we're using our own parse functions that
+        // throw an exception if parsing returns bad values. See these remarks
+        // for more details: https://docs.microsoft.com/en-us/dotnet/api/system.single.parse?view=net-5.0#remarks
         public static float StringToFloat(string data) {
             var value = float.Parse(data, CultureInfo.InvariantCulture);
-            return float.IsNaN(value) ? throw new ArgumentOutOfRangeException(nameof(data)) : value;
+            // Per these remarks, you have to check for both IsNaN and IsInfinity:
+            // https://docs.microsoft.com/en-us/dotnet/api/system.double.isnan?view=net-5.0#remarks
+            return
+                float.IsNaN(value) || float.IsInfinity(value)
+                ? throw new ArgumentOutOfRangeException(nameof(data))
+                : value;
         }
 
         public static double StringToDouble(string data) {
             var value = double.Parse(data, CultureInfo.InvariantCulture);
-            return double.IsNaN(value) ? throw new ArgumentOutOfRangeException(nameof(data)) : value;
+            return
+                double.IsNaN(value) || double.IsInfinity(value)
+                ? throw new ArgumentOutOfRangeException(nameof(data))
+                : value;
         }
 
         public static Vector2 StringToVector2(string data) {
