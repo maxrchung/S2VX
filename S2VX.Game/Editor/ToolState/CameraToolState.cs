@@ -142,7 +142,6 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.S:
-                    // Addresses https://github.com/maxrchung/S2VX/pull/341.
                     // Allows Ctrl+S to be handled by editor screen.
                     if (e.ControlPressed) {
                         return false;
