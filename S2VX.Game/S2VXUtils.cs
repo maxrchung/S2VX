@@ -66,12 +66,22 @@ namespace S2VX.Game {
 
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
-        public static Vector2 Vector2FromString(string data) {
+        public static float StringToFloat(string data) {
+            var value = float.Parse(data, CultureInfo.InvariantCulture);
+            return float.IsNaN(value) ? throw new ArgumentOutOfRangeException(nameof(data)) : value;
+        }
+
+        public static double StringToDouble(string data) {
+            var value = double.Parse(data, CultureInfo.InvariantCulture);
+            return double.IsNaN(value) ? throw new ArgumentOutOfRangeException(nameof(data)) : value;
+        }
+
+        public static Vector2 StringToVector2(string data) {
             var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
             return new Vector2(float.Parse(split[0], CultureInfo.InvariantCulture), float.Parse(split[1], CultureInfo.InvariantCulture));
         }
 
-        public static Color4 Color4FromString(string data) {
+        public static Color4 StringToColor4(string data) {
             var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
             return new Color4(
                 float.Parse(split[0], CultureInfo.InvariantCulture),
