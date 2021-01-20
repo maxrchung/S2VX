@@ -142,10 +142,12 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.S:
-                    // Allow Ctrl+S to be handled by editor screen
+                    // Addresses https://github.com/maxrchung/S2VX/pull/341.
+                    // Allows Ctrl+S to be handled by editor screen.
                     if (e.ControlPressed) {
                         return false;
                     }
+
                     if (IsRecording) {
                         // Add a keyframe (i.e. End and Start again)
                         CommitCameraToolActions();
