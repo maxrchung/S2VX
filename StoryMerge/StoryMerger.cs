@@ -1,6 +1,5 @@
-﻿using S2VX.Game.Story;
-using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using Newtonsoft.Json;
+using S2VX.Game.Story;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -59,13 +58,12 @@ namespace StoryMerge {
             return new Result { IsSuccessful = true };
         }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public Result ValidateInputs() {
             foreach (var input in Inputs) {
                 var story = new S2VXStory();
                 try {
                     story.Open(input, false);
-                } catch (Exception e) {
+                } catch (JsonReaderException e) {
                     return new Result {
                         IsSuccessful = false,
                         Message = $"Failed to load: {input}\n{e.Message}"
