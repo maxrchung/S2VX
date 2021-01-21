@@ -1,0 +1,13 @@
+﻿{
+  "Commands": [
+    {
+      "Type": "ApproachesColor",
+      "StartTime": 500,
+      "EndTime": 1500
+    }
+  ],
+  "Notes": [],
+  "HoldNotes": [],
+  "EditorSettings": {},
+  "DifficultySettings": {}
+}
