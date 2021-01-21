@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		S2VX.sln.DotSettings = S2VX.sln.DotSettings
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryMerge", "StoryMerge\StoryMerge.csproj", "{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,18 @@ Global
 		{31D3872C-3A4F-437E-9655-3EF58DD62F46}.Release|iPhone.Build.0 = Release|Any CPU
 		{31D3872C-3A4F-437E-9655-3EF58DD62F46}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{31D3872C-3A4F-437E-9655-3EF58DD62F46}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|iPhone.Build.0 = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{7DC8DC11-9C6D-4130-90F4-EA750A5E346D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
