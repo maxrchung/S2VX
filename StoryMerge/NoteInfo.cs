@@ -29,6 +29,12 @@ namespace StoryMerge {
             return toString;
         }
 
-        public int CompareTo(NoteInfo other) => StartTime.CompareTo(other.StartTime);
+        public int CompareTo(NoteInfo other) {
+            var compare = StartTime.CompareTo(other.StartTime);
+            if (compare == 0) {
+                compare = EndTime.CompareTo(other.EndTime);
+            }
+            return compare;
+        }
     }
 }
