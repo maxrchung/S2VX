@@ -25,19 +25,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CommandFrom0To0.s2ry">
+    <None Update="GridAlphaFrom0To0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="CommandFrom0To1000.s2ry">
+    <None Update="NotesAlphaFrom0To0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="CommandFrom1000To1000.s2ry">
+    <None Update="NotesAlphaFrom0To1000.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="CommandFrom500To1500.s2ry">
+    <None Update="NotesAlphaFrom1000To1000.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="CommandFrom500To500.s2ry">
+    <None Update="NotesAlphaFrom500To1500.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="HoldNoteFrom500To1500.s2ry">
