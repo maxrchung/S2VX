@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace S2VX.Game.Story.Command {
+﻿namespace S2VX.Game.Story.Command {
     public class HoldNotesOutlineThicknessCommand : S2VXCommand {
         public float StartValue { get; set; } = 0.01f;
         public float EndValue { get; set; } = 0.01f;
@@ -11,8 +9,8 @@ namespace S2VX.Game.Story.Command {
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static HoldNotesOutlineThicknessCommand FromString(string[] split) {
             var command = new HoldNotesOutlineThicknessCommand() {
-                StartValue = float.Parse(split[4], CultureInfo.InvariantCulture),
-                EndValue = float.Parse(split[5], CultureInfo.InvariantCulture),
+                StartValue = S2VXUtils.StringToFloat(split[4]),
+                EndValue = S2VXUtils.StringToFloat(split[5]),
             };
             return command;
         }

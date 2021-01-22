@@ -66,23 +66,41 @@ namespace S2VX.Game {
 
         public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
 
-        public static Vector2 Vector2FromString(string data) {
+        // Since .NET Core 3.0, values that are too large or small are rounded
+        // to infinity. This can cause crashes within our code since arithmetic
+        // can't be done with infinity. To address this, we're using our own
+        // parse functions that throw an exception if parsing returns bad
+        // values. See these remarks for more details:
+        // https://docs.microsoft.com/en-us/dotnet/api/system.single.parse?view=net-5.0#remarks
+        public static float StringToFloat(string data) {
+            var value = float.Parse(data, CultureInfo.InvariantCulture);
+            // Per these remarks, you should check for both IsNaN and IsInfinity:
+            // https://docs.microsoft.com/en-us/dotnet/api/system.double.isnan?view=net-5.0#remarks
+            return
+                float.IsNaN(value) || float.IsInfinity(value)
+                ? throw new ArgumentException("Failed to parse value.", nameof(data))
+                : value;
+        }
+
+        public static double StringToDouble(string data) {
+            var value = double.Parse(data, CultureInfo.InvariantCulture);
+            return
+                double.IsNaN(value) || double.IsInfinity(value)
+                ? throw new ArgumentException("Failed to parse value.", nameof(data))
+                : value;
+        }
+
+        public static Vector2 StringToVector2(string data) {
             var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
-            return new Vector2(float.Parse(split[0], CultureInfo.InvariantCulture), float.Parse(split[1], CultureInfo.InvariantCulture));
+            return new Vector2(StringToFloat(split[0]), StringToFloat(split[1]));
         }
 
-        public static Color4 Color4FromString(string data) {
+        public static Color4 StringToColor4(string data) {
             var split = data.Replace("(", "", StringComparison.Ordinal).Replace(")", "", StringComparison.Ordinal).Split(',');
-            return new Color4(
-                float.Parse(split[0], CultureInfo.InvariantCulture),
-                float.Parse(split[1], CultureInfo.InvariantCulture),
-                float.Parse(split[2], CultureInfo.InvariantCulture),
-                1
-            );
+            return new Color4(StringToFloat(split[0]), StringToFloat(split[1]), StringToFloat(split[2]), 1);
         }
 
-        public static float ClampedInterpolation(double time, float val1, float val2,
-            double startTime, double endTime, Easing easing = Easing.None) {
+        public static float ClampedInterpolation(double time, float val1, float val2, double startTime, double endTime, Easing easing = Easing.None) {
             if (time <= startTime || endTime - startTime == 0) {
                 return val1;
             } else if (time >= endTime) {
@@ -91,8 +109,7 @@ namespace S2VX.Game {
             return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
         }
 
-        public static double ClampedInterpolation(double time, double val1, double val2,
-            double startTime, double endTime, Easing easing = Easing.None) {
+        public static double ClampedInterpolation(double time, double val1, double val2, double startTime, double endTime, Easing easing = Easing.None) {
             if (time <= startTime || endTime - startTime == 0) {
                 return val1;
             } else if (time >= endTime) {
@@ -101,8 +118,7 @@ namespace S2VX.Game {
             return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
         }
 
-        public static Vector2 ClampedInterpolation(double time, Vector2 val1, Vector2 val2,
-            double startTime, double endTime, Easing easing = Easing.None) {
+        public static Vector2 ClampedInterpolation(double time, Vector2 val1, Vector2 val2, double startTime, double endTime, Easing easing = Easing.None) {
             if (time <= startTime || endTime - startTime == 0) {
                 return val1;
             } else if (time >= endTime) {
@@ -111,8 +127,7 @@ namespace S2VX.Game {
             return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
         }
 
-        public static Color4 ClampedInterpolation(double time, Color4 val1, Color4 val2,
-            double startTime, double endTime, Easing easing = Easing.None) {
+        public static Color4 ClampedInterpolation(double time, Color4 val1, Color4 val2, double startTime, double endTime, Easing easing = Easing.None) {
             if (time <= startTime || endTime - startTime == 0) {
                 return val1;
             } else if (time >= endTime) {
