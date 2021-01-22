@@ -14,8 +14,8 @@ namespace S2VX.Game.Story.Command {
         protected override string ToValues() => $"{S2VXUtils.Vector2ToString(StartValue)}|{S2VXUtils.Vector2ToString(EndValue)}";
         public static CameraScaleCommand FromString(string[] split) {
             var command = new CameraScaleCommand() {
-                StartValue = S2VXUtils.Vector2FromString(split[4]),
-                EndValue = S2VXUtils.Vector2FromString(split[5]),
+                StartValue = S2VXUtils.StringToVector2(split[4]),
+                EndValue = S2VXUtils.StringToVector2(split[5]),
             };
             return command;
         }
