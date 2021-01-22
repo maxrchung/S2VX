@@ -23,8 +23,8 @@ namespace StoryMerge {
             return await cmd.InvokeAsync(args);
         }
 
-        private static async Task MergeStories(string[] inputs, string output, IConsole console) {
-            var result = await new StoryMerger(inputs, output).Merge();
+        private static void MergeStories(string[] inputs, string output, IConsole console) {
+            var result = new StoryMerger(inputs, output).Merge();
             console.Out.WriteLine($"Merge was {(result.IsSuccessful ? "successful" : "not successful")}");
             console.Out.WriteLine(result.Message);
         }
