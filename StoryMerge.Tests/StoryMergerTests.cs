@@ -9,7 +9,7 @@ namespace StoryMerge.Tests {
     public class StoryMergerTests {
         [Test]
         public void ValidateParameters_WithValidParameters_ItReturnsSuccess() {
-            var merger = new StoryMerger(new[] { "CommandFrom0To0.s2ry", "CommandFrom0To1000.s2ry" }, "output.s2ry");
+            var merger = new StoryMerger(new[] { "NotesAlphaFrom0To0.s2ry", "NotesAlphaFrom0To1000.s2ry" }, "output.s2ry");
             var result = merger.ValidateParameters();
             Assert.AreEqual(true, result.IsSuccessful);
             Assert.AreEqual("", result.Message);
@@ -41,7 +41,7 @@ namespace StoryMerge.Tests {
 
         [Test]
         public void ValidateParameters_WithNonexistentInput_ItReturnsError() {
-            var merger = new StoryMerger(new[] { "CommandFrom0To0.s2ry", "NonexistentFile.s2ry" }, "output.s2ry");
+            var merger = new StoryMerger(new[] { "NotesAlphaFrom0To0.s2ry", "NonexistentFile.s2ry" }, "output.s2ry");
             var result = merger.ValidateParameters();
             Assert.AreEqual(false, result.IsSuccessful);
             Assert.AreEqual("Input file does not exist: NonexistentFile.s2ry", result.Message);
@@ -50,11 +50,11 @@ namespace StoryMerge.Tests {
         [Test]
         public void LoadInputs_WithValidStories_ItReturnsSuccess() {
             var merger = new StoryMerger(new[] {
-                "CommandFrom0To0.s2ry",
-                "CommandFrom0To1000.s2ry",
-                "CommandFrom1000To1000.s2ry",
-                "CommandFrom500To1500.s2ry",
-                "CommandFrom500To500.s2ry",
+                "NotesAlphaFrom0To0.s2ry",
+                "NotesAlphaFrom0To1000.s2ry",
+                "NotesAlphaFrom1000To1000.s2ry",
+                "NotesAlphaFrom500To1500.s2ry",
+                "NotesAlphaFrom500To500.s2ry",
                 "HoldNoteFrom0To1000.s2ry",
                 "NoteAt0.s2ry",
             }, "output.s2ry");
@@ -65,7 +65,7 @@ namespace StoryMerge.Tests {
 
         [Test]
         public void LoadInputs_WithInvalidStory_ItReturnsError() {
-            var merger = new StoryMerger(new[] { "CommandFrom0To0.s2ry", "InvalidStory.s2ry" }, "output.s2ry");
+            var merger = new StoryMerger(new[] { "NotesAlphaFrom0To0.s2ry", "InvalidStory.s2ry" }, "output.s2ry");
             var result = merger.LoadInputs();
             Assert.AreEqual(false, result.IsSuccessful);
             Assert.AreEqual(true, result.Message.Contains("Failed to load: InvalidStory.s2ry", StringComparison.Ordinal));
@@ -142,6 +142,69 @@ namespace StoryMerge.Tests {
             Assert.AreEqual(2, story.Notes.Children.Count);
             Assert.AreEqual(2, story.Notes.GetHoldNotes().Count);
             Assert.AreEqual(true, result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 500 to 1500", StringComparison.Ordinal));
+        }
+
+        [Test]
+        public void MergeCommands_WithMultipleCommands_ItAddsAllIntoStory() {
+            var merger = new StoryMerger(new[] {
+                "NotesAlphaFrom0To1000.s2ry",
+                "NotesAlphaFrom0To0.s2ry",
+                "NotesAlphaFrom1000To1000.s2ry",
+            }, "output.s2ry");
+            merger.LoadInputs();
+            var story = new S2VXStory();
+            var result = merger.MergeCommands(story);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(3, story.Commands.Count);
+            Assert.AreEqual("", result.Message);
+        }
+
+        [Test]
+        public void MergeCommands_WithCommandsAtSameTime_ItShowsConflicts() {
+            var merger = new StoryMerger(new[] {
+                "NotesAlphaFrom0To0.s2ry",
+                "NotesAlphaFrom0To0.s2ry",
+                "NotesAlphaFrom0To1000.s2ry",
+                "NotesAlphaFrom0To1000.s2ry",
+            }, "output.s2ry");
+            merger.LoadInputs();
+            var story = new S2VXStory();
+            var result = merger.MergeCommands(story);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(4, story.Commands.Count);
+            Assert.AreEqual(true, result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 0\nNotesAlpha from 0 to 0", StringComparison.Ordinal));
+            Assert.AreEqual(true, result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 1000\nNotesAlpha from 0 to 1000", StringComparison.Ordinal));
+        }
+
+        [Test]
+        public void MergeCommands_WithOverlappingCommands_ItAddsAllIntoStory() {
+            var merger = new StoryMerger(new[] {
+                "NotesAlphaFrom500To1500.s2ry",
+                "NotesAlphaFrom0To1000.s2ry",
+            }, "output.s2ry");
+            merger.LoadInputs();
+            var story = new S2VXStory();
+            var result = merger.MergeCommands(story);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(2, story.Commands.Count);
+            Assert.AreEqual(
+                true,
+                result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 1000\nNotesAlpha from 500 to 1500", StringComparison.Ordinal)
+            );
+        }
+
+        [Test]
+        public void MergeCommands_WithDifferentCommandsAtSameTime_ItShowsNoConflicts() {
+            var merger = new StoryMerger(new[] {
+                "GridAlphaFrom0To0.s2ry",
+                "NotesAlphaFrom0To0.s2ry",
+            }, "output.s2ry");
+            merger.LoadInputs();
+            var story = new S2VXStory();
+            var result = merger.MergeCommands(story);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(2, story.Commands.Count);
+            Assert.AreEqual("", result.Message);
         }
     }
 }
