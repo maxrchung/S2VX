@@ -107,7 +107,6 @@ namespace S2VX.Game.Story.Note {
             if (!ShouldBeRemoved && MouseButtonsBeingHeld.Contains(e.Button)) {
                 MouseButtonsBeingHeld.Remove(e.Button);
                 ReleaseNoteSound();
-                Console.WriteLine(MouseButtonsBeingHeld.Count);
             }
         }
 
@@ -141,7 +140,6 @@ namespace S2VX.Game.Story.Note {
             if (!ShouldBeRemoved && KeysBeingHeld.Contains(e.Key)) {
                 KeysBeingHeld.Remove(e.Key);
                 ReleaseNoteSound();
-                Console.WriteLine(KeysBeingHeld.Count);
             }
         }
 

@@ -49,7 +49,6 @@ namespace S2VX.Game.Story.Note {
         private void Load() => RelativeSizeAxes = Axes.Both;
 
         protected override void Update() => Children.ForEach(approach => {
-            // https://github.com/maxrchung/S2VX/issues/317
             // There is a visual glitch where you can sometimes see a slight
             // flicker if Thickness is set to 0. We can properly hide this by
             // adjusting the alpha and also do some optimization by skipping the
