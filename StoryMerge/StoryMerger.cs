@@ -124,7 +124,7 @@ namespace StoryMerge {
                     continue;
                 }
 
-                if (info.StartTime >= latestInfo.EndTime && info.EndTime > latestInfo.EndTime) {
+                if (info.StartTime > latestInfo.EndTime && info.EndTime > latestInfo.EndTime) {
                     latestInfo = info;
                 } else {
                     messages.Add($"Note conflict:\n{latestInfo}\n{info}");
