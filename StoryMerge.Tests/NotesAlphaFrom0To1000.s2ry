@@ -1,7 +1,7 @@
 ﻿{
   "Commands": [
     {
-      "Type": "ApproachesColor",
+      "Type": "NotesAlpha",
       "StartTime": 0,
       "EndTime": 1000
     }
