@@ -253,3 +253,7 @@ dotnet_diagnostic.CA1036.severity = suggestion
 
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = suggestion
+
+# CA1034: Nested types should not be visible
+# This makes unit test classes easier to make and setup
+dotnet_diagnostic.CA1034.severity = suggestion
