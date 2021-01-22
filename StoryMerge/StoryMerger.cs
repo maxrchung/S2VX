@@ -3,8 +3,6 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StoryMerge {
     public class StoryMerger {
@@ -17,7 +15,7 @@ namespace StoryMerge {
             Output = output;
         }
 
-        public async Task<Result> Merge() {
+        public Result Merge() {
             var result = ValidateParameters();
             if (!result.IsSuccessful) {
                 return result;
@@ -28,10 +26,21 @@ namespace StoryMerge {
                 return result;
             }
 
-            await File.WriteAllTextAsync(Output, "");
+            var story = new S2VXStory();
+            var notesResult = MergeNotes(story);
+            var commandsResult = MergeCommands(story);
+            story.Save(Output);
+
+            var messages = new[] {
+                $"Merged {Inputs.Length} stories to {Output}",
+                notesResult.Message,
+                commandsResult.Message
+            };
+            var message = string.Join(',', messages);
+
             return new Result {
                 IsSuccessful = true,
-                Message = $"Merged {string.Join(',', Inputs)} to {Output}"
+                Message = message
             };
         }
 
@@ -79,6 +88,20 @@ namespace StoryMerge {
             return new Result { IsSuccessful = true };
         }
 
+        /// <summary>
+        /// Note that conflicts will be reported for any notes that share the
+        /// same start/end times. This is to prevent a player from trying to
+        /// play multiple notes at one time.
+        /// 
+        /// Example time ranges that are not conflicts:
+        /// (0-0, 500-500, 1000-1000)
+        /// (0-0, 500-1000)
+        /// 
+        /// Example time ranges that are conflicts:
+        /// (0-0, 0-0)
+        /// (0-0, 0-1000)
+        /// (0-1000, 500-1500)
+        /// </summary>
         public Result MergeNotes(S2VXStory story) {
             var infos = new List<NoteInfo>();
             foreach (var input in InputStories) {
@@ -94,9 +117,13 @@ namespace StoryMerge {
             infos.Sort();
 
             var messages = new List<string>();
-            var latestInfo = infos.FirstOrDefault();
-            for (var i = 1; i < infos.Count; ++i) {
-                var info = infos[i];
+            NoteInfo latestInfo = null;
+            foreach (var info in infos) {
+                if (latestInfo == null) {
+                    latestInfo = info;
+                    continue;
+                }
+
                 if (info.StartTime >= latestInfo.EndTime && info.EndTime > latestInfo.EndTime) {
                     latestInfo = info;
                 } else {
@@ -126,5 +153,56 @@ namespace StoryMerge {
                 Coordinates = holdNote.Coordinates,
                 EndCoordinates = holdNote.EndCoordinates
             };
+
+        /// <summary>
+        /// Note that different from notes, commands can share the same time
+        /// boundaries. For example, as shown below, 0-0, 0-1000 is valid.
+        /// 
+        /// Example time ranges that are not conflicts:
+        /// (0-0, 500-500, 1000-1000)
+        /// (0-0, 500-1000)
+        /// (0-0, 0-1000)
+        /// 
+        /// Example time ranges that are conflicts:
+        /// (0-0, 0-0)
+        /// (0-1000, 500-1500)
+        /// </summary>
+        public Result MergeCommands(S2VXStory story) {
+            var infos = new List<CommandInfo>();
+            foreach (var input in InputStories) {
+                foreach (var command in input.Commands) {
+                    story.AddCommand(command);
+                    infos.Add(new CommandInfo(command));
+                }
+            }
+            infos.Sort();
+
+            var messages = new List<string>();
+            var dictInfo = new Dictionary<string, CommandInfo>();
+            foreach (var info in infos) {
+                var type = info.Type;
+                if (!dictInfo.ContainsKey(type)) {
+                    dictInfo[type] = info;
+                    continue;
+                }
+
+                var latestInfo = dictInfo[type];
+                if (info.StartTime == latestInfo.StartTime && info.EndTime == latestInfo.EndTime) {
+                    messages.Add($"Command conflict:\n{latestInfo}\n{info}");
+                } else if (info.StartTime >= latestInfo.EndTime && info.EndTime >= latestInfo.EndTime) {
+                    dictInfo[type] = info;
+                } else {
+                    messages.Add($"Command conflict:\n{latestInfo}\n{info}");
+                    if (info.EndTime > latestInfo.EndTime) {
+                        dictInfo[type] = info;
+                    }
+                }
+            }
+
+            return new Result {
+                IsSuccessful = true,
+                Message = string.Join('\n', messages)
+            };
+        }
     }
 }
