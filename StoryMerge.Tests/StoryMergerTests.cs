@@ -11,8 +11,8 @@ namespace StoryMerge.Tests {
         public void ValidateParameters_WithValidParameters_ItReturnsSuccess() {
             var merger = new StoryMerger(new[] { "NotesAlphaFrom0To0.s2ry", "NotesAlphaFrom0To1000.s2ry" }, "output.s2ry");
             var result = merger.ValidateParameters();
-            Assert.AreEqual(true, result.IsSuccessful);
-            Assert.AreEqual("", result.Message);
+            Assert.IsTrue(result.IsSuccessful);
+            Assert.IsEmpty(result.Message);
         }
 
         [Test]
@@ -50,17 +50,18 @@ namespace StoryMerge.Tests {
         [Test]
         public void LoadInputs_WithValidStories_ItReturnsSuccess() {
             var merger = new StoryMerger(new[] {
+                "GridAlphaFrom0To0.s2ry",
+                "HoldNoteFrom0To1000.s2ry",
+                "HoldNoteFrom500To1500.s2ry",
+                "NoteAt0.s2ry",
                 "NotesAlphaFrom0To0.s2ry",
                 "NotesAlphaFrom0To1000.s2ry",
                 "NotesAlphaFrom1000To1000.s2ry",
                 "NotesAlphaFrom500To1500.s2ry",
-                "NotesAlphaFrom500To500.s2ry",
-                "HoldNoteFrom0To1000.s2ry",
-                "NoteAt0.s2ry",
             }, "output.s2ry");
             var result = merger.LoadInputs();
-            Assert.AreEqual(true, result.IsSuccessful);
-            Assert.AreEqual("", result.Message);
+            Assert.IsTrue(result.IsSuccessful);
+            Assert.IsEmpty(result.Message);
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace StoryMerge.Tests {
             var merger = new StoryMerger(new[] { "NotesAlphaFrom0To0.s2ry", "InvalidStory.s2ry" }, "output.s2ry");
             var result = merger.LoadInputs();
             Assert.AreEqual(false, result.IsSuccessful);
-            Assert.AreEqual(true, result.Message.Contains("Failed to load: InvalidStory.s2ry", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Failed to load: InvalidStory.s2ry", StringComparison.Ordinal));
         }
 
         [Test]
@@ -103,11 +104,11 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeNotes(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(2, story.Notes.Children.Count);
             Assert.AreEqual(1, story.Notes.GetHoldNotes().Count);
             Assert.AreEqual(1, story.Notes.GetNonHoldNotes().Count);
-            Assert.AreEqual("", result.Message);
+            Assert.IsEmpty(result.Message);
         }
 
         [Test]
@@ -121,12 +122,12 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeNotes(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(4, story.Notes.Children.Count);
             Assert.AreEqual(2, story.Notes.GetHoldNotes().Count);
             Assert.AreEqual(2, story.Notes.GetNonHoldNotes().Count);
-            Assert.AreEqual(true, result.Message.Contains("Note conflict:\nNote at 0\nNote at 0", StringComparison.Ordinal));
-            Assert.AreEqual(true, result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 0 to 1000", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Note conflict:\nNote at 0\nNote at 0", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 0 to 1000", StringComparison.Ordinal));
         }
 
         [Test]
@@ -138,10 +139,10 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeNotes(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(2, story.Notes.Children.Count);
             Assert.AreEqual(2, story.Notes.GetHoldNotes().Count);
-            Assert.AreEqual(true, result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 500 to 1500", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 500 to 1500", StringComparison.Ordinal));
         }
 
         [Test]
@@ -154,9 +155,9 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeCommands(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(3, story.Commands.Count);
-            Assert.AreEqual("", result.Message);
+            Assert.IsEmpty(result.Message);
         }
 
         [Test]
@@ -170,10 +171,10 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeCommands(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(4, story.Commands.Count);
-            Assert.AreEqual(true, result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 0\nNotesAlpha from 0 to 0", StringComparison.Ordinal));
-            Assert.AreEqual(true, result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 1000\nNotesAlpha from 0 to 1000", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 0\nNotesAlpha from 0 to 0", StringComparison.Ordinal));
+            Assert.IsTrue(result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 1000\nNotesAlpha from 0 to 1000", StringComparison.Ordinal));
         }
 
         [Test]
@@ -185,7 +186,7 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeCommands(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(2, story.Commands.Count);
             Assert.AreEqual(
                 true,
@@ -202,9 +203,9 @@ namespace StoryMerge.Tests {
             merger.LoadInputs();
             var story = new S2VXStory();
             var result = merger.MergeCommands(story);
-            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(2, story.Commands.Count);
-            Assert.AreEqual("", result.Message);
+            Assert.IsEmpty(result.Message);
         }
     }
 }

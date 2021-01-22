@@ -44,18 +44,16 @@ namespace StoryMerge.Tests {
         }
 
         [Test]
-        public void Sort_WithNoteInfo_SortsByStartTime() {
+        public void Sort_WithNoteInfo_SortsByStartTimeThenEndTime() {
             var infos = new List<NoteInfo>() {
-                new NoteInfo(new EditorHoldNote { HitTime = 1000, EndTime = 2000 }),
-                new NoteInfo(new EditorNote { HitTime = 1200 }),
-                new NoteInfo(new EditorHoldNote { HitTime = 500, EndTime = 2500 }),
-                new NoteInfo(new EditorNote { HitTime = 400 }),
+                new NoteInfo(new EditorHoldNote { HitTime = 1000, EndTime = 1000 }),
+                new NoteInfo(new EditorHoldNote { HitTime = 0, EndTime = 1000 }),
+                new NoteInfo(new EditorNote { HitTime = 0 }),
             };
             infos.Sort();
-            Assert.AreEqual("Note at 400", infos[0].ToString());
-            Assert.AreEqual("HoldNote from 500 to 2500", infos[1].ToString());
-            Assert.AreEqual("HoldNote from 1000 to 2000", infos[2].ToString());
-            Assert.AreEqual("Note at 1200", infos[3].ToString());
+            Assert.AreEqual("Note at 0", infos[0].ToString());
+            Assert.AreEqual("HoldNote from 0 to 1000", infos[1].ToString());
+            Assert.AreEqual("HoldNote from 1000 to 1000", infos[2].ToString());
         }
     }
 }
