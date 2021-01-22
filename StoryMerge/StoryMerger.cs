@@ -155,8 +155,9 @@ namespace StoryMerge {
             };
 
         /// <summary>
-        /// Note that different from notes, commands can share the same time
-        /// boundaries. For example, as shown below, 0-0, 0-1000 is valid.
+        /// Note that different from notes, commands can share time boundaries.
+        /// For example, (0-0, 0-1000) is valid. However, duplicate commands,
+        /// e.g. (0-0, 0-0) are not allowed.
         /// 
         /// Example time ranges that are not conflicts:
         /// (0-0, 500-500, 1000-1000)
