@@ -215,7 +215,7 @@ namespace StoryMerge.Tests {
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
                     "NoteAt0.s2ry",
-                    "HoldNoteFrom0To1000.s2ry"
+                    "HoldNoteFrom500To1500.s2ry"
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -283,6 +283,42 @@ namespace StoryMerge.Tests {
             [Test]
             public void ItHasConflictFrom0To1000() =>
                 Assert.IsTrue(Result.Message.Contains("Note conflict:\nHoldNote from 0 to 1000\nHoldNote from 0 to 1000", StringComparison.Ordinal));
+        }
+
+        public class MergeNotes_WithNotesThatShareTime {
+            private S2VXStory Story;
+            private Result Result;
+
+            [SetUp]
+            public void SetUp() {
+                var merger = new StoryMerger(new[] {
+                    "NoteAt0.s2ry",
+                    "HoldNoteFrom0To1000.s2ry",
+                }, "output.s2ry");
+                merger.LoadInputs();
+                Story = new S2VXStory();
+                Result = merger.MergeNotes(Story);
+            }
+
+            [Test]
+            public void IsSuccessful() =>
+                Assert.IsTrue(Result.IsSuccessful);
+
+            [Test]
+            public void ItHas4Notes() =>
+                Assert.AreEqual(2, Story.Notes.Children.Count);
+
+            [Test]
+            public void ItHas1RegularNote() =>
+                Assert.AreEqual(1, Story.Notes.GetNonHoldNotes().Count);
+
+            [Test]
+            public void ItHas1HoldNote() =>
+                Assert.AreEqual(1, Story.Notes.GetHoldNotes().Count);
+
+            [Test]
+            public void ItHasConflictAt0() =>
+                Assert.IsTrue(Result.Message.Contains("Note conflict:\nNote at 0\nHoldNote from 0 to 1000", StringComparison.Ordinal));
         }
 
         public class MergeNotes_WithOverlappingHoldNotes {
@@ -378,6 +414,34 @@ namespace StoryMerge.Tests {
             [Test]
             public void ItHasConflictFrom0To1000() =>
                 Assert.IsTrue(Result.Message.Contains("Command conflict:\nNotesAlpha from 0 to 1000\nNotesAlpha from 0 to 1000", StringComparison.Ordinal));
+        }
+
+        public class MergeCommands_WithCommandsThatShareTime {
+            private S2VXStory Story;
+            private Result Result;
+
+            [SetUp]
+            public void SetUp() {
+                var merger = new StoryMerger(new[] {
+                    "NotesAlphaFrom0To0.s2ry",
+                    "NotesAlphaFrom0To1000.s2ry",
+                }, "output.s2ry");
+                merger.LoadInputs();
+                Story = new S2VXStory();
+                Result = merger.MergeCommands(Story);
+            }
+
+            [Test]
+            public void IsSuccessful() =>
+                Assert.IsTrue(Result.IsSuccessful);
+
+            [Test]
+            public void ItHas2Commands() =>
+                Assert.AreEqual(2, Story.Commands.Count);
+
+            [Test]
+            public void ItHasEmptyMessage() =>
+                Assert.IsEmpty(Result.Message);
         }
 
         public class MergeCommands_WithOverlappingCommands {
