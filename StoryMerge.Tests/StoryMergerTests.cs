@@ -3,6 +3,7 @@ using osuTK;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 using System;
+using System.IO;
 
 namespace StoryMerge.Tests {
     public static class StoryMergerTests {
@@ -239,8 +240,8 @@ namespace StoryMerge.Tests {
                 Assert.AreEqual(1, Story.Notes.GetHoldNotes().Count);
 
             [Test]
-            public void ItHasEmptyMessage() =>
-                Assert.IsEmpty(Result.Message);
+            public void ItHasNoErrorMessage() =>
+                Assert.AreEqual("No note conflicts found", Result.Message);
         }
 
         public class MergeNotes_WithNotesAtSameTime {
@@ -378,8 +379,8 @@ namespace StoryMerge.Tests {
                 Assert.AreEqual(3, Story.Commands.Count);
 
             [Test]
-            public void HasEmptyMessage() =>
-                Assert.IsEmpty(Result.Message);
+            public void ItHasNoErrorMessage() =>
+                Assert.AreEqual("No command conflicts found", Result.Message);
         }
 
         public class MergeCommands_WithCommandsAtSameTime {
@@ -440,8 +441,8 @@ namespace StoryMerge.Tests {
                 Assert.AreEqual(2, Story.Commands.Count);
 
             [Test]
-            public void ItHasEmptyMessage() =>
-                Assert.IsEmpty(Result.Message);
+            public void ItHasNoErrorMessage() =>
+                Assert.AreEqual("No command conflicts found", Result.Message);
         }
 
         public class MergeCommands_WithOverlappingCommands {
@@ -496,8 +497,49 @@ namespace StoryMerge.Tests {
                 Assert.AreEqual(2, Story.Commands.Count);
 
             [Test]
-            public void ItHasEmptyMessage() =>
-                Assert.IsEmpty(Result.Message);
+            public void ItHasNoErrorMessage() =>
+                Assert.AreEqual("No command conflicts found", Result.Message);
+        }
+
+        public class Merge_WithMultipleNotesAndCommands {
+            private Result Result;
+            private string ExpectedOutput;
+            private string ActualOutput;
+
+            [SetUp]
+            public void SetUp() {
+                var merger = new StoryMerger(new[] {
+                    "GridAlphaFrom0To0.s2ry",
+                    "NotesAlphaFrom1000To1000.s2ry",
+                    "NotesAlphaFrom0To1000.s2ry",
+                    "NotesAlphaFrom0To0.s2ry",
+                    "HoldNoteFrom500To1500.s2ry",
+                    "NoteAt0.s2ry"
+                }, "output.s2ry");
+                Result = merger.Merge();
+                ExpectedOutput = File.ReadAllText("ExpectedOutput.s2ry");
+                ActualOutput = File.ReadAllText("output.s2ry");
+            }
+
+            [Test]
+            public void IsSuccessful() =>
+                Assert.IsTrue(Result.IsSuccessful);
+
+            [Test]
+            public void ItEqualsExpectedOutput() =>
+                Assert.AreEqual(ExpectedOutput, ActualOutput);
+
+            [Test]
+            public void ItMerged6Inputs() =>
+                Assert.IsTrue(Result.Message.Contains("Merged 6 stories into \"output.s2ry\"", StringComparison.Ordinal));
+
+            [Test]
+            public void ItHasNoNoteConflicts() =>
+                Assert.IsTrue(Result.Message.Contains("No note conflicts found", StringComparison.Ordinal));
+
+            [Test]
+            public void ItHasNoCommandConflicts() =>
+                Assert.IsTrue(Result.Message.Contains("No command conflicts found", StringComparison.Ordinal));
         }
     }
 }

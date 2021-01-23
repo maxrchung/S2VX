@@ -1,0 +1,72 @@
+﻿{
+  "Commands": [
+    {
+      "StartValue": 1.0,
+      "EndValue": 1.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 1000.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 1000.0,
+      "EndTime": 1000.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    }
+  ],
+  "Notes": [
+    {
+      "HitTime": 0.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    }
+  ],
+  "HoldNotes": [
+    {
+      "HitTime": 500.0,
+      "EndTime": 1500.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "EndCoordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    }
+  ],
+  "EditorSettings": {
+    "TrackTime": 0.0,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 0.0,
+    "FastestBPM": 0.0,
+    "StoryLength": 500.0,
+    "CommandCount": 4,
+    "NoteCount": 2
+  }
+}

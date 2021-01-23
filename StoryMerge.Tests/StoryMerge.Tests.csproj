@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ExpectedOutput.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="GridAlphaFrom0To0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
