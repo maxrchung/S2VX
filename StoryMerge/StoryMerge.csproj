@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>story-merge</AssemblyName>
+    <AssemblyName>StoryMerge</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
