@@ -63,7 +63,7 @@ namespace StoryMerge {
                 if (!File.Exists(path)) {
                     return new Result {
                         IsSuccessful = false,
-                        Message = $"Input file does not exist: {path}"
+                        Message = $"Input file does not exist: \"{path}\""
                     };
                 }
             }
@@ -79,7 +79,7 @@ namespace StoryMerge {
                 } catch (JsonReaderException e) {
                     return new Result {
                         IsSuccessful = false,
-                        Message = $"Failed to load: {input}\n{e.Message}"
+                        Message = $"Input file failed to load: \"{input}\"\n{e.Message}"
                     };
                 }
                 InputStories.Add(story);

@@ -13,8 +13,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry"
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry"
                 }, "output.s2ry");
                 Result = merger.ValidateParameters();
             }
@@ -51,7 +51,9 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var merger = new StoryMerger(new[] { "input1.s2ry" }, "output.s2ry");
+                var merger = new StoryMerger(new[] {
+                    "Samples/input1.s2ry"
+                }, "output.s2ry");
                 Result = merger.ValidateParameters();
             }
 
@@ -70,8 +72,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "input1.s2ry",
-                    "input2.s2ry"
+                    "Samples/input1.s2ry",
+                    "Samples/input2.s2ry"
                 }, null);
                 Result = merger.ValidateParameters();
             }
@@ -91,8 +93,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NonexistentFile.s2ry"
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NonexistentFile.s2ry"
                 }, "output.s2ry");
                 Result = merger.ValidateParameters();
             }
@@ -103,7 +105,7 @@ namespace StoryMerge.Tests {
 
             [Test]
             public void ItHasErrorMessage() =>
-                Assert.AreEqual("Input file does not exist: NonexistentFile.s2ry", Result.Message);
+                Assert.AreEqual("Input file does not exist: \"Samples/NonexistentFile.s2ry\"", Result.Message);
         }
 
         public class LoadInputs_WithValidStories {
@@ -112,14 +114,14 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "GridAlphaFrom0To0.s2ry",
-                    "HoldNoteFrom0To1000.s2ry",
-                    "HoldNoteFrom500To1500.s2ry",
-                    "NoteAt0.s2ry",
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
-                    "NotesAlphaFrom1000To1000.s2ry",
-                    "NotesAlphaFrom500To1500.s2ry",
+                    "Samples/GridAlphaFrom0To0.s2ry",
+                    "Samples/HoldNoteFrom0To1000.s2ry",
+                    "Samples/HoldNoteFrom500To1500.s2ry",
+                    "Samples/NoteAt0.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom1000To1000.s2ry",
+                    "Samples/NotesAlphaFrom500To1500.s2ry",
                 }, "output.s2ry");
                 Result = merger.LoadInputs();
             }
@@ -139,8 +141,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To0.s2ry",
-                    "InvalidStory.s2ry"
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/InvalidStory.s2ry"
                 }, "output.s2ry");
                 Result = merger.LoadInputs();
             }
@@ -151,7 +153,7 @@ namespace StoryMerge.Tests {
 
             [Test]
             public void ItHasErrorMessage() =>
-                Assert.True(Result.Message.Contains("Failed to load: InvalidStory.s2ry", StringComparison.Ordinal));
+                Assert.True(Result.Message.Contains("Input file failed to load: \"Samples/InvalidStory.s2ry\"", StringComparison.Ordinal));
         }
 
         public class CopyNote_WithNote {
@@ -215,8 +217,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NoteAt0.s2ry",
-                    "HoldNoteFrom500To1500.s2ry"
+                    "Samples/NoteAt0.s2ry",
+                    "Samples/HoldNoteFrom500To1500.s2ry"
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -251,10 +253,10 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NoteAt0.s2ry",
-                    "NoteAt0.s2ry",
-                    "HoldNoteFrom0To1000.s2ry",
-                    "HoldNoteFrom0To1000.s2ry",
+                    "Samples/NoteAt0.s2ry",
+                    "Samples/NoteAt0.s2ry",
+                    "Samples/HoldNoteFrom0To1000.s2ry",
+                    "Samples/HoldNoteFrom0To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -293,8 +295,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NoteAt0.s2ry",
-                    "HoldNoteFrom0To1000.s2ry",
+                    "Samples/NoteAt0.s2ry",
+                    "Samples/HoldNoteFrom0To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -329,8 +331,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "HoldNoteFrom0To1000.s2ry",
-                    "HoldNoteFrom500To1500.s2ry",
+                    "Samples/HoldNoteFrom0To1000.s2ry",
+                    "Samples/HoldNoteFrom500To1500.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -361,9 +363,9 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To1000.s2ry",
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom1000To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom1000To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -390,10 +392,10 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -424,8 +426,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -452,8 +454,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "NotesAlphaFrom500To1500.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom500To1500.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -480,8 +482,8 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "GridAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom0To0.s2ry",
+                    "Samples/GridAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
                 }, "output.s2ry");
                 merger.LoadInputs();
                 Story = new S2VXStory();
@@ -509,15 +511,15 @@ namespace StoryMerge.Tests {
             [SetUp]
             public void SetUp() {
                 var merger = new StoryMerger(new[] {
-                    "GridAlphaFrom0To0.s2ry",
-                    "NotesAlphaFrom1000To1000.s2ry",
-                    "NotesAlphaFrom0To1000.s2ry",
-                    "NotesAlphaFrom0To0.s2ry",
-                    "HoldNoteFrom500To1500.s2ry",
-                    "NoteAt0.s2ry"
+                    "Samples/GridAlphaFrom0To0.s2ry",
+                    "Samples/NotesAlphaFrom1000To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To1000.s2ry",
+                    "Samples/NotesAlphaFrom0To0.s2ry",
+                    "Samples/HoldNoteFrom500To1500.s2ry",
+                    "Samples/NoteAt0.s2ry"
                 }, "output.s2ry");
                 Result = merger.Merge();
-                ExpectedOutput = File.ReadAllText("ExpectedOutput.s2ry");
+                ExpectedOutput = File.ReadAllText("Samples/ExpectedOutput.s2ry");
                 ActualOutput = File.ReadAllText("output.s2ry");
             }
 

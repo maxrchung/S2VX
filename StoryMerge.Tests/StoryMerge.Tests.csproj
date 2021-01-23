@@ -25,34 +25,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ExpectedOutput.s2ry">
+    <None Update="Samples\ExpectedOutput.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="GridAlphaFrom0To0.s2ry">
+    <None Update="Samples\GridAlphaFrom0To0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="NotesAlphaFrom0To0.s2ry">
+    <None Update="Samples\NotesAlphaFrom0To0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="NotesAlphaFrom0To1000.s2ry">
+    <None Update="Samples\NotesAlphaFrom0To1000.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="NotesAlphaFrom1000To1000.s2ry">
+    <None Update="Samples\NotesAlphaFrom1000To1000.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="NotesAlphaFrom500To1500.s2ry">
+    <None Update="Samples\NotesAlphaFrom500To1500.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="HoldNoteFrom500To1500.s2ry">
+    <None Update="Samples\HoldNoteFrom500To1500.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="HoldNoteFrom0To1000.s2ry">
+    <None Update="Samples\HoldNoteFrom0To1000.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="InvalidStory.s2ry">
+    <None Update="Samples\InvalidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="NoteAt0.s2ry">
+    <None Update="Samples\NoteAt0.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
