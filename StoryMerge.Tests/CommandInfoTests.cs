@@ -10,9 +10,6 @@ namespace StoryMerge.Tests {
                 StartTime = 1000,
                 EndTime = 2000
             });
-            Assert.AreEqual("NotesAlpha", info.Type);
-            Assert.AreEqual(1000, info.StartTime);
-            Assert.AreEqual(2000, info.EndTime);
             Assert.AreEqual("NotesAlpha from 1000 to 2000", info.ToString());
         }
 
