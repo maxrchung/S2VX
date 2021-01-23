@@ -21,7 +21,7 @@ namespace StoryMerge.Tests {
                 Infos = new List<CommandInfo>() {
                     new CommandInfo(new NotesAlphaCommand { StartTime = 1000, EndTime = 1000 }),
                     new CommandInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 1000 }),
-                    new CommandInfo(new NotesAlphaCommand { StartTime = 0 }),
+                    new CommandInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 0 }),
                 };
                 Infos.Sort();
             }
