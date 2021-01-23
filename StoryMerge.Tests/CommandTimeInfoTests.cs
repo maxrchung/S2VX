@@ -3,25 +3,25 @@ using S2VX.Game.Story.Command;
 using System.Collections.Generic;
 
 namespace StoryMerge.Tests {
-    public class CommandInfoTests {
+    public class CommandTimeInfoTests {
         [Test]
-        public void ToString_WithHoldNote_PrintsNoteInfo() {
-            var info = new CommandInfo(new NotesAlphaCommand {
+        public void ToString_WithHoldNote_PrintsNoteTimeInfo() {
+            var info = new CommandTimeInfo(new NotesAlphaCommand {
                 StartTime = 1000,
                 EndTime = 2000
             });
             Assert.AreEqual("NotesAlpha from 1000 to 2000", info.ToString());
         }
 
-        public class Sort_WithUnsortedCommandInfo {
-            private List<CommandInfo> Infos;
+        public class Sort_WithUnsortedCommandTimeInfo {
+            private List<CommandTimeInfo> Infos;
 
             [SetUp]
             public void SetUp() {
-                Infos = new List<CommandInfo>() {
-                    new CommandInfo(new NotesAlphaCommand { StartTime = 1000, EndTime = 1000 }),
-                    new CommandInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 1000 }),
-                    new CommandInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 0 }),
+                Infos = new List<CommandTimeInfo>() {
+                    new CommandTimeInfo(new NotesAlphaCommand { StartTime = 1000, EndTime = 1000 }),
+                    new CommandTimeInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 1000 }),
+                    new CommandTimeInfo(new NotesAlphaCommand { StartTime = 0, EndTime = 0 }),
                 };
                 Infos.Sort();
             }

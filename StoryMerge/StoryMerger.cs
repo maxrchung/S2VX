@@ -103,21 +103,21 @@ namespace StoryMerge {
         /// (0-1000, 500-1500)
         /// </summary>
         public Result MergeNotes(S2VXStory story) {
-            var infos = new List<NoteInfo>();
+            var infos = new List<NoteTimeInfo>();
             foreach (var input in InputStories) {
                 foreach (var note in input.Notes.GetNonHoldNotes()) {
                     story.AddNote(CopyNote(note));
-                    infos.Add(new NoteInfo(note));
+                    infos.Add(new NoteTimeInfo(note));
                 }
                 foreach (var holdNote in input.Notes.GetHoldNotes()) {
                     story.AddHoldNote(CopyHoldNote(holdNote));
-                    infos.Add(new NoteInfo(holdNote));
+                    infos.Add(new NoteTimeInfo(holdNote));
                 }
             }
             infos.Sort();
 
             var messages = new List<string>();
-            NoteInfo latestInfo = null;
+            NoteTimeInfo latestInfo = null;
             foreach (var info in infos) {
                 if (latestInfo == null) {
                     latestInfo = info;
@@ -173,17 +173,17 @@ namespace StoryMerge {
         /// (0-1000, 500-1500)
         /// </summary>
         public Result MergeCommands(S2VXStory story) {
-            var infos = new List<CommandInfo>();
+            var infos = new List<CommandTimeInfo>();
             foreach (var input in InputStories) {
                 foreach (var command in input.Commands) {
                     story.AddCommand(command);
-                    infos.Add(new CommandInfo(command));
+                    infos.Add(new CommandTimeInfo(command));
                 }
             }
             infos.Sort();
 
             var messages = new List<string>();
-            var dictInfo = new Dictionary<string, CommandInfo>();
+            var dictInfo = new Dictionary<string, CommandTimeInfo>();
             foreach (var info in infos) {
                 var type = info.Type;
                 if (!dictInfo.ContainsKey(type)) {

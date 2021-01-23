@@ -2,18 +2,18 @@
 using System;
 
 namespace StoryMerge {
-    public class NoteInfo : IComparable<NoteInfo> {
+    public class NoteTimeInfo : IComparable<NoteTimeInfo> {
         public string Type { get; } = "";
         public double StartTime { get; }
         public double EndTime { get; }
 
-        public NoteInfo(S2VXNote note) {
+        public NoteTimeInfo(S2VXNote note) {
             Type = "Note";
             StartTime = note.HitTime;
             EndTime = note.HitTime;
         }
 
-        public NoteInfo(HoldNote holdNote) {
+        public NoteTimeInfo(HoldNote holdNote) {
             Type = "HoldNote";
             StartTime = holdNote.HitTime;
             EndTime = holdNote.EndTime;
@@ -29,7 +29,7 @@ namespace StoryMerge {
             return toString;
         }
 
-        public int CompareTo(NoteInfo other) {
+        public int CompareTo(NoteTimeInfo other) {
             var compare = StartTime.CompareTo(other.StartTime);
             if (compare == 0) {
                 compare = EndTime.CompareTo(other.EndTime);
