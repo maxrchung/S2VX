@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace StoryMerge.Tests {
     public class CommandTimeInfoTests {
         [Test]
-        public void ToString_WithHoldNote_PrintsNoteTimeInfo() {
+        public void ToString_Command_PrintsNoteTimeInfo() {
             var info = new CommandTimeInfo(new NotesAlphaCommand {
                 StartTime = 1000,
                 EndTime = 2000
@@ -13,7 +13,7 @@ namespace StoryMerge.Tests {
             Assert.AreEqual("NotesAlpha from 1000 to 2000", info.ToString());
         }
 
-        public class Sort_WithUnsortedCommandTimeInfo {
+        public class Sort_UnsortedCommandTimeInfo {
             private List<CommandTimeInfo> Infos;
 
             [SetUp]
@@ -27,15 +27,15 @@ namespace StoryMerge.Tests {
             }
 
             [Test]
-            public void ItSortsByStartTime() =>
+            public void SortsByStartTime() =>
                 Assert.AreEqual("NotesAlpha from 0 to 0", Infos[0].ToString());
 
             [Test]
-            public void ItSortsByStartTimeThenEndTime() =>
+            public void SortsByStartTimeThenEndTime() =>
                 Assert.AreEqual("NotesAlpha from 0 to 1000", Infos[1].ToString());
 
             [Test]
-            public void ItSortsLargerStartTimeLater() =>
+            public void SortsLargerStartTimeLater() =>
                 Assert.AreEqual("NotesAlpha from 1000 to 1000", Infos[2].ToString());
         }
     }

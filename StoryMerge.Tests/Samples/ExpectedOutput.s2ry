@@ -12,7 +12,7 @@
       "StartValue": 0.7,
       "EndValue": 0.7,
       "StartTime": 0.0,
-      "EndTime": 1000.0,
+      "EndTime": 0.0,
       "Easing": 0,
       "Type": "NotesAlpha"
     },
@@ -20,7 +20,7 @@
       "StartValue": 0.7,
       "EndValue": 0.7,
       "StartTime": 0.0,
-      "EndTime": 0.0,
+      "EndTime": 1000.0,
       "Easing": 0,
       "Type": "NotesAlpha"
     },
