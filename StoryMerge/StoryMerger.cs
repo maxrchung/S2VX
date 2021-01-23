@@ -32,11 +32,11 @@ namespace StoryMerge {
             story.Save(Output);
 
             var messages = new[] {
-                $"Merged {Inputs.Length} stories to {Output}",
+                $"Merged {Inputs.Length} stories into \"{Output}\"",
                 notesResult.Message,
                 commandsResult.Message
             };
-            var message = string.Join(',', messages);
+            var message = string.Join("\n\n", messages);
 
             return new Result {
                 IsSuccessful = true,
@@ -134,9 +134,13 @@ namespace StoryMerge {
                 }
             }
 
+            if (messages.Count == 0) {
+                messages.Add("No note conflicts found");
+            }
+
             return new Result {
                 IsSuccessful = true,
-                Message = string.Join('\n', messages)
+                Message = string.Join("\n\n", messages)
             };
         }
 
@@ -200,9 +204,13 @@ namespace StoryMerge {
                 }
             }
 
+            if (messages.Count == 0) {
+                messages.Add("No command conflicts found");
+            }
+
             return new Result {
                 IsSuccessful = true,
-                Message = string.Join('\n', messages)
+                Message = string.Join("\n\n", messages)
             };
         }
     }
