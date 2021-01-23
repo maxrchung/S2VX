@@ -23,14 +23,37 @@ using System;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
-
         public const double TrackTimeTolerance = 0.03;  // ms away from a tick or end of track will be considered to be on that tick or end of track
+        private const int MaxSnapDivisor = 16;
 
+        public int SnapDivisor { get; private set; }
+        public Vector2 MousePosition { get; private set; } = Vector2.Zero;
+        public ReversibleStack Reversibles { get; } = new ReversibleStack();
+        public S2VXToolState ToolState { get; private set; } = new SelectToolState();
+
+        [Resolved]
+        private AudioManager Audio { get; set; }
         private string AudioPath { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private string CurSelectionPath { get; set; }
         private string StoryPath { get; set; }
         private string FullStoryPath { get; set; }
+
+        public DrawableTrack Track { get; private set; }
+        private S2VXStory Story { get; set; }
+        private EditorUI EditorUI { get; set; }
+        public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
+            RelativePositionAxes = Axes.Both,
+            RelativeSizeAxes = Axes.Both,
+        };
+        private Container ToolContainer { get; set; } = new Container {
+            RelativeSizeAxes = Axes.Both,
+            Size = Vector2.One
+        };
+        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
+        private Timeline Timeline { get; } = new Timeline();
+        public CommandPanel CommandPanel { get; } = new CommandPanel();
+
         public EditorScreen(string curSelectionPath, string storyPath, StorageBackedResourceStore curLevelResourceStore, string audioPath) {
             CurSelectionPath = curSelectionPath;
             StoryPath = storyPath;
@@ -38,44 +61,6 @@ namespace S2VX.Game.Editor {
             CurLevelResourceStore = curLevelResourceStore;
             FullStoryPath = CurSelectionPath + "/" + StoryPath;
         }
-
-        public Vector2 MousePosition { get; private set; } = Vector2.Zero;
-
-        private S2VXStory Story { get; set; }
-
-        public CommandPanel CommandPanel { get; } = new CommandPanel();
-        private bool IsCommandPanelVisible { get; set; }
-
-        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
-
-        private Timeline Timeline { get; } = new Timeline();
-
-        public S2VXToolState ToolState { get; private set; } = new SelectToolState();
-
-        public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
-            RelativePositionAxes = Axes.Both,
-            RelativeSizeAxes = Axes.Both,
-        };
-
-        private void SetToolState(S2VXToolState newState) {
-            ToolState.HandleExit();
-            ToolState = newState;
-            ToolContainer.Child = ToolState;
-        }
-
-        private Container ToolContainer { get; set; } = new Container {
-            RelativeSizeAxes = Axes.Both,
-            Size = Vector2.One
-        };
-
-        [Resolved]
-        private AudioManager Audio { get; set; }
-        public DrawableTrack Track { get; private set; }
-
-        public ReversibleStack Reversibles { get; } = new ReversibleStack();
-
-        public int SnapDivisor { get; private set; }
-        private const int MaxSnapDivisor = 16;
 
         // We need to explicitly cache dependencies like this so that we can
         // recache an EditorScreen whenever a new one is pushed
@@ -88,6 +73,22 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
+            LoadTrack();
+            LoadEditorSettings();
+            SetTrackClock();
+
+            ToolContainer.Child = ToolState;
+
+            RelativeSizeAxes = Axes.Both;
+            InternalChildren = new Drawable[]
+            {
+                Track,
+                Story,
+                EditorUI = CreateEditorUI()
+            };
+        }
+
+        private void LoadTrack() {
             try {
                 Story.Open(FullStoryPath, true);
             } catch (JsonReaderException e) {
@@ -98,100 +99,116 @@ namespace S2VX.Game.Editor {
             var track = new TrackBass(trackStream);
             Audio.AddItem(track);
             Track = new DrawableTrack(track);
+        }
 
+        private void LoadEditorSettings() {
             var editorSettings = Story.EditorSettings;
             Seek(editorSettings.TrackTime);
             PlaybackSetRate(editorSettings.TrackPlaybackRate);
             SnapDivisor = editorSettings.SnapDivisor;
             NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
+        }
 
-            // Sets the same clock for sections dependent on the Track
+        private EditorUI CreateEditorUI() {
+            var editorUI = new EditorUI {
+                RelativeSizeAxes = Axes.Both,
+                Children = new Drawable[] {
+                        NoteSelectionIndicators,
+                        ToolContainer,
+                        NotesTimeline,
+                        new EditorInfoBar(),
+                        CreateMenu(),
+                        Timeline,
+                        CommandPanel
+                    }
+            };
+            editorUI.State.Value = Visibility.Visible;
+            return editorUI;
+        }
+
+        private BasicMenu CreateMenu() =>
+            new BasicMenu(Direction.Horizontal, true) {
+                BackgroundColour = Color4.Black.Opacity(0.9f),
+                Width = 1,
+                RelativeSizeAxes = Axes.X,
+                Items = new[]
+                {
+                    new MenuItem("Project")
+                    {
+                        Items = new[]
+                        {
+                            new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
+                            new MenuItem("Save (Ctrl+S)", ProjectSave),
+                            new MenuItem("Play (G)", ProjectPlay),
+                            new MenuItem("Quit (Esc)", ProjectQuit),
+                        }
+                    },
+                    new MenuItem("Edit")
+                    {
+                        Items = new[]
+                        {
+                            new MenuItem("Undo (Ctrl+Z)", EditUndo),
+                            new MenuItem("Redo (Ctrl+Shift+Z)", EditRedo)
+                        }
+                    },
+                    new MenuItem("View")
+                    {
+                        Items = new[]
+                        {
+                            new MenuItem("Editor Interface (H)", ViewEditorUI),
+                            new MenuItem("Command Panel (Ctrl+1)", ViewCommandPanel),
+                        }
+                    },
+                    new MenuItem("Playback")
+                    {
+                        Items = new[]
+                        {
+                            new MenuItem("Play/Pause (Space)", PlaybackPlay),
+                            new MenuItem("Restart (X)", PlaybackRestart),
+                            new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
+                            new MenuItem("Seek Left Tick (Left / MouseWheelUp)", PlaybackSeekLeftTick),
+                            new MenuItem("Seek Right Tick (Right / MouseWheelDown)", PlaybackSeekRightTick),
+                            new MenuItem("Zoom Out Notes Timeline (Ctrl+[)", PlaybackZoomOut),
+                            new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
+                            new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
+                            new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
+                            new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
+                            new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
+                            new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
+                            new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
+                            new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
+                            new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
+                        }
+                    },
+                    new MenuItem("Tool")
+                    {
+                        Items = new[]
+                        {
+                            new MenuItem("Select (1)", ToolSelect),
+                            new MenuItem("Note (2)", ToolNote),
+                            new MenuItem("Hold Note (3)", ToolHoldNote),
+                            new MenuItem("Camera (4)", ToolCamera),
+                        }
+                    }
+                }
+            };
+
+
+        /// <summary>
+        /// Sets the same clock for sections dependent on the Track
+        /// </summary>
+        private void SetTrackClock() {
             var trackClock = new FramedClock(Track);
             Story.Clock = trackClock;
             NotesTimeline.Clock = trackClock;
             Timeline.Clock = trackClock;
             ToolContainer.Clock = trackClock;
+        }
 
-            RelativeSizeAxes = Axes.Both;
-            Size = Vector2.One;
-
+        private void SetToolState(S2VXToolState newState) {
+            ToolState.HandleExit();
+            ToolState = newState;
             ToolContainer.Child = ToolState;
-            InternalChildren = new Drawable[]
-            {
-                Track,
-                Story,
-                NoteSelectionIndicators,
-                ToolContainer,
-                NotesTimeline,
-                new EditorInfoBar(),
-                new BasicMenu(Direction.Horizontal, true)
-                {
-                    BackgroundColour = Color4.Black.Opacity(0.9f),
-                    Width = 1,
-                    RelativeSizeAxes = Axes.X,
-                    Items = new[]
-                    {
-                        new MenuItem("Project")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
-                                new MenuItem("Save (Ctrl+S)", ProjectSave),
-                                new MenuItem("Play (G)", ProjectPlay),
-                                new MenuItem("Quit (Esc)", ProjectQuit),
-                            }
-                        },
-                        new MenuItem("Edit")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Undo (Ctrl+Z)", EditUndo),
-                                new MenuItem("Redo (Ctrl+Shift+Z)", EditRedo)
-                            }
-                        },
-                        new MenuItem("View")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Command Panel (Ctrl+1)", ViewCommandPanel),
-                            }
-                        },
-                        new MenuItem("Playback")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Play/Pause (Space)", PlaybackPlay),
-                                new MenuItem("Restart (X)", PlaybackRestart),
-                                new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
-                                new MenuItem("Seek Left Tick (Left / MouseWheelUp)", PlaybackSeekLeftTick),
-                                new MenuItem("Seek Right Tick (Right / MouseWheelDown)", PlaybackSeekRightTick),
-                                new MenuItem("Zoom Out Notes Timeline (Ctrl+[)", PlaybackZoomOut),
-                                new MenuItem("Zoom In Notes Timeline (Ctrl+])", PlaybackZoomIn),
-                                new MenuItem("Decrease Beat Snap Divisor (Ctrl+Shift+[)", PlaybackDecreaseBeatDivisor),
-                                new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
-                                new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
-                                new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
-                                new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
-                                new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
-                                new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
-                                new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
-                            }
-                        },
-                        new MenuItem("Tool")
-                        {
-                            Items = new[]
-                            {
-                                new MenuItem("Select (1)", ToolSelect),
-                                new MenuItem("Note (2)", ToolNote),
-                                new MenuItem("Hold Note (3)", ToolHoldNote),
-                                new MenuItem("Camera (4)", ToolCamera),
-                            }
-                        }
-                    }
-                },
-                Timeline,
-                CommandPanel
-            };
         }
 
         protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
@@ -237,6 +254,9 @@ namespace S2VX.Game.Editor {
                     break;
                 case Key.G:
                     ProjectPlay();
+                    break;
+                case Key.H:
+                    ViewEditorUI();
                     break;
                 case Key.R:
                     if (e.ControlPressed) {
@@ -380,14 +400,9 @@ namespace S2VX.Game.Editor {
 
         private void EditRedo() => Reversibles.Redo();
 
-        private void ViewCommandPanel() {
-            if (IsCommandPanelVisible) {
-                CommandPanel.Hide();
-            } else {
-                CommandPanel.Show();
-            }
-            IsCommandPanelVisible = !IsCommandPanelVisible;
-        }
+        private void ViewEditorUI() => EditorUI.ToggleVisibility();
+
+        private void ViewCommandPanel() => CommandPanel.ToggleVisibility();
 
         private void PlaybackPlay() {
             if (Track.CurrentTime < Track.Length) {
