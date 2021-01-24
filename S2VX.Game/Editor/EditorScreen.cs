@@ -139,7 +139,7 @@ namespace S2VX.Game.Editor {
                         {
                             new MenuItem("Refresh (Ctrl+R)", ProjectRefresh),
                             new MenuItem("Save (Ctrl+S)", ProjectSave),
-                            new MenuItem("Play (G)", ProjectPlay),
+                            new MenuItem("Preview Gameplay (G)", ProjectPreview),
                             new MenuItem("Quit (Esc)", ProjectQuit),
                         }
                     },
@@ -155,8 +155,8 @@ namespace S2VX.Game.Editor {
                     {
                         Items = new[]
                         {
-                            new MenuItem("Editor Interface (H)", ViewEditorUI),
-                            new MenuItem("Command Panel (Ctrl+1)", ViewCommandPanel),
+                            new MenuItem("Editor Interface (Ctrl+H)", ViewEditorUI),
+                            new MenuItem("Command Panel (C)", ViewCommandPanel),
                         }
                     },
                     new MenuItem("Playback")
@@ -164,7 +164,7 @@ namespace S2VX.Game.Editor {
                         Items = new[]
                         {
                             new MenuItem("Play/Pause (Space)", PlaybackPlay),
-                            new MenuItem("Restart (X)", PlaybackRestart),
+                            new MenuItem("Restart (Ctrl+Left)", PlaybackRestart),
                             new MenuItem("Toggle Time Display (T)", PlaybackDisplay),
                             new MenuItem("Seek Left Tick (Left / MouseWheelUp)", PlaybackSeekLeftTick),
                             new MenuItem("Seek Right Tick (Right / MouseWheelDown)", PlaybackSeekRightTick),
@@ -252,11 +252,16 @@ namespace S2VX.Game.Editor {
                 case Key.Escape:
                     ProjectQuit();
                     break;
+                case Key.C:
+                    ViewCommandPanel();
+                    break;
                 case Key.G:
-                    ProjectPlay();
+                    ProjectPreview();
                     break;
                 case Key.H:
-                    ViewEditorUI();
+                    if (e.ControlPressed) {
+                        ViewEditorUI();
+                    }
                     break;
                 case Key.R:
                     if (e.ControlPressed) {
@@ -278,11 +283,7 @@ namespace S2VX.Game.Editor {
                     }
                     break;
                 case Key.Number1:
-                    if (e.ControlPressed) {
-                        ViewCommandPanel();
-                    } else {
-                        ToolSelect();
-                    }
+                    ToolSelect();
                     break;
                 case Key.Number2:
                     ToolNote();
@@ -314,14 +315,15 @@ namespace S2VX.Game.Editor {
                 case Key.Space:
                     PlaybackPlay();
                     break;
-                case Key.X:
-                    PlaybackRestart();
-                    break;
                 case Key.T:
                     PlaybackDisplay();
                     break;
                 case Key.Left:
-                    NotesTimeline.SnapToTick(true);
+                    if (e.ControlPressed) {
+                        PlaybackRestart();
+                    } else {
+                        NotesTimeline.SnapToTick(true);
+                    }
                     break;
                 case Key.Right:
                     NotesTimeline.SnapToTick(false);
@@ -368,7 +370,7 @@ namespace S2VX.Game.Editor {
             Story.ClearActives();
         }
 
-        private void ProjectPlay() {
+        private void ProjectPreview() {
             ProjectSave();
             this.Push(new PlayScreen(true, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath));
         }
