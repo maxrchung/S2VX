@@ -78,7 +78,7 @@ namespace S2VX.Game.Editor.Containers {
                                 Icon = FontAwesome.Solid.Trash
                             },
                             new IconButton {
-                                Action = () => HandleEditClick(localIndex),
+                                Action = () => HandleCopyClick(localIndex),
                                 Width = InputSize.Y,
                                 Height = InputSize.Y,
                                 Icon = FontAwesome.Solid.Clone
@@ -170,7 +170,7 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
 
-        private void HandleEditClick(int commandIndex) => HandleEditCommand(Story.Commands[commandIndex]);
+        private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
         public void HandleAddCommand(S2VXCommand command) {
             Story.AddCommand(command);
@@ -182,7 +182,7 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        private void HandleEditCommand(S2VXCommand command) {
+        private void HandleCopyCommand(S2VXCommand command) {
             ErrorContainer.Clear();
             var data = command.ToString().Split('{', '|', '}');
 
