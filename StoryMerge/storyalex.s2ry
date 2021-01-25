@@ -1,0 +1,2222 @@
+{
+  "Commands": [
+    {
+      "StartValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineColor"
+    },
+    {
+      "StartValue": 0.4,
+      "EndValue": 0.4,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesDistance"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": 800.0,
+      "EndValue": 800.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesShowTime"
+    },
+    {
+      "StartValue": 0.008,
+      "EndValue": 0.008,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldApproachesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineThickness"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineThickness"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesAlpha"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": 180.0,
+      "EndValue": 180.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "TimingChange"
+    },
+    {
+      "StartValue": {
+        "R": 0.6627451,
+        "G": 0.70980394,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.6627451,
+        "G": 0.70980394,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "StartTime": 72222.0,
+      "EndTime": 72888.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.2509804,
+        "G": 0.023529412,
+        "B": 0.20392157,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2509804,
+        "G": 0.023529412,
+        "B": 0.20392157,
+        "A": 1.0
+      },
+      "StartTime": 72874.0,
+      "EndTime": 73791.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.16078432,
+        "G": 0.0627451,
+        "B": 0.4,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.16078432,
+        "G": 0.0627451,
+        "B": 0.4,
+        "A": 1.0
+      },
+      "StartTime": 73000.0,
+      "EndTime": 73000.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "EndValue": {
+        "X": 8.0,
+        "Y": -6.0
+      },
+      "StartTime": 73055.55555555556,
+      "EndTime": 73166.66666666667,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.12156863,
+        "G": 0.03137255,
+        "B": 0.23137255,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.12156863,
+        "G": 0.03137255,
+        "B": 0.23137255,
+        "A": 1.0
+      },
+      "StartTime": 73333.0,
+      "EndTime": 73333.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "X": 8.0,
+        "Y": -6.0
+      },
+      "EndValue": {
+        "X": 15.0,
+        "Y": -13.0
+      },
+      "StartTime": 73388.88888888889,
+      "EndTime": 73500.0,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.10980392,
+        "G": 0.015686275,
+        "B": 0.16862746,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.10980392,
+        "G": 0.015686275,
+        "B": 0.16862746,
+        "A": 1.0
+      },
+      "StartTime": 73666.0,
+      "EndTime": 73666.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "X": 15.0,
+        "Y": -13.0
+      },
+      "EndValue": {
+        "X": 22.0,
+        "Y": -11.5
+      },
+      "StartTime": 73777.0,
+      "EndTime": 74000.0,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.5686275,
+        "G": 0.078431375,
+        "B": 0.16862746,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5686275,
+        "G": 0.078431375,
+        "B": 0.16862746,
+        "A": 1.0
+      },
+      "StartTime": 74333.0,
+      "EndTime": 74833.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.32156864,
+        "G": 0.1764706,
+        "B": 0.015686275,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.32156864,
+        "G": 0.1764706,
+        "B": 0.015686275,
+        "A": 1.0
+      },
+      "StartTime": 75000.0,
+      "EndTime": 75500.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.08627451,
+        "G": 0.25490198,
+        "B": 0.50980395,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.08627451,
+        "G": 0.25490198,
+        "B": 0.50980395,
+        "A": 1.0
+      },
+      "StartTime": 75666.0,
+      "EndTime": 75916.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": -45.0,
+      "StartTime": 75722.22222222223,
+      "EndTime": 75833.33333333333,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.06666667,
+        "G": 0.19607843,
+        "B": 0.61960787,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.06666667,
+        "G": 0.19607843,
+        "B": 0.61960787,
+        "A": 1.0
+      },
+      "StartTime": 76000.0,
+      "EndTime": 76250.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": -45.0,
+      "EndValue": -90.0,
+      "StartTime": 76055.55555555556,
+      "EndTime": 76166.66666666667,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.18039216,
+        "G": 0.28627452,
+        "B": 0.81960785,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.18039216,
+        "G": 0.28627452,
+        "B": 0.81960785,
+        "A": 1.0
+      },
+      "StartTime": 76333.0,
+      "EndTime": 76333.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "X": 0.1,
+        "Y": 0.1
+      },
+      "EndValue": {
+        "X": 0.075,
+        "Y": 0.075
+      },
+      "StartTime": 76388.88888888889,
+      "EndTime": 76666.66666666667,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.2901961,
+        "G": 0.02745098,
+        "B": 0.26666668,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2901961,
+        "G": 0.02745098,
+        "B": 0.26666668,
+        "A": 1.0
+      },
+      "StartTime": 76666.0,
+      "EndTime": 76666.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "X": 0.075,
+        "Y": 0.075
+      },
+      "EndValue": {
+        "X": 0.1,
+        "Y": 0.1
+      },
+      "StartTime": 78194.44444444444,
+      "EndTime": 78305.55555555556,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "X": 22.0,
+        "Y": -11.5
+      },
+      "EndValue": {
+        "X": 26.25,
+        "Y": -2.25
+      },
+      "StartTime": 79083.33333333333,
+      "EndTime": 79500.0,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 26.25,
+        "Y": -2.25
+      },
+      "EndValue": {
+        "X": 24.5,
+        "Y": 0.0
+      },
+      "StartTime": 80666.66666666667,
+      "EndTime": 80833.33333333333,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 24.5,
+        "Y": 0.0
+      },
+      "EndValue": {
+        "X": 24.5,
+        "Y": 2.0
+      },
+      "StartTime": 81000.0,
+      "EndTime": 81166.66666666667,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 24.5,
+        "Y": 2.0
+      },
+      "EndValue": {
+        "X": 28.75,
+        "Y": 7.25
+      },
+      "StartTime": 81388.88888888889,
+      "EndTime": 81555.55555555556,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.18039216,
+        "G": 0.28627452,
+        "B": 0.81960785,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9098039,
+        "G": 0.019607844,
+        "B": 0.03137255,
+        "A": 1.0
+      },
+      "StartTime": 82333.0,
+      "EndTime": 88666.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.09411765,
+        "G": 0.007843138,
+        "B": 0.12156863,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 82333.0,
+      "EndTime": 88666.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745098,
+        "G": 0.49019608,
+        "B": 0.09803922,
+        "A": 1.0
+      },
+      "StartTime": 82333.0,
+      "EndTime": 88666.0,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "X": 28.75,
+        "Y": 7.25
+      },
+      "EndValue": {
+        "X": 27.0,
+        "Y": 7.25
+      },
+      "StartTime": 83833.33333333333,
+      "EndTime": 84916.66666666667,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 27.0,
+        "Y": 7.25
+      },
+      "EndValue": {
+        "X": 27.0,
+        "Y": 14.5
+      },
+      "StartTime": 85000.0,
+      "EndTime": 86000.0,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 27.0,
+        "Y": 14.5
+      },
+      "EndValue": {
+        "X": 32.5,
+        "Y": 14.5
+      },
+      "StartTime": 86166.66666666667,
+      "EndTime": 86583.33333333333,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 32.5,
+        "Y": 14.5
+      },
+      "EndValue": {
+        "X": 32.5,
+        "Y": 22.5
+      },
+      "StartTime": 86583.33333333333,
+      "EndTime": 87333.33333333333,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -90.0,
+      "EndValue": -135.0,
+      "StartTime": 89000.0,
+      "EndTime": 89166.66666666667,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "X": 32.5,
+        "Y": 22.5
+      },
+      "EndValue": {
+        "X": 32.5,
+        "Y": 22.5
+      },
+      "StartTime": 89666.66666666667,
+      "EndTime": 89833.33333333333,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -135.0,
+      "EndValue": -180.0,
+      "StartTime": 89666.66666666667,
+      "EndTime": 89833.33333333333,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": -180.0,
+      "EndValue": -225.0,
+      "StartTime": 90333.33333333333,
+      "EndTime": 90500.0,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "X": 0.1,
+        "Y": 0.1
+      },
+      "EndValue": {
+        "X": 0.15,
+        "Y": 0.15
+      },
+      "StartTime": 90666.66666666667,
+      "EndTime": 90833.33333333333,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "X": 32.5,
+        "Y": 22.5
+      },
+      "EndValue": {
+        "X": 31.0,
+        "Y": 21.0
+      },
+      "StartTime": 91000.0,
+      "EndTime": 91166.66666666667,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 0.15,
+        "Y": 0.15
+      },
+      "EndValue": {
+        "X": 0.3,
+        "Y": 0.3
+      },
+      "StartTime": 91666.66666666667,
+      "EndTime": 91833.33333333333,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "X": 31.0,
+        "Y": 21.0
+      },
+      "EndValue": {
+        "X": 29.0,
+        "Y": 19.0
+      },
+      "StartTime": 91666.66666666667,
+      "EndTime": 91833.33333333333,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "X": 0.3,
+        "Y": 0.3
+      },
+      "EndValue": {
+        "X": 0.1,
+        "Y": 0.1
+      },
+      "StartTime": 94000.0,
+      "EndTime": 94333.33333333333,
+      "Easing": 0,
+      "Type": "CameraScale"
+    }
+  ],
+  "Notes": [
+    {
+      "HitTime": 111916.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 109250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 108916.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 107583.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 107416.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 107250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 106583.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 106250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 106083.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 105916.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 104916.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 102250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 98916.66666666667,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 98250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 93833.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 93777.77777777777,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 93722.22222222223,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 93666.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 93500.0,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 18.0
+      }
+    },
+    {
+      "HitTime": 93333.33333333333,
+      "Coordinates": {
+        "X": 28.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 93166.66666666667,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 93111.11111111111,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 93055.55555555556,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 93000.0,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 92833.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 92666.66666666667,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 18.0
+      }
+    },
+    {
+      "HitTime": 92500.0,
+      "Coordinates": {
+        "X": 28.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 92333.33333333333,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 92166.66666666667,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 92083.33333333333,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 92000.0,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 91416.66666666667,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 91333.33333333333,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 91250.0,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 90833.33333333333,
+      "Coordinates": {
+        "X": 34.0,
+        "Y": 22.0
+      }
+    },
+    {
+      "HitTime": 90750.0,
+      "Coordinates": {
+        "X": 34.0,
+        "Y": 22.0
+      }
+    },
+    {
+      "HitTime": 90666.66666666667,
+      "Coordinates": {
+        "X": 34.0,
+        "Y": 22.0
+      }
+    },
+    {
+      "HitTime": 90166.66666666667,
+      "Coordinates": {
+        "X": 33.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 90083.33333333333,
+      "Coordinates": {
+        "X": 33.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 90000.0,
+      "Coordinates": {
+        "X": 33.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 89500.0,
+      "Coordinates": {
+        "X": 32.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 89416.66666666667,
+      "Coordinates": {
+        "X": 32.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 89333.33333333333,
+      "Coordinates": {
+        "X": 32.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 87166.66666666667,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 22.0
+      }
+    },
+    {
+      "HitTime": 87083.33333333333,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 87000.0,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 20.0
+      }
+    },
+    {
+      "HitTime": 86916.66666666667,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 86833.33333333333,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 18.0
+      }
+    },
+    {
+      "HitTime": 86750.0,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 17.0
+      }
+    },
+    {
+      "HitTime": 86666.66666666667,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 16.0
+      }
+    },
+    {
+      "HitTime": 86583.33333333333,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86500.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86416.66666666667,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86333.33333333333,
+      "Coordinates": {
+        "X": 28.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86250.0,
+      "Coordinates": {
+        "X": 27.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86166.66666666667,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": 15.0
+      }
+    },
+    {
+      "HitTime": 86083.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 13.5
+      }
+    },
+    {
+      "HitTime": 86000.0,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 13.0
+      }
+    },
+    {
+      "HitTime": 85916.66666666667,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 12.5
+      }
+    },
+    {
+      "HitTime": 85833.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 12.0
+      }
+    },
+    {
+      "HitTime": 85750.0,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 11.5
+      }
+    },
+    {
+      "HitTime": 85666.66666666667,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 11.0
+      }
+    },
+    {
+      "HitTime": 85583.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 10.5
+      }
+    },
+    {
+      "HitTime": 85500.0,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 10.0
+      }
+    },
+    {
+      "HitTime": 85416.66666666667,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 9.5
+      }
+    },
+    {
+      "HitTime": 85333.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 9.0
+      }
+    },
+    {
+      "HitTime": 85250.0,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 8.5
+      }
+    },
+    {
+      "HitTime": 85166.66666666667,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 8.0
+      }
+    },
+    {
+      "HitTime": 85083.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 7.5
+      }
+    },
+    {
+      "HitTime": 85000.0,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 7.0
+      }
+    },
+    {
+      "HitTime": 84916.66666666667,
+      "Coordinates": {
+        "X": 25.25,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84833.33333333333,
+      "Coordinates": {
+        "X": 25.5,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84750.0,
+      "Coordinates": {
+        "X": 25.75,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84666.66666666667,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84583.33333333333,
+      "Coordinates": {
+        "X": 26.25,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84500.0,
+      "Coordinates": {
+        "X": 26.5,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84416.66666666667,
+      "Coordinates": {
+        "X": 26.75,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84333.33333333333,
+      "Coordinates": {
+        "X": 27.0,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84250.0,
+      "Coordinates": {
+        "X": 27.25,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84166.66666666667,
+      "Coordinates": {
+        "X": 27.5,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84083.33333333333,
+      "Coordinates": {
+        "X": 27.75,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 84000.0,
+      "Coordinates": {
+        "X": 28.0,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 83916.66666666667,
+      "Coordinates": {
+        "X": 28.25,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 83833.33333333333,
+      "Coordinates": {
+        "X": 28.5,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 83750.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 5.75
+      }
+    },
+    {
+      "HitTime": 83666.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 6.0
+      }
+    },
+    {
+      "HitTime": 83583.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 6.25
+      }
+    },
+    {
+      "HitTime": 83500.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 6.5
+      }
+    },
+    {
+      "HitTime": 83416.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 6.75
+      }
+    },
+    {
+      "HitTime": 83333.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 7.0
+      }
+    },
+    {
+      "HitTime": 83250.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 7.25
+      }
+    },
+    {
+      "HitTime": 83166.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 7.5
+      }
+    },
+    {
+      "HitTime": 83083.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 7.75
+      }
+    },
+    {
+      "HitTime": 83000.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 8.0
+      }
+    },
+    {
+      "HitTime": 82916.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 8.25
+      }
+    },
+    {
+      "HitTime": 82833.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 8.5
+      }
+    },
+    {
+      "HitTime": 82750.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 8.75
+      }
+    },
+    {
+      "HitTime": 82666.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 9.0
+      }
+    },
+    {
+      "HitTime": 82583.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 9.25
+      }
+    },
+    {
+      "HitTime": 82500.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 9.5
+      }
+    },
+    {
+      "HitTime": 82416.66666666667,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 9.75
+      }
+    },
+    {
+      "HitTime": 82333.33333333333,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 10.0
+      }
+    },
+    {
+      "HitTime": 82000.0,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 10.0
+      }
+    },
+    {
+      "HitTime": 81916.66666666667,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 10.0
+      }
+    },
+    {
+      "HitTime": 81833.33333333333,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 10.0
+      }
+    },
+    {
+      "HitTime": 81666.66666666666,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 8.0
+      }
+    },
+    {
+      "HitTime": 81333.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 79166.66666666667,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 79083.33333333333,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 79000.0,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 78833.33333333333,
+      "Coordinates": {
+        "X": 20.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 78666.66666666667,
+      "Coordinates": {
+        "X": 20.0,
+        "Y": -15.0
+      }
+    },
+    {
+      "HitTime": 78583.33333333333,
+      "Coordinates": {
+        "X": 20.0,
+        "Y": -15.0
+      }
+    },
+    {
+      "HitTime": 78500.0,
+      "Coordinates": {
+        "X": 20.0,
+        "Y": -15.0
+      }
+    },
+    {
+      "HitTime": 78333.33333333333,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -15.0
+      }
+    },
+    {
+      "HitTime": 78166.66666666667,
+      "Coordinates": {
+        "X": 21.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 78000.0,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 77833.33333333333,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -8.0
+      }
+    },
+    {
+      "HitTime": 77666.66666666667,
+      "Coordinates": {
+        "X": 21.0,
+        "Y": -8.0
+      }
+    },
+    {
+      "HitTime": 77500.0,
+      "Coordinates": {
+        "X": 21.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 77333.33333333333,
+      "Coordinates": {
+        "X": 23.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 77166.66666666667,
+      "Coordinates": {
+        "X": 23.0,
+        "Y": -9.0
+      }
+    },
+    {
+      "HitTime": 77000.0,
+      "Coordinates": {
+        "X": 21.0,
+        "Y": -9.0
+      }
+    },
+    {
+      "HitTime": 76333.33333333333,
+      "Coordinates": {
+        "X": 22.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 76000.0,
+      "Coordinates": {
+        "X": 22.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 75666.66666666667,
+      "Coordinates": {
+        "X": 22.0,
+        "Y": -11.0
+      }
+    },
+    {
+      "HitTime": 75500.0,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": -8.0
+      }
+    },
+    {
+      "HitTime": 75333.33333333333,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -8.0
+      }
+    },
+    {
+      "HitTime": 75166.66666666667,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -10.0
+      }
+    },
+    {
+      "HitTime": 75000.0,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": -10.0
+      }
+    },
+    {
+      "HitTime": 74833.33333333333,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": -12.0
+      }
+    },
+    {
+      "HitTime": 74666.66666666667,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -12.0
+      }
+    },
+    {
+      "HitTime": 74500.0,
+      "Coordinates": {
+        "X": 24.0,
+        "Y": -14.0
+      }
+    },
+    {
+      "HitTime": 74333.33333333333,
+      "Coordinates": {
+        "X": 26.0,
+        "Y": -14.0
+      }
+    },
+    {
+      "HitTime": 73666.66666666667,
+      "Coordinates": {
+        "X": 15.0,
+        "Y": -13.0
+      }
+    },
+    {
+      "HitTime": 73333.33333333333,
+      "Coordinates": {
+        "X": 8.0,
+        "Y": -6.0
+      }
+    },
+    {
+      "HitTime": 73000.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 72833.33333333333,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 72666.66666666667,
+      "Coordinates": {
+        "X": 2.0,
+        "Y": 1.0
+      }
+    },
+    {
+      "HitTime": 72500.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 1.0
+      }
+    },
+    {
+      "HitTime": 72333.33333333333,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 72166.66666666667,
+      "Coordinates": {
+        "X": -2.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 72000.0,
+      "Coordinates": {
+        "X": -2.0,
+        "Y": 1.0
+      }
+    },
+    {
+      "HitTime": 71833.33333333333,
+      "Coordinates": {
+        "X": -4.0,
+        "Y": 1.0
+      }
+    },
+    {
+      "HitTime": 71666.66666666667,
+      "Coordinates": {
+        "X": -4.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 70416.66666666667,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 68472.22222222223,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 68250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 68027.77777777777,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 67805.55555555556,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 67583.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 67361.11111111111,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 67138.88888888889,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 66916.66666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 66694.44444444444,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 66472.22222222223,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 66250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 65916.66666666667,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 65583.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 50583.333333333336,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 50250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 49583.333333333336,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 48916.666666666664,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 48250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 45250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 44916.666666666664,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 40250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 36833.333333333336,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 34250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 28916.666666666668,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 28250.0,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 18250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 17250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 16916.666666666668,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 7583.333333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 7250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 6916.666666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 3833.3333333333335,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 2250.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 2166.6666666666665,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 1916.6666666666667,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    }
+  ],
+  "HoldNotes": [
+    {
+      "HitTime": 94000.0,
+      "EndTime": 94333.33333333333,
+      "Coordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      },
+      "EndCoordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 91666.66666666667,
+      "EndTime": 91833.33333333333,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      },
+      "EndCoordinates": {
+        "X": 29.0,
+        "Y": 19.0
+      }
+    },
+    {
+      "HitTime": 91000.0,
+      "EndTime": 91166.66666666667,
+      "Coordinates": {
+        "X": 32.5,
+        "Y": 22.5
+      },
+      "EndCoordinates": {
+        "X": 31.0,
+        "Y": 21.0
+      }
+    },
+    {
+      "HitTime": 90333.33333333333,
+      "EndTime": 90500.0,
+      "Coordinates": {
+        "X": 30.0,
+        "Y": 24.0
+      },
+      "EndCoordinates": {
+        "X": 29.5,
+        "Y": 22.0
+      }
+    },
+    {
+      "HitTime": 89666.66666666667,
+      "EndTime": 89833.33333333333,
+      "Coordinates": {
+        "X": 32.0,
+        "Y": 25.0
+      },
+      "EndCoordinates": {
+        "X": 30.0,
+        "Y": 24.0
+      }
+    },
+    {
+      "HitTime": 89000.0,
+      "EndTime": 89166.66666666667,
+      "Coordinates": {
+        "X": 34.0,
+        "Y": 25.0
+      },
+      "EndCoordinates": {
+        "X": 32.0,
+        "Y": 25.0
+      }
+    },
+    {
+      "HitTime": 87250.0,
+      "EndTime": 88666.66666666667,
+      "Coordinates": {
+        "X": 31.0,
+        "Y": 23.0
+      },
+      "EndCoordinates": {
+        "X": 35.0,
+        "Y": 23.0
+      }
+    },
+    {
+      "HitTime": 81000.0,
+      "EndTime": 81166.66666666667,
+      "Coordinates": {
+        "X": 23.0,
+        "Y": 1.0
+      },
+      "EndCoordinates": {
+        "X": 23.0,
+        "Y": 3.0
+      }
+    },
+    {
+      "HitTime": 80666.66666666667,
+      "EndTime": 80833.33333333333,
+      "Coordinates": {
+        "X": 25.0,
+        "Y": -1.0
+      },
+      "EndCoordinates": {
+        "X": 23.0,
+        "Y": -1.0
+      }
+    },
+    {
+      "HitTime": 79666.66666666667,
+      "EndTime": 80000.0,
+      "Coordinates": {
+        "X": 26.5,
+        "Y": -3.5
+      },
+      "EndCoordinates": {
+        "X": 27.5,
+        "Y": -1.0
+      }
+    },
+    {
+      "HitTime": 76833.33333333333,
+      "EndTime": 76861.11111111111,
+      "Coordinates": {
+        "X": 21.0,
+        "Y": -9.0
+      },
+      "EndCoordinates": {
+        "X": 21.0,
+        "Y": -9.0
+      }
+    },
+    {
+      "HitTime": 70250.0,
+      "EndTime": 70333.33333333333,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      },
+      "EndCoordinates": {
+        "X": -0.0,
+        "Y": -0.0
+      }
+    },
+    {
+      "HitTime": 39583.333333333336,
+      "EndTime": 39666.666666666664,
+      "Coordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      },
+      "EndCoordinates": {
+        "X": -0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "HitTime": 916.6666666666666,
+      "EndTime": 1000.0,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      },
+      "EndCoordinates": {
+        "X": 0.0,
+        "Y": -0.0
+      }
+    }
+  ],
+  "EditorSettings": {
+    "TrackTime": 69750.0,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 180.0,
+    "FastestBPM": 180.0,
+    "StoryLength": 111000.0,
+    "CommandCount": 54,
+    "NoteCount": 195
+  }
+}

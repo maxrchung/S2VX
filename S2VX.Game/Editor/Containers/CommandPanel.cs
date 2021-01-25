@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
@@ -16,6 +17,8 @@ using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
+        [Resolved]
+        private EditorScreen Editor { get; set; } = null;
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
@@ -61,7 +64,7 @@ namespace S2VX.Game.Editor.Containers {
                 }
             );
 
-        private void LoadCommandsList() {
+        public void LoadCommandsList() {
             CommandsList.Clear();
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
@@ -172,15 +175,9 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
-        public void HandleAddCommand(S2VXCommand command) {
-            Story.AddCommand(command);
-            LoadCommandsList();
-        }
+        public void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(Story, command, this));
 
-        public void HandleRemoveCommand(S2VXCommand command) {
-            Story.RemoveCommand(command);
-            LoadCommandsList();
-        }
+        public void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(Story, command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
             ErrorContainer.Clear();
