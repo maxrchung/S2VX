@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 namespace StoryMerge {
     internal class Program {
         private static async Task<int> Main(string[] args) {
-            var cmd = new RootCommand
-            {
+            var root = new RootCommand {
                 new Option<string[]>(
                     new []{"--inputs", "-i" },
                     "File inputs to merge"
@@ -18,15 +17,21 @@ namespace StoryMerge {
                 ),
             };
 
-            cmd.Handler = CommandHandler.Create<string[], string, IConsole>(MergeStories);
+            root.Handler = CommandHandler.Create(
+                (string[] inputs, string output, IConsole console) => {
+                    var result = StoryMerger.Merge(inputs, output);
+                    console.Out.WriteLine();
+                    console.Out.WriteLine($"Merge was {(result.IsSuccessful ? "successful" : "not successful")}");
+                    console.Out.WriteLine(result.Message);
+                    console.Out.WriteLine();
 
-            return await cmd.InvokeAsync(args);
-        }
+                    // Invoking help manually: https://github.com/dotnet/command-line-api/issues/1087#issuecomment-730634029
+                    if (!result.IsSuccessful) {
+                        root.InvokeAsync("--help");
+                    }
 
-        private static void MergeStories(string[] inputs, string output, IConsole console) {
-            var result = StoryMerger.Merge(inputs, output);
-            console.Out.WriteLine($"Merge was {(result.IsSuccessful ? "successful" : "not successful")}");
-            console.Out.WriteLine(result.Message);
+                });
+            return await root.InvokeAsync(args);
         }
     }
 }
