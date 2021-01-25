@@ -3,15 +3,7 @@ using S2VX.Game.Story.Note;
 using System.Collections.Generic;
 
 namespace StoryMerge {
-    public class NotesMerger {
-        private List<S2VXStory> InputStories { get; set; }
-        private S2VXStory OutputStory { get; set; }
-
-        public NotesMerger(List<S2VXStory> inputStories, S2VXStory outputStory) {
-            InputStories = inputStories;
-            OutputStory = outputStory;
-        }
-
+    public static class NotesMerger {
         /// <summary>
         /// Note that conflicts will be reported for any notes that share the
         /// same start/end times. This is to prevent a player from trying to
@@ -26,15 +18,15 @@ namespace StoryMerge {
         /// (0-0, 0-1000)
         /// (0-1000, 500-1500)
         /// </summary>
-        public Result Merge() {
+        public static Result Merge(List<S2VXStory> inputStories, S2VXStory outputStory) {
             var infos = new List<NoteTimeInfo>();
-            foreach (var input in InputStories) {
+            foreach (var input in inputStories) {
                 foreach (var note in input.Notes.GetNonHoldNotes()) {
-                    OutputStory.AddNote(CopyNote(note));
+                    outputStory.AddNote(CopyNote(note));
                     infos.Add(new NoteTimeInfo(note));
                 }
                 foreach (var holdNote in input.Notes.GetHoldNotes()) {
-                    OutputStory.AddHoldNote(CopyHoldNote(holdNote));
+                    outputStory.AddHoldNote(CopyHoldNote(holdNote));
                     infos.Add(new NoteTimeInfo(holdNote));
                 }
             }

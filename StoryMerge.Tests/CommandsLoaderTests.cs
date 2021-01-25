@@ -11,15 +11,13 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom1000To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new CommandsMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = CommandsMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -41,16 +39,14 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new CommandsMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = CommandsMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -76,14 +72,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new CommandsMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = CommandsMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -105,14 +99,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NotesAlphaFrom500To1500.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new CommandsMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = CommandsMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -134,14 +126,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/GridAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom0To0.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new CommandsMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = CommandsMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]

@@ -8,7 +8,7 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var merger = new InputsLoader(new[] {
+                var (result, _) = InputsLoader.Load(new[] {
                     "Samples/GridAlphaFrom0To0.s2ry",
                     "Samples/HoldNoteFrom0To1000.s2ry",
                     "Samples/HoldNoteFrom500To1500.s2ry",
@@ -18,7 +18,7 @@ namespace StoryMerge.Tests {
                     "Samples/NotesAlphaFrom1000To1000.s2ry",
                     "Samples/NotesAlphaFrom500To1500.s2ry",
                 });
-                Result = merger.Load();
+                Result = result;
             }
 
             [Test]
@@ -35,11 +35,11 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var merger = new InputsLoader(new[] {
+                var (result, _) = InputsLoader.Load(new[] {
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/InvalidStory.s2ry"
                 });
-                Result = merger.Load();
+                Result = result;
             }
 
             [Test]

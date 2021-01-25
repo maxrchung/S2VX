@@ -24,7 +24,7 @@ namespace StoryMerge {
         }
 
         private static void MergeStories(string[] inputs, string output, IConsole console) {
-            var result = new StoryMerger(inputs, output).Merge();
+            var result = StoryMerger.Merge(inputs, output);
             console.Out.WriteLine($"Merge was {(result.IsSuccessful ? "successful" : "not successful")}");
             console.Out.WriteLine(result.Message);
         }

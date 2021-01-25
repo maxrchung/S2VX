@@ -7,11 +7,11 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var validator = new ParameterValidator(new[] {
+                var result = ParameterValidator.Validate(new[] {
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry"
                 }, "output.s2ry");
-                Result = validator.Validate();
+                Result = result;
             }
 
             [Test]
@@ -28,8 +28,8 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var validator = new ParameterValidator(null, "output.s2ry");
-                Result = validator.Validate();
+                var result = ParameterValidator.Validate(null, "output.s2ry");
+                Result = result;
             }
 
             [Test]
@@ -46,10 +46,10 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var validator = new ParameterValidator(new[] {
+                var result = ParameterValidator.Validate(new[] {
                     "Samples/input1.s2ry"
                 }, "output.s2ry");
-                Result = validator.Validate();
+                Result = result;
             }
 
             [Test]
@@ -66,11 +66,11 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var validator = new ParameterValidator(new[] {
+                var result = ParameterValidator.Validate(new[] {
                     "Samples/input1.s2ry",
                     "Samples/input2.s2ry"
                 }, null);
-                Result = validator.Validate();
+                Result = result;
             }
 
             [Test]
@@ -87,11 +87,11 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var validator = new ParameterValidator(new[] {
+                var result = ParameterValidator.Validate(new[] {
                     "Samples/NotesAlphaFrom0To0.s2ry",
                     "Samples/NonexistentFile.s2ry"
                 }, "output.s2ry");
-                Result = validator.Validate();
+                Result = result;
             }
 
             [Test]

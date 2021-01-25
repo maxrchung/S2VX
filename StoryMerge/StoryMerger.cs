@@ -1,36 +1,25 @@
 ﻿using S2VX.Game.Story;
-using System.Collections.Generic;
 
 namespace StoryMerge {
-    public class StoryMerger {
-        private string[] Inputs { get; set; }
-        private string Output { get; set; }
-        private List<S2VXStory> InputStories { get; set; } = new List<S2VXStory>();
-
-        public StoryMerger(string[] inputs, string output) {
-            Inputs = inputs;
-            Output = output;
-        }
-
-        public Result Merge() {
-            var result = new ParameterValidator(Inputs, Output).Validate();
-            if (!result.IsSuccessful) {
-                return result;
+    public static class StoryMerger {
+        public static Result Merge(string[] inputs, string output) {
+            var validateResult = ParameterValidator.Validate(inputs, output);
+            if (!validateResult.IsSuccessful) {
+                return validateResult;
             }
 
-            var loader = new InputsLoader(Inputs);
-            result = loader.Load();
-            if (!result.IsSuccessful) {
-                return result;
+            var (loadResult, loadedStories) = InputsLoader.Load(inputs);
+            if (!loadResult.IsSuccessful) {
+                return validateResult;
             }
 
             var outputStory = new S2VXStory();
-            var notesResult = new NotesMerger(loader.LoadedStories, outputStory).Merge();
-            var commandsResult = new CommandsMerger(loader.LoadedStories, outputStory).Merge();
-            outputStory.Save(Output);
+            var notesResult = NotesMerger.Merge(loadedStories, outputStory);
+            var commandsResult = CommandsMerger.Merge(loadedStories, outputStory);
+            outputStory.Save(output);
 
             var messages = new[] {
-                $"Merged {Inputs.Length} stories into \"{Output}\"",
+                $"Merged {inputs.Length} stories into \"{output}\"",
                 notesResult.Message,
                 commandsResult.Message
             };

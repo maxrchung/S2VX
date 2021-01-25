@@ -11,7 +11,7 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var merger = new StoryMerger(new[] {
+                Result = StoryMerger.Merge(new[] {
                     "Samples/NotesAlphaFrom1000To1000.s2ry",
                     "Samples/NotesAlphaFrom0To1000.s2ry",
                     "Samples/NotesAlphaFrom0To0.s2ry",
@@ -19,7 +19,6 @@ namespace StoryMerge.Tests {
                     "Samples/HoldNoteFrom500To1500.s2ry",
                     "Samples/NoteAt0.s2ry",
                 }, "output.s2ry");
-                Result = merger.Merge();
                 ExpectedOutput = File.ReadAllText("Samples/ExpectedOutput.s2ry");
                 ActualOutput = File.ReadAllText("output.s2ry");
             }

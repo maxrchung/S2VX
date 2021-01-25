@@ -10,14 +10,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NoteAt0.s2ry",
                     "Samples/HoldNoteFrom500To1500.s2ry"
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new NotesMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = NotesMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -47,16 +45,14 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NoteAt0.s2ry",
                     "Samples/NoteAt0.s2ry",
                     "Samples/HoldNoteFrom0To1000.s2ry",
                     "Samples/HoldNoteFrom0To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new NotesMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = NotesMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -90,14 +86,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/NoteAt0.s2ry",
                     "Samples/HoldNoteFrom0To1000.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new NotesMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = NotesMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]
@@ -127,14 +121,12 @@ namespace StoryMerge.Tests {
 
             [SetUp]
             public void SetUp() {
-                var loader = new InputsLoader(new[] {
+                var (_, loadedStories) = InputsLoader.Load(new[] {
                     "Samples/HoldNoteFrom0To1000.s2ry",
                     "Samples/HoldNoteFrom500To1500.s2ry",
                 });
-                loader.Load();
                 OutputStory = new S2VXStory();
-                var merger = new NotesMerger(loader.LoadedStories, OutputStory);
-                Result = merger.Merge();
+                Result = NotesMerger.Merge(loadedStories, OutputStory);
             }
 
             [Test]

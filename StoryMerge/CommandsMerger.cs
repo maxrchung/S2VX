@@ -2,15 +2,7 @@
 using System.Collections.Generic;
 
 namespace StoryMerge {
-    public class CommandsMerger {
-        private List<S2VXStory> InputStories { get; set; }
-        private S2VXStory OutputStory { get; set; }
-
-        public CommandsMerger(List<S2VXStory> inputStories, S2VXStory outputStory) {
-            InputStories = inputStories;
-            OutputStory = outputStory;
-        }
-
+    public static class CommandsMerger {
         /// <summary>
         /// Note that different from notes, commands can share time boundaries.
         /// For example, (0-0, 0-1000) is valid. However, duplicate commands,
@@ -25,11 +17,11 @@ namespace StoryMerge {
         /// (0-0, 0-0)
         /// (0-1000, 500-1500)
         /// </summary>
-        public Result Merge() {
+        public static Result Merge(List<S2VXStory> inputStories, S2VXStory outputStory) {
             var infos = new List<CommandTimeInfo>();
-            foreach (var input in InputStories) {
+            foreach (var input in inputStories) {
                 foreach (var command in input.Commands) {
-                    OutputStory.AddCommand(command);
+                    outputStory.AddCommand(command);
                     infos.Add(new CommandTimeInfo(command));
                 }
             }
