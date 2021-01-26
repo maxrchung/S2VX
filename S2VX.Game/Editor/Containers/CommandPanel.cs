@@ -31,10 +31,10 @@ namespace S2VX.Game.Editor.Containers {
         private Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = InputSize.X };
         private TextBox TxtStartValue { get; } = new BasicTextBox() { Size = InputSize };
         private TextBox TxtEndValue { get; } = new BasicTextBox() { Size = InputSize };
-        private Button BtnAdd { get; } = new BasicButton() {
+        private Button BtnAdd { get; } = new IconButton() {
             Width = InputSize.Y,
             Height = InputSize.Y,
-            Text = "+"
+            Icon = FontAwesome.Solid.Plus
         };
 
         private readonly FillFlowContainer CommandsList = new FillFlowContainer {
@@ -47,7 +47,9 @@ namespace S2VX.Game.Editor.Containers {
             RelativeSizeAxes = Axes.Both,
         };
 
-        private void AddInput(string text, Drawable input) => InputBar.Add(
+        private void AddInput(string text, Drawable input) => AddInput(text, input, InputBar);
+
+        private static void AddInput(string text, Drawable input, FillFlowContainer inputBar) => inputBar.Add(
                 new FillFlowContainer {
                     AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Vertical,
@@ -68,14 +70,18 @@ namespace S2VX.Game.Editor.Containers {
                     var localIndex = i;
                     CommandsList.Add(new FillFlowContainer {
                         AutoSizeAxes = Axes.Both,
-                        Children = new Drawable[]
-                        {
-                            new BasicButton
-                            {
+                        Children = new Drawable[] {
+                            new IconButton {
                                 Action = () => HandleRemoveClick(localIndex),
                                 Width = InputSize.Y,
                                 Height = InputSize.Y,
-                                Text = "-"
+                                Icon = FontAwesome.Solid.Trash
+                            },
+                            new IconButton {
+                                Action = () => HandleCopyClick(localIndex),
+                                Width = InputSize.Y,
+                                Height = InputSize.Y,
+                                Icon = FontAwesome.Solid.Clone
                             },
                             new SpriteText {
                                 Text = command.ToString()
@@ -86,8 +92,10 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
-        private void AddErrorIndicator() {
-            ErrorContainer.Add(new Box {
+        private void AddErrorIndicator() => AddErrorIndicator(ErrorContainer);
+
+        private static void AddErrorIndicator(Container errorContainer) {
+            errorContainer.Add(new Box {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.TopCentre,
@@ -98,7 +106,7 @@ namespace S2VX.Game.Editor.Containers {
                 Y = .0555f,
                 X = -.025f,
             });
-            ErrorContainer.Add(new Box {
+            errorContainer.Add(new Box {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.TopCentre,
@@ -109,7 +117,7 @@ namespace S2VX.Game.Editor.Containers {
                 Y = .095f,
                 X = -.025f,
             });
-            ErrorContainer.Add(new Box {
+            errorContainer.Add(new Box {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.TopLeft,
@@ -120,7 +128,7 @@ namespace S2VX.Game.Editor.Containers {
                 Y = .075f,
                 X = 0,
             });
-            ErrorContainer.Add(new Box {
+            errorContainer.Add(new Box {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.TopRight,
@@ -162,6 +170,8 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
 
+        private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
+
         public void HandleAddCommand(S2VXCommand command) {
             Story.AddCommand(command);
             LoadCommandsList();
@@ -169,6 +179,19 @@ namespace S2VX.Game.Editor.Containers {
 
         public void HandleRemoveCommand(S2VXCommand command) {
             Story.RemoveCommand(command);
+            LoadCommandsList();
+        }
+
+        private void HandleCopyCommand(S2VXCommand command) {
+            ErrorContainer.Clear();
+            var data = command.ToString().Split('{', '|', '}');
+
+            DropType.Current.Value = data[0];
+            TxtStartTime.Text = data[1];
+            TxtEndTime.Text = data[2];
+            DropEasing.Current.Value = data[3];
+            TxtStartValue.Text = data[4];
+            TxtEndValue.Text = data[5];
             LoadCommandsList();
         }
 
