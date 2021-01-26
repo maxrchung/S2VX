@@ -64,7 +64,7 @@ namespace S2VX.Game.Editor.Containers {
                 }
             );
 
-        public void LoadCommandsList() {
+        private void LoadCommandsList() {
             CommandsList.Clear();
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
@@ -175,9 +175,9 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
-        private void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(Story, command, this));
+        private void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(command, this));
 
-        private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(Story, command, this));
+        private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
             ErrorContainer.Clear();
