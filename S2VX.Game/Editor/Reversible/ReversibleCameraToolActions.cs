@@ -22,25 +22,25 @@ namespace S2VX.Game.Editor.Reversible {
 
         public void Undo() {
             if (MoveCommand != null) {
-                Editor.CommandPanel.HandleRemoveCommand(MoveCommand);
+                Editor.CommandPanel.RemoveCommand(MoveCommand);
             }
             if (ScaleCommand != null) {
-                Editor.CommandPanel.HandleRemoveCommand(ScaleCommand);
+                Editor.CommandPanel.RemoveCommand(ScaleCommand);
             }
             if (RotateCommand != null) {
-                Editor.CommandPanel.HandleRemoveCommand(RotateCommand);
+                Editor.CommandPanel.RemoveCommand(RotateCommand);
             }
         }
 
         public void Redo() {
             if (MoveCommand != null) {
-                Editor.CommandPanel.HandleAddCommand(MoveCommand);
+                Editor.CommandPanel.AddCommand(MoveCommand);
             }
             if (ScaleCommand != null) {
-                Editor.CommandPanel.HandleAddCommand(ScaleCommand);
+                Editor.CommandPanel.AddCommand(ScaleCommand);
             }
             if (RotateCommand != null) {
-                Editor.CommandPanel.HandleAddCommand(RotateCommand);
+                Editor.CommandPanel.AddCommand(RotateCommand);
             }
         }
     }

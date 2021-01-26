@@ -175,9 +175,9 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
-        public void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(Story, command, this));
+        private void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(Story, command, this));
 
-        public void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(Story, command, this));
+        private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(Story, command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
             ErrorContainer.Clear();
@@ -194,6 +194,18 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
             ErrorContainer.Clear();
+            LoadCommandsList();
+        }
+
+        // Used to non-reversibly add a command
+        public void AddCommand(S2VXCommand command) {
+            Story.AddCommand(command);
+            LoadCommandsList();
+        }
+
+        // Used to non-reversibly remove a command
+        public void RemoveCommand(S2VXCommand command) {
+            Story.RemoveCommand(command);
             LoadCommandsList();
         }
 
