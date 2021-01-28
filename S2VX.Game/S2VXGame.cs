@@ -10,7 +10,9 @@ namespace S2VX.Game {
         [BackgroundDependencyLoader]
         private void Load() {
             Screens.Push(new SongSelectionScreen());
-            Child = Screens;
+            Child = new SquareContainer {
+                Screens
+            };
         }
     }
 }
