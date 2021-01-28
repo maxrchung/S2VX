@@ -37,14 +37,25 @@ namespace S2VX.Game.Editor.Containers {
             Icon = FontAwesome.Solid.Plus
         };
 
-        private readonly FillFlowContainer CommandsList = new FillFlowContainer {
-            AutoSizeAxes = Axes.Both,
-            Direction = FillDirection.Vertical
-        };
-
         private Container ErrorContainer { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
+        };
+
+        private FillFlowContainer EditInputBar { get; set; }
+        private Dropdown<string> EditDropType { get; set; }
+        private TextBox EditTxtStartTime { get; set; }
+        private TextBox EditTxtEndTime { get; set; }
+        private Dropdown<string> EditDropEasing { get; set; }
+        private TextBox EditTxtStartValue { get; set; }
+        private TextBox EditTxtEndValue { get; set; }
+        private int EditCommandIndex { get; set; } = -1;
+
+        private Container EditErrorContainer { get; set; }
+
+        private readonly FillFlowContainer CommandsList = new FillFlowContainer {
+            AutoSizeAxes = Axes.Both,
+            Direction = FillDirection.Vertical
         };
 
         private void AddInput(string text, Drawable input) => AddInput(text, input, InputBar);
@@ -68,26 +79,53 @@ namespace S2VX.Game.Editor.Containers {
                 var command = Story.Commands[i];
                 if (type == "All Commands" || type == command.GetCommandName()) {
                     var localIndex = i;
-                    CommandsList.Add(new FillFlowContainer {
-                        AutoSizeAxes = Axes.Both,
-                        Children = new Drawable[] {
-                            new IconButton {
-                                Action = () => HandleRemoveClick(localIndex),
-                                Width = InputSize.Y,
-                                Height = InputSize.Y,
-                                Icon = FontAwesome.Solid.Trash
-                            },
-                            new IconButton {
-                                Action = () => HandleCopyClick(localIndex),
-                                Width = InputSize.Y,
-                                Height = InputSize.Y,
-                                Icon = FontAwesome.Solid.Clone
-                            },
-                            new SpriteText {
-                                Text = command.ToString()
-                            },
-                        }
-                    });
+                    if (EditCommandIndex == localIndex) {
+                        CommandsList.Add(new FillFlowContainer {
+                            AutoSizeAxes = Axes.Both,
+                            Children = new Drawable[] {
+                                new IconButton {
+                                    Action = () => HandleCancelCommand(),
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Times
+                                },
+                                new IconButton {
+                                    Action = () => HandleCopyClick(localIndex), // TODO: implement save
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Save
+                                }
+                            }
+                        });
+                        CommandsList.Add(EditInputBar);
+                    } else {
+                        CommandsList.Add(new FillFlowContainer {
+                            AutoSizeAxes = Axes.Both,
+                            Children = new Drawable[] {
+                                new IconButton {
+                                    Action = () => HandleRemoveClick(localIndex),
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Trash
+                                },
+                                new IconButton {
+                                    Action = () => HandleCopyClick(localIndex),
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Clone
+                                },
+                                new IconButton {
+                                    Action = () => HandleEditClick(localIndex),
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Edit
+                                },
+                                new SpriteText {
+                                    Text = command.ToString()
+                                },
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -172,6 +210,16 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
+        private void HandleEditClick(int commandIndex) {
+            EditCommandIndex = commandIndex;
+            HandleEditCommand(Story.Commands[commandIndex]);
+        }
+
+        private void HandleCancelCommand() {
+            EditCommandIndex = -1;
+            LoadCommandsList();
+        }
+
         public void HandleAddCommand(S2VXCommand command) {
             Story.AddCommand(command);
             LoadCommandsList();
@@ -195,8 +243,46 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
+        private void HandleEditCommand(S2VXCommand command) {
+            EditInputBar = new FillFlowContainer { AutoSizeAxes = Axes.Both };
+            EditErrorContainer = new Container {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+            };
+            EditDropType = new BasicDropdown<string> {
+                Width = 160
+            };
+            EditTxtStartTime = new BasicTextBox() { Size = InputSize };
+            EditTxtEndTime = new BasicTextBox() { Size = InputSize };
+            EditDropEasing = new BasicDropdown<string> { Width = InputSize.X };
+            EditTxtStartValue = new BasicTextBox() { Size = InputSize };
+            EditTxtEndValue = new BasicTextBox() { Size = InputSize };
+
+            var data = command.ToString().Split('{', '|', '}');
+
+            EditDropType.Current.Value = data[0];
+            EditTxtStartTime.Text = data[1];
+            EditTxtEndTime.Text = data[2];
+            EditDropEasing.Current.Value = data[3];
+            EditTxtStartValue.Text = data[4];
+            EditTxtEndValue.Text = data[5];
+
+            EditDropType.Items = S2VXCommand.GetCommandNames();
+            EditDropEasing.Items = Enum.GetNames(typeof(Easing));
+            AddInput("Type", EditDropType, EditInputBar);
+            AddInput("StartTime", EditTxtStartTime, EditInputBar);
+            AddInput("EndTime", EditTxtEndTime, EditInputBar);
+            AddInput("Easing", EditDropEasing, EditInputBar);
+            AddInput("StartValue", EditTxtStartValue, EditInputBar);
+            AddInput("EndValue", EditTxtEndValue, EditInputBar);
+            LoadCommandsList();
+        }
+
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
             ErrorContainer.Clear();
+            if (EditCommandIndex > 0 && e.NewValue != Story.Commands[EditCommandIndex].GetCommandName()) {
+                HandleCancelCommand();  // Cancel the now-hidden edit bar
+            }
             LoadCommandsList();
         }
 
