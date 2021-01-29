@@ -6,6 +6,6 @@ namespace S2VX.Game.Tests {
     public class S2VXTestScene : TestScene {
         protected override Container<Drawable> Content { get; }
 
-        protected S2VXTestScene() => base.Content.Add(Content = new SquareContainer());
+        public S2VXTestScene() => base.Content.Add(Content = new SquareContainer());
     }
 }
