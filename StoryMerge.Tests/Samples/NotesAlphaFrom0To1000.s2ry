@@ -1,0 +1,13 @@
+﻿{
+  "Commands": [
+    {
+      "Type": "NotesAlpha",
+      "StartTime": 0,
+      "EndTime": 1000
+    }
+  ],
+  "Notes": [],
+  "HoldNotes": [],
+  "EditorSettings": {},
+  "DifficultySettings": {}
+}

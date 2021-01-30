@@ -1,0 +1,12 @@
+﻿{
+  "Commands": [],
+  "Notes": [],
+  "HoldNotes": [
+    {
+      "HitTime": 0,
+      "EndTime": 1000
+    }
+  ],
+  "EditorSettings": {},
+  "DifficultySettings": {}
+}
