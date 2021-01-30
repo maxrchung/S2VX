@@ -213,7 +213,6 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
-<<<<<<< HEAD
         private void HandleEditClick(int commandIndex) {
             EditCommandIndex = commandIndex;
             HandleEditCommand(Story.Commands[commandIndex]);
@@ -226,13 +225,7 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        public void HandleAddCommand(S2VXCommand command) {
-            Story.AddCommand(command);
-            LoadCommandsList();
-        }
-=======
         private void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(command, this));
->>>>>>> master
 
         private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
 
