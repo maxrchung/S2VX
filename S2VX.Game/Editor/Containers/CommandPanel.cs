@@ -278,7 +278,7 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        private void HandleSaveCommand(S2VXCommand oldCommand) {
+        private void HandleSaveCommand(S2VXCommand oldCommand) {  // TODO: make this reversible
             EditErrorContainer.Clear();
             var data = new string[]
             {
@@ -289,11 +289,10 @@ namespace S2VX.Game.Editor.Containers {
                 $"{EditTxtStartValue.Current.Value}",
                 $"{EditTxtEndValue.Current.Value}"
             };
-            var join = string.Join("|", data);
+            var commandString = string.Join("|", data);
             var addSuccessful = false;
             try {
-                var command = S2VXCommand.FromString(join);
-                Story.AddCommand(command);  // Can't use HandleAddCommand because it will dispose and try to re-add the EditInputBar
+                Editor.Reversibles.Push(new ReversibleUpdateCommand(commandString, oldCommand, this, Story));
                 addSuccessful = true;
             } catch (FormatException ex) {
                 AddErrorIndicator(EditErrorContainer);
@@ -306,7 +305,6 @@ namespace S2VX.Game.Editor.Containers {
                 Console.WriteLine(ex);
             }
             if (addSuccessful) {
-                Story.RemoveCommand(oldCommand);  // Can't use HandleRemoveCommand for the same reason
                 EditCommandIndex = -1;
                 LoadCommandsList();
             }
@@ -318,13 +316,13 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        // Used to non-reversibly add a command
+        // Non-reversibly add a command and reload command list
         public void AddCommand(S2VXCommand command) {
             Story.AddCommand(command);
             LoadCommandsList();
         }
 
-        // Used to non-reversibly remove a command
+        // Non-reversibly remove a command and reload command list
         public void RemoveCommand(S2VXCommand command) {
             Story.RemoveCommand(command);
             LoadCommandsList();
