@@ -90,7 +90,7 @@ namespace S2VX.Game.Editor.Containers {
                                     Icon = FontAwesome.Solid.Times
                                 },
                                 new IconButton {
-                                    Action = () => HandleCopyClick(localIndex), // TODO: implement save
+                                    Action = () => HandleSaveClick(localIndex),
                                     Width = InputSize.Y,
                                     Height = InputSize.Y,
                                     Icon = FontAwesome.Solid.Save
@@ -215,6 +215,8 @@ namespace S2VX.Game.Editor.Containers {
             HandleEditCommand(Story.Commands[commandIndex]);
         }
 
+        private void HandleSaveClick(int commandIndex) => HandleSaveCommand(Story.Commands[commandIndex]);
+
         private void HandleCancelCommand() {
             EditCommandIndex = -1;
             LoadCommandsList();
@@ -245,10 +247,11 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleEditCommand(S2VXCommand command) {
             EditInputBar = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-            EditErrorContainer = new Container {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-            };
+            EditErrorContainer = new Container { }; // TODO: fix this
+            //    RelativePositionAxes = Axes.Both,
+            //    RelativeSizeAxes = Axes.Both,
+            //};
+            EditInputBar.Add(EditErrorContainer);
             EditDropType = new BasicDropdown<string> {
                 Width = 160
             };
@@ -278,11 +281,43 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
+        private void HandleSaveCommand(S2VXCommand oldCommand) {
+            EditErrorContainer.Clear();
+            var data = new string[]
+            {
+                $"{EditDropType.Current.Value}",
+                $"{EditTxtStartTime.Current.Value}",
+                $"{EditTxtEndTime.Current.Value}",
+                $"{EditDropEasing.Current.Value}",
+                $"{EditTxtStartValue.Current.Value}",
+                $"{EditTxtEndValue.Current.Value}"
+            };
+            var join = string.Join("|", data);
+            var addSuccessful = false;
+            try {
+                var command = S2VXCommand.FromString(join);
+                Story.AddCommand(command);  // Can't use HandleAddCommand because it will dispose and try to re-add the EditInputBar
+                addSuccessful = true;
+            } catch (FormatException ex) {
+                AddErrorIndicator(EditErrorContainer);
+                Console.WriteLine(ex);
+            } catch (TargetInvocationException ex) {
+                AddErrorIndicator(EditErrorContainer);
+                Console.WriteLine(ex);
+            } catch (NullReferenceException ex) {
+                AddErrorIndicator(EditErrorContainer);
+                Console.WriteLine(ex);
+            }
+            if (addSuccessful) {
+                Story.RemoveCommand(oldCommand);  // Can't use HandleRemoveCommand for the same reason
+                EditCommandIndex = -1;
+                LoadCommandsList();
+            }
+        }
+
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
             ErrorContainer.Clear();
-            if (EditCommandIndex > 0 && e.NewValue != Story.Commands[EditCommandIndex].GetCommandName()) {
-                HandleCancelCommand();  // Cancel the now-hidden edit bar
-            }
+            HandleCancelCommand();  // Cancel edit if type filter is changed
             LoadCommandsList();
         }
 
@@ -313,9 +348,7 @@ namespace S2VX.Game.Editor.Containers {
             BtnAdd.Action = HandleAddClick;
 
             LoadCommandsList();
-
-            Children = new Drawable[]
-            {
+            Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 new BasicScrollContainer
                 {
