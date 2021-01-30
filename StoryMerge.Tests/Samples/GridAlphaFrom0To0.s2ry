@@ -1,0 +1,13 @@
+﻿{
+  "Commands": [
+    {
+      "Type": "GridAlpha",
+      "StartTime": 0,
+      "EndTime": 0
+    }
+  ],
+  "Notes": [],
+  "HoldNotes": [],
+  "EditorSettings": {},
+  "DifficultySettings": {}
+}
