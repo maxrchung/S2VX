@@ -168,16 +168,16 @@ namespace S2VX.Game.Story {
                 }
             }
 
-            var isActiveAdded = false;
             // Add new active commands
+            var isActiveAdded = false;
             while (NextActive < Commands.Count && Commands[NextActive].StartTime <= Time.Current) {
                 Actives.Add(Commands[NextActive++]);
                 isActiveAdded = true;
             }
 
-            // Actives need to be sorted by endTime to be processed retroactively
-            // Commands (0-10000, 4000-5000, 6000-11000). Command with 11000 needs to be applied last.
-            // Command 4000-5000 will be effectively ignored. 6000-11000 will be applied on top of 0-10000.
+            // Actives need to be sorted by EndTime to be processed in correct order. For example:
+            // Commands (0-10000, 4000-11000, 6000-8000) will be sorted to (6000-8000, 0-10000, 4000-11000). 
+            // Command with 11000 needs to be applied last. Command 6000-8000 will be effectively ignored. 
             if (isActiveAdded) {
                 Actives = Actives.OrderBy(command => command.EndTime).ToList();
             }
