@@ -52,7 +52,7 @@ namespace S2VX.Game.Editor.Containers {
         private Dropdown<string> EditDropEasing { get; set; }
         private TextBox EditTxtStartValue { get; set; }
         private TextBox EditTxtEndValue { get; set; }
-        private int EditCommandIndex { get; set; } = -1;
+        private S2VXCommand EditCommandReference { get; set; }
 
         private Container EditErrorContainer { get; set; }
 
@@ -82,7 +82,7 @@ namespace S2VX.Game.Editor.Containers {
                 var command = Story.Commands[i];
                 if (type == "All Commands" || type == command.GetCommandName()) {
                     var localIndex = i;
-                    if (EditCommandIndex == localIndex) {
+                    if (EditCommandReference == command) {
                         CommandsList.Add(new FillFlowContainer {
                             AutoSizeAxes = Axes.Both,
                             Children = new Drawable[] {
@@ -93,7 +93,7 @@ namespace S2VX.Game.Editor.Containers {
                                     Icon = FontAwesome.Solid.Times
                                 },
                                 new IconButton {
-                                    Action = () => HandleSaveClick(localIndex),
+                                    Action = () => HandleSaveCommand(command),
                                     Width = InputSize.Y,
                                     Height = InputSize.Y,
                                     Icon = FontAwesome.Solid.Save
@@ -118,7 +118,7 @@ namespace S2VX.Game.Editor.Containers {
                                     Icon = FontAwesome.Solid.Clone
                                 },
                                 new IconButton {
-                                    Action = () => HandleEditClick(localIndex),
+                                    Action = () => HandleEditClick(command),
                                     Width = InputSize.Y,
                                     Height = InputSize.Y,
                                     Icon = FontAwesome.Solid.Edit
@@ -213,15 +213,13 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
 
-        private void HandleEditClick(int commandIndex) {
-            EditCommandIndex = commandIndex;
-            HandleEditCommand(Story.Commands[commandIndex]);
+        private void HandleEditClick(S2VXCommand command) {
+            EditCommandReference = command;
+            HandleEditCommand(command);
         }
 
-        private void HandleSaveClick(int commandIndex) => HandleSaveCommand(Story.Commands[commandIndex]);
-
         private void HandleCancelCommand() {
-            EditCommandIndex = -1;
+            EditCommandReference = null;
             LoadCommandsList();
         }
 
@@ -278,7 +276,7 @@ namespace S2VX.Game.Editor.Containers {
             LoadCommandsList();
         }
 
-        private void HandleSaveCommand(S2VXCommand oldCommand) {  // TODO: make this reversible
+        private void HandleSaveCommand(S2VXCommand oldCommand) {
             EditErrorContainer.Clear();
             var data = new string[]
             {
@@ -305,7 +303,7 @@ namespace S2VX.Game.Editor.Containers {
                 Console.WriteLine(ex);
             }
             if (addSuccessful) {
-                EditCommandIndex = -1;
+                EditCommandReference = null;
                 LoadCommandsList();
             }
         }
