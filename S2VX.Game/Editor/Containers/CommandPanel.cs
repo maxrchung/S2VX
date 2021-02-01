@@ -47,9 +47,9 @@ namespace S2VX.Game.Editor.Containers {
             RelativeSizeAxes = Axes.Both,
         };
 
-        private void AddInput(string text, Drawable input) => AddInput(text, input, InputBar);
 
-        private static void AddInput(string text, Drawable input, FillFlowContainer inputBar) => inputBar.Add(
+        private void AddInput(string text, Drawable input) =>
+            InputBar.Add(
                 new FillFlowContainer {
                     AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Vertical,
@@ -60,6 +60,21 @@ namespace S2VX.Game.Editor.Containers {
                     }
                 }
             );
+
+        private void AddTabbableInput(string text, TabbableContainer input) {
+            InputBar.Add(
+                new FillFlowContainer {
+                    AutoSizeAxes = Axes.Both,
+                    Direction = FillDirection.Vertical,
+                    Children = new Drawable[]
+                    {
+                        new SpriteText { Text = text },
+                        input
+                    }
+                }
+            );
+            input.TabbableContentContainer = InputBar;
+        }
 
         private void LoadCommandsList() {
             CommandsList.Clear();
@@ -217,11 +232,11 @@ namespace S2VX.Game.Editor.Containers {
             AddInput("Type", DropType);
             DropType.Current.BindValueChanged(HandleTypeSelect);
 
-            AddInput("StartTime", TxtStartTime);
-            AddInput("EndTime", TxtEndTime);
+            AddTabbableInput("StartTime", TxtStartTime);
+            AddTabbableInput("EndTime", TxtEndTime);
+            AddTabbableInput("StartValue", TxtStartValue);
+            AddTabbableInput("EndValue", TxtEndValue);
             AddInput("Easing", DropEasing);
-            AddInput("StartValue", TxtStartValue);
-            AddInput("EndValue", TxtEndValue);
 
             AddInput(" ", BtnAdd);
             BtnAdd.Action = HandleAddClick;
