@@ -77,6 +77,10 @@ namespace S2VX.Game.Editor.Containers {
 
         private void LoadCommandsList() {
             CommandsList.Clear();
+            if (EditCommandReference != null) {
+                // Reconstruct EditInputBar since it has been disposed
+                HandleEditCommand(EditCommandReference);
+            }
             var type = DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
                 var command = Story.Commands[i];
@@ -215,7 +219,7 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleEditClick(S2VXCommand command) {
             EditCommandReference = command;
-            HandleEditCommand(command);
+            LoadCommandsList();
         }
 
         private void HandleCancelCommand() {
@@ -273,7 +277,6 @@ namespace S2VX.Game.Editor.Containers {
             AddInput("Easing", EditDropEasing, EditInputBar);
             AddInput("StartValue", EditTxtStartValue, EditInputBar);
             AddInput("EndValue", EditTxtEndValue, EditInputBar);
-            LoadCommandsList();
         }
 
         private void HandleSaveCommand(S2VXCommand oldCommand) {

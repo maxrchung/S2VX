@@ -26,7 +26,6 @@ namespace S2VX.Game.Editor.Reversible {
             NewCommand = S2VXCommand.FromString(CommandString);
             Story.AddCommand(NewCommand);
             CommandPanel.RemoveCommand(OldCommand);  // Add and update command panel
-            // Todo: Fix crashing when applying undo/redo while an edit window is open
         }
     }
 }
