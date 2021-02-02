@@ -29,7 +29,13 @@ namespace S2VX.Game.Editor.Containers {
                 Masking = true
             };
 
-        public CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleSaveClick) {
+        public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick) =>
+            new CommandPanelInputBar(false, handleTypeSelect, handleAddClick);
+
+        public static CommandPanelInputBar CreateEditInputBar(Action handleSaveClick) =>
+            new CommandPanelInputBar(true, _ => { }, handleSaveClick);
+
+        private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleSaveClick) {
             var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
             BtnSave = new IconButton() {
                 Width = CommandPanel.InputSize.Y,

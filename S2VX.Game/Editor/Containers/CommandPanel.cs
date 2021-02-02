@@ -31,10 +31,10 @@ namespace S2VX.Game.Editor.Containers {
         };
 
         private CommandPanelInputBar CreateAddInputBar() =>
-            new CommandPanelInputBar(false, HandleTypeSelect, HandleAddClick);
+            CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick);
 
         private CommandPanelInputBar CreateEditInputBar() =>
-            new CommandPanelInputBar(true, _ => { }, () => HandleSaveCommand(EditCommandReference));
+            CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
 
         private void LoadCommandsList() {
             CommandsList.Clear();
