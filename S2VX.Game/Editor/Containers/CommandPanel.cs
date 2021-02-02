@@ -65,17 +65,7 @@ namespace S2VX.Game.Editor.Containers {
             );
 
         private void AddTabbableInput(string text, TabbableContainer input) {
-            InputBar.Add(
-                new FillFlowContainer {
-                    AutoSizeAxes = Axes.Both,
-                    Direction = FillDirection.Vertical,
-                    Children = new Drawable[]
-                    {
-                        new SpriteText { Text = text },
-                        input
-                    }
-                }
-            );
+            AddInput(text, input);
             input.TabbableContentContainer = InputBar;
         }
 
