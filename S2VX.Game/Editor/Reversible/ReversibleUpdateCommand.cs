@@ -19,13 +19,14 @@ namespace S2VX.Game.Editor.Reversible {
 
         public void Undo() {
             Story.RemoveCommand(NewCommand);
-            CommandPanel.AddCommand(OldCommand);  // Add and update command panel
+            CommandPanel.AddCommand(OldCommand);  // Add and reload command panel
         }
 
-        public void Redo() {  // throws exception if CommandString is invalid
+        // Throws exception if CommandString is invalid
+        public void Redo() {
             NewCommand = S2VXCommand.FromString(CommandString);
             Story.AddCommand(NewCommand);
-            CommandPanel.RemoveCommand(OldCommand);  // Add and update command panel
+            CommandPanel.RemoveCommand(OldCommand);  // Add and reload command panel
         }
     }
 }

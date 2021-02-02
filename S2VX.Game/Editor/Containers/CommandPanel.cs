@@ -3,7 +3,6 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
@@ -29,20 +28,31 @@ namespace S2VX.Game.Editor.Containers {
         private Dropdown<string> DropType { get; } = new BasicDropdown<string> {
             Width = 160
         };
-        private TextBox TxtStartTime { get; } = new BasicTextBox() { Size = InputSize };
-        private TextBox TxtEndTime { get; } = new BasicTextBox() { Size = InputSize };
+        private TextBox TxtStartTime { get; } = new BasicTextBox() {
+            Size = InputSize,
+            BorderColour = Color4.Red,
+            Masking = true,
+        };
+        private TextBox TxtEndTime { get; } = new BasicTextBox() {
+            Size = InputSize,
+            BorderColour = Color4.Red,
+            Masking = true,
+        };
         private Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = InputSize.X };
-        private TextBox TxtStartValue { get; } = new BasicTextBox() { Size = InputSize };
-        private TextBox TxtEndValue { get; } = new BasicTextBox() { Size = InputSize };
+        private TextBox TxtStartValue { get; } = new BasicTextBox() {
+            Size = InputSize,
+            BorderColour = Color4.Red,
+            Masking = true,
+        };
+        private TextBox TxtEndValue { get; } = new BasicTextBox() {
+            Size = InputSize,
+            BorderColour = Color4.Red,
+            Masking = true,
+        };
         private Button BtnAdd { get; } = new IconButton() {
             Width = InputSize.Y,
             Height = InputSize.Y,
             Icon = FontAwesome.Solid.Plus
-        };
-
-        private Container ErrorContainer { get; } = new Container {
-            RelativePositionAxes = Axes.Both,
-            RelativeSizeAxes = Axes.Both,
         };
 
         private FillFlowContainer EditInputBar { get; set; }
@@ -53,8 +63,6 @@ namespace S2VX.Game.Editor.Containers {
         private TextBox EditTxtStartValue { get; set; }
         private TextBox EditTxtEndValue { get; set; }
         private S2VXCommand EditCommandReference { get; set; }
-
-        private Container EditErrorContainer { get; set; }
 
         private readonly FillFlowContainer CommandsList = new FillFlowContainer {
             AutoSizeAxes = Axes.Both,
@@ -137,57 +145,36 @@ namespace S2VX.Game.Editor.Containers {
             }
         }
 
-        private void AddErrorIndicator() => AddErrorIndicator(ErrorContainer);
+        private void AddErrorIndicator() {
+            TxtStartTime.BorderThickness = 5;
+            TxtEndTime.BorderThickness = 5;
+            TxtStartValue.BorderThickness = 5;
+            TxtEndValue.BorderThickness = 5;
+        }
 
-        private static void AddErrorIndicator(Container errorContainer) {
-            errorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.95f,
-                Height = 0.0025f,
-                Y = .0555f,
-                X = -.025f,
-            });
-            errorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.95f,
-                Height = 0.0025f,
-                Y = .095f,
-                X = -.025f,
-            });
-            errorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopLeft,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.0025f,
-                Height = 0.04f,
-                Y = .075f,
-                X = 0,
-            });
-            errorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopRight,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.0025f,
-                Height = 0.04f,
-                Y = .075f,
-                X = -.051f,
-            });
+        private void ClearErrorIndicator() {
+            TxtStartTime.BorderThickness = 0;
+            TxtEndTime.BorderThickness = 0;
+            TxtStartValue.BorderThickness = 0;
+            TxtEndValue.BorderThickness = 0;
+        }
+
+        private void AddEditErrorIndicator() {
+            EditTxtStartTime.BorderThickness = 5;
+            EditTxtEndTime.BorderThickness = 5;
+            EditTxtStartValue.BorderThickness = 5;
+            EditTxtEndValue.BorderThickness = 5;
+        }
+
+        private void ClearEditErrorIndicator() {
+            EditTxtStartTime.BorderThickness = 0;
+            EditTxtEndTime.BorderThickness = 0;
+            EditTxtStartValue.BorderThickness = 0;
+            EditTxtEndValue.BorderThickness = 0;
         }
 
         private void HandleAddClick() {
-            ErrorContainer.Clear();
+            ClearErrorIndicator();
             var data = new string[]
             {
                 $"{DropType.Current.Value}",
@@ -232,7 +219,7 @@ namespace S2VX.Game.Editor.Containers {
         private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
-            ErrorContainer.Clear();
+            ClearErrorIndicator();
             var data = command.ToString().Split('{', '|', '}');
 
             DropType.Current.Value = data[0];
@@ -246,19 +233,30 @@ namespace S2VX.Game.Editor.Containers {
 
         private void HandleEditCommand(S2VXCommand command) {
             EditInputBar = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-            EditErrorContainer = new Container { }; // TODO: fix this
-            //    RelativePositionAxes = Axes.Both,
-            //    RelativeSizeAxes = Axes.Both,
-            //};
-            EditInputBar.Add(EditErrorContainer);
             EditDropType = new BasicDropdown<string> {
-                Width = 160
+                Width = 160,
             };
-            EditTxtStartTime = new BasicTextBox() { Size = InputSize };
-            EditTxtEndTime = new BasicTextBox() { Size = InputSize };
+            EditTxtStartTime = new BasicTextBox() {
+                Size = InputSize,
+                BorderColour = Color4.Red,
+                Masking = true,
+            };
+            EditTxtEndTime = new BasicTextBox() {
+                Size = InputSize,
+                BorderColour = Color4.Red,
+                Masking = true,
+            };
             EditDropEasing = new BasicDropdown<string> { Width = InputSize.X };
-            EditTxtStartValue = new BasicTextBox() { Size = InputSize };
-            EditTxtEndValue = new BasicTextBox() { Size = InputSize };
+            EditTxtStartValue = new BasicTextBox() {
+                Size = InputSize,
+                BorderColour = Color4.Red,
+                Masking = true,
+            };
+            EditTxtEndValue = new BasicTextBox() {
+                Size = InputSize,
+                BorderColour = Color4.Red,
+                Masking = true,
+            };
 
             var data = command.ToString().Split('{', '|', '}');
 
@@ -280,7 +278,6 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private void HandleSaveCommand(S2VXCommand oldCommand) {
-            EditErrorContainer.Clear();
             var data = new string[]
             {
                 $"{EditDropType.Current.Value}",
@@ -296,13 +293,13 @@ namespace S2VX.Game.Editor.Containers {
                 Editor.Reversibles.Push(new ReversibleUpdateCommand(commandString, oldCommand, this, Story));
                 addSuccessful = true;
             } catch (FormatException ex) {
-                AddErrorIndicator(EditErrorContainer);
+                AddEditErrorIndicator();
                 Console.WriteLine(ex);
             } catch (TargetInvocationException ex) {
-                AddErrorIndicator(EditErrorContainer);
+                AddEditErrorIndicator();
                 Console.WriteLine(ex);
             } catch (NullReferenceException ex) {
-                AddErrorIndicator(EditErrorContainer);
+                AddEditErrorIndicator();
                 Console.WriteLine(ex);
             }
             if (addSuccessful) {
@@ -312,7 +309,7 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
-            ErrorContainer.Clear();
+            ClearErrorIndicator();
             HandleCancelCommand();  // Cancel edit if type filter is changed
             LoadCommandsList();
         }
@@ -375,8 +372,7 @@ namespace S2VX.Game.Editor.Containers {
                         new SpriteText { Text = "Command Panel" },
                         InputBar
                     }
-                },
-                ErrorContainer
+                }
             };
         }
 
