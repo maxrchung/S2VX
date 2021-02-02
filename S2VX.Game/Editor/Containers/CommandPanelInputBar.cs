@@ -4,40 +4,43 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
-using osuTK;
+using osuTK.Graphics;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanelInputBar : FillFlowContainer {
-        private static Vector2 InputSize { get; } = new Vector2(100, 30);
-
-        private Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
-        public TextBox TxtStartTime { get; } = new BasicTextBox() { Size = InputSize };
-        public TextBox TxtEndTime { get; } = new BasicTextBox() { Size = InputSize };
-        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = InputSize.X };
-        public TextBox TxtStartValue { get; } = new BasicTextBox() { Size = InputSize };
-        public TextBox TxtEndValue { get; } = new BasicTextBox() { Size = InputSize };
-        public Button BtnAdd { get; } = new IconButton() {
-            Width = InputSize.Y,
-            Height = InputSize.Y,
-            Icon = FontAwesome.Solid.Plus
-        };
+        public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
+        public TextBox TxtStartTime { get; } = CreateErrorTextBox();
+        public TextBox TxtEndTime { get; } = CreateErrorTextBox();
+        public TextBox TxtStartValue { get; } = CreateErrorTextBox();
+        public TextBox TxtEndValue { get; } = CreateErrorTextBox();
+        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
+        public Button BtnSave { get; }
 
         private Action<ValueChangedEvent<string>> HandleTypeSelect { get; }
+        private Action HandleSaveClick { get; }
 
-        private Action HandleAddClick { get; }
+        private static TextBox CreateErrorTextBox() =>
+            new BasicTextBox() {
+                Size = CommandPanel.InputSize,
+                BorderColour = Color4.Red,
+                Masking = true
+            };
 
-        public CommandPanelInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick) {
+        public CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleSaveClick) {
+            var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
+            BtnSave = new IconButton() {
+                Width = CommandPanel.InputSize.Y,
+                Height = CommandPanel.InputSize.Y,
+                Icon = saveIcon
+            };
             HandleTypeSelect = handleTypeSelect;
-            HandleAddClick = handleAddClick;
-        }
+            HandleSaveClick = handleSaveClick;
 
-        [BackgroundDependencyLoader]
-        private void Load() {
-            AutoSizeAxes = Axes.Both;
-
+            // We initialize the inputs here instead of in Load because the
+            // outer CommandPanel needs some of these values to be set
             var allCommands = new List<string> {
                 "All Commands"
             };
@@ -45,18 +48,58 @@ namespace S2VX.Game.Editor.Containers {
             allCommands.AddRange(allCommandNames);
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
-
-            AddInput("Type", DropType);
             DropType.Current.BindValueChanged(HandleTypeSelect);
+            BtnSave.Action = HandleSaveClick;
+        }
 
+        public void AddErrorIndicator() {
+            TxtStartTime.BorderThickness = 5;
+            TxtEndTime.BorderThickness = 5;
+            TxtStartValue.BorderThickness = 5;
+            TxtEndValue.BorderThickness = 5;
+        }
+
+        public void ClearErrorIndicator() {
+            TxtStartTime.BorderThickness = 0;
+            TxtEndTime.BorderThickness = 0;
+            TxtStartValue.BorderThickness = 0;
+            TxtEndValue.BorderThickness = 0;
+        }
+
+        public string ValuesToString() {
+            var data = new string[]
+            {
+                $"{DropType.Current.Value}",
+                $"{TxtStartTime.Current.Value}",
+                $"{TxtEndTime.Current.Value}",
+                $"{DropEasing.Current.Value}",
+                $"{TxtStartValue.Current.Value}",
+                $"{TxtEndValue.Current.Value}"
+            };
+            var commandString = string.Join("|", data);
+            return commandString;
+        }
+
+        public void CommandToValues(S2VXCommand command) {
+            var data = command.ToString().Split('{', '|', '}');
+            DropType.Current.Value = data[0];
+            TxtStartTime.Text = data[1];
+            TxtEndTime.Text = data[2];
+            DropEasing.Current.Value = data[3];
+            TxtStartValue.Text = data[4];
+            TxtEndValue.Text = data[5];
+        }
+
+        [BackgroundDependencyLoader]
+        private void Load() {
+            AutoSizeAxes = Axes.Both;
+            AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
             AddTabbableInput("EndTime", TxtEndTime);
             AddTabbableInput("StartValue", TxtStartValue);
             AddTabbableInput("EndValue", TxtEndValue);
             AddInput("Easing", DropEasing);
-
-            AddInput(" ", BtnAdd);
-            BtnAdd.Action = HandleAddClick;
+            AddInput(" ", BtnSave);
         }
 
         private void AddInput(string text, Drawable input) =>
