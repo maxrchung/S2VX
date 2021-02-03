@@ -149,7 +149,8 @@ namespace S2VX.Game.Editor.Containers {
             var commandString = EditInputBar.ValuesToString();
             var addSuccessful = false;
             try {
-                Editor.Reversibles.Push(new ReversibleUpdateCommand(commandString, oldCommand, this, Story));
+                var newCommand = S2VXCommand.FromString(commandString);
+                Editor.Reversibles.Push(new ReversibleUpdateCommand(oldCommand, newCommand, this));
                 addSuccessful = true;
             } catch (FormatException ex) {
                 EditInputBar.AddErrorIndicator();
