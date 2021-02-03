@@ -2,7 +2,7 @@
 using osuTK;
 using osuTK.Graphics;
 
-namespace S2VX.Game.Tests.UnitTests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [TestFixture]
     public class S2VXUtilsTests {
 
