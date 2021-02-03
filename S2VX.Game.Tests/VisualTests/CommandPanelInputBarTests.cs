@@ -41,17 +41,16 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
-        public void SaveIcon_AddInputBar_IsPlus() {
+        public void CreateAddInputBar_AddInputBar_IsPlus() {
             CreateAddInputBar();
             AddAssert("Is plus", () => (InputBar.BtnSave as IconButton).Icon.Equals(FontAwesome.Solid.Plus));
         }
 
         [Test]
-        public void SaveIcon_EditInputBar_IsSave() {
+        public void CreateEditInputBar_EditInputBar_IsSave() {
             CreateEditInputBar();
             AddAssert("Is save", () => (InputBar.BtnSave as IconButton).Icon.Equals(FontAwesome.Solid.Save));
         }
-
 
         [Test]
         public void ValuesToString_UpdatedValues_CreatesCorrectString() {
@@ -65,8 +64,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridAlpha|123|456789|OutQuint|0.1|1");
         }
 
-        [Test]
-        public void CommandToValues_GivenCommand_UpdatesCorrectValues() {
+        private void SetUpCommandToValues() {
             CreateAddInputBar();
             var command = new HoldNotesAlphaCommand() {
                 StartTime = 999,
@@ -76,12 +74,47 @@ namespace S2VX.Game.Tests.VisualTests {
                 Easing = Easing.InOutQuad
             };
             AddStep("Update input bar", () => InputBar.CommandToValues(command));
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectCommandType() {
+            SetUpCommandToValues();
             AddAssert("Is correct command type", () => InputBar.DropType.Current.Value == "HoldNotesAlpha");
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectStartTime() {
+            SetUpCommandToValues();
             AddAssert("Is correct start time", () => InputBar.TxtStartTime.Current.Value == "999");
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectEndTime() {
+            SetUpCommandToValues();
             AddAssert("Is correct end time", () => InputBar.TxtEndTime.Current.Value == "999");
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectStartValue() {
+            SetUpCommandToValues();
             AddAssert("Is correct start value", () => InputBar.TxtStartValue.Current.Value == "0.999");
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectEndValue() {
+            SetUpCommandToValues();
             AddAssert("Is correct end value", () => InputBar.TxtEndValue.Current.Value == "0.001");
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectEasing() {
+            SetUpCommandToValues();
             AddAssert("Is correct easing", () => InputBar.DropEasing.Current.Value == Easing.InOutQuad.ToString());
+        }
+
+        [Test]
+        public void CommandToValues_GivenCommand_IsCorrectString() {
+            SetUpCommandToValues();
             AddAssert("Is correct string", () => InputBar.ValuesToString() == "HoldNotesAlpha|999|999|InOutQuad|0.999|0.001");
         }
     }
