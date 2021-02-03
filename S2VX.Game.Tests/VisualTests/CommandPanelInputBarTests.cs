@@ -41,13 +41,13 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
-        public void CreateAddInputBar_AddInputBar_IsPlus() {
+        public void CreateAddInputBar_AddInputBar_HasPlusButton() {
             CreateAddInputBar();
             AddAssert("Is plus", () => (InputBar.BtnSave as IconButton).Icon.Equals(FontAwesome.Solid.Plus));
         }
 
         [Test]
-        public void CreateEditInputBar_EditInputBar_IsSave() {
+        public void CreateEditInputBar_EditInputBar_HasSaveButton() {
             CreateEditInputBar();
             AddAssert("Is save", () => (InputBar.BtnSave as IconButton).Icon.Equals(FontAwesome.Solid.Save));
         }
