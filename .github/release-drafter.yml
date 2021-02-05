@@ -2,26 +2,30 @@ name-template: $RESOLVED_VERSION
 tag-template: $RESOLVED_VERSION
 
 categories:
-- title: '🚀 Features'
+- title: 🛸 Breaking Changes
   labels:
-  - 'feature'
-- title: '🐞 BIGBUGS'
+  - breaking
+- title: 🚀 New Features
   labels:
-  - 'BIGBUG'
-- title: '🐛 Bugs'
+  - feature
+- title: 🐞 BIGBUG Fixes
   labels:
-  - 'bug'
+  - BIGBUG
+- title: 🐛 Bug Fixes
+  labels:
+  - bug
 
 version-resolver:
   major:
     labels:
-    - major
+    - breaking
   minor:
     labels:
-    - minor
+    - feature
   patch:
     labels:
-    - patch
+    - BIGBUG
+    - bug
 
 template: |
   ## Changes
