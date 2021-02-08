@@ -5,7 +5,7 @@ using osuTK.Graphics;
 using S2VX.Game.Story.Command;
 using System;
 
-namespace S2VX.Game.Tests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [TestFixture]
     public class CommandTests {
 
