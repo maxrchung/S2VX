@@ -2,7 +2,7 @@
 using osuTK;
 using osuTK.Graphics;
 
-namespace S2VX.Game.Tests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [TestFixture]
     public class S2VXUtilsTests {
 
@@ -103,7 +103,7 @@ namespace S2VX.Game.Tests {
         public void Vector2FromString_RandomVector() {
             var testInput = "(1.234567,-7.890123)";
             var expected = new Vector2(1.234567f, -7.890123f);
-            var result = S2VXUtils.Vector2FromString(testInput);
+            var result = S2VXUtils.StringToVector2(testInput);
             Assert.AreEqual(expected, result);
         }
 
@@ -111,7 +111,7 @@ namespace S2VX.Game.Tests {
         public void Color4FromString_0_IsBlack() {
             var testInput = "(0,0,0)";
             var expected = Color4.Black;
-            var result = S2VXUtils.Color4FromString(testInput);
+            var result = S2VXUtils.StringToColor4(testInput);
             Assert.AreEqual(expected, result);
         }
 
@@ -119,7 +119,7 @@ namespace S2VX.Game.Tests {
         public void Color4FromString_1_IsWhite() {
             var testInput = "(1,1,1)";
             var expected = Color4.White;
-            var result = S2VXUtils.Color4FromString(testInput);
+            var result = S2VXUtils.StringToColor4(testInput);
             Assert.AreEqual(expected, result);
         }
     }

@@ -48,6 +48,16 @@ namespace S2VX.Game.Story.Note {
         [BackgroundDependencyLoader]
         private void Load() => RelativeSizeAxes = Axes.Both;
 
-        protected override void Update() => Children.ForEach(approach => approach.UpdateApproach());
+        protected override void Update() => Children.ForEach(approach => {
+            // There is a visual glitch where you can sometimes see a slight
+            // flicker if Thickness is set to 0. We can properly hide this by
+            // adjusting the alpha and also do some optimization by skipping the
+            // Update.
+            if (Thickness == 0) {
+                approach.Alpha = 0;
+            } else {
+                approach.UpdateApproach();
+            }
+        });
     }
 }

@@ -3,177 +3,186 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
+
+        [Resolved]
+        private EditorScreen Editor { get; set; } = null;
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
+        public static Vector2 InputSize { get; } = new Vector2(100, 30);
         private static Vector2 PanelSize { get; } = new Vector2(727, 727);
-        private static Vector2 InputSize { get; } = new Vector2(100, 30);
-
-        private FillFlowContainer InputBar { get; } = new FillFlowContainer { AutoSizeAxes = Axes.Both };
-        private Dropdown<string> DropType { get; } = new BasicDropdown<string> {
-            Width = 160
-        };
-        private TextBox TxtStartTime { get; } = new BasicTextBox() { Size = InputSize };
-        private TextBox TxtEndTime { get; } = new BasicTextBox() { Size = InputSize };
-        private Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = InputSize.X };
-        private TextBox TxtStartValue { get; } = new BasicTextBox() { Size = InputSize };
-        private TextBox TxtEndValue { get; } = new BasicTextBox() { Size = InputSize };
-        private Button BtnAdd { get; } = new BasicButton() {
-            Width = InputSize.Y,
-            Height = InputSize.Y,
-            Text = "+"
-        };
-
+        private CommandPanelInputBar AddInputBar { get; set; }
+        private CommandPanelInputBar EditInputBar { get; set; }
+        private S2VXCommand EditCommandReference { get; set; }
         private readonly FillFlowContainer CommandsList = new FillFlowContainer {
             AutoSizeAxes = Axes.Both,
             Direction = FillDirection.Vertical
         };
 
-        private Container ErrorContainer { get; } = new Container {
-            RelativePositionAxes = Axes.Both,
-            RelativeSizeAxes = Axes.Both,
-        };
+        private CommandPanelInputBar CreateAddInputBar() =>
+            CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick);
 
-        private void AddInput(string text, Drawable input) => InputBar.Add(
-                new FillFlowContainer {
-                    AutoSizeAxes = Axes.Both,
-                    Direction = FillDirection.Vertical,
-                    Children = new Drawable[]
-                    {
-                        new SpriteText { Text = text },
-                        input
-                    }
-                }
-            );
+        private CommandPanelInputBar CreateEditInputBar() =>
+            CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
 
         private void LoadCommandsList() {
             CommandsList.Clear();
-            var type = DropType.Current.Value;
+            if (EditCommandReference != null) {
+                // Reconstruct EditInputBar since it has been disposed
+                HandleEditCommand(EditCommandReference);
+            }
+            var type = AddInputBar.DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
                 var command = Story.Commands[i];
                 if (type == "All Commands" || type == command.GetCommandName()) {
-                    var localIndex = i;
-                    CommandsList.Add(new FillFlowContainer {
-                        AutoSizeAxes = Axes.Both,
-                        Children = new Drawable[]
-                        {
-                            new BasicButton
-                            {
-                                Action = () => HandleRemoveClick(localIndex),
-                                Width = InputSize.Y,
-                                Height = InputSize.Y,
-                                Text = "-"
-                            },
-                            new SpriteText {
-                                Text = command.ToString()
-                            },
-                        }
-                    });
+                    if (EditCommandReference == command) {
+                        AddEditBarToCommandsList();
+                    } else {
+                        AddCommandToCommandsList(i, command);
+                    }
                 }
             }
         }
 
-        private void AddErrorIndicator() {
-            ErrorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.95f,
-                Height = 0.0025f,
-                Y = .0555f,
-                X = -.025f,
+        private void AddEditBarToCommandsList() {
+            CommandsList.Add(new FillFlowContainer {
+                AutoSizeAxes = Axes.Both,
+                Children = new Drawable[] {
+                                new IconButton {
+                                    Action = () => HandleCancelCommand(),
+                                    Width = InputSize.Y,
+                                    Height = InputSize.Y,
+                                    Icon = FontAwesome.Solid.Times
+                                }
+                            }
             });
-            ErrorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.95f,
-                Height = 0.0025f,
-                Y = .095f,
-                X = -.025f,
-            });
-            ErrorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopLeft,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.0025f,
-                Height = 0.04f,
-                Y = .075f,
-                X = 0,
-            });
-            ErrorContainer.Add(new Box {
-                RelativePositionAxes = Axes.Both,
-                RelativeSizeAxes = Axes.Both,
-                Anchor = Anchor.TopRight,
-                Origin = Anchor.Centre,
-                Colour = Color4.Red,
-                Width = 0.0025f,
-                Height = 0.04f,
-                Y = .075f,
-                X = -.051f,
-            });
+            CommandsList.Add(EditInputBar);
         }
 
+        private void AddCommandToCommandsList(int localIndex, S2VXCommand command) =>
+            CommandsList.Add(new FillFlowContainer {
+                AutoSizeAxes = Axes.Both,
+                Children = new Drawable[] {
+                    new IconButton {
+                        Action = () => HandleRemoveClick(localIndex),
+                        Width = InputSize.Y,
+                        Height = InputSize.Y,
+                        Icon = FontAwesome.Solid.Trash
+                    },
+                    new IconButton {
+                        Action = () => HandleCopyClick(localIndex),
+                        Width = InputSize.Y,
+                        Height = InputSize.Y,
+                        Icon = FontAwesome.Solid.Clone
+                    },
+                    new IconButton {
+                        Action = () => HandleEditClick(command),
+                        Width = InputSize.Y,
+                        Height = InputSize.Y,
+                        Icon = FontAwesome.Solid.Edit
+                    },
+                    new SpriteText {
+                        Text = command.ToString()
+                    },
+                }
+            });
+
         private void HandleAddClick() {
-            ErrorContainer.Clear();
-            var data = new string[]
-            {
-                $"{DropType.Current.Value}",
-                $"{TxtStartTime.Current.Value}",
-                $"{TxtEndTime.Current.Value}",
-                $"{DropEasing.Current.Value}",
-                $"{TxtStartValue.Current.Value}",
-                $"{TxtEndValue.Current.Value}"
-            };
-            var join = string.Join("|", data);
+            AddInputBar.ClearErrorIndicator();
+            var commandString = AddInputBar.ValuesToString();
             try {
-                var command = S2VXCommand.FromString(join);
+                var command = S2VXCommand.FromString(commandString);
                 HandleAddCommand(command);
             } catch (FormatException ex) {
-                AddErrorIndicator();
+                AddInputBar.AddErrorIndicator();
                 Console.WriteLine(ex);
             } catch (TargetInvocationException ex) {
-                AddErrorIndicator();
+                AddInputBar.AddErrorIndicator();
                 Console.WriteLine(ex);
             } catch (NullReferenceException ex) {
-                AddErrorIndicator();
+                AddInputBar.AddErrorIndicator();
                 Console.WriteLine(ex);
             }
         }
 
         private void HandleRemoveClick(int commandIndex) => HandleRemoveCommand(Story.Commands[commandIndex]);
 
-        public void HandleAddCommand(S2VXCommand command) {
+        private void HandleCopyClick(int commandIndex) => HandleCopyCommand(Story.Commands[commandIndex]);
+
+        private void HandleEditClick(S2VXCommand command) {
+            EditCommandReference = command;
+            LoadCommandsList();
+        }
+
+        private void HandleCancelCommand() {
+            EditCommandReference = null;
+            LoadCommandsList();
+        }
+
+        private void HandleAddCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleAddCommand(command, this));
+
+        private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
+
+        private void HandleCopyCommand(S2VXCommand command) {
+            AddInputBar.ClearErrorIndicator();
+            AddInputBar.CommandToValues(command);
+            LoadCommandsList();
+        }
+
+        private void HandleEditCommand(S2VXCommand command) {
+            EditInputBar = CreateEditInputBar();
+            EditInputBar.CommandToValues(command);
+        }
+
+        private void HandleSaveCommand(S2VXCommand oldCommand) {
+            var commandString = EditInputBar.ValuesToString();
+            var addSuccessful = false;
+            try {
+                var newCommand = S2VXCommand.FromString(commandString);
+                Editor.Reversibles.Push(new ReversibleUpdateCommand(oldCommand, newCommand, this));
+                addSuccessful = true;
+            } catch (FormatException ex) {
+                EditInputBar.AddErrorIndicator();
+                Console.WriteLine(ex);
+            } catch (TargetInvocationException ex) {
+                EditInputBar.AddErrorIndicator();
+                Console.WriteLine(ex);
+            } catch (NullReferenceException ex) {
+                EditInputBar.AddErrorIndicator();
+                Console.WriteLine(ex);
+            }
+            if (addSuccessful) {
+                EditCommandReference = null;
+                LoadCommandsList();
+            }
+        }
+
+        private void HandleTypeSelect(ValueChangedEvent<string> e) {
+            AddInputBar.ClearErrorIndicator();
+            HandleCancelCommand();  // Cancel edit if type filter is changed
+            LoadCommandsList();
+        }
+
+        // Non-reversibly add a command and reload command list
+        public void AddCommand(S2VXCommand command) {
             Story.AddCommand(command);
             LoadCommandsList();
         }
 
-        public void HandleRemoveCommand(S2VXCommand command) {
+        // Non-reversibly remove a command and reload command list
+        public void RemoveCommand(S2VXCommand command) {
             Story.RemoveCommand(command);
-            LoadCommandsList();
-        }
-
-        private void HandleTypeSelect(ValueChangedEvent<string> e) {
-            ErrorContainer.Clear();
             LoadCommandsList();
         }
 
@@ -183,30 +192,11 @@ namespace S2VX.Game.Editor.Containers {
             Origin = Anchor.TopRight;
             Size = PanelSize;
 
-            var allCommands = new List<string> {
-                "All Commands"
-            };
-            var allCommandNames = S2VXCommand.GetCommandNames();
-            allCommands.AddRange(allCommandNames);
-            DropType.Items = allCommands;
-            DropEasing.Items = Enum.GetNames(typeof(Easing));
-
-            AddInput("Type", DropType);
-            DropType.Current.BindValueChanged(HandleTypeSelect);
-
-            AddInput("StartTime", TxtStartTime);
-            AddInput("EndTime", TxtEndTime);
-            AddInput("Easing", DropEasing);
-            AddInput("StartValue", TxtStartValue);
-            AddInput("EndValue", TxtEndValue);
-
-            AddInput(" ", BtnAdd);
-            BtnAdd.Action = HandleAddClick;
+            AddInputBar = CreateAddInputBar();
+            EditInputBar = CreateEditInputBar();
 
             LoadCommandsList();
-
-            Children = new Drawable[]
-            {
+            Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 new BasicScrollContainer
                 {
@@ -223,10 +213,9 @@ namespace S2VX.Game.Editor.Containers {
                     Children = new Drawable[]
                     {
                         new SpriteText { Text = "Command Panel" },
-                        InputBar
+                        AddInputBar
                     }
-                },
-                ErrorContainer
+                }
             };
         }
 

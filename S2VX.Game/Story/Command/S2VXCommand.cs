@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using osu.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -14,7 +13,19 @@ namespace S2VX.Game.Story.Command {
         public Easing Easing { get; set; } = Easing.None;
         public abstract void Apply(double time, S2VXStory story);
 
-        public int CompareTo(S2VXCommand other) => StartTime.CompareTo(other.StartTime);
+        /// <summary>
+        /// Compare commands by start time, then end time, then name
+        /// </summary>
+        public int CompareTo(S2VXCommand other) {
+            var compare = StartTime.CompareTo(other.StartTime);
+            if (compare == 0) {
+                compare = EndTime.CompareTo(other.EndTime);
+            }
+            if (compare == 0) {
+                compare = string.Compare(GetType().Name, other.GetType().Name, StringComparison.OrdinalIgnoreCase);
+            }
+            return compare;
+        }
 
         protected abstract string ToValues();
         public override string ToString() => $"{GetCommandName()}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
@@ -56,8 +67,8 @@ namespace S2VX.Game.Story.Command {
             var systemType = Type.GetType($"S2VX.Game.Story.Command.{commandName}Command");
             var staticMethod = systemType.GetMethod("FromString", BindingFlags.Public | BindingFlags.Static);
             var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
-            command.StartTime = double.Parse(split[1], CultureInfo.InvariantCulture);
-            command.EndTime = double.Parse(split[2], CultureInfo.InvariantCulture);
+            command.StartTime = S2VXUtils.StringToDouble(split[1]);
+            command.EndTime = S2VXUtils.StringToDouble(split[2]);
             command.Easing = Enum.Parse<Easing>(split[3]);
             return command;
         }

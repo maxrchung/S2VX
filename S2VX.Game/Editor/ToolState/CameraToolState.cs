@@ -142,6 +142,11 @@ namespace S2VX.Game.Editor.ToolState {
         public override bool OnToolKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.S:
+                    // Allows Ctrl+S to be handled by editor screen.
+                    if (e.ControlPressed) {
+                        return false;
+                    }
+
                     if (IsRecording) {
                         // Add a keyframe (i.e. End and Start again)
                         CommitCameraToolActions();
@@ -228,8 +233,8 @@ namespace S2VX.Game.Editor.ToolState {
             var relativeOldPosition = (oldPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var relativeNewPosition = (newPosition - Story.DrawSize / 2) / Story.DrawWidth;
             var diffPosition = relativeNewPosition - relativeOldPosition;
-            var length = diffPosition.Length;
-            var endValue = new Vector2(length);
+            var length = -diffPosition.Y;    // Only use Y magnitude, negative so down is zooming out
+            var endValue = new Vector2(length) + OldScale;
             if (Editor.SnapDivisor != 0) {
                 // Clamp to the minimum snap so scaling is not 0 which would cause infinite gridlines to be drawn
                 endValue = new Vector2(

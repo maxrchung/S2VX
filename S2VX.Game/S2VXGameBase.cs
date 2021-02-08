@@ -2,6 +2,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
+using osuTK;
 using S2VX.Resources;
 
 namespace S2VX.Game {
@@ -10,11 +11,17 @@ namespace S2VX.Game {
         // It allows for caching global dependencies that should be accessible to tests, or changing
         // the screen scaling for all components including the test browser and framework overlays.
 
-        protected override Container<Drawable> Content { get; }
-
         private DllResourceStore ResourceStore { get; set; }
 
-        protected S2VXGameBase() => base.Content.Add(Content = new SquareContainer());
+        protected override Container<Drawable> Content { get; }
+
+        // Ensure game and tests scale with window size and screen DPI.
+        protected S2VXGameBase() => base.Content.Add(Content = new DrawSizePreservingFillContainer {
+            // You may want to change TargetDrawSize to your "default"
+            // resolution, which will decide how things scale and position when
+            // using absolute coordinates.
+            TargetDrawSize = new Vector2(1000, 1000)
+        });
 
         [BackgroundDependencyLoader]
         private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));

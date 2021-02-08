@@ -2,7 +2,6 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Events;
-using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
@@ -120,7 +119,7 @@ namespace S2VX.Game.Story.Note {
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                Alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to Hit time with miss threshold time
             // Hold the note at fully visible until after MissThreshold
@@ -131,7 +130,7 @@ namespace S2VX.Game.Story.Note {
             else if (time < HitTime + MissThreshold + notes.FadeOutTime) {
                 var startTime = HitTime + MissThreshold;
                 var endTime = HitTime + MissThreshold + notes.FadeOutTime;
-                Alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
             }

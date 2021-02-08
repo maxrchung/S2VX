@@ -7,6 +7,7 @@ on:
     - labeled
     - unlabeled
     - synchronize
+    - edited
 
 jobs:
   validate-pull-request:
@@ -17,26 +18,29 @@ jobs:
       if: ${{ github.head_ref == 'release' }}
       run: exit error
 
-    - name: Master cannot merge to non-release branches
+    - name: Master cannot merge to feature branches
       if: ${{ github.head_ref == 'master' && github.base_ref != 'release' }}
       run: exit error
 
-    - name: Non-release branches cannot merge to release
-      if: ${{ github.head_ref != 'master' && github.base_ref == 'release' }}
+    - name: Feature branches cannot merge to release
+      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' && github.base_ref == 'release' }}
       run: exit error
 
-    - name: Release must have a version label
-      if: ${{ github.base_ref == 'release' }}
+    - name: Pull requests must have a label
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
         count: 1
-        labels: major, minor, patch
+        labels: breaking, feature, BIGBUG, bug
 
-    - name: Non-release pull requests cannot have a version label
-      if: ${{ github.base_ref != 'release' }}
-      uses: mheap/github-action-required-labels@v1
+    - name: Pull requests must link an issue
+      uses: hattan/verify-linked-issue-action@v1.1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Release must have Release in title
+      if: ${{ github.base_ref == 'release' }}
+      uses: deepakputhraya/action-pr-title@master
       with:
-        mode: exactly
-        count: 0
-        labels: major, minor, patch
+        allowed_prefixes: Release
+        prefix_case_sensitive: true

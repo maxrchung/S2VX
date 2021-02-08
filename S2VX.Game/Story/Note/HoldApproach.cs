@@ -1,8 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Utils;
 using osuTK;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +36,6 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
             var lines = InternalChildren.ToArray();
             ClearInternal(false);
@@ -53,28 +50,24 @@ namespace S2VX.Game.Story.Note {
         protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
-            float alpha;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                alpha = Interpolation.ValueAt(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
             // Show time to End time
             else if (time < EndTime) {
-                alpha = 1;
+                Alpha = 1;
             }
             // End time to Fade out time
             else if (time < EndTime + notes.FadeOutTime) {
                 var startTime = HitTime;
                 var endTime = HitTime + notes.FadeOutTime;
-                alpha = Interpolation.ValueAt(time, 1.0f, 0.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
-                alpha = 0;
+                Alpha = 0;
             }
-            Lines.ForEach(l => l.Alpha = alpha);
-            ReleaseLines.ForEach(l => l.Alpha = alpha);
-            HoldIndicatorLines.ForEach(l => l.Alpha = alpha);
         }
 
         protected override void UpdatePosition() {
@@ -87,14 +80,12 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
 
             var time = Time.Current;
-            var clampedTime = Math.Clamp(time, HitTime, EndTime);
-            var coordinates = Interpolation.ValueAt(clampedTime, Coordinates, EndCoordinates, HitTime, EndTime);
+            var coordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
             UpdateInnerApproachPosition(coordinates);
 
             // Calculate outer approach values
             var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
-            clampedTime = Math.Clamp(time, startTime, EndTime);
-            var distance = Interpolation.ValueAt(clampedTime, approaches.Distance, scale.X / 2, startTime, EndTime);
+            var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
             // Add extra thickness so corners overlap

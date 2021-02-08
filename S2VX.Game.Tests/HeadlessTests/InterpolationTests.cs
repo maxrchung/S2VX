@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Graphics;
-using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 
-namespace S2VX.Game.Tests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [TestFixture]
     public class InterpolationTests {
 
@@ -19,7 +18,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 0.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual, FloatingPointTolerance);
         }
 
@@ -32,7 +31,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual, FloatingPointTolerance);
         }
 
@@ -45,7 +44,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 0.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
@@ -58,7 +57,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
@@ -71,7 +70,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 0.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
@@ -84,7 +83,7 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
@@ -98,17 +97,17 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual, FloatingPointTolerance);
             // Midpoint
             inputCurrentTime = 0.5f;
             expected = 0.5f;
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual, FloatingPointTolerance);
             // Endpoint
             inputCurrentTime = 1.0f;
             expected = inputEndValue;
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual, FloatingPointTolerance);
         }
 
@@ -122,17 +121,17 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
             // Midpoint
             inputCurrentTime = 0.5f;
             expected = new Color4(0.5f, 0.5f, 0.5f, 1);
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
             // Endpoint
             inputCurrentTime = 1.0f;
             expected = inputEndValue;
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
@@ -146,17 +145,17 @@ namespace S2VX.Game.Tests {
             var inputEndTime = 1.0f;
             var inputEasing = Easing.None;
             var expected = inputStartValue;
-            var actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            var actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
             // Midpoint
             inputCurrentTime = 0.5f;
             expected = Vector2.Divide(inputEndValue, 2);
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
             // Endpoint
             inputCurrentTime = 1.0f;
             expected = inputEndValue;
-            actual = Interpolation.ValueAt(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
+            actual = S2VXUtils.ClampedInterpolation(inputCurrentTime, inputStartValue, inputEndValue, inputStartTime, inputEndTime, inputEasing);
             Assert.AreEqual(expected, actual);
         }
 
