@@ -3,7 +3,7 @@ using osu.Framework.Graphics;
 using osuTK;
 using osuTK.Graphics;
 
-namespace S2VX.Game.Tests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [TestFixture]
     public class InterpolationTests {
 
