@@ -26,37 +26,12 @@ jobs:
       if: ${{ github.head_ref != 'release' && github.head_ref != 'master' && github.base_ref == 'release' }}
       run: exit error
 
-    - name: Release must have a version label
-      if: ${{ github.base_ref == 'release' }}
+    - name: Pull requests must have a label
       uses: mheap/github-action-required-labels@v1
       with:
         mode: exactly
         count: 1
-        labels: major, minor, patch
-
-    - name: Release cannot have a category label
-      if: ${{ github.base_ref == 'release' }}
-      uses: mheap/github-action-required-labels@v1
-      with:
-        mode: exactly
-        count: 0
-        labels: feature, bug
-
-    - name: Feature pull requests cannot have a version label
-      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
-      uses: mheap/github-action-required-labels@v1
-      with:
-        mode: exactly
-        count: 0
-        labels: major, minor, patch
-
-    - name: Feature pull requests must have a category label
-      if: ${{ github.head_ref != 'release' && github.head_ref != 'master' }}
-      uses: mheap/github-action-required-labels@v1
-      with:
-        mode: exactly
-        count: 1
-        labels: feature, bug, BIGBUG
+        labels: breaking, feature, BIGBUG, bug
 
     - name: Pull requests must link an issue
       uses: hattan/verify-linked-issue-action@v1.1.1
@@ -67,5 +42,5 @@ jobs:
       if: ${{ github.base_ref == 'release' }}
       uses: deepakputhraya/action-pr-title@master
       with:
-        allowed_prefixes: 'Release'
+        allowed_prefixes: Release
         prefix_case_sensitive: true
