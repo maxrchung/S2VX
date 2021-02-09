@@ -28,7 +28,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 3.1.x
 
     # Addresses Windows pipeline issue as described here: https://github.com/actions/setup-dotnet/issues/155#issuecomment-748452076
     - name: Clean output
