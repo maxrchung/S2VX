@@ -25,7 +25,7 @@ namespace S2VX.Game.Editor.ToolState {
             Child = PreviewContainer;
         }
 
-        public override bool OnToolClick(ClickEvent _) {
+        public override bool OnToolClick(ClickEvent e) {
             var note = new EditorNote {
                 Coordinates = Editor.MousePosition,
                 HitTime = Time.Current

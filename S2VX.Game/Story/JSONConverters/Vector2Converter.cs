@@ -6,10 +6,10 @@ using System;
 namespace S2VX.Game.Story.JSONConverters {
     // Special converter for serialization since we only care about the X and Y values of Vector2
     public class Vector2Converter : JsonConverter<Vector2> {
-        public override void WriteJson(JsonWriter writer, Vector2 vector2, JsonSerializer serializer) {
+        public override void WriteJson(JsonWriter writer, Vector2 value, JsonSerializer serializer) {
             var obj = new JObject {
-                { "X", vector2.X },
-                { "Y", vector2.Y }
+                { "X", value.X },
+                { "Y", value.Y }
             };
             obj.WriteTo(writer);
         }

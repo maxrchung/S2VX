@@ -10,10 +10,10 @@ namespace S2VX.Game.Story.JSONConverters {
             new Vector2Converter(),
         };
 
-        public override void WriteJson(JsonWriter writer, S2VXCommand command, JsonSerializer serializer) {
-            var serializedCommand = JsonConvert.SerializeObject(command, Converters);
+        public override void WriteJson(JsonWriter writer, S2VXCommand value, JsonSerializer serializer) {
+            var serializedCommand = JsonConvert.SerializeObject(value, Converters);
             var obj = JObject.Parse(serializedCommand);
-            var commandName = command.GetCommandName();
+            var commandName = value.GetCommandName();
             obj.Add("Type", commandName);
             obj.WriteTo(writer);
         }
