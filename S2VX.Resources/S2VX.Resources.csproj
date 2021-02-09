@@ -3,15 +3,15 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningLevel>4</WarningLevel>
+      <WarningLevel>5</WarningLevel>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningLevel>4</WarningLevel>
-      <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+      <WarningLevel>5</WarningLevel>
     </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Fonts\**\*" />
@@ -20,14 +20,11 @@
     <EmbeddedResource Include="Tracks\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Menees.Analyzers" Version="2.0.4">
+    <PackageReference Include="Menees.Analyzers" Version="2.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2020.911.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.204.0" />
   </ItemGroup>
 </Project>
