@@ -14,13 +14,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>5</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors></WarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>5</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors></WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,7 +29,6 @@
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
-    <PackageReference Include="ppy.osu.Framework" Version="2021.204.0" />
   </ItemGroup>
 
   <ItemGroup>
