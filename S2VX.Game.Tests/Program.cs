@@ -2,8 +2,6 @@
 using osu.Framework.Platform;
 using System;
 
-// We need this attribute to address a .NET Analyzer warning. I think due to the
-// way the Visual Tests are set up, it causes this issue.
 [assembly: CLSCompliant(false)]
 namespace S2VX.Game.Tests {
     public static class Program {
