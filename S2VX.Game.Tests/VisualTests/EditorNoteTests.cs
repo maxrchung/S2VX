@@ -24,10 +24,10 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a note that starts to appear in 1 second
         [SetUp]
         public void Setup() {
-            Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + 1000);
-            Story.AddNote(NoteToTest = new EditorNote {
+            Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + 1000));
+            Schedule(() => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + 1000
-            });
+            }));
         }
 
         [Test]
@@ -61,5 +61,38 @@ namespace S2VX.Game.Tests.VisualTests {
                 StoryClock.Seek(1000 + Story.Notes.FadeInTime + Story.Notes.ShowTime + Story.Notes.FadeOutTime));
             AddAssert("Note is not visible", () => NoteToTest.Alpha == 0);
         }
+
+        [Test]
+        public void NoteApproachAlpha_BeforeFadeInTime_IsZero() {
+            AddStep("Seek before FadeInTime", () => StoryClock.Seek(1000));
+            AddAssert("Note approach is not visible", () => NoteToTest.Approach.Alpha == 0);
+        }
+
+        [Test]
+        public void NoteApproachAlpha_AfterFadeInBeforeShowTime_IsBetweenZeroAndOne() {
+            AddStep("Seek between FadeInTime and ShowTime", () => StoryClock.Seek(1000 + Story.Notes.FadeInTime / 2));
+            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha > 0 && NoteToTest.Approach.Alpha < 1);
+        }
+
+        [Test]
+        public void NoteApproachAlpha_AfterShowTimeBeforeHitTime_IsOne() {
+            AddStep("Seek between ShowTime and HitTime", () => StoryClock.Seek(1000 + Story.Notes.FadeInTime + Story.Notes.ShowTime / 2));
+            AddAssert("Note approach is fully visible", () => NoteToTest.Approach.Alpha == 1);
+        }
+
+        [Test]
+        public void NoteApproachAlpha_AfterHitTimeBeforeFadeOutTime_IsBetweenZeroAndOne() {
+            AddStep("Seek between HitTime and FadeOutTime", () =>
+                StoryClock.Seek(1000 + Story.Notes.FadeInTime + Story.Notes.ShowTime + Story.Notes.FadeOutTime / 2));
+            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha > 0 && NoteToTest.Approach.Alpha < 1);
+        }
+
+        [Test]
+        public void NoteApproachAlpha_AfterFadeOutTime_IsZero() {
+            AddStep("Seek after FadeOutTime", () =>
+                StoryClock.Seek(1000 + Story.Notes.FadeInTime + Story.Notes.ShowTime + Story.Notes.FadeOutTime));
+            AddAssert("Note approach is not visible", () => NoteToTest.Approach.Alpha == 0);
+        }
+
     }
 }
