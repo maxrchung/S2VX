@@ -220,17 +220,19 @@ dotnet_naming_style.camel_case.capitalization = camel_case
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = suggestion
 
-# Ran into bug during serialization where an anonymous object was necessary over tuple
 # IDE0050: Convert to tuple
-dotnet_diagnostic.IDE0050.severity = none
+# Ran into bug during serialization where an anonymous object was necessary over tuple
+dotnet_diagnostic.IDE0050.severity = suggestion
 
 # IDE0051: Remove unused private members
+# We have too many uses of BackgroundDependencyLoader private functions
 dotnet_diagnostic.IDE0051.severity = suggestion
 
 # IDE0010: Add missing cases
 dotnet_diagnostic.IDE0010.severity = suggestion
 
 # CA1707: Identifiers should not contain underscores
+# Test cases use underscore naming convention
 dotnet_diagnostic.CA1707.severity = suggestion
 
 # MEN007: Use a single return
@@ -239,9 +241,6 @@ dotnet_diagnostic.MEN007.severity = suggestion
 # MEN010: Avoid magic numbers
 dotnet_diagnostic.MEN010.severity = suggestion
 
-# MEN003: Method is too long
-dotnet_diagnostic.MEN003.severity = suggestion
-
 # CA1303: Do not pass literals as localized parameters
 dotnet_diagnostic.CA1303.severity = suggestion
 
@@ -249,6 +248,7 @@ dotnet_diagnostic.CA1303.severity = suggestion
 dotnet_diagnostic.CA2000.severity = suggestion
 
 # CA1036: Override methods on comparable types
+# We don't want the verbosity of the extra compare methods
 dotnet_diagnostic.CA1036.severity = suggestion
 
 # CA2007: Consider calling ConfigureAwait on the awaited task

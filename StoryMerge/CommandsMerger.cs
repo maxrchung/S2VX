@@ -17,7 +17,7 @@ namespace StoryMerge {
         /// (0-0, 0-0)
         /// (0-1000, 500-1500)
         /// </summary>
-        public static Result Merge(List<S2VXStory> inputStories, S2VXStory outputStory) {
+        public static Result Merge(IEnumerable<S2VXStory> inputStories, S2VXStory outputStory) {
             var infos = new List<CommandTimeInfo>();
             foreach (var input in inputStories) {
                 foreach (var command in input.Commands) {

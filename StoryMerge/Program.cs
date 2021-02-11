@@ -1,8 +1,10 @@
-﻿using System.CommandLine;
+﻿using System;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.IO;
 using System.Threading.Tasks;
 
+[assembly: CLSCompliant(false)]
 namespace StoryMerge {
     internal class Program {
         private static async Task<int> Main(string[] args) {

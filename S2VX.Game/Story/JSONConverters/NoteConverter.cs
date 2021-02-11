@@ -6,13 +6,13 @@ using System;
 namespace S2VX.Game.Story.JSONConverters {
     // Special converter for Note serialization since we only care about HitTime and Coordinates
     public class NoteConverter : JsonConverter<S2VXNote> {
-        public override void WriteJson(JsonWriter writer, S2VXNote note, JsonSerializer serializer) {
+        public override void WriteJson(JsonWriter writer, S2VXNote value, JsonSerializer serializer) {
             var obj = new JObject {
-                { "HitTime", note.HitTime }
+                { "HitTime", value.HitTime }
             };
             var coordinates = new JObject {
-                { "X", note.Coordinates.X },
-                { "Y", note.Coordinates.Y }
+                { "X", value.Coordinates.X },
+                { "Y", value.Coordinates.Y }
             };
             obj.Add("Coordinates", coordinates);
             obj.WriteTo(writer);
