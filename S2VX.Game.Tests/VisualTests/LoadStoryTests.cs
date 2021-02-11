@@ -8,12 +8,12 @@ namespace S2VX.Game.Tests.VisualTests {
         private static string StoryDirectory { get; } = Path.Combine("VisualTests", "LoadTrackTests");
         private static string AudioPath { get; } = Path.Combine(StoryDirectory, "1-second-of-silence.mp3");
 
-        public void AddEditorScreen(string storyFileName) {
+        private void AddEditorScreen(string storyFileName) {
             var storyPath = Path.Combine(StoryDirectory, storyFileName);
             AddStep("Add editor screen", () => Add(new EditorScreen(storyPath, AudioPath)));
         }
 
-        public void AddPlayScreen(string storyFileName) {
+        private void AddPlayScreen(string storyFileName) {
             var storyPath = Path.Combine(StoryDirectory, storyFileName);
             AddStep("Add editor screen", () => Add(new PlayScreen(false, storyPath, AudioPath)));
         }
