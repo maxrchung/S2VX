@@ -26,8 +26,8 @@ namespace S2VX.Game.Tests.VisualTests {
             LoadStory("MalformedJSON.s2ry");
 
         [Test]
-        public void LoadStory_MissingHoldNotesProperty_HasNoUnhandledException() =>
-            LoadStory("MissingHoldNotesProperty.s2ry");
+        public void LoadStory_MissingHoldNotes_HasNoUnhandledException() =>
+            LoadStory("MissingHoldNotes.s2ry");
 
         [Test]
         public void LoadStory_MissingEditorSettings_HasNoUnhandledException() =>
