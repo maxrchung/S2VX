@@ -68,13 +68,15 @@ namespace S2VX.Game.SongSelection.Containers {
             var thumbnailSize = fullWidth * 0.3f;
             var btnSize = new Vector2(fullWidth / 5, fullHeight / 10);
 
+            var storyPath = Path.Combine(CurSelectionPath, StoryPath);
+            var audioPath = Path.Combine(CurSelectionPath, AudioPath);
             BtnEdit = new IconButton() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Edit,
                 Action = () =>
-                    Screens.Push(new EditorScreen(CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                    Screens.Push(new EditorScreen(storyPath, audioPath)),
             };
             BtnPlay = new IconButton {
                 Origin = Anchor.Centre,
@@ -82,7 +84,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Play,
                 Action = () =>
-                    Screens.Push(new PlayScreen(false, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                    Screens.Push(new PlayScreen(false, storyPath, audioPath)),
             };
 
             InternalChildren = new Drawable[] {

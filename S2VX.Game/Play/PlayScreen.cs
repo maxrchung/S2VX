@@ -5,7 +5,6 @@ using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Input.Events;
-using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK.Input;
@@ -13,23 +12,16 @@ using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
 using System;
+using System.IO;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
-        private string AudioPath { get; set; }
-        private StorageBackedResourceStore CurLevelResourceStore { get; set; }
-        private string CurSelectionPath { get; set; }
         private string StoryPath { get; set; }
-        private string FullStoryPath { get; set; }
-        public PlayScreen(bool isUsingEditorSettings, string curSelectionPath, string storyPath,
-            StorageBackedResourceStore curLevelResourceStore, string audioPath) {
-
+        private string AudioPath { get; set; }
+        public PlayScreen(bool isUsingEditorSettings, string storyPath, string audioPath) {
             IsUsingEditorSettings = isUsingEditorSettings;
-            CurSelectionPath = curSelectionPath;
             StoryPath = storyPath;
             AudioPath = audioPath;
-            CurLevelResourceStore = curLevelResourceStore;
-            FullStoryPath = CurSelectionPath + "/" + StoryPath;
         }
 
         // Flag denoting whether (true) to use a story's editor settings or
@@ -61,14 +53,14 @@ namespace S2VX.Game.Play {
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             try {
-                Story.Open(FullStoryPath, false);
+                Story.Open(StoryPath, false);
             } catch (JsonReaderException e) {
                 Console.WriteLine(e);
                 this.Exit();
             }
             Story.ClearActives();
 
-            var trackStream = CurLevelResourceStore.GetStream(AudioPath);
+            var trackStream = File.OpenRead(AudioPath);
             var trackBass = new TrackBass(trackStream);
             audio.AddItem(trackBass);
             var track = new DrawableTrack(trackBass);

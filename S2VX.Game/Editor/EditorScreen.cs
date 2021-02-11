@@ -8,7 +8,6 @@ using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
@@ -20,6 +19,7 @@ using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
+using System.IO;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
@@ -33,11 +33,8 @@ namespace S2VX.Game.Editor {
 
         [Resolved]
         private AudioManager Audio { get; set; }
-        private string AudioPath { get; set; }
-        private StorageBackedResourceStore CurLevelResourceStore { get; set; }
-        private string CurSelectionPath { get; set; }
         private string StoryPath { get; set; }
-        private string FullStoryPath { get; set; }
+        private string AudioPath { get; set; }
 
         public DrawableTrack Track { get; private set; }
         private S2VXStory Story { get; set; }
@@ -54,12 +51,9 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new Timeline();
         public CommandPanel CommandPanel { get; } = new CommandPanel();
 
-        public EditorScreen(string curSelectionPath, string storyPath, StorageBackedResourceStore curLevelResourceStore, string audioPath) {
-            CurSelectionPath = curSelectionPath;
+        public EditorScreen(string storyPath, string audioPath) {
             StoryPath = storyPath;
             AudioPath = audioPath;
-            CurLevelResourceStore = curLevelResourceStore;
-            FullStoryPath = CurSelectionPath + "/" + StoryPath;
         }
 
         // We need to explicitly cache dependencies like this so that we can
@@ -90,12 +84,13 @@ namespace S2VX.Game.Editor {
 
         private void LoadTrack() {
             try {
-                Story.Open(FullStoryPath, true);
+                Story.Open(StoryPath, true);
             } catch (JsonReaderException e) {
                 Console.WriteLine(e);
                 this.Exit();
             }
-            var trackStream = CurLevelResourceStore.GetStream(AudioPath);
+
+            var trackStream = File.OpenRead(AudioPath);
             var track = new TrackBass(trackStream);
             Audio.AddItem(track);
             Track = new DrawableTrack(track);
@@ -372,13 +367,13 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPreview() {
             ProjectSave();
-            this.Push(new PlayScreen(true, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath));
+            this.Push(new PlayScreen(true, StoryPath, AudioPath));
         }
 
         private void ProjectRefresh() {
             ProjectSave();
             try {
-                Story.Open(FullStoryPath, true);
+                Story.Open(StoryPath, true);
             } catch (JsonReaderException e) {
                 Console.WriteLine(e);
                 this.Exit();
@@ -393,7 +388,7 @@ namespace S2VX.Game.Editor {
             editorSettings.TrackPlaybackRate = Track.Tempo.Value;
             editorSettings.SnapDivisor = SnapDivisor;
             editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
-            Story.Save(FullStoryPath);
+            Story.Save(StoryPath);
         }
 
         private void ProjectQuit() => this.Push(new LeaveScreen());
