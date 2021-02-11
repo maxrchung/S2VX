@@ -31,4 +31,24 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
     <PackageReference Include="ppy.osu.Framework" Version="2021.204.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="VisualTests\LoadStoryTests\1-second-of-silence.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LoadStoryTests\MissingHoldNotes.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LoadStoryTests\MalformedJSON.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LoadStoryTests\MissingEditorSettings.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LoadStoryTests\EmptyFile.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LoadStoryTests\ValidStory.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
