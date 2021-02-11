@@ -262,8 +262,8 @@ dotnet_diagnostic.CA1034.severity = suggestion
 # This makes unit test classes easier to structure
 dotnet_diagnostic.CA1001.severity = suggestion
 
-# CA1031: Do not catch general exception types There are some areas, such as
-# loading a story, where we want to blanket catch all exceptions. If we don't do
-# this, then we could end up crashing the game because some Exception was
-# unhandled
+# CA1031: Do not catch general exception types
+# There are some areas, such as loading a story, where we want to blanket
+# catch all exceptions. If we don't do this, then we could end up crashing 
+# the game because an Exception was unhandled
 dotnet_diagnostic.CA1031.severity = suggestion
