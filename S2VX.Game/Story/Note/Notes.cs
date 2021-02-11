@@ -27,6 +27,8 @@ namespace S2VX.Game.Story.Note {
         public Color4 PreviewNoteColor { get; set; }
         public Color4 PreviewHoldNoteColor { get; set; }
 
+        public bool EarliestHoveredNoteFound { get; set; }
+
         public void AddNote(S2VXNote note) {
             Children.Add(note);
             Sort();
@@ -44,6 +46,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void Update() {
+            EarliestHoveredNoteFound = false;
             var notesToRemove = new List<S2VXNote>();
 
             foreach (var note in Children) {
