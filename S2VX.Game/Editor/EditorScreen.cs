@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
@@ -85,7 +84,7 @@ namespace S2VX.Game.Editor {
         private void LoadTrack() {
             try {
                 Story.Open(StoryPath, true);
-            } catch (JsonReaderException e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 this.Exit();
             }
@@ -374,7 +373,7 @@ namespace S2VX.Game.Editor {
             ProjectSave();
             try {
                 Story.Open(StoryPath, true);
-            } catch (JsonReaderException e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 this.Exit();
             }

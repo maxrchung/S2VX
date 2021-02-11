@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
@@ -54,7 +53,7 @@ namespace S2VX.Game.Play {
         private void Load(AudioManager audio) {
             try {
                 Story.Open(StoryPath, false);
-            } catch (JsonReaderException e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 this.Exit();
             }
