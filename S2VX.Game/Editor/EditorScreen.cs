@@ -58,7 +58,7 @@ namespace S2VX.Game.Editor {
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
             var dependencies = new DependencyContainer(parent);
             dependencies.Cache(this);
-            dependencies.Cache(Story = new S2VXStory());
+            dependencies.Cache(Story);
             return dependencies;
         }
 

@@ -30,7 +30,7 @@ namespace S2VX.Game.Play {
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
             var dependencies = new DependencyContainer(parent);
             dependencies.Cache(this);
-            dependencies.Cache(Story = new S2VXStory());
+            dependencies.Cache(Story);
             // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
             dependencies.Cache(new ScoreInfo {
                 RelativeSizeAxes = Axes.Both,
