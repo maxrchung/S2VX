@@ -128,7 +128,7 @@ namespace S2VX.Game.Play {
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
                         },
-                        new SongPreview (CurSelectionPath, storyPath, audioPath, CurLevelResourceStore, thumbnailTexture) {
+                        new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,

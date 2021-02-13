@@ -1,6 +1,4 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Input.Events;
@@ -10,28 +8,23 @@ using osuTK.Input;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
-using System;
-using System.IO;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
-        private string StoryPath { get; set; }
-        private string AudioPath { get; set; }
-        public PlayScreen(bool isUsingEditorSettings, string storyPath, string audioPath) {
-            IsUsingEditorSettings = isUsingEditorSettings;
-            StoryPath = storyPath;
-            AudioPath = audioPath;
-        }
-
         // Flag denoting whether (true) to use a story's editor settings or
         // (false) to start at 0
         private bool IsUsingEditorSettings { get; set; }
 
-        public PlayScreen(bool isUsingEditorSettings) => IsUsingEditorSettings = isUsingEditorSettings;
-
         private S2VXStory Story { get; set; }
+        private DrawableTrack Track { get; set; }
 
         public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
+
+        public PlayScreen(bool isUsingEditorSettings, S2VXStory story, DrawableTrack track) {
+            IsUsingEditorSettings = isUsingEditorSettings;
+            Story = story;
+            Track = track;
+        }
 
         // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
@@ -50,34 +43,24 @@ namespace S2VX.Game.Play {
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            try {
-                Story.Open(StoryPath, false);
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                this.Exit();
-            }
+        private void Load() {
             Story.ClearActives();
 
-            var trackStream = File.OpenRead(AudioPath);
-            var trackBass = new TrackBass(trackStream);
-            audio.AddItem(trackBass);
-            var track = new DrawableTrack(trackBass);
             if (IsUsingEditorSettings) {
                 var settings = Story.EditorSettings;
                 var trackTime = settings.TrackTime;
-                track.Seek(trackTime);
+                Track.Seek(trackTime);
                 Story.RemoveNotesUpTo(trackTime);
             }
 
-            Clock = new FramedClock(track);
+            Clock = new FramedClock(Track);
             InternalChildren = new Drawable[] {
                 Story,
-                track,
+                Track,
                 PlayInfoBar,
             };
 
-            track.Start();
+            Track.Start();
         }
 
         protected override bool OnKeyDown(KeyDownEvent e) {

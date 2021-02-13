@@ -1,6 +1,5 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
@@ -18,7 +17,6 @@ using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
-using System.IO;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
@@ -32,11 +30,10 @@ namespace S2VX.Game.Editor {
 
         [Resolved]
         private AudioManager Audio { get; set; }
-        private string StoryPath { get; set; }
-        private string AudioPath { get; set; }
 
-        public DrawableTrack Track { get; private set; }
+        private string StoryPath { get; set; }
         private S2VXStory Story { get; set; }
+        public DrawableTrack Track { get; private set; }
         private EditorUI EditorUI { get; set; }
         public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
             RelativePositionAxes = Axes.Both,
@@ -50,9 +47,10 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new Timeline();
         public CommandPanel CommandPanel { get; } = new CommandPanel();
 
-        public EditorScreen(string storyPath, string audioPath) {
+        public EditorScreen(string storyPath, S2VXStory story, DrawableTrack track) {
             StoryPath = storyPath;
-            AudioPath = audioPath;
+            Story = story;
+            Track = track;
         }
 
         // We need to explicitly cache dependencies like this so that we can
@@ -66,7 +64,6 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            LoadTrack();
             LoadEditorSettings();
             SetTrackClock();
 
@@ -79,20 +76,6 @@ namespace S2VX.Game.Editor {
                 Story,
                 EditorUI = CreateEditorUI()
             };
-        }
-
-        private void LoadTrack() {
-            try {
-                Story.Open(StoryPath, true);
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                this.Exit();
-            }
-
-            var trackStream = File.OpenRead(AudioPath);
-            var track = new TrackBass(trackStream);
-            Audio.AddItem(track);
-            Track = new DrawableTrack(track);
         }
 
         private void LoadEditorSettings() {
@@ -366,7 +349,7 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPreview() {
             ProjectSave();
-            this.Push(new PlayScreen(true, StoryPath, AudioPath));
+            this.Push(new PlayScreen(true, Story, Track));
         }
 
         private void ProjectRefresh() {

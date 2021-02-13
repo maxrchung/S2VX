@@ -41,6 +41,11 @@ namespace S2VX.Game.Story {
 
         public DifficultySettings DifficultySettings { get; private set; } = new DifficultySettings();
 
+        public S2VXStory() { }
+
+        public S2VXStory(string filePath, bool isForEditor) =>
+            Open(filePath, isForEditor);
+
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
