@@ -31,9 +31,9 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        private string StoryPath { get; set; }
-        private S2VXStory Story { get; set; }
-        public DrawableTrack Track { get; private set; }
+        private string StoryPath { get; }
+        private S2VXStory Story { get; }
+        public DrawableTrack Track { get; }
         private EditorUI EditorUI { get; set; }
         public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
             RelativePositionAxes = Axes.Both,

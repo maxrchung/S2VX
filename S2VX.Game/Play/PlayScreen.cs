@@ -13,10 +13,10 @@ namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
         // Flag denoting whether (true) to use a story's editor settings or
         // (false) to start at 0
-        private bool IsUsingEditorSettings { get; set; }
+        private bool IsUsingEditorSettings { get; }
 
-        private S2VXStory Story { get; set; }
-        private DrawableTrack Track { get; set; }
+        private S2VXStory Story { get; }
+        private DrawableTrack Track { get; }
 
         public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
 
