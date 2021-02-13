@@ -23,74 +23,92 @@ namespace S2VX.Game.Tests.VisualTests {
                 () => Add(SongPreview = new SongPreview(StoryDirectory, storyFileName, AudioFileName))
             );
 
+        private void ClickEditButton() =>
+            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
+
+        private void ClickPlayButton() =>
+            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
+
+        private void AssertEditHasRedBorder() =>
+            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+
+        private void AssertEditHasNoBorder() =>
+            AddAssert("Has no border", () => SongPreview.BtnEdit.BorderThickness == 0);
+
+        private void AssertPlayHasRedBorder() =>
+            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+
+        private void AssertPlayHasNoBorder() =>
+            AddAssert("Has no border", () => SongPreview.BtnEdit.BorderThickness == 0);
+
         [Test]
         public void BtnEdit_EmptyFile_HasRedBorder() {
             AddSongPreview("EmptyFile.s2ry");
-            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
-            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+            ClickEditButton();
+            AssertEditHasRedBorder();
         }
 
         [Test]
         public void BtnEdit_MalformedJSON_HasRedBorder() {
             AddSongPreview("MalformedJSON.s2ry");
-            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
-            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+            ClickEditButton();
+            AssertEditHasRedBorder();
         }
 
         [Test]
         public void BtnEdit_MissingEditorSettings_HasRedBorder() {
             AddSongPreview("MissingEditorSettings.s2ry");
-            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
-            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+            ClickEditButton();
+            AssertEditHasRedBorder();
         }
 
         [Test]
         public void BtnEdit_MissingHoldNotes_HasRedBorder() {
             AddSongPreview("MissingHoldNotes.s2ry");
-            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
-            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+            ClickEditButton();
+            AssertEditHasRedBorder();
         }
 
         [Test]
         public void BtnEdit_ValidStory_HasNoBorder() {
             AddSongPreview("ValidStory.s2ry");
-            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
-            AddAssert("Has no border", () => SongPreview.BtnEdit.BorderThickness == 0);
+            ClickEditButton();
+            AssertEditHasNoBorder();
         }
 
         [Test]
         public void BtnPlay_EmptyFile_HasRedBorder() {
             AddSongPreview("EmptyFile.s2ry");
-            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
-            AddAssert("Has red border", () => SongPreview.BtnPlay.BorderThickness == 5);
+            ClickPlayButton();
+            AssertPlayHasRedBorder();
         }
 
         [Test]
         public void BtnPlay_MalformedJSON_HasRedBorder() {
             AddSongPreview("MalformedJSON.s2ry");
-            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
-            AddAssert("Has red border", () => SongPreview.BtnPlay.BorderThickness == 5);
+            ClickPlayButton();
+            AssertPlayHasRedBorder();
         }
 
         [Test]
         public void BtnPlay_MissingEditorSettings_HasRedBorder() {
             AddSongPreview("MissingEditorSettings.s2ry");
-            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
-            AddAssert("Has red border", () => SongPreview.BtnPlay.BorderThickness == 5);
+            ClickPlayButton();
+            AssertPlayHasRedBorder();
         }
 
         [Test]
         public void BtnPlay_MissingHoldNotes_HasRedBorder() {
             AddSongPreview("MissingHoldNotes.s2ry");
-            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
-            AddAssert("Has red border", () => SongPreview.BtnPlay.BorderThickness == 5);
+            ClickPlayButton();
+            AssertPlayHasRedBorder();
         }
 
         [Test]
         public void BtnPlay_ValidStory_HasNoBorder() {
             AddSongPreview("ValidStory.s2ry");
-            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
-            AddAssert("Has no border", () => SongPreview.BtnPlay.BorderThickness == 0);
+            ClickPlayButton();
+            AssertPlayHasNoBorder();
         }
     }
 }
