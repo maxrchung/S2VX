@@ -36,10 +36,10 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Has no border", () => SongPreview.BtnEdit.BorderThickness == 0);
 
         private void AssertPlayHasRedBorder() =>
-            AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);
+            AddAssert("Has red border", () => SongPreview.BtnPlay.BorderThickness == 5);
 
         private void AssertPlayHasNoBorder() =>
-            AddAssert("Has no border", () => SongPreview.BtnEdit.BorderThickness == 0);
+            AddAssert("Has no border", () => SongPreview.BtnPlay.BorderThickness == 0);
 
         [Test]
         public void BtnEdit_EmptyFile_HasRedBorder() {
