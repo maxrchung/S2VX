@@ -11,6 +11,7 @@ namespace S2VX.Game {
         // It allows for caching global dependencies that should be accessible to tests, or changing
         // the screen scaling for all components including the test browser and framework overlays.
 
+        // The "default" resolution from which things are scaled and positioned
         public const float GameWidth = 1000.0f;
 
         private DllResourceStore ResourceStore { get; set; }
