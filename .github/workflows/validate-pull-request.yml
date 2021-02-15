@@ -31,7 +31,7 @@ jobs:
       with:
         mode: exactly
         count: 1
-        labels: breaking, feature, BIGBUG, bug
+        labels: breaking, feature, BIGBUG, bug, dependencies
 
     - name: Pull requests must link an issue
       uses: hattan/verify-linked-issue-action@v1.1.1
