@@ -34,7 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.204.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.215.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Stories\Story\audio.mp3">
