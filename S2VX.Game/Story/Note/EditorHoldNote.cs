@@ -3,7 +3,6 @@ using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
-using osu.Framework.Screens;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
@@ -17,9 +16,6 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
-
-        [Resolved]
-        private ScreenStack Screens { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
@@ -71,7 +67,7 @@ namespace S2VX.Game.Story.Note {
             TailAnchor.Size = Size;
 
             var time = Time.Current;
-            var drawWidth = Screens.DrawWidth;
+            var drawWidth = S2VXGameBase.GameWidth;
             AnchorPath.PathRadius = OutlineThickness * drawWidth / 2;
             var camera = Story.Camera;
             var noteWidth = camera.Scale.X * drawWidth;

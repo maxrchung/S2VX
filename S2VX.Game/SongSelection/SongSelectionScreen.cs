@@ -18,8 +18,6 @@ using System.Linq;
 namespace S2VX.Game.Play {
     public class SongSelectionScreen : Screen {
         [Resolved]
-        private ScreenStack Screens { get; set; }
-        [Resolved]
         private AudioManager Audio { get; set; }
 
         public string CurSelectionPath { get; set; } = "Stories";
@@ -82,8 +80,8 @@ namespace S2VX.Game.Play {
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
 
-            var fullWidth = Screens.DrawWidth;
-            var fullHeight = Screens.DrawHeight;
+            var fullWidth = S2VXGameBase.GameWidth;
+            var fullHeight = S2VXGameBase.GameWidth;
             var innerSize = 0.9f;
             var spacingMargin = 0.1f;
 
@@ -130,7 +128,7 @@ namespace S2VX.Game.Play {
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
                         },
-                        new SongPreview (CurSelectionPath, storyPath, audioPath, CurLevelResourceStore, thumbnailTexture) {
+                        new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
