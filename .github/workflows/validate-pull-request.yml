@@ -34,7 +34,7 @@ jobs:
         labels: breaking, feature, BIGBUG, bug, dependencies
 
     - name: Pull requests must link an issue
-      if: ${{ contains(github.event.issue.labels.*.name, 'dependencies') == false }}
+      if: ${{ contains(github.event.issue.labels.*.name, 'breaking', 'feature', 'BIGBUG', 'bug') }}
       uses: hattan/verify-linked-issue-action@v1.1.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
