@@ -10,7 +10,6 @@ using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
-using System.Reflection;
 
 namespace S2VX.Game.Editor.Containers {
     public class CommandPanel : OverlayContainer {
@@ -104,13 +103,7 @@ namespace S2VX.Game.Editor.Containers {
             try {
                 var command = S2VXCommand.FromString(commandString);
                 HandleAddCommand(command);
-            } catch (FormatException ex) {
-                AddInputBar.AddErrorIndicator();
-                Console.WriteLine(ex);
-            } catch (TargetInvocationException ex) {
-                AddInputBar.AddErrorIndicator();
-                Console.WriteLine(ex);
-            } catch (NullReferenceException ex) {
+            } catch (Exception ex) {
                 AddInputBar.AddErrorIndicator();
                 Console.WriteLine(ex);
             }
@@ -152,13 +145,7 @@ namespace S2VX.Game.Editor.Containers {
                 var newCommand = S2VXCommand.FromString(commandString);
                 Editor.Reversibles.Push(new ReversibleUpdateCommand(oldCommand, newCommand, this));
                 addSuccessful = true;
-            } catch (FormatException ex) {
-                EditInputBar.AddErrorIndicator();
-                Console.WriteLine(ex);
-            } catch (TargetInvocationException ex) {
-                EditInputBar.AddErrorIndicator();
-                Console.WriteLine(ex);
-            } catch (NullReferenceException ex) {
+            } catch (Exception ex) {
                 EditInputBar.AddErrorIndicator();
                 Console.WriteLine(ex);
             }

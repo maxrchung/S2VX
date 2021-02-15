@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
-using osu.Framework.Screens;
 using osuTK;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +21,6 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
-
-        [Resolved]
-        private ScreenStack Screens { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() => AddInternal(SliderPath);
@@ -59,7 +55,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void UpdateSliderPath() {
-            var drawWidth = Screens.DrawWidth;
+            var drawWidth = S2VXGameBase.GameWidth;
             var pathRadius = OutlineThickness * drawWidth / 2;
             SliderPath.PathRadius = pathRadius;
 

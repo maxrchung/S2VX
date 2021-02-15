@@ -11,6 +11,9 @@ namespace S2VX.Game {
         // It allows for caching global dependencies that should be accessible to tests, or changing
         // the screen scaling for all components including the test browser and framework overlays.
 
+        // The "default" resolution from which things are scaled and positioned
+        public const float GameWidth = 1000.0f;
+
         private DllResourceStore ResourceStore { get; set; }
 
         protected override Container<Drawable> Content { get; }
@@ -20,7 +23,7 @@ namespace S2VX.Game {
             // You may want to change TargetDrawSize to your "default"
             // resolution, which will decide how things scale and position when
             // using absolute coordinates.
-            TargetDrawSize = new Vector2(1000, 1000)
+            TargetDrawSize = new Vector2(GameWidth, GameWidth)
         });
 
         [BackgroundDependencyLoader]
