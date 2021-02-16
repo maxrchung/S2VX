@@ -16,15 +16,16 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Add(Story);
             StoryClock = new StopwatchClock();
             FramedClock = new FramedClock(StoryClock);
             Story.Clock = FramedClock;
+            Add(Story);
         }
 
         // All tests will have a note that starts to appear in 1 second
         [SetUp]
         public void Setup() {
+            Story.ApplyDefaultCommands(); // Ensure default commands are applied before using any properties
             Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
             Schedule(() => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime

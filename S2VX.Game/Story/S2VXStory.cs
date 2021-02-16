@@ -165,7 +165,7 @@ namespace S2VX.Game.Story {
             File.WriteAllText(path, serialized);
         }
 
-        protected override void Update() {
+        public void ApplyDefaultCommands() {
             // If at 0, apply defaults
             if (NextActive == 0) {
                 foreach (var command in DefaultCommands) {
@@ -202,5 +202,7 @@ namespace S2VX.Game.Story {
             }
             Actives = newActives;
         }
+
+        protected override void Update() => ApplyDefaultCommands();
     }
 }

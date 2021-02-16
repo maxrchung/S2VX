@@ -36,7 +36,6 @@ namespace S2VX.Game.Tests.VisualTests {
             StoryClock = new StopwatchClock();
             FramedClock = new FramedClock(StoryClock);
             Story.Clock = FramedClock;
-            //drawableTrack.Clock = FramedClock;
             Editor = new EditorScreen(null, Story, drawableTrack);
             ScreenStack.Push(Editor);
             Add(ScreenStack);
@@ -45,6 +44,7 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
         [SetUp]
         public void Setup() {
+            Story.ApplyDefaultCommands(); // Ensure default commands are applied before using any properties
             Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
             Schedule(() => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
@@ -112,9 +112,8 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void EditorHoldNoteApproachAlpha_AfterHitTimeBeforeEndTime_IsOne() {
             AddStep("Seek between HitTime and EndTime", () =>
-                Editor.Seek(NoteAppearTime + Story.Notes.FadeInTime + Story.Notes.ShowTime + HoldDuration / 2)); // 1000, 100, 1000, 1000
-            AddAssert("Note approach is fully visible", () =>
-                NoteToTest.Approach.Alpha == 1); // 2100, 3100
+                Editor.Seek(NoteAppearTime + Story.Notes.FadeInTime + Story.Notes.ShowTime + HoldDuration / 2));
+            AddAssert("Note approach is fully visible", () => NoteToTest.Approach.Alpha == 1);
         }
 
         [Test]
