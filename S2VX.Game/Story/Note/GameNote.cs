@@ -11,8 +11,8 @@ using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote {
-        private SampleChannel Hit { get; set; }
-        private SampleChannel Miss { get; set; }
+        private Sample Hit { get; set; }
+        private Sample Miss { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
