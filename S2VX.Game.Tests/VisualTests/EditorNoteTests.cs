@@ -40,7 +40,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void EditorNoteAlpha_AfterFadeInBeforeShowTime_IsBetweenZeroAndOne() {
             AddStep("Seek between FadeInTime and ShowTime", () => StoryClock.Seek(NoteAppearTime + Story.Notes.FadeInTime / 2));
-            AddAssert("Note is partially visible", () => NoteToTest.Alpha > 0 && NoteToTest.Alpha < 1);
+            AddAssert("Note is partially visible", () => NoteToTest.Alpha is > 0 and < 1);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace S2VX.Game.Tests.VisualTests {
         public void EditorNoteAlpha_AfterHitTimeBeforeFadeOutTime_IsBetweenZeroAndOne() {
             AddStep("Seek between HitTime and FadeOutTime", () =>
                 StoryClock.Seek(NoteAppearTime + Story.Notes.FadeInTime + Story.Notes.ShowTime + Story.Notes.FadeOutTime / 2));
-            AddAssert("Note is partially visible", () => NoteToTest.Alpha > 0 && NoteToTest.Alpha < 1);
+            AddAssert("Note is partially visible", () => NoteToTest.Alpha is > 0 and < 1);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void EditorNoteApproachAlpha_AfterFadeInBeforeShowTime_IsBetweenZeroAndOne() {
             AddStep("Seek between FadeInTime and ShowTime", () => StoryClock.Seek(NoteAppearTime + Story.Notes.FadeInTime / 2));
-            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha > 0 && NoteToTest.Approach.Alpha < 1);
+            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha is > 0 and < 1);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace S2VX.Game.Tests.VisualTests {
         public void EditorNoteApproachAlpha_AfterHitTimeBeforeFadeOutTime_IsBetweenZeroAndOne() {
             AddStep("Seek between HitTime and FadeOutTime", () =>
                 StoryClock.Seek(NoteAppearTime + Story.Notes.FadeInTime + Story.Notes.ShowTime + Story.Notes.FadeOutTime / 2));
-            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha > 0 && NoteToTest.Approach.Alpha < 1);
+            AddAssert("Note approach is partially visible", () => NoteToTest.Approach.Alpha is > 0 and < 1);
         }
 
         [Test]
