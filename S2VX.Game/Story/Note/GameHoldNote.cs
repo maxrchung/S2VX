@@ -28,8 +28,8 @@ namespace S2VX.Game.Story.Note {
             VisibleAfter
         }
         private const int MissThreshold = 200;
-        private SampleChannel Hit { get; set; }
-        private SampleChannel Miss { get; set; }
+        private Sample Hit { get; set; }
+        private Sample Miss { get; set; }
         private bool HitSoundHasBeenPlayed { get; set; }
         private bool ReleaseSoundHasBeenPlayed { get; set; }
         private int ScoreBefore { get; set; }

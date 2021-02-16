@@ -12,7 +12,7 @@ namespace S2VX.Game.Story.Note {
     public class EditorHoldNote : HoldNote {
         private int NumHitSounds { get; set; }
         private List<double> HitSoundTimes { get; set; }
-        private SampleChannel Hit { get; set; }
+        private Sample Hit { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
