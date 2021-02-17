@@ -24,12 +24,13 @@ namespace S2VX.Game.Tests.VisualTests {
 
         // All tests will have a note that starts to appear in 1 second
         [SetUp]
-        public void Setup() {
+        public new void SetUp() {
             Story.ApplyDefaultCommands(); // Ensure default commands are applied before using any properties
             Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
             Schedule(() => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
             }));
+            base.SetUp();
         }
 
         [Test]

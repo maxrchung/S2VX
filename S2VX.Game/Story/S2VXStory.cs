@@ -166,11 +166,14 @@ namespace S2VX.Game.Story {
         }
 
         public void ApplyDefaultCommands() {
-            // If at 0, apply defaults
+            foreach (var command in DefaultCommands) {
+                command.Apply(0, this);
+            }
+        }
+
+        protected override void Update() {
             if (NextActive == 0) {
-                foreach (var command in DefaultCommands) {
-                    command.Apply(0, this);
-                }
+                ApplyDefaultCommands();
             }
 
             // Add new active commands
@@ -202,7 +205,5 @@ namespace S2VX.Game.Story {
             }
             Actives = newActives;
         }
-
-        protected override void Update() => ApplyDefaultCommands();
     }
 }

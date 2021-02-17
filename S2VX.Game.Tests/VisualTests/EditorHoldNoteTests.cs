@@ -15,7 +15,6 @@ namespace S2VX.Game.Tests.VisualTests {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
         private EditorScreen Editor { get; set; }
-        private ScreenStack ScreenStack { get; set; } = new ScreenStack();
 
         [Resolved]
         private AudioManager Audio { get; set; }
@@ -25,31 +24,34 @@ namespace S2VX.Game.Tests.VisualTests {
         private static float HoldDuration { get; } = 1000.0f;
         private EditorHoldNote NoteToTest { get; set; }
         private StopwatchClock StoryClock { get; set; }
-        private FramedClock FramedClock { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
             var trackStream = File.OpenRead(AudioPath);
             var track = new TrackBass(trackStream);
-            Audio.AddItem(track);
             var drawableTrack = new DrawableTrack(track);
+            var framedClock = new FramedClock(StoryClock);
+            var screenStack = new ScreenStack();
+
+            Audio.AddItem(track);
             StoryClock = new StopwatchClock();
-            FramedClock = new FramedClock(StoryClock);
-            Story.Clock = FramedClock;
+            Story.Clock = framedClock;
+
             Editor = new EditorScreen(null, Story, drawableTrack);
-            ScreenStack.Push(Editor);
-            Add(ScreenStack);
+            screenStack.Push(Editor);
+            Add(screenStack);
         }
 
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
         [SetUp]
-        public void Setup() {
+        public new void SetUp() {
             Story.ApplyDefaultCommands(); // Ensure default commands are applied before using any properties
             Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
             Schedule(() => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
                 EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
             }));
+            base.SetUp();
         }
 
         [Test]

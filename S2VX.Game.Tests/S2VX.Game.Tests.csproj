@@ -35,9 +35,6 @@
     <None Update="VisualTests\EditorTests\10-seconds-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\EditorTests\EditorHoldNote.s2ry">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="VisualTests\SongPreviewTests\1-second-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
