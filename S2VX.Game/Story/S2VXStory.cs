@@ -166,6 +166,7 @@ namespace S2VX.Game.Story {
         }
 
         protected override void Update() {
+            // If at 0, apply defaults
             if (NextActive == 0) {
                 foreach (var command in DefaultCommands) {
                     command.Apply(0, this);
