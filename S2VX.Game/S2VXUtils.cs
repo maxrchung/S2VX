@@ -1,9 +1,13 @@
-﻿using osu.Framework.Graphics;
+﻿using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 using System;
 using System.Globalization;
+using System.IO;
 
 namespace S2VX.Game {
     public static class S2VXUtils {
@@ -134,6 +138,13 @@ namespace S2VX.Game {
                 return val2;
             }
             return Interpolation.ValueAt(time, val1, val2, startTime, endTime, easing);
+        }
+
+        public static DrawableTrack LoadDrawableTrack(string audioPath, AudioManager audioManager) {
+            var trackStream = File.OpenRead(audioPath);
+            var track = new TrackBass(trackStream);
+            audioManager.AddItem(track);
+            return new DrawableTrack(track);
         }
     }
 }
