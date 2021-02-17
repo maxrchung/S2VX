@@ -50,5 +50,8 @@
     <None Update="VisualTests\SongPreviewTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="VisualTests\TestTracks\1-second-of-silence.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
