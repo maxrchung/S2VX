@@ -11,14 +11,12 @@ namespace S2VX.Game.Tests.VisualTests {
 
         private EditorNote NoteToTest { get; set; }
         private StopwatchClock StoryClock { get; set; }
-        private FramedClock FramedClock { get; set; }
         private readonly float NoteAppearTime = 1000.0f;
 
         [BackgroundDependencyLoader]
         private void Load() {
             StoryClock = new StopwatchClock();
-            FramedClock = new FramedClock(StoryClock);
-            Story.Clock = FramedClock;
+            Story.Clock = new FramedClock(StoryClock);
             Add(Story);
         }
 
