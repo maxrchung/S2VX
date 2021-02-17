@@ -44,15 +44,14 @@ namespace S2VX.Game.Tests.VisualTests {
 
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
         [SetUp]
-        public new void SetUp() {
-            Story.ApplyDefaultCommands(); // Ensure default commands are applied before using any properties
-            Schedule(() => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
-            Schedule(() => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
-                HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
-                EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
-            }));
-            base.SetUp();
-        }
+        public new void SetUp() =>
+            ScheduleAfterChildren(() => {
+                Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime);
+                Story.AddHoldNote(NoteToTest = new EditorHoldNote {
+                    HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
+                    EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
+                });
+            });
 
         [Test]
         public void EditorHoldNoteAlpha_BeforeFadeInTime_IsZero() {

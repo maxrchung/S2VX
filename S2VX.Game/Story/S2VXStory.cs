@@ -165,15 +165,11 @@ namespace S2VX.Game.Story {
             File.WriteAllText(path, serialized);
         }
 
-        public void ApplyDefaultCommands() {
-            foreach (var command in DefaultCommands) {
-                command.Apply(0, this);
-            }
-        }
-
         protected override void Update() {
             if (NextActive == 0) {
-                ApplyDefaultCommands();
+                foreach (var command in DefaultCommands) {
+                    command.Apply(0, this);
+                }
             }
 
             // Add new active commands
