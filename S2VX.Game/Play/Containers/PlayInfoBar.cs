@@ -45,7 +45,7 @@ namespace S2VX.Game.Play.Containers {
         }
 
         [Resolved]
-        public ScoreInfo ScoreInfo { get; set; }
+        public ScoreInfo ScoreInfo { get; private set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
