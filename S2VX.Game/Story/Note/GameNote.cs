@@ -1,16 +1,15 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
-using osu.Framework.Input.Events;
+using osu.Framework.Input.Bindings;
 using osuTK.Graphics;
-using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
 using System.Linq;
 
 namespace S2VX.Game.Story.Note {
-    public class GameNote : S2VXNote {
+    public class GameNote : S2VXNote, IKeyBindingHandler<InputAction> {
         private Sample Hit { get; set; }
         private Sample Miss { get; set; }
 
@@ -29,7 +28,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        private const int MissThreshold = 200;
+        public const int MissThreshold = 200;
         private int TimingError;
 
         private bool ShouldBeRemoved { get; set; }
@@ -68,34 +67,15 @@ namespace S2VX.Game.Story.Note {
             Delete();
         }
 
-        protected override bool OnMouseDown(MouseDownEvent e) {
-            if (IsClickable()) {
+        public bool OnPressed(InputAction action) {
+            if (IsClickable() && IsHovered) {
                 ClickNote();
             }
 
             return false;
         }
 
-        protected override bool OnKeyDown(KeyDownEvent e) {
-            if (IsClickable() && IsHovered) {
-                switch (e.Key) {
-                    case Key.Z:
-                    case Key.X:
-                    case Key.C:
-                    case Key.V:
-                    case Key.A:
-                    case Key.S:
-                    case Key.D:
-                    case Key.F:
-                        ClickNote();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return false;
-        }
+        public void OnReleased(InputAction action) { }
 
         public override bool UpdateNote() {
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
