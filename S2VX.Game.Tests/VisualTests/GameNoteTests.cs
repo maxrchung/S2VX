@@ -45,10 +45,11 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Start clock", () => Stopwatch.Start());
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddAssert("Does not trigger multiple notes", () =>
                 (originalNoteCount - 1) * GameNote.MissThreshold == PlayScreen.PlayInfoBar.ScoreInfo.Score
             );
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+
         }
     }
 }
