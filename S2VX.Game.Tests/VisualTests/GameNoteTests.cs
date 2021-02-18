@@ -49,7 +49,6 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Does not trigger multiple notes", () =>
                 (originalNoteCount - 1) * GameNote.MissThreshold == PlayScreen.PlayInfoBar.ScoreInfo.Score
             );
-
         }
     }
 }
