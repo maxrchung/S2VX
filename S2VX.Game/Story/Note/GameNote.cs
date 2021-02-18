@@ -33,7 +33,6 @@ namespace S2VX.Game.Story.Note {
 
         private bool ShouldBeRemoved { get; set; }
 
-
         private void Delete() {
             PlayScreen.PlayInfoBar.RecordHitError(TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
@@ -66,6 +65,8 @@ namespace S2VX.Game.Story.Note {
             ScoreInfo.AddScore(Math.Abs(TimingError));
             Delete();
         }
+
+        public override bool HandlePositionalInput => true;
 
         public bool OnPressed(InputAction action) {
             if (IsClickable() && IsHovered) {
