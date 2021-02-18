@@ -34,19 +34,21 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void OnPress_KeyHeldDown_DoesNotTriggerMultipleNotes() {
+            var originalNoteCount = 0;
             AddStep("Add notes", () => {
                 for (var i = 0; i < 1000; i += 50) {
                     Story.AddNote(new GameNote { HitTime = i });
                 }
+                originalNoteCount = Story.Notes.Children.Count;
             });
             AddStep("Move mouse", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Start clock", () => Stopwatch.Start());
-            AddUntilStep("Wait until all notes are hit", () => Story.Notes.Children.Count == 0);
+            AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddAssert("Does not trigger multiple notes", () =>
-                Story.Notes.Children.Count - 1 * GameNote.MissThreshold == PlayScreen.PlayInfoBar.ScoreInfo.Score
+                (originalNoteCount - 1) * GameNote.MissThreshold == PlayScreen.PlayInfoBar.ScoreInfo.Score
             );
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
         }
-
     }
 }
