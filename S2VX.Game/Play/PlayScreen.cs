@@ -8,6 +8,7 @@ using osuTK.Input;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Play.Containers;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
@@ -55,7 +56,9 @@ namespace S2VX.Game.Play {
 
             Clock = new FramedClock(Track);
             InternalChildren = new Drawable[] {
-                Story,
+                new InputKeyBindingContainer {
+                    Story
+                },
                 Track,
                 PlayInfoBar,
             };

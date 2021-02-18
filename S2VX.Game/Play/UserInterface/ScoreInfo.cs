@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
     public class ScoreInfo : CompositeDrawable {
-        private int Score { get; set; }
+        public int Score { get; private set; }
 
         private TextFlowContainer TxtScore { get; set; }
 
@@ -27,6 +27,11 @@ namespace S2VX.Game.Play.UserInterface {
 
         public void AddScore(int moreScore) {
             Score += moreScore;
+            TxtScore.Text = Score.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void ClearScore() {
+            Score = 0;
             TxtScore.Text = Score.ToString(CultureInfo.InvariantCulture);
         }
     }
