@@ -28,13 +28,10 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var trackStream = File.OpenRead(AudioPath);
-            var track = new TrackBass(trackStream);
-            var drawableTrack = new DrawableTrack(track);
             var framedClock = new FramedClock(StoryClock);
             var screenStack = new ScreenStack();
+            var drawableTrack = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
 
-            Audio.AddItem(track);
             StoryClock = new StopwatchClock();
             Story.Clock = framedClock;
 
