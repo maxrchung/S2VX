@@ -2,6 +2,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
+using osu.Framework.Testing;
 using osu.Framework.Timing;
 using osuTK.Input;
 using S2VX.Game.Play;
@@ -25,12 +26,12 @@ namespace S2VX.Game.Tests.VisualTests {
             Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXUtils.LoadDrawableTrack(audioPath, Audio))));
         }
 
-        [SetUp]
-        public new void SetUp() => ScheduleAfterChildren(() => {
-            PlayScreen.ScoreInfo.ClearScore();
-            Story.Reset();
-            Story.Clock = new FramedClock(Stopwatch = new StopwatchClock());
-        });
+        [SetUpSteps]
+        public void SetUpSteps() {
+            AddStep("Clear score", () => PlayScreen.ScoreInfo.ClearScore());
+            AddStep("Reset story", () => Story.Reset());
+            AddStep("Reset clock", () => Story.Clock = new FramedClock(Stopwatch = new StopwatchClock()));
+        }
 
         [Test]
         public void OnPress_KeyHeldDown_DoesNotTriggerMultipleNotes() {
