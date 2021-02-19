@@ -1,15 +1,12 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
-using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
-using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class EditorHoldNoteTests : S2VXTestScene {
