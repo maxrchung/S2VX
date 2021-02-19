@@ -1,17 +1,15 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
-using osu.Framework.Input.Events;
+using osu.Framework.Input.Bindings;
 using osuTK.Graphics;
-using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace S2VX.Game.Story.Note {
-    public class GameHoldNote : HoldNote {
+    public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
 
@@ -36,8 +34,7 @@ namespace S2VX.Game.Story.Note {
         private int ScoreDuring { get; set; }
         private int ScoreAfter { get; set; }
         private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
-        private HashSet<Key> KeysBeingHeld { get; } = new HashSet<Key>();
-        private HashSet<MouseButton> MouseButtonsBeingHeld { get; } = new HashSet<MouseButton>();
+        private int InputsBeingHeld { get; set; }
         private bool ShouldBeRemoved { get; set; }
 
         [BackgroundDependencyLoader]
@@ -54,7 +51,7 @@ namespace S2VX.Game.Story.Note {
             ShouldBeRemoved = true;
         }
 
-        private bool IsBeingHeld() => KeysBeingHeld.Count > 0 || MouseButtonsBeingHeld.Count > 0;
+        private bool IsBeingHeld() => InputsBeingHeld == 0;
 
         // Note is clickable if in a visible state and is the earliest note
         private bool IsClickable() {
@@ -87,66 +84,26 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        protected override bool OnMouseDown(MouseDownEvent e) {
-            if (IsClickable()) {
-                HitNoteSound();
-                MouseButtonsBeingHeld.Add(e.Button);
-            }
+        public override bool HandlePositionalInput => true;
 
-            return false;
-        }
-
-        protected override void OnMouseUp(MouseUpEvent e) {
-            // Mouse up needs to have a dispose check because it's possible to
-            // leave the current screen and have the on mouse up trigger on the
-            // next screen.
-            if (IsDisposed) {
-                return;
-            }
-
-            if (!ShouldBeRemoved && MouseButtonsBeingHeld.Contains(e.Button)) {
-                MouseButtonsBeingHeld.Remove(e.Button);
-                ReleaseNoteSound();
-            }
-        }
-
-        protected override bool OnKeyDown(KeyDownEvent e) {
+        public bool OnPressed(InputAction action) {
             if (IsClickable() && IsHovered) {
-                switch (e.Key) {
-                    case Key.Z:
-                    case Key.X:
-                    case Key.C:
-                    case Key.V:
-                    case Key.A:
-                    case Key.S:
-                    case Key.D:
-                    case Key.F:
-                        HitNoteSound();
-                        KeysBeingHeld.Add(e.Key);
-                        break;
-                    default:
-                        break;
-                }
+                HitNoteSound();
+                ++InputsBeingHeld;
             }
-
             return false;
         }
 
-        protected override void OnKeyUp(KeyUpEvent e) {
-            // Mouse up needs to have a dispose check because it's possible to
-            // leave the current screen and have the on mouse up trigger on the
-            // next screen.
-            if (IsDisposed) {
-                return;
-            }
-
-            if (!ShouldBeRemoved && KeysBeingHeld.Contains(e.Key)) {
-                KeysBeingHeld.Remove(e.Key);
+        public void OnReleased(InputAction action) {
+            if (!ShouldBeRemoved && IsBeingHeld()) {
+                --InputsBeingHeld;
                 ReleaseNoteSound();
             }
         }
 
         public override bool UpdateNote() {
+            UpdateState();
+
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
             if (ShouldBeRemoved) {
                 return true;
@@ -156,6 +113,22 @@ namespace S2VX.Game.Story.Note {
             UpdatePosition();
             UpdateScore();
             return false;
+        }
+
+        private void UpdateState() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            if (time < HitTime - notes.ShowTime - notes.FadeInTime) {
+                State = HoldNoteState.NotVisibleBefore;
+            } else if (time < HitTime) {
+                State = HoldNoteState.VisibleBefore;
+            } else if (time <= EndTime) {
+                State = HoldNoteState.During;
+            } else if (!ShouldBeRemoved) {
+                State = HoldNoteState.VisibleAfter;
+            } else {
+                Delete();
+            }
         }
 
         protected override void UpdateColor() {
@@ -179,7 +152,6 @@ namespace S2VX.Game.Story.Note {
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
-                Delete();
             }
 
             if (time >= HitTime && !IsBeingHeld()) {
@@ -188,20 +160,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void UpdateScore() {
-            var time = Time.Current;
-            var notes = Story.Notes;
-            if (time < notes.ShowTime - notes.FadeInTime) {
-                State = HoldNoteState.NotVisibleBefore;
-            } else if (time < HitTime) {
-                State = HoldNoteState.VisibleBefore;
-            } else if (time <= EndTime) {
-                State = HoldNoteState.During;
-            } else if (!ShouldBeRemoved) {
-                State = HoldNoteState.VisibleAfter;
-            } else {
-                // So we don't add to score in the few ms between calling Delete() and the note actually being removed
-                return;
-            }
             var elapsed = (int)Math.Round(Time.Elapsed);
             if (IsHovered && IsBeingHeld()) {
                 switch (State) {
