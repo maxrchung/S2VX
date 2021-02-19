@@ -4,6 +4,7 @@ using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
+using osu.Framework.Testing;
 using osu.Framework.Timing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
@@ -43,15 +44,14 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
-        [SetUp]
-        public new void SetUp() =>
-            ScheduleAfterChildren(() => {
-                Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime);
-                Story.AddHoldNote(NoteToTest = new EditorHoldNote {
-                    HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
-                    EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
-                });
-            });
+        [SetUpSteps]
+        public void SetUpSteps() {
+            AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
+            AddStep("Add note", () => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
+                EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
+            }));
+        }
 
         [Test]
         public void EditorHoldNoteAlpha_BeforeFadeInTime_IsZero() {

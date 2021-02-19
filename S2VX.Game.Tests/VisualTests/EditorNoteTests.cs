@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Testing;
 using osu.Framework.Timing;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
@@ -21,14 +22,13 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         // All tests will have a note that starts to appear in 1 second
-        [SetUp]
-        public new void SetUp() =>
-            ScheduleAfterChildren(() => {
-                Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime);
-                Story.AddNote(NoteToTest = new EditorNote {
-                    HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
-                });
-            });
+        [SetUpSteps]
+        public void SetUpSteps() {
+            AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
+                HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
+            }));
+        }
 
         [Test]
         public void EditorNoteAlpha_BeforeFadeInTime_IsZero() {
