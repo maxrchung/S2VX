@@ -37,7 +37,7 @@ namespace S2VX.Game.Story.Note {
         private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
         private int InputsBeingHeld { get; set; }
         private bool IsFlaggedForRemoval { get; set; }
-        private bool IsBeingHeld() => InputsBeingHeld == 0;
+        private bool IsBeingHeld() => InputsBeingHeld > 0;
         public override bool HandlePositionalInput => true;
 
         [BackgroundDependencyLoader]
