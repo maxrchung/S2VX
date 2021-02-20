@@ -10,15 +10,6 @@ using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote, IKeyBindingHandler<InputAction> {
-        private Sample Hit { get; set; }
-        private Sample Miss { get; set; }
-
-        [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            Miss = audio.Samples.Get("miss");
-        }
-
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
 
@@ -28,26 +19,34 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
+        private Sample Hit { get; set; }
+        private Sample Miss { get; set; }
         public const int MissThreshold = 200;
         private int TimingError;
+        private bool IsFlaggedForRemoval { get; set; }
+        public override bool HandlePositionalInput => true;
 
-        private bool ShouldBeRemoved { get; set; }
+        [BackgroundDependencyLoader]
+        private void Load(AudioManager audio) {
+            Hit = audio.Samples.Get("hit");
+            Miss = audio.Samples.Get("miss");
+        }
 
-        private void Delete() {
+        private void FlagForRemoval() {
             PlayScreen.PlayInfoBar.RecordHitError(TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {
                 Miss.Play();
             }
-            ShouldBeRemoved = true;
+            IsFlaggedForRemoval = true;
         }
 
         private void RecordMiss() {
             var missThreshold = MissThreshold;
             TimingError = missThreshold;
             ScoreInfo.AddScore(missThreshold);
-            Delete();
+            FlagForRemoval();
         }
 
         // Notes are clickable if they are visible on screen, not missed, and is the earliest note
@@ -63,10 +62,8 @@ namespace S2VX.Game.Story.Note {
 
         private void ClickNote() {
             ScoreInfo.AddScore(Math.Abs(TimingError));
-            Delete();
+            FlagForRemoval();
         }
-
-        public override bool HandlePositionalInput => true;
 
         public bool OnPressed(InputAction action) {
             if (IsClickable() && IsHovered) {
@@ -79,17 +76,17 @@ namespace S2VX.Game.Story.Note {
         public void OnReleased(InputAction action) { }
 
         public override bool UpdateNote() {
+            if (Time.Current >= HitTime + MissThreshold) {
+                RecordMiss();
+            }
+
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
-            if (ShouldBeRemoved) {
+            if (IsFlaggedForRemoval) {
                 return true;
             }
 
             UpdateColor();
             UpdatePosition();
-
-            if (Time.Current >= HitTime + MissThreshold) {
-                RecordMiss();
-            }
             return false;
         }
 

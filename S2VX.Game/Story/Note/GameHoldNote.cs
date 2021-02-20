@@ -25,6 +25,7 @@ namespace S2VX.Game.Story.Note {
             During,
             VisibleAfter
         }
+
         private const int MissThreshold = 200;
         private Sample Hit { get; set; }
         private Sample Miss { get; set; }
@@ -35,7 +36,9 @@ namespace S2VX.Game.Story.Note {
         private int ScoreAfter { get; set; }
         private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
         private int InputsBeingHeld { get; set; }
-        private bool ShouldBeRemoved { get; set; }
+        private bool IsFlaggedForRemoval { get; set; }
+        private bool IsBeingHeld() => InputsBeingHeld == 0;
+        public override bool HandlePositionalInput => true;
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
@@ -43,15 +46,13 @@ namespace S2VX.Game.Story.Note {
             Miss = audio.Samples.Get("miss");
         }
 
-        private void Delete() {
+        private void FlagForRemoval() {
             ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
             ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
             var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
             PlayScreen.PlayInfoBar.RecordHitError(totalScore);
-            ShouldBeRemoved = true;
+            IsFlaggedForRemoval = true;
         }
-
-        private bool IsBeingHeld() => InputsBeingHeld == 0;
 
         // Note is clickable if in a visible state and is the earliest note
         private bool IsClickable() {
@@ -84,18 +85,16 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public override bool HandlePositionalInput => true;
-
         public bool OnPressed(InputAction action) {
             if (IsClickable() && IsHovered) {
-                HitNoteSound();
                 ++InputsBeingHeld;
+                HitNoteSound();
             }
             return false;
         }
 
         public void OnReleased(InputAction action) {
-            if (!ShouldBeRemoved && IsBeingHeld()) {
+            if (!IsFlaggedForRemoval && IsBeingHeld()) {
                 --InputsBeingHeld;
                 ReleaseNoteSound();
             }
@@ -105,7 +104,7 @@ namespace S2VX.Game.Story.Note {
             UpdateState();
 
             // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
-            if (ShouldBeRemoved) {
+            if (IsFlaggedForRemoval) {
                 return true;
             }
 
@@ -124,10 +123,10 @@ namespace S2VX.Game.Story.Note {
                 State = HoldNoteState.VisibleBefore;
             } else if (time <= EndTime) {
                 State = HoldNoteState.During;
-            } else if (!ShouldBeRemoved) {
+            } else if (!IsFlaggedForRemoval) {
                 State = HoldNoteState.VisibleAfter;
             } else {
-                Delete();
+                FlagForRemoval();
             }
         }
 
