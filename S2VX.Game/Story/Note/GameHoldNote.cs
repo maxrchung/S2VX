@@ -123,7 +123,7 @@ namespace S2VX.Game.Story.Note {
                 State = HoldNoteState.VisibleBefore;
             } else if (time <= EndTime) {
                 State = HoldNoteState.During;
-            } else if (!IsFlaggedForRemoval) {
+            } else if (time <= EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
             } else {
                 FlagForRemoval();
