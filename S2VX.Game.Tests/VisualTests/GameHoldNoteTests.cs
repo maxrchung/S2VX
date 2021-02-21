@@ -35,7 +35,7 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
-        public void OnPress_KeyHeldDown_DoesNotTriggerMultipleNotes() {
+        public void OnPress_KeyHeldDown_OnlyCalculatesHoldScore() {
             var originalNoteCount = 0;
             AddStep("Add notes", () => {
                 for (var i = 0; i < 1000; i += 100 + 50) {
@@ -51,7 +51,9 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start clock", () => Stopwatch.Start());
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            // TODO: Fix scoring for hold notes so it doesn't overlap
+            AddAssert("Only calculates hold score", () =>
+                Precision.AlmostEquals(originalNoteCount * 100, PlayScreen.ScoreInfo.Score, 20)
+            );
         }
     }
 }

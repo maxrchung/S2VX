@@ -31,9 +31,9 @@ namespace S2VX.Game.Story.Note {
         private Sample Miss { get; set; }
         private bool HitSoundHasBeenPlayed { get; set; }
         private bool ReleaseSoundHasBeenPlayed { get; set; }
-        private int ScoreBefore { get; set; }
-        private int ScoreDuring { get; set; }
-        private int ScoreAfter { get; set; }
+        private double ScoreBefore { get; set; }
+        private double ScoreDuring { get; set; }
+        private double ScoreAfter { get; set; }
         private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
         private int InputsBeingHeld { get; set; }
         private bool IsFlaggedForRemoval { get; set; }
@@ -50,7 +50,7 @@ namespace S2VX.Game.Story.Note {
             ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
             ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
             var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
-            PlayScreen.PlayInfoBar.RecordHitError(totalScore);
+            PlayScreen.PlayInfoBar.RecordHitError((int)totalScore);
             IsFlaggedForRemoval = true;
         }
 
@@ -121,9 +121,9 @@ namespace S2VX.Game.Story.Note {
                 State = HoldNoteState.NotVisibleBefore;
             } else if (time < HitTime) {
                 State = HoldNoteState.VisibleBefore;
-            } else if (time <= EndTime) {
+            } else if (time < EndTime) {
                 State = HoldNoteState.During;
-            } else if (time <= EndTime + notes.FadeOutTime) {
+            } else if (time < EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
             } else {
                 FlagForRemoval();
@@ -159,7 +159,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void UpdateScore() {
-            var elapsed = (int)Math.Round(Time.Elapsed);
+            var elapsed = Time.Elapsed;
             if (IsHovered && IsBeingHeld()) {
                 switch (State) {
                     case HoldNoteState.VisibleBefore:
