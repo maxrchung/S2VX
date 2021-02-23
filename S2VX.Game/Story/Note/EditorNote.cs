@@ -7,7 +7,7 @@ using S2VX.Game.Editor.Reversible;
 namespace S2VX.Game.Story.Note {
     public class EditorNote : S2VXNote {
         private bool CanHit { get; set; }
-        private SampleChannel Hit { get; set; }
+        private Sample Hit { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }

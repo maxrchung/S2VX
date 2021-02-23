@@ -67,6 +67,9 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override void OnToolMouseUp(MouseUpEvent e) {
+            // Mouse up needs to have a dispose check because it's possible to
+            // leave the current screen and have the on mouse up trigger on the
+            // next screen.
             if (IsDisposed) {
                 return;
             }

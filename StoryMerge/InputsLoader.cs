@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using S2VX.Game.Story;
+﻿using S2VX.Game.Story;
+using System;
 using System.Collections.Generic;
 
 namespace StoryMerge {
@@ -10,7 +10,7 @@ namespace StoryMerge {
                 var story = new S2VXStory();
                 try {
                     story.Open(input, true);
-                } catch (JsonReaderException e) {
+                } catch (Exception e) {
                     return (
                         new Result {
                             IsSuccessful = false,

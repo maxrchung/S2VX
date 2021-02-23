@@ -2,25 +2,25 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Screens;
+using System;
 using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
     public class ScoreInfo : CompositeDrawable {
-        [Resolved]
-        private ScreenStack Screens { get; set; }
-
-        private int Score { get; set; }
+        // Score should be a double type because during a drag, score may add
+        // very small values that are between 0 and 1. If we int cast or round
+        // this drag value, we'll always get 0.
+        public double Score { get; private set; }
 
         private TextFlowContainer TxtScore { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
             Margin = new MarginPadding {
-                Horizontal = Screens.DrawWidth / 60,
+                Horizontal = S2VXGameBase.GameWidth / 60,
             };
             InternalChildren = new Drawable[] {
-                TxtScore = new TextFlowContainer(s => s.Font = new FontUsage("default", Screens.DrawWidth / 20)) {
+                TxtScore = new TextFlowContainer(s => s.Font = new FontUsage("default", S2VXGameBase.GameWidth / 20)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.CentreRight,
@@ -29,9 +29,14 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        public void AddScore(int moreScore) {
+        public void AddScore(double moreScore) {
             Score += moreScore;
-            TxtScore.Text = Score.ToString(CultureInfo.InvariantCulture);
+            TxtScore.Text = $"{Math.Round(Score)}";
+        }
+
+        public void ClearScore() {
+            Score = 0;
+            TxtScore.Text = $"{Math.Round(Score)}";
         }
     }
 }
