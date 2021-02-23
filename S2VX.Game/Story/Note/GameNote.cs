@@ -51,7 +51,7 @@ namespace S2VX.Game.Story.Note {
 
         // Notes are clickable if they are visible on screen, not missed, and is the earliest note
         private bool IsClickable() {
-            if (Story.Notes.EarliestHoveredNoteFound) {
+            if (Story.Notes.HasClickedNote) {
                 return false;
             }
 
@@ -60,24 +60,25 @@ namespace S2VX.Game.Story.Note {
             TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
             var isVisible = Alpha > 0;
 
-            for (var noteIndex = Story.Notes.Children.Count - 1; noteIndex >= 0; --noteIndex) {
-                var note = Story.Notes.Children[noteIndex];
+            //for (var noteIndex = Story.Notes.Children.Count - 1; noteIndex >= 0; --noteIndex) {
+            //    var note = Story.Notes.Children[noteIndex];
 
-                if (time < note.HitTime - Story.Notes.ShowTime) {
-                    break;
-                }
+            //    if (time < note.HitTime - Story.Notes.ShowTime) {
+            //        break;
+            //    }
 
-                if (note == this) { // Fix this Tomorrow Lol
-                    Story.Notes.EarliestHoveredNoteFound = true;
-                    break;
-                }
-            }
+            //    if (note == this) { // Fix this Tomorrow Lol
+            //        Story.Notes.HasClickedNote = true;
+            //        break;
+            //    }
+            //}
+            Story.Notes.HasClickedNote = true;
 
             //var earliestNote = Story.Notes.Children.Last();
             //var isEarliestNote = earliestNote == this;
             Console.Write($"test: {HitTime}\n");
             Console.Write($"EarliestNote: {Story.Notes.Children.Last().HitTime}\n");
-            return isVisible && Story.Notes.EarliestHoveredNoteFound;
+            return isVisible && Story.Notes.HasClickedNote;
         }
 
         private void ClickNote() {
@@ -86,7 +87,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsClickable() && IsHovered) {
+            if (IsHovered && IsClickable()) {
                 ClickNote();
             }
 

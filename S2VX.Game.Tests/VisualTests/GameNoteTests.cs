@@ -77,7 +77,7 @@ namespace S2VX.Game.Tests.VisualTests {
             });
 
             AddStep("Seek clock", () => Stopwatch.Seek(10));
-            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.Last()));
+            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 10));
