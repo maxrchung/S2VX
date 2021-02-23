@@ -1,15 +1,12 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
-using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
-using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class EditorHoldNoteTests : S2VXTestScene {
@@ -20,7 +17,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        private static string AudioPath { get; } = "VisualTests/EditorTests/10-seconds-of-silence.mp3";
+        private static string AudioPath { get; } = "VisualTests/TestTracks/10-seconds-of-silence.mp3";
         private static float NoteAppearTime { get; } = 1000.0f;
         private static float HoldDuration { get; } = 1000.0f;
         private EditorHoldNote NoteToTest { get; set; }
@@ -28,13 +25,10 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var trackStream = File.OpenRead(AudioPath);
-            var track = new TrackBass(trackStream);
-            var drawableTrack = new DrawableTrack(track);
             var framedClock = new FramedClock(StoryClock);
             var screenStack = new ScreenStack();
+            var drawableTrack = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
 
-            Audio.AddItem(track);
             StoryClock = new StopwatchClock();
             Story.Clock = framedClock;
 

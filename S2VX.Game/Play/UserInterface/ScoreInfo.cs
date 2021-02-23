@@ -2,11 +2,15 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using System;
 using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
     public class ScoreInfo : CompositeDrawable {
-        private int Score { get; set; }
+        // Score should be a double type because during a drag, score may add
+        // very small values that are between 0 and 1. If we int cast or round
+        // this drag value, we'll always get 0.
+        public double Score { get; private set; }
 
         private TextFlowContainer TxtScore { get; set; }
 
@@ -25,9 +29,14 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        public void AddScore(int moreScore) {
+        public void AddScore(double moreScore) {
             Score += moreScore;
-            TxtScore.Text = Score.ToString(CultureInfo.InvariantCulture);
+            TxtScore.Text = $"{Math.Round(Score)}";
+        }
+
+        public void ClearScore() {
+            Score = 0;
+            TxtScore.Text = $"{Math.Round(Score)}";
         }
     }
 }

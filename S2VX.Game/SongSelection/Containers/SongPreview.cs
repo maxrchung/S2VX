@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
@@ -142,7 +140,7 @@ namespace S2VX.Game.SongSelection.Containers {
         private void LoadEditor() {
             try {
                 var story = new S2VXStory(StoryPath, true);
-                var track = LoadAudio();
+                var track = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
                 Screens.Push(new EditorScreen(StoryPath, story, track));
             } catch (Exception exception) {
                 BtnEdit.BorderThickness = 5;
@@ -153,19 +151,12 @@ namespace S2VX.Game.SongSelection.Containers {
         private void LoadPlay() {
             try {
                 var story = new S2VXStory(StoryPath, false);
-                var track = LoadAudio();
+                var track = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
                 Screens.Push(new PlayScreen(false, story, track));
             } catch (Exception exception) {
                 BtnPlay.BorderThickness = 5;
                 Console.WriteLine(exception);
             }
-        }
-
-        private DrawableTrack LoadAudio() {
-            var trackStream = File.OpenRead(AudioPath);
-            var track = new TrackBass(trackStream);
-            Audio.AddItem(track);
-            return new DrawableTrack(track);
         }
     }
 }

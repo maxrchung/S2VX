@@ -8,6 +8,7 @@ using osuTK.Input;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Play.Containers;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
@@ -26,13 +27,15 @@ namespace S2VX.Game.Play {
             Track = track;
         }
 
+        public ScoreInfo ScoreInfo { get; private set; }
+
         // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
             var dependencies = new DependencyContainer(parent);
             dependencies.Cache(this);
             dependencies.Cache(Story);
             // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
-            dependencies.Cache(new ScoreInfo {
+            dependencies.Cache(ScoreInfo = new ScoreInfo {
                 RelativeSizeAxes = Axes.Both,
                 RelativePositionAxes = Axes.Both,
                 Anchor = Anchor.TopRight,
@@ -55,7 +58,9 @@ namespace S2VX.Game.Play {
 
             Clock = new FramedClock(Track);
             InternalChildren = new Drawable[] {
-                Story,
+                new InputKeyBindingContainer {
+                    Story
+                },
                 Track,
                 PlayInfoBar,
             };

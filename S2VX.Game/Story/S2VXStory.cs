@@ -59,6 +59,15 @@ namespace S2VX.Game.Story {
             };
         }
 
+        public void Reset() {
+            ClearActives();
+            Commands = new List<S2VXCommand>();
+            Notes.SetChildren(new List<S2VXNote>());
+            Approaches.SetChildren(new List<Approach>());
+            EditorSettings = new EditorSettings();
+            DifficultySettings = new DifficultySettings();
+        }
+
         public void ClearActives() {
             NextActive = 0;
             Actives.Clear();
