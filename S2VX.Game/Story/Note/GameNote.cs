@@ -59,8 +59,7 @@ namespace S2VX.Game.Story.Note {
             if (!isVisible || !isWithinMissThreshold) {
                 return false;
             }
-            // Set TimingError for scoring purposes, limited to +/- MissThreshold
-            TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
+            TimingError = (int)Math.Round(time - HitTime);
             return true;
         }
 
