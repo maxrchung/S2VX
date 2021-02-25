@@ -5,21 +5,26 @@ using osu.Framework.Screens;
 using osuTK.Input;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
+using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class EditorScreenTests : S2VXTestScene {
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
+            var storyPath = Path.Combine("VisualTests", "EditorScreenTests", "ValidStory.s2ry");
             var story = new S2VXStory();
-            var audioPath = "VisualTests/TestTracks/1-second-of-silence.mp3";
-            var drawableTrack = S2VXUtils.LoadDrawableTrack(audioPath, audio);
-            var editorScreen = new EditorScreen(null, story, drawableTrack);
+            story.Open(storyPath, true);
+
+            var audioPath = Path.Combine("VisualTests", "TestTracks", "10-seconds-of-silence.mp3");
+            var drawableTrack = S2VXTrack.Open(audioPath, audio);
+
+            var editorScreen = new EditorScreen(story, drawableTrack);
             var screenStack = new ScreenStack(editorScreen);
             Add(screenStack);
         }
 
         [Test]
         public void OnKeyDown_PreviewGameplayShortcut_EntersPreviewGameplay() =>
-            AddStep("Enters preview gameplay", () => InputManager.PressKey(Key.G));
+            AddStep("Press G key", () => InputManager.PressKey(Key.G));
     }
 }
