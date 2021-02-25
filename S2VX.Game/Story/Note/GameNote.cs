@@ -53,17 +53,20 @@ namespace S2VX.Game.Story.Note {
             if (Story.Notes.HasClickedNote) {
                 return false;
             }
-
             var time = Time.Current;
-            // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
-            TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
             var isVisible = Alpha > 0;
-            Story.Notes.HasClickedNote = true;
-            return isVisible;
+            var isWithinMissThreshold = Math.Abs(time - HitTime) <= MissThreshold;
+            if (!isVisible || !isWithinMissThreshold) {
+                return false;
+            }
+            // Set TimingError for scoring purposes, limited to +/- MissThreshold
+            TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
+            return true;
         }
 
         private void ClickNote() {
             ScoreInfo.AddScore(Math.Abs(TimingError));
+            Story.Notes.HasClickedNote = true;
             FlagForRemoval();
         }
 
