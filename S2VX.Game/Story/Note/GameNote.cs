@@ -6,7 +6,6 @@ using osuTK.Graphics;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
-using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote, IKeyBindingHandler<InputAction> {
@@ -49,15 +48,18 @@ namespace S2VX.Game.Story.Note {
             FlagForRemoval();
         }
 
-        // Notes are clickable if they are visible on screen, not missed, and is the earliest note
+        // Notes are clickable if they are hovered, not missed, and is the earliest note
         private bool IsClickable() {
+            if (Story.Notes.HasClickedNote) {
+                return false;
+            }
+
             var time = Time.Current;
             // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
             TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
-            var inMissThreshold = TimingError <= MissThreshold && Alpha > 0;
-            var earliestNote = Story.Notes.Children.Last();
-            var isEarliestNote = earliestNote == this;
-            return inMissThreshold && isEarliestNote;
+            var isVisible = Alpha > 0;
+            Story.Notes.HasClickedNote = true;
+            return isVisible;
         }
 
         private void ClickNote() {
@@ -66,7 +68,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsClickable() && IsHovered) {
+            if (IsHovered && IsClickable()) {
                 ClickNote();
             }
 
