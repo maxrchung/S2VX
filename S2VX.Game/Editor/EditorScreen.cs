@@ -2,7 +2,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
@@ -31,9 +30,8 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        private string StoryPath { get; }
         private S2VXStory Story { get; }
-        public DrawableTrack Track { get; }
+        public S2VXTrack Track { get; }
         private EditorUI EditorUI { get; set; }
         public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
             RelativePositionAxes = Axes.Both,
@@ -47,8 +45,7 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new Timeline();
         public CommandPanel CommandPanel { get; } = new CommandPanel();
 
-        public EditorScreen(string storyPath, S2VXStory story, DrawableTrack track) {
-            StoryPath = storyPath;
+        public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
             Track = track;
         }
@@ -349,13 +346,15 @@ namespace S2VX.Game.Editor {
 
         private void ProjectPreview() {
             ProjectSave();
-            this.Push(new PlayScreen(true, Story, Track));
+            var newStory = new S2VXStory(Story.StoryPath, false);
+            var newTrack = S2VXTrack.Open(Track.AudioPath, Audio);
+            this.Push(new PlayScreen(true, newStory, newTrack));
         }
 
         private void ProjectRefresh() {
             ProjectSave();
             try {
-                Story.Open(StoryPath, true);
+                Story.Open(Story.StoryPath, true);
             } catch (Exception e) {
                 Console.WriteLine(e);
                 this.Exit();
@@ -370,7 +369,7 @@ namespace S2VX.Game.Editor {
             editorSettings.TrackPlaybackRate = Track.Tempo.Value;
             editorSettings.SnapDivisor = SnapDivisor;
             editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
-            Story.Save(StoryPath);
+            Story.Save(Story.StoryPath);
         }
 
         private void ProjectQuit() => this.Push(new LeaveScreen());
