@@ -20,8 +20,8 @@ namespace S2VX.Game.Story.Note {
 
         private Sample Hit { get; set; }
         private Sample Miss { get; set; }
-        public const int MissThreshold = 200;
-        private int TimingError;
+        public const double MissThreshold = 200.0;
+        private double TimingError;
         private bool IsFlaggedForRemoval { get; set; }
         public override bool HandlePositionalInput => true;
 
@@ -32,7 +32,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void FlagForRemoval() {
-            PlayScreen.PlayInfoBar.RecordHitError(TimingError);
+            PlayScreen.PlayInfoBar.RecordHitError((int)TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {
@@ -59,7 +59,7 @@ namespace S2VX.Game.Story.Note {
             if (!isVisible || !isWithinMissThreshold) {
                 return false;
             }
-            TimingError = (int)Math.Round(time - HitTime);
+            TimingError = time - HitTime;
             return true;
         }
 
