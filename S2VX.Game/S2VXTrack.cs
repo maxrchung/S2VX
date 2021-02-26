@@ -10,7 +10,7 @@ namespace S2VX.Game {
     public class S2VXTrack : DrawableTrack {
         public string AudioPath { get; }
 
-        public S2VXTrack(string audioPath, Track track) : base(track) =>
+        private S2VXTrack(string audioPath, Track track) : base(track) =>
             AudioPath = audioPath;
 
         public static S2VXTrack Open(string audioPath, AudioManager audioManager) {
