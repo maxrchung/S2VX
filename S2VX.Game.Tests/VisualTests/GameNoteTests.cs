@@ -83,5 +83,27 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 10));
             AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
         }
+
+        [Test]
+        public void OnPress_OutsideMissThreshold_DoesNothing() {
+            AddStep("Add note", () => Story.AddNote(new GameNote { HitTime = GameNote.MissThreshold + 50 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
+            AddAssert("Note was missed", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+        }
+
+        [Test]
+        public void OnPress_WithinMissThreshold_RegistersHit() {
+            GameNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameNote { HitTime = GameNote.MissThreshold + 50 }));
+            AddStep("Seek between pre-threshold and HitTime", () => Stopwatch.Seek(note.HitTime - GameNote.MissThreshold / 2));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
+            AddAssert("Note was hit", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold / 2);
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace S2VX.Game.Story.Note {
 
         private Sample Hit { get; set; }
         private Sample Miss { get; set; }
-        public const int MissThreshold = 200;
-        private int TimingError;
+        public const double MissThreshold = 200.0;
+        private double TimingError;
         private bool IsFlaggedForRemoval { get; set; }
         public override bool HandlePositionalInput => true;
 
@@ -32,7 +32,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void FlagForRemoval() {
-            PlayScreen.PlayInfoBar.RecordHitError(TimingError);
+            PlayScreen.PlayInfoBar.RecordHitError((int)TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
             } else {
@@ -53,17 +53,19 @@ namespace S2VX.Game.Story.Note {
             if (Story.Notes.HasClickedNote) {
                 return false;
             }
-
             var time = Time.Current;
-            // Limit timing error to be +/- MissThreshold (though it will never be >= MissThreshold since RecordMiss would have already run)
-            TimingError = (int)Math.Round(Math.Clamp(time - HitTime, -MissThreshold, MissThreshold));
             var isVisible = Alpha > 0;
-            Story.Notes.HasClickedNote = true;
-            return isVisible;
+            var isWithinMissThreshold = Math.Abs(time - HitTime) <= MissThreshold;
+            if (!isVisible || !isWithinMissThreshold) {
+                return false;
+            }
+            TimingError = time - HitTime;
+            return true;
         }
 
         private void ClickNote() {
             ScoreInfo.AddScore(Math.Abs(TimingError));
+            Story.Notes.HasClickedNote = true;
             FlagForRemoval();
         }
 
