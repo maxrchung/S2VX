@@ -27,12 +27,12 @@ namespace S2VX.Game.Tests.VisualTests {
         private void Load() {
             var framedClock = new FramedClock(StoryClock);
             var screenStack = new ScreenStack();
-            var drawableTrack = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
+            var drawableTrack = S2VXTrack.Open(AudioPath, Audio);
 
             StoryClock = new StopwatchClock();
             Story.Clock = framedClock;
 
-            Editor = new EditorScreen(null, Story, drawableTrack);
+            Editor = new EditorScreen(Story, drawableTrack);
             screenStack.Push(Editor);
             Add(screenStack);
         }
