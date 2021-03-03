@@ -106,7 +106,7 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private Container CreateTimeline() =>
-            new Container {
+            new() {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Width = TimelineWidth / 1.25f,
@@ -133,7 +133,7 @@ namespace S2VX.Game.Editor.Containers {
             };
 
         private FillFlowContainer CreateSnapDivisor() =>
-            new FillFlowContainer {
+            new() {
                 RelativeSizeAxes = Axes.Both,
                 RelativePositionAxes = Axes.Both,
                 Height = 0.565f,
@@ -179,7 +179,7 @@ namespace S2VX.Game.Editor.Containers {
             };
 
         private Container CreateZoomButtons() =>
-            new Container {
+            new() {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.CentreLeft,
