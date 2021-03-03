@@ -19,22 +19,20 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        private enum HoldNoteState {
-            NotVisibleBefore,
+        public enum HoldNoteState {
+            NotVisible,
             VisibleBefore,
+            HitWindow,
             During,
             VisibleAfter
         }
 
-        private const double MissThreshold = 200.0;
+        public const double MissThreshold = 200.0;
         private Sample Hit { get; set; }
         private Sample Miss { get; set; }
         private bool HitSoundHasBeenPlayed { get; set; }
         private bool ReleaseSoundHasBeenPlayed { get; set; }
-        private double ScoreBefore { get; set; }
-        private double ScoreDuring { get; set; }
-        private double ScoreAfter { get; set; }
-        private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
+        public HoldNoteState State { get; private set; } = HoldNoteState.NotVisible;
         private int InputsBeingHeld { get; set; }
         private bool IsFlaggedForRemoval { get; set; }
         private bool IsBeingHeld() => InputsBeingHeld > 0;
@@ -46,19 +44,19 @@ namespace S2VX.Game.Story.Note {
             Miss = audio.Samples.Get("miss");
         }
 
-        private void FlagForRemoval() {
-            ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
-            ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
-            var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
-            PlayScreen.PlayInfoBar.RecordHitError((int)totalScore);
-            IsFlaggedForRemoval = true;
-        }
+        //private void FlagForRemoval() {
+        //    ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
+        //    ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
+        //    var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
+        //    PlayScreen.PlayInfoBar.RecordHitError((int)totalScore);
+        //    IsFlaggedForRemoval = true;
+        //}
 
-        // Note is clickable if in a visible state and is the earliest note
+        // Note is clickable in the HitWindow and During states and is the earliest note
         private bool IsClickable() {
-            var isVisible = State != HoldNoteState.NotVisibleBefore;
+            var clickableState = State == HoldNoteState.HitWindow || State == HoldNoteState.During;
             var isEarliestNote = Story.Notes.Children.Last() == this;
-            return isVisible && isEarliestNote;
+            return clickableState && isEarliestNote;
         }
 
         private void HitNoteSound() {
@@ -110,7 +108,7 @@ namespace S2VX.Game.Story.Note {
 
             UpdateColor();
             UpdatePosition();
-            UpdateScore();
+            //UpdateScore();
             return false;
         }
 
@@ -118,15 +116,18 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
             if (time < HitTime - notes.ShowTime - notes.FadeInTime) {
-                State = HoldNoteState.NotVisibleBefore;
-            } else if (time < HitTime) {
+                State = HoldNoteState.NotVisible;
+            } else if (time >= HitTime - MissThreshold && time <= HitTime) {
+                // HitWindow comes first in logic since it may overshadow VisibleBefore
+                State = HoldNoteState.HitWindow;
+            } else if (time < HitTime - MissThreshold) {
                 State = HoldNoteState.VisibleBefore;
             } else if (time < EndTime) {
                 State = HoldNoteState.During;
             } else if (time < EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
-            } else {
-                FlagForRemoval();
+                //} else {
+                //    FlagForRemoval();
             }
         }
 
@@ -158,25 +159,25 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        private void UpdateScore() {
-            var elapsed = Time.Elapsed;
-            if (IsHovered && IsBeingHeld()) {
-                switch (State) {
-                    case HoldNoteState.VisibleBefore:
-                        ScoreBefore += elapsed;
-                        ScoreInfo.AddScore(elapsed);
-                        break;
-                    case HoldNoteState.VisibleAfter:
-                        ScoreAfter += elapsed;
-                        ScoreInfo.AddScore(elapsed);
-                        break;
-                    default:
-                        break;
-                }
-            } else if (State == HoldNoteState.During) {
-                ScoreDuring += elapsed;
-                ScoreInfo.AddScore(elapsed);
-            }
-        }
+        //private void UpdateScore() {
+        //    var elapsed = Time.Elapsed;
+        //    if (IsHovered && IsBeingHeld()) {
+        //        switch (State) {
+        //            case HoldNoteState.VisibleBefore:
+        //                ScoreBefore += elapsed;
+        //                ScoreInfo.AddScore(elapsed);
+        //                break;
+        //            case HoldNoteState.VisibleAfter:
+        //                ScoreAfter += elapsed;
+        //                ScoreInfo.AddScore(elapsed);
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    } else if (State == HoldNoteState.During) {
+        //        ScoreDuring += elapsed;
+        //        ScoreInfo.AddScore(elapsed);
+        //    }
+        //}
     }
 }

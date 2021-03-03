@@ -95,7 +95,7 @@ namespace S2VX.Game.Story {
             note.Approach = approach;
         }
 
-        public void AddHoldNote(HoldNote note) {
+        public void AddNote(HoldNote note) {
             Notes.AddNote(note);
             var approach = Approaches.AddHoldApproach(note);
             note.Approach = approach;

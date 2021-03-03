@@ -23,7 +23,7 @@ namespace S2VX.Game.Editor.Reversible {
         }
 
         public void Redo() {
-            Story.AddHoldNote(Note);
+            Story.AddNote(Note);
             if (Editor.ToolState is SelectToolState selectTool) {
                 selectTool.ClearNoteSelection();
                 selectTool.AddNoteSelection(Note);

@@ -41,7 +41,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
-            AddStep("Add note", () => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
                 EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
             }));
