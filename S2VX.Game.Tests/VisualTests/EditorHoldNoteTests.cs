@@ -24,8 +24,8 @@ namespace S2VX.Game.Tests.VisualTests {
         [BackgroundDependencyLoader]
         private void Load() {
             var screenStack = new ScreenStack();
-            var drawableTrack = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
-            Editor = new EditorScreen(null, Story, drawableTrack);
+            var drawableTrack = S2VXTrack.Open(AudioPath, Audio);
+            Editor = new EditorScreen(Story, drawableTrack);
             screenStack.Push(Editor);
             Add(screenStack);
         }
