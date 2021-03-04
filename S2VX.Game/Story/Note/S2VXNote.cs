@@ -74,7 +74,7 @@ namespace S2VX.Game.Story.Note {
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
 
-        public Color4 GetColor() => BoxInner.Colour;
+        public Color4 InnerColor() => BoxInner.Colour;
 
         public void SetColor(Color4 color) => BoxInner.Colour = color;
 

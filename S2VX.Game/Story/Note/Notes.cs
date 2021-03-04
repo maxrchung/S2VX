@@ -60,7 +60,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();
+        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => note is not HoldNote).ToList();
 
         public List<HoldNote> GetHoldNotes() => Children.OfType<HoldNote>().ToList();
 

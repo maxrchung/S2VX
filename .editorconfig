@@ -267,3 +267,10 @@ dotnet_diagnostic.CA1001.severity = suggestion
 # catch all exceptions. If we don't do this, then we could end up crashing 
 # the game because an unaccounted exception was unhandled
 dotnet_diagnostic.CA1031.severity = suggestion
+
+# CA1002: Do not expose generic lists
+# For our development use cases, using the more performant List type is fine. We
+# agreed that it feels more natural to use the concrete List instead of using
+# Collection or interfaces everywhere. We will prefer interfaces only when it is
+# necessary, e.g. some form of abstraction or polymorphism.
+dotnet_diagnostic.CA1002.severity = suggestion
