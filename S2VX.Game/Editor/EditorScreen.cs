@@ -101,7 +101,7 @@ namespace S2VX.Game.Editor {
         }
 
         private BasicMenu CreateMenu() =>
-            new BasicMenu(Direction.Horizontal, true) {
+            new(Direction.Horizontal, true) {
                 BackgroundColour = Color4.Black.Opacity(0.9f),
                 Width = 1,
                 RelativeSizeAxes = Axes.X,
