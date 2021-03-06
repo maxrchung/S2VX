@@ -24,7 +24,8 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a note that starts to appear in 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
+            AddStep("Reset story", () => Story.Reset());
+            AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
             AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
             }));
@@ -94,5 +95,15 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Note approach is not visible", () => NoteToTest.Approach.Alpha == 0);
         }
 
+        [Test]
+        public void Hit_BeforeHitTime_DoesNotPlay() =>
+            AddAssert("Does not play", () => NoteToTest.Hit.PlayCount == 0);
+
+        [Test]
+        public void Hit_AtHitTime_PlaysOnce() {
+            AddStep("Seek to HitTime", () => StoryClock.Seek(NoteToTest.HitTime));
+            AddStep("Start clock", () => StoryClock.Start());
+            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
     }
 }

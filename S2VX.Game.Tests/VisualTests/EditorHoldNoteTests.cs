@@ -118,5 +118,31 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Note approach is not visible", () => NoteToTest.Approach.Alpha == 0);
         }
 
+        [Test]
+        public void Hit_BeforeHitTime_DoesNotPlay() =>
+            AddAssert("Does not play", () => NoteToTest.Hit.PlayCount == 0);
+
+        [Test]
+        public void Hit_AtHitTime_PlaysOnce() {
+            AddStep("Seek to HitTime", () => Editor.Seek(NoteToTest.HitTime));
+            AddStep("Start play", () => Editor.Play(true));
+            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void Hit_PlayBetweenHitAndEndTime_PlaysOnce() {
+            AddStep("Start play", () => Editor.Play(true));
+            AddUntilStep("Play until between hit and end time", () =>
+                Editor.Clock.CurrentTime > NoteToTest.HitTime && Editor.Clock.CurrentTime < NoteToTest.EndTime
+            );
+            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void Hit_PlayAfterEndTime_PlaysTwice() {
+            AddStep("Start play", () => Editor.Play(true));
+            AddUntilStep("Play until after end time", () => Editor.Clock.CurrentTime > NoteToTest.EndTime);
+            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 2);
+        }
     }
 }
