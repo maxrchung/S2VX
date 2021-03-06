@@ -21,14 +21,12 @@ namespace S2VX.Game.Story.Note {
             UpdatePosition();
 
             var time = Clock.CurrentTime;
-            if (Clock.IsRunning && CanHit && time >= HitTime) {
+            if (time >= HitTime && CanHit) {
                 CanHit = false;
                 Hit.Play();
             }
-
-            // Reset hit sound if clock is before end time
-            CanHit = time <= HitTime;
-
+            // Reset hit sound if clock is running and before end time
+            CanHit = Clock.IsRunning && time < HitTime;
             return false;
         }
 
