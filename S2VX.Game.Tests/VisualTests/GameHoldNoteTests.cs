@@ -124,9 +124,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start clock", () => Stopwatch.Start());
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddAssert("Does not trigger multiple notes", () =>
-                Precision.AlmostEquals((originalNoteCount - 1) * 100, PlayScreen.ScoreInfo.Score, 20)
-            );
+            AddAssert("Does not trigger multiple notes", () => PlayScreen.ScoreInfo.Score == (originalNoteCount - 1) * 100);
         }
 
         [TestCase(20, 20)]  // Press and Release entirely within NotVisible state
