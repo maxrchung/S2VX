@@ -197,30 +197,25 @@ namespace S2VX.Game.Tests.VisualTests {
                 + 100.0); // Hold note duration
         }
 
-        //[TestCase(1200, 50)] // Press 50ms late, Release on time (expect 50)
-        //[TestCase(1150, 50)] // Press on time, Release 50ms early (expect 50)
-        //[TestCase(1175, 50)] // Press 25ms late, Release 25ms early (expect 50)
-        //[TestCase(1150, 100)] // Press on time, Release on time (expect 0)
-        //public void Score_PressInDuring_OffsetsFromHitOrEndTime(int timeToPress, int holdDuration) {
-        //    GameHoldNote note = null;
-        //    AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
-        //        HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
-        //        EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
-        //    }));
-        //    AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-        //    AddStep($"Seek to {timeToPress}", () => Stopwatch.Seek(timeToPress));
-        //    AddStep($"Hold key and release after {holdDuration}", () => {
-        //        InputManager.PressKey(Key.Z);
-        //        Scheduler.AddDelayed(() => InputManager.ReleaseKey(Key.Z), holdDuration);
-        //    });
-        //    AddStep("Start clock", () => Stopwatch.Start());
-        //    AddUntilStep("Wait until note is deleted", () => Story.Notes.Children.Count == 0);
-        //    AddAssert("Score is offset from HitTime and/or EndTime", () => PlayScreen.ScoreInfo.Score ==
-        //        timeToPress // Actual HitTime
-        //        - (Story.Notes.FadeInTime + Story.Notes.ShowTime + 50) // Expected HitTime
-        //        + Story.Notes.FadeInTime + Story.Notes.ShowTime + 150 // Expected EndTime
-        //        - (timeToPress + holdDuration));  // Actual EndTime
-        //}
+        [TestCase(1200, 50)] // Press 50ms late, Release on time (expect 50)
+        [TestCase(1150, 50)] // Press on time, Release 50ms early (expect 50)
+        [TestCase(1175, 50)] // Press 25ms late, Release 25ms early (expect 50)
+        [TestCase(1150, 100)] // Press on time, Release on time (expect 0)
+        public void Score_PressInDuring_OffsetsFromHitOrEndTime(int timeToPress, int holdDuration) {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(timeToPress, holdDuration);
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
+            AddAssert("Score is offset from HitTime and/or EndTime", () => PlayScreen.ScoreInfo.Score ==
+                timeToPress // Actual HitTime
+                - (Story.Notes.FadeInTime + Story.Notes.ShowTime + 50) // Expected HitTime
+                + Story.Notes.FadeInTime + Story.Notes.ShowTime + 150 // Expected EndTime
+                - (timeToPress + holdDuration));  // Actual EndTime
+        }
 
         //[Test]
         //public void Score_OverlappingPresses_HaveNoEffect() {

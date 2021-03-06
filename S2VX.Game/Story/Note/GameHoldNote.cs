@@ -190,6 +190,15 @@ namespace S2VX.Game.Story.Note {
                     }
                     break;
                 case HoldNoteState.During:
+                    if (LastAction == Action.ReleaseDuring) {
+                        // Penalize gap between now and previous release
+                        TotalScore += time - LastReleaseDuringTime;
+                        ScoreInfo.AddScore(time - LastReleaseDuringTime);
+                    } else {
+                        // Late hold, penalize gap between now and HitTime
+                        TotalScore += time - HitTime;
+                        ScoreInfo.AddScore(time - HitTime);
+                    }
                     break;
                 case HoldNoteState.VisibleAfter:
                     if (!EndTimeHasBeenScored) {
