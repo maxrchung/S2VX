@@ -66,7 +66,7 @@ namespace S2VX.Game.Story.Note {
 
         // Note is clickable in the HitWindow and During states and is the earliest note
         private bool IsClickable() {
-            var clickableState = State == HoldNoteState.HitWindow || State == HoldNoteState.During;
+            var clickableState = State is HoldNoteState.HitWindow or HoldNoteState.During;
             var isEarliestNote = Story.Notes.Children.Last() == this;
             return clickableState && isEarliestNote;
         }
