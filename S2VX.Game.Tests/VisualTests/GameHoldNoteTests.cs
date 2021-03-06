@@ -217,10 +217,45 @@ namespace S2VX.Game.Tests.VisualTests {
                 - (timeToPress + holdDuration));  // Actual EndTime
         }
 
-        //[Test]
-        //public void Score_OverlappingPresses_HaveNoEffect() {
+        [Test]
+        public void Score_OverlappingPresses_HaveNoEffect() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek to HitTime", () => Stopwatch.Seek(Story.Notes.FadeInTime + Story.Notes.ShowTime + 50));
+            AddStep("Press Z", () => InputManager.PressKey(Key.Z));
+            AddStep("Seek to HitTime + 5", () => Stopwatch.Seek(note.HitTime + 5));
+            AddStep("Press X", () => InputManager.PressKey(Key.X));
+            AddStep("Seek to HitTime + 10", () => Stopwatch.Seek(note.HitTime + 10));
+            AddStep("Release X", () => InputManager.ReleaseKey(Key.X));
+            AddStep("Seek to EndTime", () => Stopwatch.Seek(note.EndTime));
+            AddStep("Release Z", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
+            AddAssert("Score is 0", () => PlayScreen.ScoreInfo.Score == 0);
+        }
 
-        //}
+        [Test]
+        public void Score_SwitchingKeys_HasNoEffect() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek to HitTime", () => Stopwatch.Seek(Story.Notes.FadeInTime + Story.Notes.ShowTime + 50));
+            AddStep("Press Z", () => InputManager.PressKey(Key.Z));
+            AddStep("Seek to HitTime + 5", () => Stopwatch.Seek(note.HitTime + 5));
+            AddStep("Press X", () => InputManager.PressKey(Key.X));
+            AddStep("Seek to HitTime + 10", () => Stopwatch.Seek(note.HitTime + 10));
+            AddStep("Release Z", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek to EndTime", () => Stopwatch.Seek(note.EndTime));
+            AddStep("Release X", () => InputManager.ReleaseKey(Key.X));
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
+            AddAssert("Score is 0", () => PlayScreen.ScoreInfo.Score == 0);
+        }
 
     }
 }
