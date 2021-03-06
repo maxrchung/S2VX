@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Bindings;
 using osuTK.Graphics;
 using S2VX.Game.Play;
@@ -10,6 +9,9 @@ using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
+        public S2VXSample Hit { get; private set; }
+        public S2VXSample Miss { get; private set; }
+
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
 
@@ -27,8 +29,6 @@ namespace S2VX.Game.Story.Note {
         }
 
         private const double MissThreshold = 200.0;
-        private Sample Hit { get; set; }
-        private Sample Miss { get; set; }
         private bool HitSoundHasBeenPlayed { get; set; }
         private bool ReleaseSoundHasBeenPlayed { get; set; }
         private double ScoreBefore { get; set; }
@@ -42,8 +42,8 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            Miss = audio.Samples.Get("miss");
+            Hit = new S2VXSample("hit", audio);
+            Miss = new S2VXSample("miss", audio);
         }
 
         private void FlagForRemoval() {
