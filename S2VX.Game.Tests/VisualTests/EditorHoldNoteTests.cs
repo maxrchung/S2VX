@@ -33,7 +33,9 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
+            AddStep("Pause editor", () => Editor.Play(false));
+            AddStep("Stop editor", () => Editor.Restart());
+            AddStep("Reset story", () => Story.Reset());
             AddStep("Add note", () => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
                 EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
@@ -123,26 +125,19 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Does not play", () => NoteToTest.Hit.PlayCount == 0);
 
         [Test]
-        public void Hit_AtHitTime_PlaysOnce() {
-            AddStep("Seek to HitTime", () => Editor.Seek(NoteToTest.HitTime));
-            AddStep("Start play", () => Editor.Play(true));
-            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
-        }
-
-        [Test]
-        public void Hit_PlayBetweenHitAndEndTime_PlaysOnce() {
+        public void Hit_BetweenHitAndEndTime_PlaysOnce() {
             AddStep("Start play", () => Editor.Play(true));
             AddUntilStep("Play until between hit and end time", () =>
-                Editor.Clock.CurrentTime > NoteToTest.HitTime && Editor.Clock.CurrentTime < NoteToTest.EndTime
+                Story.Clock.CurrentTime > NoteToTest.HitTime && Story.Clock.CurrentTime < NoteToTest.EndTime
             );
             AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
         }
 
         [Test]
-        public void Hit_PlayAfterEndTime_PlaysTwice() {
+        public void Hit_AfterEndTime_PlaysTwice() {
             AddStep("Start play", () => Editor.Play(true));
-            AddUntilStep("Play until after end time", () => Editor.Clock.CurrentTime > NoteToTest.EndTime);
-            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 2);
+            AddUntilStep("Play until after end time", () => Story.Clock.CurrentTime > NoteToTest.EndTime);
+            AddAssert("Plays twice", () => NoteToTest.Hit.PlayCount == 2);
         }
     }
 }

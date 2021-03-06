@@ -100,9 +100,9 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Does not play", () => NoteToTest.Hit.PlayCount == 0);
 
         [Test]
-        public void Hit_AtHitTime_PlaysOnce() {
-            AddStep("Seek to HitTime", () => StoryClock.Seek(NoteToTest.HitTime));
+        public void Hit_AfterHitTime_PlaysOnce() {
             AddStep("Start clock", () => StoryClock.Start());
+            AddUntilStep("Play until after end time", () => StoryClock.CurrentTime > NoteToTest.HitTime);
             AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
         }
     }
