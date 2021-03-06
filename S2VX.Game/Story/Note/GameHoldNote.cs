@@ -27,7 +27,7 @@ namespace S2VX.Game.Story.Note {
             VisibleAfter
         }
 
-        private enum Action {
+        public enum Action {
             None,
             Press,
             ReleaseHitWindow,
@@ -36,7 +36,7 @@ namespace S2VX.Game.Story.Note {
 
         public const double MissThreshold = 200.0;
         public HoldNoteState State { get; private set; } = HoldNoteState.NotVisible;
-        private Action LastAction { get; set; } = Action.None;
+        public Action LastAction { get; set; } = Action.None;
         private bool HasBeenPressedInHitWindow { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
         private double LastReleaseDuringTime { get; set; }  // Holds the last time of a ReleaseDuring
         private bool EndTimeHasBeenScored { get; set; } // Process only first UpdateScore() called in VisibleAfter
@@ -59,6 +59,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void FlagForRemoval() {
+            UpdateScore();
             PlayScreen.PlayInfoBar.RecordHitError((int)TotalScore);
             IsFlaggedForRemoval = true;
         }
@@ -109,7 +110,6 @@ namespace S2VX.Game.Story.Note {
                     LastAction = Action.ReleaseDuring;
                     LastReleaseDuringTime = Time.Current;
                 }
-                UpdateScore();
                 ReleaseNoteSound();
             }
         }
@@ -137,12 +137,12 @@ namespace S2VX.Game.Story.Note {
                 State = HoldNoteState.HitWindow;
             } else if (time < HitTime - MissThreshold) {
                 State = HoldNoteState.VisibleBefore;
-            } else if (time < EndTime) {
+            } else if (time <= EndTime) {
                 State = HoldNoteState.During;
             } else if (time < EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
-                UpdateScore();
             } else {
+                State = HoldNoteState.VisibleAfter;  // This is needed for tests that skip past FadeOutTime
                 FlagForRemoval();
             }
         }
@@ -178,7 +178,7 @@ namespace S2VX.Game.Story.Note {
         // There are three times when this can get called
         // 1. First time press in HitWindow
         // 2. Press in During
-        // 3. After EndTime in VisibleAfter
+        // 3. When the note is flagged for removal
         private void UpdateScore() {
             var time = Time.Current;
             switch (State) {
