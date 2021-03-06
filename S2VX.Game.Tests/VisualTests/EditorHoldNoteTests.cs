@@ -34,7 +34,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Pause editor", () => Editor.Play(false));
-            AddStep("Stop editor", () => Editor.Restart());
+            AddStep("Restart editor", () => Editor.Restart());
             AddStep("Reset story", () => Story.Reset());
             AddStep("Add note", () => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
