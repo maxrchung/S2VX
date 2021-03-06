@@ -29,9 +29,12 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="ppy.osu.Framework" Version="2021.226.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.302.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="VisualTests\EditorScreenTests\ValidStory.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="VisualTests\TestTracks\1-minute-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

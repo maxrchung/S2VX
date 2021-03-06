@@ -24,7 +24,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [BackgroundDependencyLoader]
         private void Load() {
             var audioPath = Path.Combine("VisualTests", "TestTracks", "10-seconds-of-silence.mp3");
-            Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXUtils.LoadDrawableTrack(audioPath, Audio))));
+            Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXTrack.Open(audioPath, Audio))));
         }
 
         [SetUpSteps]

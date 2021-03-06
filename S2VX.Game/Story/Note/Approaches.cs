@@ -42,9 +42,6 @@ namespace S2VX.Game.Story.Note {
             RemoveInternal(approach);
         }
 
-        [Resolved]
-        private S2VXStory Story { get; set; } = null;
-
         [BackgroundDependencyLoader]
         private void Load() => RelativeSizeAxes = Axes.Both;
 

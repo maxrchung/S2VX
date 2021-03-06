@@ -18,6 +18,8 @@ namespace S2VX.Game.Story {
         public double BPM { get; set; }
         public double Offset { get; set; }
 
+        public string StoryPath { get; set; }
+
         public Camera Camera { get; } = new Camera();
         public RelativeBox Background { get; } = new RelativeBox();
         public Grid Grid { get; } = new Grid();
@@ -154,6 +156,8 @@ namespace S2VX.Game.Story {
             EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
             DifficultySettings = JsonConvert.DeserializeObject<DifficultySettings>(story[nameof(DifficultySettings)].ToString());
             DifficultySettings.Calculate(this);
+
+            StoryPath = path;
         }
 
         public void Save(string path) {

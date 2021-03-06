@@ -3,7 +3,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
-using osu.Framework.Timing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
@@ -21,18 +20,12 @@ namespace S2VX.Game.Tests.VisualTests {
         private static float NoteAppearTime { get; } = 1000.0f;
         private static float HoldDuration { get; } = 1000.0f;
         private EditorHoldNote NoteToTest { get; set; }
-        private StopwatchClock StoryClock { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var framedClock = new FramedClock(StoryClock);
             var screenStack = new ScreenStack();
-            var drawableTrack = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
-
-            StoryClock = new StopwatchClock();
-            Story.Clock = framedClock;
-
-            Editor = new EditorScreen(null, Story, drawableTrack);
+            var drawableTrack = S2VXTrack.Open(AudioPath, Audio);
+            Editor = new EditorScreen(Story, drawableTrack);
             screenStack.Push(Editor);
             Add(screenStack);
         }

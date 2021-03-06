@@ -140,8 +140,8 @@ namespace S2VX.Game.SongSelection.Containers {
         private void LoadEditor() {
             try {
                 var story = new S2VXStory(StoryPath, true);
-                var track = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
-                Screens.Push(new EditorScreen(StoryPath, story, track));
+                var track = S2VXTrack.Open(AudioPath, Audio);
+                Screens.Push(new EditorScreen(story, track));
             } catch (Exception exception) {
                 BtnEdit.BorderThickness = 5;
                 Console.WriteLine(exception);
@@ -151,7 +151,7 @@ namespace S2VX.Game.SongSelection.Containers {
         private void LoadPlay() {
             try {
                 var story = new S2VXStory(StoryPath, false);
-                var track = S2VXUtils.LoadDrawableTrack(AudioPath, Audio);
+                var track = S2VXTrack.Open(AudioPath, Audio);
                 Screens.Push(new PlayScreen(false, story, track));
             } catch (Exception exception) {
                 BtnPlay.BorderThickness = 5;

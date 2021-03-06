@@ -1,7 +1,9 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Screens;
 using S2VX.Game.Play;
+using System;
 
+[assembly: CLSCompliant(false)]
 namespace S2VX.Game {
     public class S2VXGame : S2VXGameBase {
         [Cached]
