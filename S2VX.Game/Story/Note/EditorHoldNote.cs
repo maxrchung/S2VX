@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Lines;
 using osuTK;
@@ -10,16 +9,17 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class EditorHoldNote : HoldNote {
+        public S2VXSample Hit { get; private set; }
+
         private int NumHitSounds { get; set; }
         private List<double> HitSoundTimes { get; set; }
-        private Sample Hit { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
+            Hit = new S2VXSample("hit", audio);
             HitSoundTimes = new List<double>() { HitTime, EndTime };
             HeadAnchor = new EditorHoldNoteAnchor(this, true);
             TailAnchor = new EditorHoldNoteAnchor(this, false);

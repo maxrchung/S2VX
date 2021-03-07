@@ -1,20 +1,20 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Sample;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Story.Note {
     public class EditorNote : S2VXNote {
+        public S2VXSample Hit { get; private set; }
+
         private bool CanHit { get; set; }
-        private Sample Hit { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) =>
-            Hit = audio.Samples.Get("hit");
+            Hit = new S2VXSample("hit", audio);
 
         public override bool UpdateNote() {
             UpdateColor();
