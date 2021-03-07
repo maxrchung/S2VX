@@ -79,11 +79,11 @@ namespace S2VX.Game.Tests.VisualTests {
                 Story.AddHoldNote(new GameHoldNote { HitTime = 1, EndTime = 100 });
             });
 
-            AddStep("Seek clock", () => Stopwatch.Seek(100));
+            AddStep("Seek clock", () => Stopwatch.Seek(0));
             AddStep("Move mouse to centre", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
+            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 1000));
             AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold + 100);
         }
 
@@ -91,13 +91,28 @@ namespace S2VX.Game.Tests.VisualTests {
         public void OnPress_NoteThenHoldNote_HitsHoldNote() {
             AddStep("Add notes", () => {
                 Story.AddNote(new GameNote { HitTime = 0 });
-                Story.AddHoldNote(new GameHoldNote { HitTime = 10, EndTime = 100, Coordinates = new Vector2(0, 1) });
+                Story.AddHoldNote(new GameHoldNote { HitTime = 10, EndTime = 100, Coordinates = new Vector2(1, 0), EndCoordinates = new Vector2(1, 0) });
             });
 
             AddStep("Seek clock", () => Stopwatch.Seek(10));
             AddStep("Move mouse to HoldNote", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(100));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
+            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+        }
+
+        [Test]
+        public void OnPress_HoldNoteThenNote_HitsNote() {
+            AddStep("Add notes", () => {
+                Story.AddHoldNote(new GameHoldNote { HitTime = 0, EndTime = 90 });
+                Story.AddNote(new GameNote { HitTime = 100, Coordinates = new Vector2(1, 0) });
+            });
+
+            AddStep("Seek clock", () => Stopwatch.Seek(100));
+            AddStep("Move mouse to HoldNote", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
             AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);

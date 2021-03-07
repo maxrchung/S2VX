@@ -54,11 +54,13 @@ namespace S2VX.Game.Story.Note {
             IsFlaggedForRemoval = true;
         }
 
-        // Note is clickable if in a visible state and is the earliest note
+        // Note is clickable if in a visible state and has not been clicked yet
         private bool IsClickable() {
+            if (Story.Notes.HasClickedNote) {
+                return false;
+            }
             var isVisible = State != HoldNoteState.NotVisibleBefore;
-            var isEarliestNote = Story.Notes.Children.Last() == this;
-            return isVisible && isEarliestNote;
+            return isVisible;
         }
 
         private void HitNoteSound() {
@@ -86,8 +88,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsClickable() && IsHovered) {
+            if (IsHovered && IsClickable()) {
                 ++InputsBeingHeld;
+                Story.Notes.HasClickedNote = true;
                 HitNoteSound();
             }
             return false;
