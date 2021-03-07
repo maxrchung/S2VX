@@ -21,15 +21,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        public enum HoldNoteState {
-            NotVisible,
-            VisibleBefore,
-            HitWindow,
-            During,
-            VisibleAfter
-        }
-
-        public enum Action {
+        private enum Action {
             None,
             Press,
             ReleaseHitWindow,
@@ -38,7 +30,7 @@ namespace S2VX.Game.Story.Note {
 
         public const double MissThreshold = 200.0;
         public HoldNoteState State { get; private set; } = HoldNoteState.NotVisible;
-        public Action LastAction { get; set; } = Action.None;
+        private Action LastAction { get; set; } = Action.None;
         private bool HasBeenPressedInHitWindow { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
         private double LastReleaseDuringTime { get; set; }  // Holds the last time of a ReleaseDuring
         private bool EndTimeHasBeenScored { get; set; } // Process only first UpdateScore() called in VisibleAfter

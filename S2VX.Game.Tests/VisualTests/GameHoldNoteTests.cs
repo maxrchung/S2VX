@@ -4,7 +4,6 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
-using osu.Framework.Utils;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
@@ -60,7 +59,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
             AddStep("Seek before note is visible", () => Stopwatch.Seek(25));
-            AddAssert("Note is in NotVisible state", () => note.State == GameHoldNote.HoldNoteState.NotVisible);
+            AddAssert("Note is in NotVisible state", () => note.State == HoldNoteState.NotVisible);
         }
 
         [Test]
@@ -71,7 +70,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
             AddStep("Seek before MissThreshold", () => Stopwatch.Seek(note.HitTime - GameHoldNote.MissThreshold - 50));
-            AddAssert("Note is in VisibleBefore state", () => note.State == GameHoldNote.HoldNoteState.VisibleBefore);
+            AddAssert("Note is in VisibleBefore state", () => note.State == HoldNoteState.VisibleBefore);
         }
 
         [Test]
@@ -82,7 +81,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
             AddStep("Seek within MissThreshold", () => Stopwatch.Seek(note.HitTime - GameHoldNote.MissThreshold / 2));
-            AddAssert("Note is in HitWindow state", () => note.State == GameHoldNote.HoldNoteState.HitWindow);
+            AddAssert("Note is in HitWindow state", () => note.State == HoldNoteState.HitWindow);
         }
 
         [Test]
@@ -93,7 +92,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
             AddStep("Seek between HitTime and EndTime", () => Stopwatch.Seek((note.HitTime + note.EndTime) / 2));
-            AddAssert("Note is in During state", () => note.State == GameHoldNote.HoldNoteState.During);
+            AddAssert("Note is in During state", () => note.State == HoldNoteState.During);
         }
 
         [Test]
@@ -104,7 +103,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
             AddStep("Seek after EndTime", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime / 2));
-            AddAssert("Note is in VisibleAfter state", () => note.State == GameHoldNote.HoldNoteState.VisibleAfter);
+            AddAssert("Note is in VisibleAfter state", () => note.State == HoldNoteState.VisibleAfter);
         }
 
         [Test]
