@@ -257,63 +257,73 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void OnPress_HoldNoteOnTopOfNote_HitsHoldNote() {
+            var holdNoteHitTime = 0;
+            var holdNoteEndTime = 10;
+            GameNote note = null;
             AddStep("Add notes", () => {
-                Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 10 });
-                Story.AddNote(new GameNote { HitTime = 100 });
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
+                Story.AddNote(note = new GameNote { HitTime = 100 });
             });
 
-            AddStep("Move mouse to centre", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(10));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
-            AddAssert("Hits only hold note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold + 10);
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
+            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(note.HitTime + GameNote.MissThreshold));
+            AddAssert("Hits only hold note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
         }
 
         [Test]
         public void OnPress_NoteOnTopOfHoldNote_HitsNote() {
+            var holdNoteHitTime = 1;
+            var holdNoteEndTime = 101;
             AddStep("Add notes", () => {
                 Story.AddNote(new GameNote { HitTime = 0 });
-                Story.AddNote(new GameHoldNote { HitTime = 1, EndTime = 100 });
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
             });
 
-            AddStep("Seek clock", () => Stopwatch.Seek(0));
-            AddStep("Move mouse to centre", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 1000));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold + 100);
+            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
+            AddAssert("Hits only top note", () => PlayScreen.ScoreInfo.Score == holdNoteEndTime - holdNoteHitTime);
         }
 
         [Test]
         public void OnPress_NoteThenHoldNote_HitsHoldNote() {
+            GameNote note = null;
+            var holdNoteHitTime = 10;
+            var holdNoteEndTime = 100;
             AddStep("Add notes", () => {
-                Story.AddNote(new GameNote { HitTime = 0 });
-                Story.AddNote(new GameHoldNote { HitTime = 10, EndTime = 100, Coordinates = new Vector2(1, 0), EndCoordinates = new Vector2(1, 0) });
+                Story.AddNote(note = new GameNote { HitTime = 0 });
+                Story.AddNote(new GameHoldNote {
+                    HitTime = holdNoteHitTime,
+                    EndTime = holdNoteEndTime,
+                    Coordinates = new Vector2(1, 0),
+                    EndCoordinates = new Vector2(1, 0)
+                });
             });
 
-            AddStep("Seek clock", () => Stopwatch.Seek(10));
-            AddStep("Move mouse to HoldNote", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(100));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+            AddStep("Move mouse to hold note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.HitTime + GameNote.MissThreshold));
+            AddAssert("Hits the later hold note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
         }
 
         [Test]
         public void OnPress_HoldNoteThenNote_HitsNote() {
+            GameNote note = null;
+            var holdNoteHitTime = 0;
+            var holdNoteEndTime = 90;
             AddStep("Add notes", () => {
-                Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 90 });
-                Story.AddNote(new GameNote { HitTime = 100, Coordinates = new Vector2(1, 0) });
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
+                Story.AddNote(note = new GameNote { HitTime = 100, Coordinates = new Vector2(1, 0) });
             });
 
-            AddStep("Seek clock", () => Stopwatch.Seek(100));
-            AddStep("Move mouse to HoldNote", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek to note HitTime", () => Stopwatch.Seek(note.HitTime));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 100));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+            AddStep("Seek after hold note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
+            AddAssert("Hits the later note", () => PlayScreen.ScoreInfo.Score == holdNoteEndTime - holdNoteHitTime);
         }
     }
 }
