@@ -5,7 +5,6 @@ using osuTK.Graphics;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
-using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
