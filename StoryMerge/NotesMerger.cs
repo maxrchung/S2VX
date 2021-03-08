@@ -26,7 +26,7 @@ namespace StoryMerge {
                     infos.Add(new NoteTimeInfo(note));
                 }
                 foreach (var holdNote in input.Notes.GetHoldNotes()) {
-                    outputStory.AddHoldNote(CopyHoldNote(holdNote));
+                    outputStory.AddNote(CopyHoldNote(holdNote));
                     infos.Add(new NoteTimeInfo(holdNote));
                 }
             }

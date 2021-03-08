@@ -102,7 +102,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Hit_AfterHitTime_PlaysOnce() {
             AddStep("Start clock", () => StoryClock.Start());
-            AddUntilStep("Play until after end time", () => StoryClock.CurrentTime > NoteToTest.HitTime);
+            AddUntilStep("Play until after hit time", () => StoryClock.CurrentTime > NoteToTest.HitTime);
             AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
         }
     }
