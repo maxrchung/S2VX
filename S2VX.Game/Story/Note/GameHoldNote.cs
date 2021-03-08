@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Audio.Sample;
 using osu.Framework.Input.Bindings;
 using osuTK.Graphics;
 using S2VX.Game.Play;
@@ -10,6 +9,9 @@ using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
+        public S2VXSample Hit { get; private set; }
+        public S2VXSample Miss { get; private set; }
+
         [Resolved]
         private ScoreInfo ScoreInfo { get; set; }
 
@@ -19,38 +21,38 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        private enum HoldNoteState {
-            NotVisibleBefore,
-            VisibleBefore,
-            During,
-            VisibleAfter
+        private enum Action {
+            None,
+            Press,
+            ReleaseHitWindow,
+            ReleaseDuring   // Differentiated from ReleaseHitWindow since score penalities will be based only on releases in During
         }
 
-        private const double MissThreshold = 200.0;
-        private Sample Hit { get; set; }
-        private Sample Miss { get; set; }
+        public const double MissThreshold = 200.0;
+        public HoldNoteState State { get; private set; } = HoldNoteState.NotVisible;
+        private Action LastAction { get; set; } = Action.None;
+        private bool HasBeenPressedInHitWindow { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
+        private double LastReleaseDuringTime { get; set; }  // Holds the last time of a ReleaseDuring
+        private bool EndTimeHasBeenScored { get; set; } // Process only first UpdateScore() called in VisibleAfter
+        private double TotalScore { get; set; }
+        private int InputsBeingHeld { get; set; }
+        private bool IsBeingHeld() => InputsBeingHeld > 0;
+
         private bool HitSoundHasBeenPlayed { get; set; }
         private bool ReleaseSoundHasBeenPlayed { get; set; }
-        private double ScoreBefore { get; set; }
-        private double ScoreDuring { get; set; }
-        private double ScoreAfter { get; set; }
-        private HoldNoteState State { get; set; } = HoldNoteState.NotVisibleBefore;
-        private int InputsBeingHeld { get; set; }
+
         private bool IsFlaggedForRemoval { get; set; }
-        private bool IsBeingHeld() => InputsBeingHeld > 0;
         public override bool HandlePositionalInput => true;
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Hit = audio.Samples.Get("hit");
-            Miss = audio.Samples.Get("miss");
+            Hit = new S2VXSample("hit", audio);
+            Miss = new S2VXSample("miss", audio);
         }
 
         private void FlagForRemoval() {
-            ScoreBefore = Math.Clamp(ScoreBefore, 0, MissThreshold);
-            ScoreAfter = Math.Clamp(ScoreAfter, 0, MissThreshold);
-            var totalScore = ScoreBefore + ScoreDuring + ScoreAfter;
-            PlayScreen.PlayInfoBar.RecordHitError((int)totalScore);
+            UpdateScore();
+            PlayScreen.PlayInfoBar.RecordHitError((int)TotalScore);
             IsFlaggedForRemoval = true;
         }
 
@@ -59,14 +61,14 @@ namespace S2VX.Game.Story.Note {
             if (Story.Notes.HasClickedNote) {
                 return false;
             }
-            var isVisible = State != HoldNoteState.NotVisibleBefore;
-            return isVisible;
+            var clickableState = State is HoldNoteState.HitWindow or HoldNoteState.During;
+            return clickableState;
+
         }
 
         private void HitNoteSound() {
             if (!HitSoundHasBeenPlayed) {
-                var time = Time.Current;
-                if (Math.Abs(HitTime - time) < MissThreshold) {
+                if (Math.Abs(HitTime - Time.Current) < MissThreshold) {
                     Hit.Play();
                 } else {
                     Miss.Play();
@@ -77,8 +79,7 @@ namespace S2VX.Game.Story.Note {
 
         private void ReleaseNoteSound() {
             if (!IsBeingHeld() && !ReleaseSoundHasBeenPlayed) {
-                var time = Time.Current;
-                if (Math.Abs(EndTime - time) < MissThreshold) {
+                if (Math.Abs(EndTime - Time.Current) < MissThreshold) {
                     Hit.Play();
                 } else {
                     Miss.Play();
@@ -88,17 +89,23 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsHovered && IsClickable()) {
-                ++InputsBeingHeld;
+            if (++InputsBeingHeld == 1 && IsHovered && IsClickable()) {
+                LastAction = Action.Press;
                 Story.Notes.HasClickedNote = true;
+                UpdateScore();
                 HitNoteSound();
             }
             return false;
         }
 
         public void OnReleased(InputAction action) {
-            if (!IsFlaggedForRemoval && IsBeingHeld()) {
-                --InputsBeingHeld;
+            if (!IsFlaggedForRemoval && IsBeingHeld() && --InputsBeingHeld == 0) { // Only execute a Release if this is the last key being released
+                if (State == HoldNoteState.HitWindow) {
+                    LastAction = Action.ReleaseHitWindow;
+                } else if (State == HoldNoteState.During) {
+                    LastAction = Action.ReleaseDuring;
+                    LastReleaseDuringTime = Time.Current;
+                }
                 ReleaseNoteSound();
             }
         }
@@ -113,7 +120,6 @@ namespace S2VX.Game.Story.Note {
 
             UpdateColor();
             UpdatePosition();
-            UpdateScore();
             return false;
         }
 
@@ -121,14 +127,18 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
             if (time < HitTime - notes.ShowTime - notes.FadeInTime) {
-                State = HoldNoteState.NotVisibleBefore;
-            } else if (time < HitTime) {
+                State = HoldNoteState.NotVisible;
+            } else if (time >= HitTime - MissThreshold && time <= HitTime) {
+                // HitWindow comes first in logic since it may overshadow VisibleBefore
+                State = HoldNoteState.HitWindow;
+            } else if (time < HitTime - MissThreshold) {
                 State = HoldNoteState.VisibleBefore;
-            } else if (time < EndTime) {
+            } else if (time <= EndTime) {
                 State = HoldNoteState.During;
             } else if (time < EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
             } else {
+                State = HoldNoteState.VisibleAfter;  // This is needed for tests that skip past FadeOutTime
                 FlagForRemoval();
             }
         }
@@ -161,24 +171,51 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
+        // There are three times when this can get called
+        // 1. First time press in HitWindow
+        // 2. Press in During
+        // 3. When the note is flagged for removal
         private void UpdateScore() {
-            var elapsed = Time.Elapsed;
-            if (IsHovered && IsBeingHeld()) {
-                switch (State) {
-                    case HoldNoteState.VisibleBefore:
-                        ScoreBefore += elapsed;
-                        ScoreInfo.AddScore(elapsed);
-                        break;
-                    case HoldNoteState.VisibleAfter:
-                        ScoreAfter += elapsed;
-                        ScoreInfo.AddScore(elapsed);
-                        break;
-                    default:
-                        break;
-                }
-            } else if (State == HoldNoteState.During) {
-                ScoreDuring += elapsed;
-                ScoreInfo.AddScore(elapsed);
+            var time = Time.Current;
+            switch (State) {
+                case HoldNoteState.HitWindow:
+                    if (!HasBeenPressedInHitWindow) {
+                        HasBeenPressedInHitWindow = true;
+                        TotalScore += HitTime - time;
+                        ScoreInfo.AddScore(HitTime - time);
+                    }
+                    break;
+                case HoldNoteState.During:
+                    if (LastAction == Action.ReleaseDuring) {
+                        // Penalize gap between now and previous release
+                        TotalScore += time - LastReleaseDuringTime;
+                        ScoreInfo.AddScore(time - LastReleaseDuringTime);
+                    } else {
+                        // Late hold, penalize gap between now and HitTime
+                        TotalScore += time - HitTime;
+                        ScoreInfo.AddScore(time - HitTime);
+                    }
+                    break;
+                case HoldNoteState.VisibleAfter:
+                    if (!EndTimeHasBeenScored) {
+                        EndTimeHasBeenScored = true;
+                        switch (LastAction) {
+                            case Action.None: // There was never any action, entire hold note was missed
+                            case Action.ReleaseHitWindow: // Entire duration of the hold was missed (player mistakened this as a regular note and just tapped)
+                                TotalScore += EndTime - HitTime;
+                                ScoreInfo.AddScore(EndTime - HitTime);
+                                break;
+                            case Action.ReleaseDuring: // Early release
+                                TotalScore += EndTime - LastReleaseDuringTime;
+                                ScoreInfo.AddScore(EndTime - LastReleaseDuringTime);
+                                break;
+                            case Action.Press: // There was no early release, no action is needed
+                                break;
+                        }
+                    }
+                    break;
+                default: // Should never get here
+                    break;
             }
         }
     }

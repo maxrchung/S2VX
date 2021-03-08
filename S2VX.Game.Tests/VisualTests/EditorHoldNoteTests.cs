@@ -33,8 +33,10 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a hold note that starts to appear in 1 second and lasts for 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Remove notes", () => Story.RemoveNotesUpTo(Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime));
-            AddStep("Add note", () => Story.AddHoldNote(NoteToTest = new EditorHoldNote {
+            AddStep("Pause editor", () => Editor.Play(false));
+            AddStep("Restart editor", () => Editor.Restart());
+            AddStep("Reset story", () => Story.Reset());
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
                 EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
             }));
@@ -118,5 +120,24 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Note approach is not visible", () => NoteToTest.Approach.Alpha == 0);
         }
 
+        [Test]
+        public void Hit_BeforeHitTime_DoesNotPlay() =>
+            AddAssert("Does not play", () => NoteToTest.Hit.PlayCount == 0);
+
+        [Test]
+        public void Hit_BetweenHitAndEndTime_PlaysOnce() {
+            AddStep("Start play", () => Editor.Play(true));
+            AddUntilStep("Play until between hit and end time", () =>
+                Story.Clock.CurrentTime > NoteToTest.HitTime && Story.Clock.CurrentTime < NoteToTest.EndTime
+            );
+            AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void Hit_AfterEndTime_PlaysTwice() {
+            AddStep("Start play", () => Editor.Play(true));
+            AddUntilStep("Play until after end time", () => Story.Clock.CurrentTime > NoteToTest.EndTime);
+            AddAssert("Plays twice", () => NoteToTest.Hit.PlayCount == 2);
+        }
     }
 }
