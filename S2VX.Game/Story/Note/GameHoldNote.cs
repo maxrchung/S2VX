@@ -88,7 +88,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (++InputsBeingHeld == 1 && IsHovered && IsClickable()) {
+            if (IsHovered && IsClickable() && ++InputsBeingHeld == 1) {
                 LastAction = Action.Press;
                 Story.Notes.HasClickedNote = true;
                 UpdateScore();
