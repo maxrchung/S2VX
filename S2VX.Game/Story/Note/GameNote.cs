@@ -32,6 +32,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void FlagForRemoval() {
+            if (IsFlaggedForRemoval) {
+                throw new InvalidOperationException("Flagged for removal twice. Fix immediately.");
+            }
             PlayScreen.PlayInfoBar.RecordHitError((int)TimingError);
             if (Math.Abs(TimingError) < MissThreshold) {
                 Hit.Play();
@@ -50,7 +53,8 @@ namespace S2VX.Game.Story.Note {
 
         // Notes are clickable if they are hovered, not missed, and is the earliest note
         private bool IsClickable() {
-            if (Story.Notes.HasClickedNote) {
+            // Has IsFlaggedForRemoval check to prevent race condition that can cause double flagging for removal.
+            if (Story.Notes.HasClickedNote || IsFlaggedForRemoval) {
                 return false;
             }
             var time = Time.Current;
@@ -80,13 +84,13 @@ namespace S2VX.Game.Story.Note {
         public void OnReleased(InputAction action) { }
 
         public override bool UpdateNote() {
-            if (Time.Current >= HitTime + MissThreshold) {
-                RecordMiss();
-            }
-
-            // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
+            // Tells notes.cs if this note has been flagged for removal.
             if (IsFlaggedForRemoval) {
                 return true;
+            }
+
+            if (Time.Current >= HitTime + MissThreshold) {
+                RecordMiss();
             }
 
             UpdateColor();

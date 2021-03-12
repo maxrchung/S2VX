@@ -112,7 +112,7 @@ namespace S2VX.Game.Story.Note {
         public override bool UpdateNote() {
             UpdateState();
 
-            // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
+            // Tells notes.cs if this note has been flagged for removal.
             if (IsFlaggedForRemoval) {
                 return true;
             }
