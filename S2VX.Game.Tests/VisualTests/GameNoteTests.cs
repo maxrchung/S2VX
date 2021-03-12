@@ -4,7 +4,6 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
-using osuTK;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
@@ -23,7 +22,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var audioPath = Path.Combine("VisualTests", "TestTracks", "10-seconds-of-silence.mp3");
+            var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXTrack.Open(audioPath, Audio))));
         }
 
@@ -51,59 +50,6 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Does not trigger multiple notes", () =>
                 (originalNoteCount - 1) * GameNote.MissThreshold == PlayScreen.ScoreInfo.Score
             );
-        }
-
-        [Test]
-        public void OnPress_StackedNotes_HitsTopNote() {
-            AddStep("Add notes", () => {
-                Story.AddNote(new GameNote { HitTime = 0 });
-                Story.AddNote(new GameNote { HitTime = 10 });
-                Story.AddNote(new GameNote { HitTime = 20 });
-            });
-
-            AddStep("Seek clock", () => Stopwatch.Seek(25));
-            AddStep("Move mouse to centre", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 20));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold * 2 + 25);
-        }
-
-        [Test]
-        public void OnPress_LaterNote_HitsLaterNote() {
-            AddStep("Add notes", () => {
-                Story.AddNote(new GameNote { HitTime = 0 });
-                Story.AddNote(new GameNote { HitTime = 10, Coordinates = new Vector2(0, 1) });
-            });
-
-            AddStep("Seek clock", () => Stopwatch.Seek(10));
-            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 10));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
-        }
-
-        [Test]
-        public void OnPress_OutsideMissThreshold_DoesNothing() {
-            AddStep("Add note", () => Story.AddNote(new GameNote { HitTime = GameNote.MissThreshold + 50 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
-            AddAssert("Note was missed", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
-        }
-
-        [Test]
-        public void OnPress_WithinMissThreshold_RegistersHit() {
-            GameNote note = null;
-            AddStep("Add note", () => Story.AddNote(note = new GameNote { HitTime = GameNote.MissThreshold + 50 }));
-            AddStep("Seek between pre-threshold and HitTime", () => Stopwatch.Seek(note.HitTime - GameNote.MissThreshold / 2));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
-            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
-            AddAssert("Note was hit", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold / 2);
         }
     }
 }

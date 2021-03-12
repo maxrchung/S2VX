@@ -15,7 +15,7 @@ namespace S2VX.Game.Tests.VisualTests {
             var story = new S2VXStory();
             story.Open(storyPath, true);
 
-            var audioPath = Path.Combine("VisualTests", "TestTracks", "10-seconds-of-silence.mp3");
+            var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             var drawableTrack = S2VXTrack.Open(audioPath, audio);
 
             var editorScreen = new EditorScreen(story, drawableTrack);
