@@ -70,7 +70,7 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
-        public void OnPress_LaterNote_HitsLaterNote() {
+        public void OnPress_NoteThenNote_HitsLaterNote() {
             AddStep("Add notes", () => {
                 Story.AddNote(new GameNote { HitTime = 0 });
                 Story.AddNote(new GameNote { HitTime = 10, Coordinates = new Vector2(0, 1) });

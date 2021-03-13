@@ -5,7 +5,6 @@ using osuTK.Graphics;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
-using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
@@ -56,11 +55,14 @@ namespace S2VX.Game.Story.Note {
             IsFlaggedForRemoval = true;
         }
 
-        // Note is clickable in the HitWindow and During states and is the earliest note
+        // Note is clickable if in a visible state and has not been clicked yet
         private bool IsClickable() {
+            if (Story.Notes.HasClickedNote) {
+                return false;
+            }
             var clickableState = State is HoldNoteState.HitWindow or HoldNoteState.During;
-            var isEarliestNote = Story.Notes.Children.Last() == this;
-            return clickableState && isEarliestNote;
+            return clickableState;
+
         }
 
         private void HitNoteSound() {
@@ -86,8 +88,9 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsClickable() && IsHovered && ++InputsBeingHeld == 1) { // Only execute a Press if this is the first key being held
+            if (IsHovered && IsClickable() && ++InputsBeingHeld == 1) {
                 LastAction = Action.Press;
+                Story.Notes.HasClickedNote = true;
                 UpdateScore();
                 HitNoteSound();
             }
@@ -109,7 +112,7 @@ namespace S2VX.Game.Story.Note {
         public override bool UpdateNote() {
             UpdateState();
 
-            // Removes if this note has been flagged for removal by Delete(). Removal has to be delayed for earliestNote check to work.  
+            // Tells notes.cs if this note has been flagged for removal.
             if (IsFlaggedForRemoval) {
                 return true;
             }
