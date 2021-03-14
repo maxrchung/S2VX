@@ -4,6 +4,7 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osuTK;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
@@ -255,5 +256,75 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddAssert("Score is 0", () => PlayScreen.ScoreInfo.Score == 0);
         }
 
+        [Test]
+        public void OnPress_HoldNoteOnTopOfNote_HitsHoldNote() {
+            var holdNoteHitTime = 0;
+            var holdNoteEndTime = 10;
+            GameNote note = null;
+            AddStep("Add notes", () => {
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
+                Story.AddNote(note = new GameNote { HitTime = 100 });
+            });
+
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
+            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(note.HitTime + GameNote.MissThreshold));
+            AddAssert("Hits only hold note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+        }
+
+        [Test]
+        public void OnPress_NoteOnTopOfHoldNote_HitsNote() {
+            var holdNoteHitTime = 1;
+            var holdNoteEndTime = 101;
+            AddStep("Add notes", () => {
+                Story.AddNote(new GameNote { HitTime = 0 });
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
+            });
+
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
+            AddAssert("Hits only top note", () => PlayScreen.ScoreInfo.Score == holdNoteEndTime - holdNoteHitTime);
+        }
+
+        [Test]
+        public void OnPress_NoteThenHoldNote_HitsHoldNote() {
+            GameNote note = null;
+            var holdNoteHitTime = 10;
+            var holdNoteEndTime = 100;
+            AddStep("Add notes", () => {
+                Story.AddNote(note = new GameNote { HitTime = 0 });
+                Story.AddNote(new GameHoldNote {
+                    HitTime = holdNoteHitTime,
+                    EndTime = holdNoteEndTime,
+                    Coordinates = new Vector2(1, 0),
+                    EndCoordinates = new Vector2(1, 0)
+                });
+            });
+
+            AddStep("Move mouse to hold note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.HitTime + GameNote.MissThreshold));
+            AddAssert("Hits the later hold note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+        }
+
+        [Test]
+        public void OnPress_HoldNoteThenNote_HitsNote() {
+            GameNote note = null;
+            var holdNoteHitTime = 0;
+            var holdNoteEndTime = 90;
+            AddStep("Add notes", () => {
+                Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
+                Story.AddNote(note = new GameNote { HitTime = 100, Coordinates = new Vector2(1, 0) });
+            });
+
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek to note HitTime", () => Stopwatch.Seek(note.HitTime));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Seek after hold note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
+            AddAssert("Hits the later note", () => PlayScreen.ScoreInfo.Score == holdNoteEndTime - holdNoteHitTime);
+        }
     }
 }
