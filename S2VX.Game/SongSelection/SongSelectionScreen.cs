@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace S2VX.Game.Play {
+namespace S2VX.Game.SongSelection {
     public class SongSelectionScreen : Screen {
         [Resolved]
         private AudioManager Audio { get; set; }
