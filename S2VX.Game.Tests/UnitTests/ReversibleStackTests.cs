@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using S2VX.Game.Editor.Reversible;
 
-namespace S2VX.Game.Tests.HeadlessTests {
+namespace S2VX.Game.Tests.UnitTests {
     public class Value {
         public int Number { get; set; }
     }

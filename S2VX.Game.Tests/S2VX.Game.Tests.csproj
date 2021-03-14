@@ -35,10 +35,10 @@
     <None Update="VisualTests\EditorScreenTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\TestTracks\1-minute-of-silence.mp3">
+    <None Update="TestTracks\1-minute-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\TestTracks\1-second-of-silence.mp3">
+    <None Update="TestTracks\1-second-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="VisualTests\SongPreviewTests\1-second-of-silence.mp3">
@@ -59,7 +59,7 @@
     <None Update="VisualTests\SongPreviewTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\TestTracks\10-seconds-of-silence.mp3">
+    <None Update="TestTracks\10-seconds-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
