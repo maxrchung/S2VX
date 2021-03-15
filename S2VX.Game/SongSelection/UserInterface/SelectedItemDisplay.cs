@@ -9,7 +9,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
-using S2VX.Game.Play;
 
 namespace S2VX.Game.SongSelection.UserInterface {
     public class SelectedItemDisplay : CompositeDrawable {
