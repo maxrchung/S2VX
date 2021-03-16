@@ -40,9 +40,7 @@ namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
                 StartValue = 1,
                 EndValue = 1
             }));
-            AddAssert("Has camera rotation", () =>
-                Cursor.ActiveCursor.Rotation == Story.Camera.Rotation
-            );
+            AddAssert("Has camera rotation", () => Cursor.ActiveCursor.Rotation == 1);
         }
     }
 }

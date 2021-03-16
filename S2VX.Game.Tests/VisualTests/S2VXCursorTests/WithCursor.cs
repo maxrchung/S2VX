@@ -12,17 +12,14 @@ namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
 
         [Test]
         public void CreateCursor_Defaults_IsDefaultColor() =>
-            AddAssert("Is default color", () =>
-                Cursor.ActiveCursor.Colour == S2VXColorConstants.Yellow);
+            AddAssert("Is default color", () => Cursor.ActiveCursor.Colour == S2VXColorConstants.Yellow);
 
         [Test]
         public void CreateCursor_Defaults_HasDefaultSize() =>
-            AddAssert("Has default size", () =>
-                Cursor.ActiveCursor.Size == new Vector2(20));
+            AddAssert("Has default size", () => Cursor.ActiveCursor.Size == new Vector2(20));
 
         [Test]
         public void CreateCursor_Defaults_HasNoRotation() =>
-            AddAssert("Has no rotation", () =>
-                Cursor.ActiveCursor.Rotation == 0);
+            AddAssert("Has no rotation", () => Cursor.ActiveCursor.Rotation == 0);
     }
 }
