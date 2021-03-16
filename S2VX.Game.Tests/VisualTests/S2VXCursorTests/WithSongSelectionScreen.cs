@@ -2,19 +2,20 @@
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
 using S2VX.Game.SongSelection;
-using System.Diagnostics.CodeAnalysis;
 
 namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
-    [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "ScreenStack is an osu!framework type")]
-    public class WithScreenStack : S2VXTestScene {
+    public class WithSongSelectionScreen : S2VXTestScene {
         [Cached]
-        private ScreenStack ScreenStack { get; set; } = new ScreenStack();
+        private ScreenStack ScreenStack { get; set; } = new();
+
+        private SongSelectionScreen SongSelectionScreen { get; set; }
 
         [Cached]
         private S2VXCursor Cursor { get; set; } = new S2VXCursor();
 
         [BackgroundDependencyLoader]
         private void Load() {
+            ScreenStack.Push(SongSelectionScreen = new());
             Add(ScreenStack);
             Add(Cursor);
         }
@@ -22,7 +23,13 @@ namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
         [Test]
         public void Reset_SongSelectionEntering_ResetsCursorProperties() {
             AddStep("Update cursor rotation", () => Cursor.ActiveCursor.Rotation = 1);
-            AddStep("Push song selection screen", () => ScreenStack.Push(new SongSelectionScreen()));
+
+            // Instead of calling OnEntering manually, I tried doing
+            // ScreenStack.Push(new SongSelectionScreen). But this was
+            // unreliable in whether it would actually call
+            // SongSelectionScreen's OnEntering or not.
+            AddStep("Enter song selection screen", () => SongSelectionScreen.OnEntering(null));
+
             AddAssert("Resets cursor properties", () => Cursor.ActiveCursor.Rotation == 0);
         }
     }
