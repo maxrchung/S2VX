@@ -6,7 +6,7 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
-    public class WithStory : S2VXTestScene {
+    public class CursorUpdates : S2VXTestScene {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
 

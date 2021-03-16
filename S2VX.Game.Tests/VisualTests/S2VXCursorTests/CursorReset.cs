@@ -8,7 +8,7 @@ namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
         [Cached]
         private ScreenStack ScreenStack { get; set; } = new();
 
-        private SongSelection.SongSelectionScreen SongSelectionScreen { get; set; }
+        private SongSelectionScreen SongSelectionScreen { get; set; }
 
         [Cached]
         private S2VXCursor Cursor { get; set; } = new S2VXCursor();

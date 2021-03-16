@@ -3,7 +3,7 @@ using osu.Framework.Allocation;
 using osuTK;
 
 namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
-    public class WithCursor : S2VXTestScene {
+    public class CursorDefaults : S2VXTestScene {
         [Cached]
         private S2VXCursor Cursor { get; set; } = new S2VXCursor();
 
