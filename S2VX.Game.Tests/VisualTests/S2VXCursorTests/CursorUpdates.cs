@@ -8,10 +8,10 @@ using S2VX.Game.Story.Command;
 namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
     public class CursorUpdates : S2VXTestScene {
         [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; } = new();
 
         [Cached]
-        private S2VXCursor Cursor { get; set; } = new S2VXCursor();
+        private S2VXCursor Cursor { get; set; } = new();
 
         [BackgroundDependencyLoader]
         private void Load() {
