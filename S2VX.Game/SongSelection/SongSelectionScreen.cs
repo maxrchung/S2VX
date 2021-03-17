@@ -52,8 +52,6 @@ namespace S2VX.Game.SongSelection {
 
         private bool DirectoryContainsDirectories(string dir) => Storage.GetDirectories(dir).Any();
 
-        public override void OnEntering(IScreen last) => Cursor.Reset();
-
         // Go up one level by exiting and thus popping ourself out from the ScreenStack
         public override bool OnExiting(IScreen next) {
             // Unless we're already at root level

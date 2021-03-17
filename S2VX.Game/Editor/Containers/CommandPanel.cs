@@ -24,7 +24,7 @@ namespace S2VX.Game.Editor.Containers {
         private CommandPanelInputBar AddInputBar { get; set; }
         private CommandPanelInputBar EditInputBar { get; set; }
         private S2VXCommand EditCommandReference { get; set; }
-        private readonly FillFlowContainer CommandsList = new FillFlowContainer {
+        private readonly FillFlowContainer CommandsList = new() {
             AutoSizeAxes = Axes.Both,
             Direction = FillDirection.Vertical
         };

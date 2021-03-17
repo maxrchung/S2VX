@@ -12,6 +12,9 @@ using S2VX.Game.Story.Play.Containers;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
+        [Resolved]
+        private S2VXCursor Cursor { get; set; }
+
         // Flag denoting whether (true) to use a story's editor settings or
         // (false) to start at 0
         private bool IsUsingEditorSettings { get; }
@@ -79,6 +82,11 @@ namespace S2VX.Game.Play {
                     this.Push(new LeaveScreen());
                     return true;
             }
+            return false;
+        }
+
+        public override bool OnExiting(IScreen next) {
+            Cursor.Reset();
             return false;
         }
     }
