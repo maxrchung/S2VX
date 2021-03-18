@@ -34,7 +34,6 @@ namespace S2VX.Game.Story {
 
         private static JsonConverter[] Converters { get; } = {
             new CommandConverter(),
-            new Vector2Converter(),
             new HoldNoteConverter(),
             new NoteConverter(),
         };
