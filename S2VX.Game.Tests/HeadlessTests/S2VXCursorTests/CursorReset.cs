@@ -2,12 +2,14 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
+using osu.Framework.Testing;
 using S2VX.Game.Editor;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System.IO;
 
-namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
+namespace S2VX.Game.Tests.HeadlessTests.S2VXCursorTests {
+    [HeadlessTest]
     public class CursorReset : S2VXTestScene {
         [Cached]
         private ScreenStack ScreenStack { get; set; } = new();
