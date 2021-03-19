@@ -120,10 +120,6 @@ namespace S2VX.Game.Story.Note {
             } else {
                 Alpha = 0;
             }
-
-            if (time >= HitTime) {
-                Colour = Color4.Red;
-            }
         }
     }
 }
