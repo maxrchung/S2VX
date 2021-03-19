@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Input.Bindings;
-using osuTK.Graphics;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using System;
@@ -51,7 +50,7 @@ namespace S2VX.Game.Story.Note {
 
         private void FlagForRemoval() {
             UpdateScore();
-            PlayScreen.PlayInfoBar.RecordHitError((int)TotalScore);
+            PlayScreen.HitErrorBar.RecordHitError((int)TotalScore);
             IsFlaggedForRemoval = true;
         }
 
