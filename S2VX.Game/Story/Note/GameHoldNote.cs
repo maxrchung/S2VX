@@ -164,10 +164,6 @@ namespace S2VX.Game.Story.Note {
             } else {
                 Alpha = 0;
             }
-
-            if (time >= HitTime && !IsBeingHeld()) {
-                Colour = Color4.Red;
-            }
         }
 
         // There are three times when this can get called
