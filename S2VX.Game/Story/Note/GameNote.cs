@@ -73,7 +73,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         public bool OnPressed(InputAction action) {
-            if (IsHovered && IsClickable()) {
+            if (IsHovered && IsClickable() && action == InputAction.Input) {
                 ClickNote();
             }
 
