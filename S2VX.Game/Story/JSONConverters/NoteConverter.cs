@@ -11,8 +11,8 @@ namespace S2VX.Game.Story.JSONConverters {
                 { "HitTime", value.HitTime }
             };
             var coordinates = new JObject {
-                { "X", value.Coordinates.X },
-                { "Y", value.Coordinates.Y }
+                { "x", value.Coordinates.X },
+                { "y", value.Coordinates.Y }
             };
             obj.Add("Coordinates", coordinates);
             obj.WriteTo(writer);

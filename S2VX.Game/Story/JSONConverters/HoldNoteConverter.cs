@@ -11,14 +11,14 @@ namespace S2VX.Game.Story.JSONConverters {
                 { "EndTime", value.EndTime },
             };
             var coordinates = new JObject {
-                { "X", value.Coordinates.X },
-                { "Y", value.Coordinates.Y }
+                { "x", value.Coordinates.X },
+                { "y", value.Coordinates.Y }
             };
             obj.Add("Coordinates", coordinates);
 
             var endCoordinates = new JObject {
-                { "X", value.EndCoordinates.X },
-                { "Y", value.EndCoordinates.Y }
+                { "x", value.EndCoordinates.X },
+                { "y", value.EndCoordinates.Y }
             };
             obj.Add("EndCoordinates", endCoordinates);
             obj.WriteTo(writer);
