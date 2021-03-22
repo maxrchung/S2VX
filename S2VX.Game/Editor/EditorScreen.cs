@@ -30,6 +30,9 @@ namespace S2VX.Game.Editor {
         [Resolved]
         private AudioManager Audio { get; set; }
 
+        [Resolved]
+        private S2VXCursor Cursor { get; set; }
+
         private S2VXStory Story { get; }
         public S2VXTrack Track { get; }
         private EditorUI EditorUI { get; set; }
@@ -321,6 +324,11 @@ namespace S2VX.Game.Editor {
                 NotesTimeline.SnapToTick(false);
             }
             return true;
+        }
+
+        public override bool OnExiting(IScreen next) {
+            Cursor.Reset();
+            return false;
         }
 
         public void Play(bool isPlaying) {

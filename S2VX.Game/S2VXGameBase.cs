@@ -2,6 +2,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
+using osu.Framework.Platform;
 using osuTK;
 using S2VX.Resources;
 
@@ -17,6 +18,11 @@ namespace S2VX.Game {
         private DllResourceStore ResourceStore { get; set; }
 
         protected override Container<Drawable> Content { get; }
+
+        public override void SetHost(GameHost host) {
+            base.SetHost(host);
+            host.Window.CursorState |= CursorState.Hidden;
+        }
 
         // Ensure game and tests scale with window size and screen DPI.
         protected S2VXGameBase() => base.Content.Add(Content = new DrawSizePreservingFillContainer {
