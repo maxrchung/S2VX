@@ -5,10 +5,7 @@ using S2VX.Game.Play.UserInterface;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Play.Containers {
-    public class PlayInfoBar : CompositeDrawable {
-
-        public const float InfoBarHeight = 0.06f;
-        public const float InfoBarWidth = 1.0f;
+    public class HitErrorBar : CompositeDrawable {
 
         private int HitErrorDisplayIndex;
         private const int HitErrorDisplayCount = 10;
@@ -44,20 +41,14 @@ namespace S2VX.Game.Play.Containers {
             return hitErrors;
         }
 
-        [Resolved]
-        private ScoreInfo ScoreInfo { get; set; }
-
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             RelativePositionAxes = Axes.Both;
-            Height = InfoBarHeight;
-            Width = InfoBarWidth;
 
             InternalChildren = new Drawable[]
             {
                 HitErrorDisplays,
-                ScoreInfo,
             };
         }
     }

@@ -22,7 +22,7 @@ namespace S2VX.Game.Play {
         private S2VXStory Story { get; }
         private DrawableTrack Track { get; }
 
-        public PlayInfoBar PlayInfoBar { get; private set; } = new PlayInfoBar();
+        public HitErrorBar HitErrorBar { get; private set; }
 
         public PlayScreen(bool isUsingEditorSettings, S2VXStory story, DrawableTrack track) {
             IsUsingEditorSettings = isUsingEditorSettings;
@@ -31,6 +31,8 @@ namespace S2VX.Game.Play {
         }
 
         public ScoreInfo ScoreInfo { get; private set; }
+        private const float InfoBarHeight = 0.06f;
+        private const float InfoBarWidth = 1.0f;
 
         // Need to explicitly recache screen since new ones can be recreated
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) {
@@ -43,8 +45,10 @@ namespace S2VX.Game.Play {
                 RelativePositionAxes = Axes.Both,
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
+                Height = InfoBarHeight,
+                Width = InfoBarWidth,
             });
-            dependencies.Cache(PlayInfoBar = new PlayInfoBar());
+            dependencies.Cache(HitErrorBar = new HitErrorBar { Alpha = 0, });
             return dependencies;
         }
 
@@ -65,7 +69,8 @@ namespace S2VX.Game.Play {
                     Story
                 },
                 Track,
-                PlayInfoBar,
+                HitErrorBar,
+                ScoreInfo,
             };
 
             Track.Start();
@@ -75,7 +80,12 @@ namespace S2VX.Game.Play {
             switch (e.Key) {
                 case Key.Tab:
                     if (e.ShiftPressed) {
-                        PlayInfoBar.Alpha = 1 - PlayInfoBar.Alpha;
+                        ScoreInfo.Alpha = 1 - ScoreInfo.Alpha;
+                    }
+                    break;
+                case Key.E:
+                    if (e.ShiftPressed) {
+                        HitErrorBar.Alpha = 1 - HitErrorBar.Alpha;
                     }
                     break;
                 case Key.Escape:
