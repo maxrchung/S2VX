@@ -7,12 +7,12 @@ using System.IO;
 
 namespace S2VX.Game.Tests.HeadlessTests.SongPreviewTests {
     [HeadlessTest]
-    public class LoadStory : S2VXTestScene {
+    public class StoryLoadTests : S2VXTestScene {
         [Cached]
         private ScreenStack Screens { get; set; } = new();
 
         private SongPreview SongPreview { get; set; }
-        private static string StoryDirectory { get; } = Path.Combine("VisualTests", "SongPreviewTests");
+        private static string StoryDirectory { get; } = Path.Combine("HeadlessTests", "SongPreviewTests");
         private static string AudioFileName { get; } = "1-second-of-silence.mp3";
 
         [BackgroundDependencyLoader]
