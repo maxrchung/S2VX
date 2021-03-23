@@ -5,15 +5,15 @@ using S2VX.Resources;
 
 namespace S2VX.Game.Tests {
     /// <summary>
-    /// We need to create this for headless tests. Headless tests do not run
-    /// with a GameHost, so we need to replicate that behavior here.
+    /// Tests ran through Test Explorer or the GitHub pipeline use this class.
+    /// Tests ran through the osu!framework visual test runner do not use this
+    /// class.
     /// </summary>
     public class S2VXTestSceneTestRunner : TestSceneTestRunner {
         /// <summary>
-        /// Caching a global Cursor here lets us avoid having to create and load
-        /// a Cursor into all of our separate tests. If we do need to hook onto
-        /// a specific Cursor, we can recache the Cursor in the test. See
-        /// S2VXCursorTests for more details.
+        /// S2VXStory resolves an S2VXCursor as one of its dependencies. To
+        /// avoid having to manually cache a Cursor into many visual tests, we
+        /// can cache it here.
         /// </summary>
         [Cached]
         private S2VXCursor Cursor { get; set; } = new S2VXCursor();
