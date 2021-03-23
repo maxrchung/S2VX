@@ -1,11 +1,13 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
+using osu.Framework.Testing;
 using S2VX.Game.SongSelection.Containers;
 using System.IO;
 
-namespace S2VX.Game.Tests.VisualTests {
-    public class SongPreviewTests : S2VXTestScene {
+namespace S2VX.Game.Tests.HeadlessTests.SongPreviewTests {
+    [HeadlessTest]
+    public class LoadStory : S2VXTestScene {
         [Cached]
         private ScreenStack Screens { get; set; } = new();
 
