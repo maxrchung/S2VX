@@ -16,7 +16,7 @@ namespace S2VX.Game.Tests {
         /// can cache it here.
         /// </summary>
         [Cached]
-        private S2VXCursor Cursor { get; set; } = new S2VXCursor();
+        private S2VXCursor Cursor { get; set; } = new();
 
         protected override void LoadComplete() {
             base.LoadComplete();
