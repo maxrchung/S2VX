@@ -6,7 +6,7 @@ using S2VX.Game.Play.UserInterface;
 using System;
 
 namespace S2VX.Game.Story.Note {
-    public class GameNote : S2VXNote, IKeyBindingHandler<InputAction> {
+    public class GameNote : S2VXNote, IKeyBindingHandler<PlayAction> {
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
 
@@ -72,15 +72,15 @@ namespace S2VX.Game.Story.Note {
             FlagForRemoval();
         }
 
-        public bool OnPressed(InputAction action) {
-            if (IsHovered && IsClickable() && action == InputAction.Input) {
+        public bool OnPressed(PlayAction action) {
+            if (IsHovered && IsClickable() && action == PlayAction.Input) {
                 ClickNote();
             }
 
             return false;
         }
 
-        public void OnReleased(InputAction action) { }
+        public void OnReleased(PlayAction action) { }
 
         public override bool UpdateNote() {
             // Tells notes.cs if this note has been flagged for removal.

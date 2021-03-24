@@ -65,7 +65,7 @@ namespace S2VX.Game.Play {
 
             Clock = new FramedClock(Track);
             InternalChildren = new Drawable[] {
-                new InputKeyBindingContainer(this) {
+                new PlayKeyBindingContainer(this) {
                     Story
                 },
                 Track,

@@ -4,12 +4,16 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osuTK.Input;
+using S2VX.Game.Configuration;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class PlayInfoBarTests : S2VXTestScene {
+        [Resolved]
+        private S2VXConfigManager Config { get; set; }
+
         [Resolved]
         private AudioManager Audio { get; set; }
 
@@ -24,8 +28,8 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Unhide score info", () => PlayScreen.ScoreInfo.Alpha = 1);
-            AddStep("Rehide hit error bar", () => PlayScreen.HitErrorBar.Alpha = 0);
+            AddStep("Unhide score info", () => Config.SetValue(S2VXSetting.ScoreVisibility, true));
+            AddStep("Rehide hit error bar", () => Config.SetValue(S2VXSetting.HitErrorBarVisibility, false));
         }
 
         [Test]

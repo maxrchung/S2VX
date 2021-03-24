@@ -1,5 +1,5 @@
 ﻿namespace S2VX.Game.Play {
-    public enum InputAction {
+    public enum PlayAction {
         Input,
         ToggleHitErrorBarVisibility,
         ToggleScoreVisibility
