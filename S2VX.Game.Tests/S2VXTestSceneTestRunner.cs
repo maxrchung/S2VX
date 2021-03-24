@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.IO.Stores;
 using osu.Framework.Testing;
+using S2VX.Game.Configuration;
 using S2VX.Resources;
 
 namespace S2VX.Game.Tests {
@@ -20,12 +21,18 @@ namespace S2VX.Game.Tests {
 
         public S2VXTestSceneTestRunner() : base() { }
 
+        private new DependencyContainer Dependencies;
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
+            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+
         [BackgroundDependencyLoader]
         private void Load() {
             // This allows headless tests to access the S2VXResources assembly to obtain
             // correct references for things like hit sounds.
             Resources.AddStore(new DllResourceStore(S2VXResources.ResourceAssembly));
             Add(Cursor);
+            Dependencies.CacheAs(new S2VXConfigManager(Host.Storage));
         }
     }
 }

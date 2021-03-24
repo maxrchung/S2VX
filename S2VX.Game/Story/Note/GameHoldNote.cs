@@ -6,7 +6,7 @@ using S2VX.Game.Play.UserInterface;
 using System;
 
 namespace S2VX.Game.Story.Note {
-    public class GameHoldNote : HoldNote, IKeyBindingHandler<InputAction> {
+    public class GameHoldNote : HoldNote, IKeyBindingHandler<PlayAction> {
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
 
@@ -86,7 +86,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public bool OnPressed(InputAction action) {
+        public bool OnPressed(PlayAction action) {
             if (IsHovered && IsClickable() && ++InputsBeingHeld == 1) {
                 LastAction = Action.Press;
                 Story.Notes.HasClickedNote = true;
@@ -96,7 +96,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        public void OnReleased(InputAction action) {
+        public void OnReleased(PlayAction action) {
             if (!IsFlaggedForRemoval && IsBeingHeld() && --InputsBeingHeld == 0) { // Only execute a Release if this is the last key being released
                 if (State == HoldNoteState.HitWindow) {
                     LastAction = Action.ReleaseHitWindow;
