@@ -80,6 +80,7 @@ namespace S2VX.Game.Play {
 
             ConfigHitErrorBarVisibility = config.GetBindable<bool>(S2VXSetting.HitErrorBarVisibility);
             ConfigScoreVisibility = config.GetBindable<bool>(S2VXSetting.ScoreVisibility);
+
         }
 
         // Apply visibility of HitErrorBar based on the saved value
