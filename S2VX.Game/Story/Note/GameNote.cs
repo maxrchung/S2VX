@@ -11,7 +11,7 @@ namespace S2VX.Game.Story.Note {
         public S2VXSample Miss { get; private set; }
 
         [Resolved]
-        private ScoreInfo ScoreInfo { get; set; }
+        private ScoreProcessor ScoreProcessor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -46,7 +46,7 @@ namespace S2VX.Game.Story.Note {
         private void RecordMiss() {
             var missThreshold = MissThreshold;
             TimingError = missThreshold;
-            ScoreInfo.AddScore(missThreshold);
+            ScoreProcessor.AddScore(missThreshold);
             FlagForRemoval();
         }
 
@@ -67,7 +67,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         private void ClickNote() {
-            ScoreInfo.AddScore(Math.Abs(TimingError));
+            ScoreProcessor.AddScore(Math.Abs(TimingError));
             Story.Notes.HasClickedNote = true;
             FlagForRemoval();
         }

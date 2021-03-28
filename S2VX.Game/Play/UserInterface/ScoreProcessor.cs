@@ -6,7 +6,7 @@ using System;
 using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
-    public class ScoreInfo : CompositeDrawable {
+    public class ScoreProcessor : CompositeDrawable {
         // Score should be a double type because during a drag, score may add
         // very small values that are between 0 and 1. If we int cast or round
         // this drag value, we'll always get 0.
@@ -34,7 +34,7 @@ namespace S2VX.Game.Play.UserInterface {
             TxtScore.Text = $"{Math.Round(Score)}";
         }
 
-        public void ClearScore() {
+        public void Reset() {
             Score = 0;
             TxtScore.Text = $"{Math.Round(Score)}";
         }

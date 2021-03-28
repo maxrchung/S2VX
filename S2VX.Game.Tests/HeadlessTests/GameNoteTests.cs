@@ -30,7 +30,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
 
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Clear score", () => PlayScreen.ScoreInfo.ClearScore());
+            AddStep("Clear score", () => PlayScreen.ScoreProcessor.Reset());
             AddStep("Reset story", () => Story.Reset());
             AddStep("Reset clock", () => Story.Clock = new FramedClock(Stopwatch = new StopwatchClock()));
         }
@@ -48,7 +48,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 20));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold * 2 + 25);
+            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.Score == GameNote.MissThreshold * 2 + 25);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(GameNote.MissThreshold + 10));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.Score == GameNote.MissThreshold);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
-            AddAssert("Note was missed", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold);
+            AddAssert("Note was missed", () => PlayScreen.ScoreProcessor.Score == GameNote.MissThreshold);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(GameNote.MissThreshold * 2 + 60));
-            AddAssert("Note was hit", () => PlayScreen.ScoreInfo.Score == GameNote.MissThreshold / 2);
+            AddAssert("Note was hit", () => PlayScreen.ScoreProcessor.Score == GameNote.MissThreshold / 2);
         }
     }
 }
