@@ -123,6 +123,8 @@ namespace S2VX.Game.SongSelection.Containers {
                     Width = width,
                     Height = btnHeight,
                     Y = songInfoHeight,
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
                     Direction = FillDirection.Horizontal,
                     Children = new[] {
                         BtnEdit,
