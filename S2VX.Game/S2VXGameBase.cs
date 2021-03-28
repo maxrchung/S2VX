@@ -18,7 +18,7 @@ namespace S2VX.Game {
 
         [Cached]
         protected S2VXCursor Cursor { get; } = new();
-      
+
         private new DependencyContainer Dependencies;
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
