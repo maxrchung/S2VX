@@ -10,13 +10,6 @@ namespace S2VX.Game.Tests {
     /// class.
     /// </summary>
     public class S2VXTestBrowser : S2VXGameBase {
-        /// <summary>
-        /// S2VXStory resolves an S2VXCursor as one of its dependencies. To
-        /// avoid having to manually cache a Cursor into many visual tests, we
-        /// can cache it here.
-        /// </summary>
-        [Cached]
-        private S2VXCursor Cursor { get; set; } = new();
 
         protected override void LoadComplete() {
             base.LoadComplete();
