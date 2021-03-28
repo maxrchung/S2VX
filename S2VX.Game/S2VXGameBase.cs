@@ -4,6 +4,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osuTK;
+using S2VX.Game.Configuration;
 using S2VX.Resources;
 
 namespace S2VX.Game {
@@ -17,6 +18,11 @@ namespace S2VX.Game {
 
         [Cached]
         protected S2VXCursor Cursor { get; } = new();
+      
+        private new DependencyContainer Dependencies;
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
+            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         private DllResourceStore ResourceStore { get; set; }
 
@@ -36,7 +42,10 @@ namespace S2VX.Game {
         });
 
         [BackgroundDependencyLoader]
-        private void Load() => Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
+        private void Load() {
+            Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
+            Dependencies.CacheAs(new S2VXConfigManager(Host.Storage));
+        }
 
         protected override void Dispose(bool isDisposing) {
             ResourceStore.Dispose();
