@@ -15,6 +15,9 @@ namespace S2VX.Game {
         public void UpdateSize(Vector2 cameraScale) =>
             ActiveCursor.Size = cameraScale * S2VXGameBase.GameWidth / 4;
 
+        public void UpdateColor(Color4 color) =>
+            ActiveCursor.Colour = color;
+
         protected override Drawable CreateCursor() {
             var box = new Box();
             ResetInternal(box);
