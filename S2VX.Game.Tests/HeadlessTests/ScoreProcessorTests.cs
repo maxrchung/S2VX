@@ -10,6 +10,7 @@ using S2VX.Game.Story.Note;
 using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
+    [HeadlessTest]
     public class ScoreProcessorTests : S2VXTestScene {
         [Resolved]
         private S2VXCursor Cursor { get; set; }
