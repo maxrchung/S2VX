@@ -1,16 +1,18 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
+using osu.Framework.Testing;
 using S2VX.Game.SongSelection.Containers;
 using System.IO;
 
-namespace S2VX.Game.Tests.VisualTests {
-    public class SongPreviewTests : S2VXTestScene {
+namespace S2VX.Game.Tests.HeadlessTests.SongPreviewTests {
+    [HeadlessTest]
+    public class StoryLoadTests : S2VXTestScene {
         [Cached]
-        private ScreenStack Screens { get; set; } = new ScreenStack();
+        private ScreenStack Screens { get; set; } = new();
 
         private SongPreview SongPreview { get; set; }
-        private static string StoryDirectory { get; } = Path.Combine("VisualTests", "SongPreviewTests");
+        private static string StoryDirectory { get; } = Path.Combine("HeadlessTests", "SongPreviewTests");
         private static string AudioFileName { get; } = "1-second-of-silence.mp3";
 
         [BackgroundDependencyLoader]
@@ -20,7 +22,7 @@ namespace S2VX.Game.Tests.VisualTests {
         private void AddSongPreview(string storyFileName) =>
             AddStep(
                 "Add song preview",
-                () => Add(SongPreview = new SongPreview(StoryDirectory, storyFileName, AudioFileName))
+                () => Add(SongPreview = new(StoryDirectory, storyFileName, AudioFileName))
             );
 
         private void ClickEditButton() =>

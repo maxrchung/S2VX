@@ -41,22 +41,22 @@
     <None Update="TestTracks\1-second-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\1-second-of-silence.mp3">
+    <None Update="HeadlessTests\SongPreviewTests\1-second-of-silence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\MissingHoldNotes.s2ry">
+    <None Update="HeadlessTests\SongPreviewTests\MissingHoldNotes.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\MalformedJSON.s2ry">
+    <None Update="HeadlessTests\SongPreviewTests\MalformedJSON.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\MissingEditorSettings.s2ry">
+    <None Update="HeadlessTests\SongPreviewTests\MissingEditorSettings.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\EmptyFile.s2ry">
+    <None Update="HeadlessTests\SongPreviewTests\EmptyFile.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="VisualTests\SongPreviewTests\ValidStory.s2ry">
+    <None Update="HeadlessTests\SongPreviewTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestTracks\10-seconds-of-silence.mp3">
