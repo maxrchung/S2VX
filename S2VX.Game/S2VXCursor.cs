@@ -2,6 +2,7 @@
 using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
 using osuTK;
+using osuTK.Graphics;
 
 namespace S2VX.Game {
     public class S2VXCursor : CursorContainer {
