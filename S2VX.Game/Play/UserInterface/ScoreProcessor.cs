@@ -62,24 +62,24 @@ namespace S2VX.Game.Play.UserInterface {
             var notes = Story.Notes;
             var score = Math.Abs(time - note.HitTime);
 
-            if (time > Math.Abs(note.HitTime - notes.MissThreshold)) { // miss
+            if (score > notes.MissThreshold) { // miss
                 AddScore(notes.MissThreshold);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
 
-            } else if (time < note.HitTime - notes.PerfectThreshold) { // early
+            } else if (time - note.HitTime < -notes.PerfectThreshold) { // early
                 AddScore(score);
-                Cursor.UpdateColor(notes.MissColor);
+                Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
 
-            } else if (time > note.HitTime + notes.PerfectThreshold) { // late
+            } else if (time - note.HitTime > notes.PerfectThreshold) { // late
                 AddScore(score);
-                Cursor.UpdateColor(notes.MissColor);
+                Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
 
             } else { // perfect
                 AddScore(score);
-                Cursor.UpdateColor(notes.MissColor);
+                Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
             }
         }
