@@ -16,6 +16,9 @@ namespace S2VX.Game {
         // The "default" resolution from which things are scaled and positioned
         public const float GameWidth = 1000.0f;
 
+        [Cached]
+        protected S2VXCursor Cursor { get; } = new();
+
         private new DependencyContainer Dependencies;
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>

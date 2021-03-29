@@ -62,16 +62,15 @@ namespace S2VX.Game.SongSelection.Containers {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var fullWidth = Width;
-            var fullHeight = Height;
-            var songInfoHeight = fullHeight * 0.6f;
-            var btnHeight = fullHeight * 0.4f;
+            var width = S2VXGameBase.GameWidth;
+            var songInfoHeight = width * 0.6f;
+            var btnHeight = width * 0.4f;
             var spacingMargin = 0.05f;
-            var textSize = Height * 0.05f;
-            var thumbnailSize = fullWidth * 0.3f;
-            var btnSize = new Vector2(fullWidth / 5, fullHeight / 10);
+            var textSize = width * 0.05f;
+            var thumbnailSize = width * 0.3f;
+            var btnSize = new Vector2(width / 5, width / 10);
 
-            BtnEdit = new IconButton() {
+            BtnEdit = new() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
@@ -80,7 +79,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 Masking = true,
                 Action = LoadEditor
             };
-            BtnPlay = new IconButton {
+            BtnPlay = new() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
@@ -90,10 +89,10 @@ namespace S2VX.Game.SongSelection.Containers {
                 Action = LoadPlay
             };
 
-            InternalChildren = new Drawable[] {
+            InternalChildren = new[] {
                 // TODO: add blurred background
                 new FillFlowContainer {
-                    Width = fullWidth,
+                    Width = width,
                     Height = songInfoHeight,
                     Children = new Drawable[] {
                         // Thumbnail
@@ -102,17 +101,17 @@ namespace S2VX.Game.SongSelection.Containers {
                             Anchor = Anchor.TopLeft,
                             Origin = Anchor.TopLeft,
                             Margin = new MarginPadding {
-                                Horizontal = fullWidth * spacingMargin,
-                                Vertical = fullHeight * spacingMargin,
+                                Horizontal = width * spacingMargin,
+                                Vertical = width * spacingMargin,
                             },
                             Texture = ThumbnailTexture,
                             TextureName = "logo",
                         },
                         TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            Width = fullWidth - thumbnailSize - fullWidth * spacingMargin * 2,
+                            Width = width - thumbnailSize - width * spacingMargin * 2,
                             Height = songInfoHeight,
                             Margin = new MarginPadding {
-                                Vertical = fullHeight * spacingMargin,
+                                Vertical = width * spacingMargin,
                             },
                             TextAnchor = Anchor.TopLeft,
                             Colour = Color4.White,
@@ -121,13 +120,13 @@ namespace S2VX.Game.SongSelection.Containers {
                     }
                 },
                 new FillFlowContainer {
-                    Width = fullWidth,
+                    Width = width,
                     Height = btnHeight,
                     Y = songInfoHeight,
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     Direction = FillDirection.Horizontal,
-                    Children = new Drawable[] {
+                    Children = new[] {
                         BtnEdit,
                         BtnPlay,
                     }

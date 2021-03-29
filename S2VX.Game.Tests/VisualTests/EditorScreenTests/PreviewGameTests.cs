@@ -7,8 +7,8 @@ using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using System.IO;
 
-namespace S2VX.Game.Tests.VisualTests {
-    public class EditorScreenTests : S2VXTestScene {
+namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
+    public class PreviewGameTests : S2VXTestScene {
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             var storyPath = Path.Combine("VisualTests", "EditorScreenTests", "ValidStory.s2ry");
