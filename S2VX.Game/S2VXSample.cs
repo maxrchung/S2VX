@@ -16,5 +16,7 @@ namespace S2VX.Game {
             Sample.Play();
             ++PlayCount;
         }
+
+        public void Reset() => PlayCount = 0;
     }
 }

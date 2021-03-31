@@ -33,7 +33,7 @@ namespace S2VX.Game.Play {
             Track = track;
         }
 
-        public ScoreInfo ScoreInfo { get; private set; }
+        public ScoreProcessor ScoreProcessor { get; private set; }
         private const float InfoBarHeight = 0.06f;
         private const float InfoBarWidth = 1.0f;
 
@@ -43,7 +43,7 @@ namespace S2VX.Game.Play {
             dependencies.Cache(this);
             dependencies.Cache(Story);
             // ScoreInfo needs to be initialized here so that it is cached before GameNotes need it
-            dependencies.Cache(ScoreInfo = new ScoreInfo {
+            dependencies.Cache(ScoreProcessor = new ScoreProcessor {
                 RelativeSizeAxes = Axes.Both,
                 RelativePositionAxes = Axes.Both,
                 Anchor = Anchor.TopRight,
@@ -73,7 +73,7 @@ namespace S2VX.Game.Play {
                 },
                 Track,
                 HitErrorBar,
-                ScoreInfo,
+                ScoreProcessor,
             };
 
             Track.Start();
@@ -93,7 +93,7 @@ namespace S2VX.Game.Play {
         private void UpdateErrorBarVisibility() => HitErrorBar.Alpha = ConfigHitErrorBarVisibility.Value ? 1 : 0;
 
         // Action of the bindable: this is where we actually set the Score's alpha
-        private void UpdateScoreVisibility() => ScoreInfo.Alpha = ConfigScoreVisibility.Value ? 1 : 0;
+        private void UpdateScoreVisibility() => ScoreProcessor.Alpha = ConfigScoreVisibility.Value ? 1 : 0;
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {

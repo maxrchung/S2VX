@@ -12,7 +12,7 @@ namespace S2VX.Game.Tests.VisualTests.S2VXCursorTests {
 
         [Test]
         public void CreateCursor_Defaults_IsDefaultColor() =>
-            AddAssert("Is default color", () => Cursor.ActiveCursor.Colour == S2VXColorConstants.Yellow);
+            AddAssert("Is default color", () => Cursor.ActiveCursor.Colour == S2VXColorConstants.LightYellow);
 
         [Test]
         public void CreateCursor_Defaults_HasDefaultSize() =>

@@ -38,7 +38,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Press tab", () => InputManager.PressKey(Key.Tab));
             AddStep("Release shift", () => InputManager.ReleaseKey(Key.ShiftLeft));
             AddStep("Release tab", () => InputManager.ReleaseKey(Key.Tab));
-            AddAssert("Score info is hidden", () => PlayScreen.ScoreInfo.Alpha == 0);
+            AddAssert("Score info is hidden", () => PlayScreen.ScoreProcessor.Alpha == 0);
         }
 
         [Test]
