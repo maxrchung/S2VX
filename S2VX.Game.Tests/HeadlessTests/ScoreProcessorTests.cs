@@ -9,7 +9,7 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 using System.IO;
 
-namespace S2VX.Game.Tests.VisualTests {
+namespace S2VX.Game.Tests.HeadlessTests {
     [HeadlessTest]
     public class ScoreProcessorTests : S2VXTestScene {
         [Resolved]
@@ -61,7 +61,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Process_MissHit_ColorsCursorMiss() {
             AddStep("Process note", () => GetProcessor().Process(
-                1000 + Story.Notes.MissThreshold + 1,
+                1000 + Story.Notes.HitThreshold + 1,
                 new GameNote { HitTime = 1000 }
             ));
             AddAssert("Colors cursor miss", () => Cursor.ActiveCursor.Colour == Story.Notes.MissColor);
@@ -79,7 +79,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Process_MissHit_PlaysMissSound() {
             AddStep("Process note", () => GetProcessor().Process(
-                1000 - Story.Notes.MissThreshold - 1,
+                1000 - Story.Notes.HitThreshold - 1,
                 new GameNote { HitTime = 1000 }
             ));
             AddAssert("Plays miss sound", () => GetProcessor().Miss.PlayCount == 1);

@@ -55,8 +55,9 @@ namespace S2VX.Game.Story.Note {
                 return true;
             }
 
-            // Remove note if after threshold
+            // Remove note if after miss threshold
             if (Time.Current >= HitTime + Story.Notes.MissThreshold) {
+                TimingError = Story.Notes.MissThreshold;
                 FlagForRemoval();
             }
 
@@ -76,13 +77,13 @@ namespace S2VX.Game.Story.Note {
             }
             // Show time to Hit time with miss threshold time
             // Hold the note at fully visible until after MissThreshold
-            else if (time < HitTime + notes.MissThreshold) {
+            else if (time < HitTime + notes.HitThreshold) {
                 Alpha = 1;
             }
             // Hit time with miss threshold time to Fade out time
-            else if (time < HitTime + notes.MissThreshold + notes.FadeOutTime) {
-                var startTime = HitTime + notes.MissThreshold;
-                var endTime = HitTime + notes.MissThreshold + notes.FadeOutTime;
+            else if (time < HitTime + notes.HitThreshold + notes.FadeOutTime) {
+                var startTime = HitTime + notes.HitThreshold;
+                var endTime = HitTime + notes.HitThreshold + notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;

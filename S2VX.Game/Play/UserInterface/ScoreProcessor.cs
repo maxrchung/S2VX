@@ -62,7 +62,7 @@ namespace S2VX.Game.Play.UserInterface {
             var notes = Story.Notes;
             var score = Math.Abs(time - note.HitTime);
 
-            if (score > notes.MissThreshold) { // miss
+            if (score > notes.HitThreshold) { // miss
                 AddScore(notes.MissThreshold);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();

@@ -268,8 +268,8 @@ namespace S2VX.Game.Tests.HeadlessTests {
 
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
-            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(note.HitTime + Story.Notes.MissThreshold));
-            AddAssert("Hits only hold note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold);
+            AddStep("Seek after last note is deleted", () => Stopwatch.Seek(note.HitTime + Story.Notes.HitThreshold));
+            AddAssert("Hits only hold note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.HitThreshold);
         }
 
         [Test]
@@ -305,8 +305,8 @@ namespace S2VX.Game.Tests.HeadlessTests {
 
             AddStep("Move mouse to hold note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
-            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.HitTime + Story.Notes.MissThreshold));
-            AddAssert("Hits the later hold note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold);
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.HitTime + Story.Notes.HitThreshold));
+            AddAssert("Hits the later hold note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.HitThreshold);
         }
 
         [Test]
