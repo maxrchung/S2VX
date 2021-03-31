@@ -28,7 +28,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Clear score", () => PlayScreen.ScoreInfo.ClearScore());
+            AddStep("Clear score", () => PlayScreen.ScoreProcessor.Reset());
             AddStep("Reset story", () => Story.Reset());
             AddStep("Reset clock", () => Story.Clock = new FramedClock(Stopwatch = new StopwatchClock()));
         }
@@ -50,7 +50,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start clock", () => Stopwatch.Start());
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddAssert("Does not trigger multiple notes", () => PlayScreen.ScoreInfo.Score == (originalNoteCount - 1) * 100);
+            AddAssert("Does not trigger multiple notes", () => PlayScreen.ScoreProcessor.Score == (originalNoteCount - 1) * 100);
         }
     }
 }

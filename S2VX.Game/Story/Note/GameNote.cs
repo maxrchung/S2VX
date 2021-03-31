@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio;
 using osu.Framework.Input.Bindings;
 using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
@@ -7,11 +6,9 @@ using System;
 
 namespace S2VX.Game.Story.Note {
     public class GameNote : S2VXNote, IKeyBindingHandler<PlayAction> {
-        public S2VXSample Hit { get; private set; }
-        public S2VXSample Miss { get; private set; }
 
         [Resolved]
-        private ScoreInfo ScoreInfo { get; set; }
+        private ScoreProcessor ScoreProcessor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -19,62 +16,32 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        public const double MissThreshold = 200.0;
-        private double TimingError;
+        private double TimingError { get; set; }
         private bool IsFlaggedForRemoval { get; set; }
         public override bool HandlePositionalInput => true;
-
-        [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            Hit = new S2VXSample("hit", audio);
-            Miss = new S2VXSample("miss", audio);
-        }
 
         private void FlagForRemoval() {
             if (IsFlaggedForRemoval) {
                 throw new InvalidOperationException("Flagged for removal twice. Fix immediately.");
             }
-            PlayScreen.HitErrorBar.RecordHitError((int)TimingError);
-            if (Math.Abs(TimingError) < MissThreshold) {
-                Hit.Play();
-            } else {
-                Miss.Play();
-            }
+            PlayScreen.HitErrorBar.RecordHitError((int)Math.Round(TimingError));
+            ScoreProcessor.Process(Time.Current, this);
             IsFlaggedForRemoval = true;
         }
 
-        private void RecordMiss() {
-            var missThreshold = MissThreshold;
-            TimingError = missThreshold;
-            ScoreInfo.AddScore(missThreshold);
-            FlagForRemoval();
-        }
-
-        // Notes are clickable if they are hovered, not missed, and is the earliest note
+        // Conditions for which a note can be clicked
         private bool IsClickable() {
-            // Has IsFlaggedForRemoval check to prevent race condition that can cause double flagging for removal.
-            if (Story.Notes.HasClickedNote || IsFlaggedForRemoval) {
-                return false;
-            }
-            var time = Time.Current;
-            var isVisible = Alpha > 0;
-            var isWithinMissThreshold = Math.Abs(time - HitTime) <= MissThreshold;
-            if (!isVisible || !isWithinMissThreshold) {
-                return false;
-            }
-            TimingError = time - HitTime;
-            return true;
-        }
+            TimingError = Time.Current - HitTime;
+            var isWithinMissThreshold = Math.Abs(TimingError) <= Story.Notes.MissThreshold;
 
-        private void ClickNote() {
-            ScoreInfo.AddScore(Math.Abs(TimingError));
-            Story.Notes.HasClickedNote = true;
-            FlagForRemoval();
+            // Has IsFlaggedForRemoval check to prevent race condition that can cause double flagging for removal.
+            return !Story.Notes.HasClickedNote && !IsFlaggedForRemoval && IsHovered && Alpha != 0 && isWithinMissThreshold;
         }
 
         public bool OnPressed(PlayAction action) {
-            if (IsHovered && IsClickable() && action == PlayAction.Input) {
-                ClickNote();
+            if (action == PlayAction.Input && IsClickable()) {
+                Story.Notes.HasClickedNote = true;
+                FlagForRemoval();
             }
 
             return false;
@@ -83,13 +50,15 @@ namespace S2VX.Game.Story.Note {
         public void OnReleased(PlayAction action) { }
 
         public override bool UpdateNote() {
-            // Tells notes.cs if this note has been flagged for removal.
+            // Tells Notes.cs if this note has been flagged for removal.
             if (IsFlaggedForRemoval) {
                 return true;
             }
 
-            if (Time.Current >= HitTime + MissThreshold) {
-                RecordMiss();
+            // Remove note if after miss threshold
+            if (Time.Current >= HitTime + Story.Notes.MissThreshold) {
+                TimingError = Story.Notes.MissThreshold;
+                FlagForRemoval();
             }
 
             UpdateColor();
@@ -108,13 +77,13 @@ namespace S2VX.Game.Story.Note {
             }
             // Show time to Hit time with miss threshold time
             // Hold the note at fully visible until after MissThreshold
-            else if (time < HitTime + MissThreshold) {
+            else if (time < HitTime + notes.HitThreshold) {
                 Alpha = 1;
             }
             // Hit time with miss threshold time to Fade out time
-            else if (time < HitTime + MissThreshold + notes.FadeOutTime) {
-                var startTime = HitTime + MissThreshold;
-                var endTime = HitTime + MissThreshold + notes.FadeOutTime;
+            else if (time < HitTime + notes.HitThreshold + notes.FadeOutTime) {
+                var startTime = HitTime + notes.HitThreshold;
+                var endTime = HitTime + notes.HitThreshold + notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;

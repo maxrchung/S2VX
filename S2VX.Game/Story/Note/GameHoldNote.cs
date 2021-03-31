@@ -11,7 +11,7 @@ namespace S2VX.Game.Story.Note {
         public S2VXSample Miss { get; private set; }
 
         [Resolved]
-        private ScoreInfo ScoreInfo { get; set; }
+        private ScoreProcessor ScoreProcessor { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -176,18 +176,18 @@ namespace S2VX.Game.Story.Note {
                     if (!HasBeenPressedInHitWindow) {
                         HasBeenPressedInHitWindow = true;
                         TotalScore += HitTime - time;
-                        ScoreInfo.AddScore(HitTime - time);
+                        ScoreProcessor.AddScore(HitTime - time);
                     }
                     break;
                 case HoldNoteState.During:
                     if (LastAction == Action.ReleaseDuring) {
                         // Penalize gap between now and previous release
                         TotalScore += time - LastReleaseDuringTime;
-                        ScoreInfo.AddScore(time - LastReleaseDuringTime);
+                        ScoreProcessor.AddScore(time - LastReleaseDuringTime);
                     } else {
                         // Late hold, penalize gap between now and HitTime
                         TotalScore += time - HitTime;
-                        ScoreInfo.AddScore(time - HitTime);
+                        ScoreProcessor.AddScore(time - HitTime);
                     }
                     break;
                 case HoldNoteState.VisibleAfter:
@@ -197,11 +197,11 @@ namespace S2VX.Game.Story.Note {
                             case Action.None: // There was never any action, entire hold note was missed
                             case Action.ReleaseHitWindow: // Entire duration of the hold was missed (player mistakened this as a regular note and just tapped)
                                 TotalScore += EndTime - HitTime;
-                                ScoreInfo.AddScore(EndTime - HitTime);
+                                ScoreProcessor.AddScore(EndTime - HitTime);
                                 break;
                             case Action.ReleaseDuring: // Early release
                                 TotalScore += EndTime - LastReleaseDuringTime;
-                                ScoreInfo.AddScore(EndTime - LastReleaseDuringTime);
+                                ScoreProcessor.AddScore(EndTime - LastReleaseDuringTime);
                                 break;
                             case Action.Press: // There was no early release, no action is needed
                                 break;

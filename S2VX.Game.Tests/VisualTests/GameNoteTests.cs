@@ -28,7 +28,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Clear score", () => PlayScreen.ScoreInfo.ClearScore());
+            AddStep("Clear score", () => PlayScreen.ScoreProcessor.Reset());
             AddStep("Reset story", () => Story.Reset());
             AddStep("Reset clock", () => Story.Clock = new FramedClock(Stopwatch = new StopwatchClock()));
         }
@@ -48,7 +48,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddAssert("Does not trigger multiple notes", () =>
-                (originalNoteCount - 1) * GameNote.MissThreshold == PlayScreen.ScoreInfo.Score
+                (originalNoteCount - 1) * Story.Notes.MissThreshold == PlayScreen.ScoreProcessor.Score
             );
         }
     }
