@@ -27,7 +27,7 @@ namespace S2VX.Game {
 
         private static void ResetInternal(Drawable cursor) {
             cursor.Size = new Vector2(20);
-            cursor.Colour = S2VXColorConstants.Yellow;
+            cursor.Colour = S2VXColorConstants.LightYellow;
             cursor.Rotation = 0;
             cursor.Origin = Anchor.Centre;
         }

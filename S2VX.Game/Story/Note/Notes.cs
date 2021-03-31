@@ -28,10 +28,10 @@ namespace S2VX.Game.Story.Note {
         public Color4 PreviewHoldNoteColor { get; set; }
 
         // TODO: Remove these defaults and use command classes
-        public Color4 PerfectColor { get; set; } = Color4.Green;
-        public Color4 EarlyColor { get; set; } = Color4.Orange;
-        public Color4 LateColor { get; set; } = Color4.Blue;
-        public Color4 MissColor { get; set; } = Color4.Red;
+        public Color4 PerfectColor { get; set; } = S2VXColorConstants.LightYellow;
+        public Color4 EarlyColor { get; set; } = S2VXColorConstants.White;
+        public Color4 LateColor { get; set; } = S2VXColorConstants.DarkYellow;
+        public Color4 MissColor { get; set; } = S2VXColorConstants.Red;
         public float PerfectThreshold { get; set; } = 30;
         public float HitThreshold { get; set; } = 100;
         public float MissThreshold { get; set; } = 200;
