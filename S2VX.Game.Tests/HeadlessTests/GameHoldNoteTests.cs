@@ -9,6 +9,7 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -326,5 +327,8 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Seek after hold note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
             AddAssert("Hits the later note", () => PlayScreen.ScoreProcessor.Score == holdNoteEndTime - holdNoteHitTime);
         }
+
+        [Test]
+        public void OnPress_MultipleHitsInMissThresholdBeforeHitTime_PlaysHitSoundOnce() => throw new Exception();
     }
 }
