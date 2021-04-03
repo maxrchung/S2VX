@@ -31,39 +31,35 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             AddStep("Reset score processor", () => GetProcessor().Reset());
         }
 
+        private void Process(double time) =>
+            AddStep("Process note", () => GetProcessor().Process(time,new GameNote()));
+
         [Test]
         public void Process_PerfectHit_ColorsCursorPerfect() {
-            AddStep("Process note", () => GetProcessor().Process(
-                1000,
-                new GameNote { HitTime = 1000 }
-            ));
+            Process(0);
             AddAssert("Colors cursor perfect", () => Cursor.ActiveCursor.Colour == Story.Notes.PerfectColor);
         }
 
         [Test]
         public void Process_EarlyHit_ColorsCursorEarly() {
-            AddStep("Process note", () => GetProcessor().Process(
-                1000 - Story.Notes.PerfectThreshold - 1,
-                new GameNote { HitTime = 1000 }
-            ));
+            Process(-Story.Notes.PerfectThreshold - 1);
             AddAssert("Colors cursor early", () => Cursor.ActiveCursor.Colour == Story.Notes.EarlyColor);
         }
 
         [Test]
         public void Process_LateHit_ColorsCursorLate() {
-            AddStep("Process note", () => GetProcessor().Process(
-                1000 + Story.Notes.PerfectThreshold + 1,
-                new GameNote { HitTime = 1000 }
-            ));
+            Process(Story.Notes.PerfectThreshold + 1);
             AddAssert("Colors cursor late", () => Cursor.ActiveCursor.Colour == Story.Notes.LateColor);
         }
 
         [Test]
         public void Process_EarlyMissHit_ColorsCursorMiss() {
+            Process(-Story.Notes.HitThreshold - 1);
         }
 
         [Test]
         public void Process_LateMissHit_ColorsCursorMiss() {
+            Process(Story.Notes.HitThreshold + 1);
         }
 
         [Test]
@@ -78,10 +74,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
 
         [Test]
         public void Process_PerfectHit_PlaysHitSound() {
-            AddStep("Process note", () => GetProcessor().Process(
-                1000,
-                new GameNote { HitTime = 1000 }
-            ));
+            Process(0);
             AddAssert("Plays hit sound", () => GetProcessor().Hit.PlayCount == 1);
         }
 
