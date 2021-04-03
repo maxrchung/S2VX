@@ -9,7 +9,6 @@ using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
-using System;
 using System.IO;
 using System.Linq;
 
@@ -329,6 +328,16 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         [Test]
-        public void OnPress_MultipleHitsInMissThresholdBeforeHitTime_PlaysHitSoundOnce() => throw new Exception();
+        public void OnPress_MultipleHitsInMissThresholdBeforeHitTime_PlaysHitSoundOnce() {
+            GameHoldNote note = null;
+            AddStep("Add notes", () => Story.AddNote(note = new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek before HitTime", () => Stopwatch.Seek(note.HitTime - 1));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Plays hit sound once", () => PlayScreen.ScoreProcessor.Hit.PlayCount == 1);
+        }
     }
 }
