@@ -4,7 +4,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using S2VX.Game.Story;
-using S2VX.Game.Story.Note;
 using System;
 using System.Globalization;
 
@@ -60,27 +59,66 @@ namespace S2VX.Game.Play.UserInterface {
 
         public void ProcessHit(double scoreTime, double noteHitTime) {
             var notes = Story.Notes;
+            var relativeTime = scoreTime - noteHitTime;
             var score = Math.Abs(scoreTime - noteHitTime);
 
-            if (score > notes.HitThreshold) { // miss
+            if (relativeTime < -notes.MissThreshold) { // Before miss
+                return;
+
+            } else if (relativeTime < -notes.HitThreshold) { // Early miss
                 AddScore(notes.MissThreshold);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
 
-            } else if (scoreTime - noteHitTime < -notes.PerfectThreshold) { // early
+            } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
 
-            } else if (scoreTime - noteHitTime > notes.PerfectThreshold) { // late
+            } else if (relativeTime < notes.PerfectThreshold) { // Perfect
+                AddScore(score);
+                Cursor.UpdateColor(notes.PerfectColor);
+                Hit.Play();
+
+            } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
 
-            } else { // perfect
-                AddScore(score);
-                Cursor.UpdateColor(notes.PerfectColor);
-                Hit.Play();
+            } else { // Late miss and beyond
+                AddScore(notes.MissThreshold);
+                Cursor.UpdateColor(notes.MissColor);
+                Miss.Play();
+            }
+        }
+
+        public void ProcessHold(double scoreTime, double previousPressTime, bool isPress, double noteHitTime, double noteEndTime) {
+            var notes = Story.Notes;
+            // Score is dependent on the previous press kept track by the GameHoldNote 
+            var score = scoreTime - previousPressTime;
+
+            if (scoreTime < noteHitTime) { // Before during
+                return;
+
+            } else if (scoreTime < noteEndTime) { // During
+                if (isPress) {
+                    Cursor.UpdateColor(notes.LateColor);
+                    Hit.Play();
+                } else {
+                    // Only update score on release
+                    AddScore(score);
+                    Cursor.UpdateColor(notes.MissColor);
+                    Miss.Play();
+                }
+
+            } else { // After hold period
+                if (isPress) {
+                    Hit.Play();
+                } else {
+                    AddScore(score);
+                    Cursor.UpdateColor(notes.MissColor);
+                    Miss.Play();
+                }
             }
         }
     }
