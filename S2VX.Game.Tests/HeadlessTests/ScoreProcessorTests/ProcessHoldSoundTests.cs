@@ -30,7 +30,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         }
 
         private void ProcessHold(double scoreTime, bool isPress) =>
-            AddStep("Process note", () => GetProcessor().ProcessHold(scoreTime, isPress, 0, 1000));
+            AddStep("Process note", () => GetProcessor().ProcessHold(scoreTime, 0, isPress, 0, 1000));
 
         [Test]
         public void ProcessHold_PressBeforeDuring_PlaysNoSound() {
@@ -52,7 +52,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
 
         [Test]
         public void ProcessHold_ReleaseDuring_PlaysMissSound() {
-            ProcessHold(500, true);
+            ProcessHold(500, false);
             AddAssert("Plays miss sound", () => GetProcessor().Miss.PlayCount == 1);
         }
 

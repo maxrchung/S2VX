@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using S2VX.Game.Play.UserInterface;
+using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Play.Containers {
@@ -10,7 +11,7 @@ namespace S2VX.Game.Play.Containers {
         private int HitErrorDisplayIndex;
         private const int HitErrorDisplayCount = 10;
 
-        public void RecordHitError(int timingError) {
+        public void RecordHitError(double timingError) {
             var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             currHit.IndicatorBox.FadeOut();
 
@@ -18,7 +19,8 @@ namespace S2VX.Game.Play.Containers {
             var nextHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             nextHit.IndicatorBox.FadeIn();
 
-            currHit.UpdateHitError(timingError);
+            var roundedError = (int)Math.Round(timingError);
+            currHit.UpdateHitError(roundedError);
         }
 
         private FillFlowContainer HitErrorDisplays { get; set; } = new FillFlowContainer {

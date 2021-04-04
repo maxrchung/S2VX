@@ -45,7 +45,7 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        public void AddScore(double moreScore) {
+        private void AddScore(double moreScore) {
             Score += moreScore;
             TxtScore.Text = $"{Math.Round(Score)}";
         }
@@ -57,13 +57,13 @@ namespace S2VX.Game.Play.UserInterface {
             Miss.Reset();
         }
 
-        public void ProcessHit(double scoreTime, double noteHitTime) {
+        public double ProcessHit(double scoreTime, double noteHitTime) {
             var notes = Story.Notes;
             var relativeTime = scoreTime - noteHitTime;
             var score = Math.Abs(scoreTime - noteHitTime);
 
             if (relativeTime < -notes.MissThreshold) { // Before miss
-                return;
+                return score;
 
             } else if (relativeTime < -notes.HitThreshold) { // Early miss
                 AddScore(notes.MissThreshold);
@@ -90,36 +90,41 @@ namespace S2VX.Game.Play.UserInterface {
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
             }
+
+            return score;
         }
 
-        public void ProcessHold(double scoreTime, double previousPressTime, bool isPress, double noteHitTime, double noteEndTime) {
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
             var notes = Story.Notes;
-            // Score is dependent on the previous press kept track by the GameHoldNote 
-            var score = scoreTime - previousPressTime;
+            var score = 0.0;
 
-            if (scoreTime < noteHitTime) { // Before during
-                return;
+            if (scoreTime < noteHitTime) { // Before hold
+                return score;
 
-            } else if (scoreTime < noteEndTime) { // During
+            } else if (scoreTime < noteEndTime) { // During hold
                 if (isPress) {
-                    Cursor.UpdateColor(notes.LateColor);
-                    Hit.Play();
-                } else {
-                    // Only update score on release
+                    // Score is dependent on the last release kept track by the GameHoldNote 
+                    score = scoreTime - lastReleaseTime;
+                    // Only update score on press
                     AddScore(score);
+                    Cursor.UpdateColor(notes.LateColor);
+                } else {
                     Cursor.UpdateColor(notes.MissColor);
                     Miss.Play();
                 }
 
-            } else { // After hold period
+            } else { // After hold
                 if (isPress) {
                     Hit.Play();
                 } else {
+                    score = noteEndTime - lastReleaseTime;
                     AddScore(score);
                     Cursor.UpdateColor(notes.MissColor);
                     Miss.Play();
                 }
             }
+
+            return score;
         }
     }
 }
