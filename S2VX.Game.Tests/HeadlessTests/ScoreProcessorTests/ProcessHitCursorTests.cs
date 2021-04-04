@@ -11,7 +11,7 @@ using System.IO;
 
 namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
     [HeadlessTest]
-    public class ProcessHitTests : S2VXTestScene {
+    public class ProcessHitCursorTests : S2VXTestScene {
         [Resolved]
         private S2VXCursor Cursor { get; set; }
 
@@ -76,48 +76,6 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         public void ProcessHit_AfterMissHit_ColorsCursorMiss() {
             ProcessHit(Notes.MissThreshold + 1);
             AddAssert("Colors cursor miss", () => Cursor.ActiveCursor.Colour == Notes.MissColor);
-        }
-
-        [Test]
-        public void ProcessHit_PerfectHit_PlaysHitSound() {
-            ProcessHit(0);
-            AddAssert("Plays hit sound", () => GetProcessor().Hit.PlayCount == 1);
-        }
-
-        [Test]
-        public void ProcessHit_EarlyHit_PlaysHitSound() {
-            ProcessHit(-Notes.PerfectThreshold - 1);
-            AddAssert("Plays hit sound", () => GetProcessor().Hit.PlayCount == 1);
-        }
-
-        [Test]
-        public void ProcessHit_LateHit_PlaysHitSound() {
-            ProcessHit(Notes.PerfectThreshold + 1);
-            AddAssert("Plays hit sound", () => GetProcessor().Hit.PlayCount == 1);
-        }
-
-        [Test]
-        public void ProcessHit_EarlyMissHit_PlaysMissSound() {
-            ProcessHit(-Notes.HitThreshold - 1);
-            AddAssert("Plays miss sound", () => GetProcessor().Miss.PlayCount == 1);
-        }
-
-        [Test]
-        public void ProcessHit_LateMissHit_PlaysMissSound() {
-            ProcessHit(Notes.HitThreshold + 1);
-            AddAssert("Plays miss sound", () => GetProcessor().Miss.PlayCount == 1);
-        }
-
-        [Test]
-        public void ProcessHit_BeforeMissHit_PlaysNoSound() {
-            ProcessHit(-Notes.MissThreshold - 1);
-            AddAssert("Plays no sound", () => GetProcessor().Miss.PlayCount == 0);
-        }
-
-        [Test]
-        public void ProcessHit_AfterMissHit_PlaysMissSound() {
-            ProcessHit(Notes.MissThreshold + 1);
-            AddAssert("Plays miss sound", () => GetProcessor().Miss.PlayCount == 1);
         }
     }
 }
