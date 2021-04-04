@@ -23,7 +23,8 @@ namespace S2VX.Game.Story.Note {
         private bool IsFlaggedForRemoval { get; set; }
         public override bool HandlePositionalInput => true;
 
-        public GameHoldNote() => LastReleaseTime = HitTime;
+        [BackgroundDependencyLoader]
+        private void Load() => LastReleaseTime = HitTime;
 
         private void FlagForRemoval() {
             PlayScreen.HitErrorBar.RecordHitError(TotalScore);
@@ -70,8 +71,11 @@ namespace S2VX.Game.Story.Note {
             // Explicitly process end of hold
             if (time > EndTime && !IsEndScored) {
                 TotalScore += InputsHeld > 0
+                    // If note is still pressed at end
                     ? ScoreProcessor.ProcessHold(EndTime, EndTime, true, HitTime, EndTime)
+                    // If note is not pressed at end
                     : ScoreProcessor.ProcessHold(EndTime, LastReleaseTime, false, HitTime, EndTime);
+
                 IsEndScored = true;
 
             } else if (time > EndTime + notes.FadeOutTime) {
