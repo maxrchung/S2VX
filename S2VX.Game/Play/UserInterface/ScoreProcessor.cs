@@ -63,10 +63,10 @@ namespace S2VX.Game.Play.UserInterface {
             var score = Math.Abs(scoreTime - noteHitTime);
 
             if (relativeTime < -notes.MissThreshold) { // Before miss
-                return score;
+                return 0;
 
             } else if (relativeTime < -notes.HitThreshold) { // Early miss
-                AddScore(notes.MissThreshold);
+                AddScore(score);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
 
@@ -99,7 +99,7 @@ namespace S2VX.Game.Play.UserInterface {
             var score = 0.0;
 
             if (scoreTime < noteHitTime) { // Before hold
-                return score;
+                return 0;
 
             } else if (scoreTime < noteEndTime) { // During hold
                 if (isPress) {

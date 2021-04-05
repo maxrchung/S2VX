@@ -42,6 +42,18 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Release note", () => InputManager.ReleaseKey(Key.Z));
         }
 
+        // Assuming defaults are as such:
+        //     FadeInTime = 100
+        //     ShowTime = 1000
+        //     MissThreshold = 200
+        //     FadeOutTime = 100
+        // Then the times for each state should be, for a hold duration of 100:
+        //     NotVisible: 0-50
+        //     VisibleBefore: 50-950
+        //     HitWindow: 950-1150
+        //     During: 1150-1250
+        //     VisibleAfter: 1250-1350
+
         [TestCase(20, 20)]  // Press and Release entirely within NotVisible state
         [TestCase(20, 1330)] // Press in NotVisible, Release when note disappears
         [TestCase(100, 800)]  // Press and Release entirely within VisibleBefore state

@@ -14,7 +14,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private PlayScreen PlayScreen { get; set; }
 
-        private bool IsHitProcessed { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
+        private bool IsHitScored { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
         private double LastReleaseTime { get; set; }  // Holds the last time of a ReleaseDuring
         private bool IsEndScored { get; set; } // Process only first UpdateScore() called in VisibleAfter
         private double TotalScore { get; set; }
@@ -35,16 +35,21 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
 
-            if (action == PlayAction.Input && IsHovered && !notes.HasPressedNote && ++InputsHeld == 1) {
-                if (time < HitTime + notes.MissThreshold && !IsHitProcessed) {
-                    TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
-                    IsHitProcessed = true;
+            if (action == PlayAction.Input && IsHovered && !notes.HasPressedNote && ++InputsHeld == 1 && !IsEndScored) {
+                if (time < HitTime - notes.MissThreshold) { // Before early miss
+                    return true;
 
-                } else {
+                } else if (time <= HitTime && !IsHitScored) { // Before hit time
+                    TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
+                    IsHitScored = true;
+
+                } else { // After hit time
                     TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseTime, true, HitTime, EndTime);
+                    IsHitScored = true;
                 }
 
                 notes.HasPressedNote = true;
+                System.Console.WriteLine("pressed");
             }
             return true;
         }
@@ -52,7 +57,10 @@ namespace S2VX.Game.Story.Note {
         public void OnReleased(PlayAction action) {
             // Only execute a Release if this is the last key being released
             if (action == PlayAction.Input && InputsHeld > 0 && --InputsHeld == 0) {
-                if (Time.Current > HitTime) {
+                var time = Time.Current;
+
+                if (Time.Current > HitTime && !IsEndScored) {
+                    ScoreProcessor.ProcessHold(time, LastReleaseTime, false, HitTime, EndTime);
                     LastReleaseTime = Time.Current;
                 }
             }
@@ -62,23 +70,30 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
 
-            // Explicitly process end of hit
-            if (time > HitTime + notes.MissThreshold && !IsHitProcessed) {
-                TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
-                IsHitProcessed = true;
+            if (time > HitTime + notes.MissThreshold && !IsHitScored && !IsEndScored) {
+                // Explicitly process end of hit
+                TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseTime, false, HitTime, EndTime);
+                IsHitScored = true;
+
+                if (time > EndTime) {
+                    IsEndScored = true;
+                }
             }
 
-            // Explicitly process end of hold
             if (time > EndTime && !IsEndScored) {
-                TotalScore += InputsHeld > 0
-                    // If note is still pressed at end
-                    ? ScoreProcessor.ProcessHold(EndTime, EndTime, true, HitTime, EndTime)
-                    // If note is not pressed at end
-                    : ScoreProcessor.ProcessHold(EndTime, LastReleaseTime, false, HitTime, EndTime);
-
+                // Explicitly process end of hold
+                if (!IsHitScored) {
+                    TotalScore += ScoreProcessor.ProcessHold(EndTime, HitTime, false, HitTime, EndTime);
+                } else if (InputsHeld > 0) {
+                    TotalScore += ScoreProcessor.ProcessHold(EndTime, EndTime, true, HitTime, EndTime);
+                } else {
+                    TotalScore += ScoreProcessor.ProcessHold(EndTime, LastReleaseTime, false, HitTime, EndTime);
+                }
                 IsEndScored = true;
 
-            } else if (time > EndTime + notes.FadeOutTime) {
+            }
+
+            if (time > EndTime + notes.FadeOutTime) {
                 FlagForRemoval();
             }
 
