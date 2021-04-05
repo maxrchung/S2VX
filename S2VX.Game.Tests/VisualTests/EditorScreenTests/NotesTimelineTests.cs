@@ -40,6 +40,7 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
 
         [Test]
         public void SnapToTick_TransitionTimingChange_SnapsToTimeBasedOnCurrentBPM() {
+            AddStep("Seek to beginning", () => Editor.Seek(0));
             AddStep("Snap to the right", () => Editor.NotesTimeline.SnapToTick(false));
             AddAssert("Snapped to right time", () => Precision.AlmostEquals(Track.CurrentTime, 125));
         }
