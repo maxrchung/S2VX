@@ -35,7 +35,14 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
 
-            if (action == PlayAction.Input && IsHovered && !notes.HasPressedNote && ++InputsHeld == 1 && !IsEndScored) {
+            // We used to increment this as part of the if check below, but
+            // there was a possible issue where the previous if conditions short
+            // circuited the if check and never incremented InputsHeld. This
+            // could then lead to an issue where OnReleased was decrementing
+            // InputsHeld into the negatives.
+            ++InputsHeld;
+
+            if (action == PlayAction.Input && IsHovered && !notes.HasPressedNote && InputsHeld == 1 && !IsEndScored) {
                 if (time < HitTime - notes.MissThreshold) { // Before early miss
                     return true;
 
@@ -51,12 +58,16 @@ namespace S2VX.Game.Story.Note {
                 notes.HasPressedNote = true;
                 System.Console.WriteLine("pressed");
             }
-            return true;
+
+            // Always return false so that other notes can possibly be handled
+            return false;
         }
 
         public void OnReleased(PlayAction action) {
+            --InputsHeld;
+
             // Only execute a Release if this is the last key being released
-            if (action == PlayAction.Input && InputsHeld > 0 && --InputsHeld == 0) {
+            if (action == PlayAction.Input && InputsHeld > 0 && InputsHeld == 0) {
                 var time = Time.Current;
 
                 if (Time.Current > HitTime && !IsEndScored) {
