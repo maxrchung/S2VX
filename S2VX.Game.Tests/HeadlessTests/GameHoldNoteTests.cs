@@ -370,7 +370,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void OnPress_LongerNote_HasFullScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Seek after EndTime", () => Stopwatch.Seek(1001));
+            AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
             AddAssert("Has full score", () => PlayScreen.ScoreProcessor.Score == 1000);
         }
 
