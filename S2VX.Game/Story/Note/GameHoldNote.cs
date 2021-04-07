@@ -54,7 +54,7 @@ namespace S2VX.Game.Story.Note {
             if (IsHovered && IsClickable() && ++InputsHeld == 1) {
                 LastAction = Action.Press;
                 Story.Notes.HasPressedNote = true;
-                UpdateScore();
+                ProcessPressedScore();
             }
             return false;
         }
@@ -65,11 +65,13 @@ namespace S2VX.Game.Story.Note {
                 if (State == HoldNoteState.During) {
                     LastReleaseDuringTime = Time.Current;
                 }
+                ProcessReleasedScore();
             }
         }
 
         public override bool UpdateNote() {
             UpdateState();
+            ProcessTimedScore();
 
             // Tells notes.cs if this note has been flagged for removal.
             if (IsFlaggedForRemoval) {
@@ -86,16 +88,17 @@ namespace S2VX.Game.Story.Note {
             var notes = Story.Notes;
             if (time < HitTime - notes.ShowTime - notes.FadeInTime) {
                 State = HoldNoteState.NotVisible;
+
             } else if (time >= HitTime - notes.MissThreshold && time <= HitTime) {
                 // HitWindow comes first in logic since it may overshadow VisibleBefore
                 State = HoldNoteState.HitWindow;
+
             } else if (time < HitTime - notes.MissThreshold) {
                 State = HoldNoteState.VisibleBefore;
             } else if (time < EndTime) {
                 State = HoldNoteState.During;
             } else if (time < EndTime + notes.FadeOutTime) {
                 State = HoldNoteState.VisibleAfter;
-                UpdateScore();
             } else {
                 State = HoldNoteState.VisibleAfter;  // This is needed for tests that skip past FadeOutTime
                 FlagForRemoval();
@@ -126,11 +129,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        // There are three times when this can get called
-        // 1. First time press in HitWindow
-        // 2. Press in During
-        // 3. When the note is flagged for removal
-        private void UpdateScore() {
+        private void ProcessPressedScore() {
             var time = Time.Current;
             switch (State) {
                 case HoldNoteState.HitWindow:
@@ -144,11 +143,37 @@ namespace S2VX.Game.Story.Note {
                         IsHitScored = true;
                         TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
                     } else {
-                        if (LastAction == Action.Press) {
-                            TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, true, HitTime, EndTime);
-                        } else if (LastAction == Action.Release) {
-                            TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, false, HitTime, EndTime);
-                        }
+                        TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, true, HitTime, EndTime);
+                    }
+                    break;
+                default: // Should never get here
+                    break;
+            }
+        }
+
+        private void ProcessReleasedScore() {
+            var time = Time.Current;
+            switch (State) {
+                case HoldNoteState.During:
+                    // No need to update TotalTime here since release should not increase score
+                    ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, false, HitTime, EndTime);
+                    break;
+                default: // Should never get here
+                    break;
+            }
+        }
+
+        private void ProcessTimedScore() {
+            var time = Time.Current;
+            var notes = Story.Notes;
+            switch (State) {
+                case HoldNoteState.During:
+                    // Explicitly handles a miss if a player fails to press the hit note
+                    var missTime = HitTime + notes.MissThreshold;
+                    if (!IsHitScored && time > missTime) {
+                        IsHitScored = true;
+                        TotalScore += ScoreProcessor.ProcessHit(missTime, HitTime);
+                        LastReleaseDuringTime = missTime;
                     }
                     break;
                 case HoldNoteState.VisibleAfter:
