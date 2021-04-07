@@ -287,6 +287,16 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         [Test]
+        public void OnPress_2ReleasesDuring_Plays2MissSounds() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(50, 200);
+            PressAndRelease(600, 100);
+            AddAssert("Plays 2 miss sounds", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 2);
+        }
+
+
+        [Test]
         public void OnPress_LongerNote_HasNoScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
