@@ -386,7 +386,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                     EndCoordinates = Vector2.One
                 });
             });
-            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.Last()));
+            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(note));
             PressAndRelease(1001, 2000);
             AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.Score == 1000);
         }

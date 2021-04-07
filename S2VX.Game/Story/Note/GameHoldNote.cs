@@ -185,6 +185,7 @@ namespace S2VX.Game.Story.Note {
                                 TotalScore += ScoreProcessor.ProcessHold(EndTime, LastReleaseDuringTime, false, HitTime, EndTime);
                                 break;
                             case Action.Press: // There was no early release, no action is needed
+                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastReleaseDuringTime, true, HitTime, EndTime);
                                 break;
                         }
                     }
