@@ -285,5 +285,46 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddAssert("Plays hit sound once", () => PlayScreen.ScoreProcessor.Hit.PlayCount == 1);
         }
+
+        [Test]
+        public void OnPress_LongerNote_HasNoScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(0, 1000);
+            AddAssert("Has no score", () => PlayScreen.ScoreProcessor.Score == 0);
+        }
+
+        [Test]
+        public void OnPress_LongerNote_HasHalfScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(500, 500);
+            AddAssert("Has half score", () => PlayScreen.ScoreProcessor.Score == 500);
+        }
+
+        [Test]
+        public void OnPress_LongerNote_HasFullScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
+            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.Score == 1000);
+        }
+
+        [Test]
+        public void OnPress_ConsecutiveHoldNotes_PlaysSecondNoteOutOfOrder() {
+            GameHoldNote note = null;
+            AddStep("Add notes", () => {
+                Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 });
+                Story.AddNote(note = new GameHoldNote {
+                    HitTime = 1001,
+                    EndTime = 2000,
+                    Coordinates = Vector2.One,
+                    EndCoordinates = Vector2.One
+                });
+            });
+            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.Last()));
+            PressAndRelease(1001, 2000);
+            AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.Score == 1000);
+        }
     }
 }
