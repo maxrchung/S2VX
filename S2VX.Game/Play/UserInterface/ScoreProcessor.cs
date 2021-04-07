@@ -45,7 +45,7 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        private void AddScore(double moreScore) {
+        public void AddScore(double moreScore) {
             Score += moreScore;
             TxtScore.Text = $"{Math.Round(Score)}";
         }

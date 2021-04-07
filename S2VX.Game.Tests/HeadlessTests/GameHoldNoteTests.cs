@@ -53,6 +53,60 @@ namespace S2VX.Game.Tests.HeadlessTests {
         //     HitWindow: 950-1150
         //     During: 1150-1250
         //     VisibleAfter: 1250-1350
+        [Test]
+        public void GetState_NotVisible() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Seek before note is visible", () => Stopwatch.Seek(25));
+            AddAssert("Note is in NotVisible state", () => note.State == HoldNoteState.NotVisible);
+        }
+
+        [Test]
+        public void GetState_VisibleBefore() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Seek before MissThreshold", () => Stopwatch.Seek(note.HitTime - Story.Notes.MissThreshold - 50));
+            AddAssert("Note is in VisibleBefore state", () => note.State == HoldNoteState.VisibleBefore);
+        }
+
+        [Test]
+        public void GetState_HitWindow() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Seek within MissThreshold", () => Stopwatch.Seek(note.HitTime - Story.Notes.MissThreshold / 2));
+            AddAssert("Note is in HitWindow state", () => note.State == HoldNoteState.HitWindow);
+        }
+
+        [Test]
+        public void GetState_During() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Seek between HitTime and EndTime", () => Stopwatch.Seek((note.HitTime + note.EndTime) / 2));
+            AddAssert("Note is in During state", () => note.State == HoldNoteState.During);
+        }
+
+        [Test]
+        public void GetState_VisibleAfter() {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Seek after EndTime", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime / 2));
+            AddAssert("Note is in VisibleAfter state", () => note.State == HoldNoteState.VisibleAfter);
+        }
 
         [TestCase(20, 20)]  // Press and Release entirely within NotVisible state
         [TestCase(20, 1330)] // Press in NotVisible, Release when note disappears
@@ -316,7 +370,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void OnPress_LongerNote_HasFullScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
-            AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
+            AddStep("Seek after EndTime", () => Stopwatch.Seek(1001));
             AddAssert("Has full score", () => PlayScreen.ScoreProcessor.Score == 1000);
         }
 

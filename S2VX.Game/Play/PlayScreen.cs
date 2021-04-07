@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
@@ -77,6 +78,7 @@ namespace S2VX.Game.Play {
             };
 
             Track.Start();
+            Track.TempoTo(0.3);
 
             ConfigHitErrorBarVisibility = config.GetBindable<bool>(S2VXSetting.HitErrorBarVisibility);
             ConfigScoreVisibility = config.GetBindable<bool>(S2VXSetting.ScoreVisibility);
