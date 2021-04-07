@@ -86,7 +86,7 @@ namespace S2VX.Game.Play.UserInterface {
                 Hit.Play();
 
             } else { // Late miss and beyond
-                AddScore(notes.MissThreshold);
+                AddScore(score);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
             }
