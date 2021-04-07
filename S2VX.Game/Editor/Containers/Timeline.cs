@@ -147,9 +147,9 @@ namespace S2VX.Game.Editor.Containers {
             Slider.X = (float)Math.Clamp(newX, 0, Bar.DrawWidth);
 
             if (DisplayMS) {
-                TxtClock.Text = Math.Truncate(Math.Clamp(Time.Current, 0, Editor.Track.Length)).ToString(CultureInfo.InvariantCulture);
+                TxtClock.Text = Math.Round(Math.Clamp(Time.Current, 0, Editor.Track.Length)).ToString(CultureInfo.InvariantCulture);
             } else {
-                var time = TimeSpan.FromMilliseconds(Math.Clamp(Time.Current, 0, Editor.Track.Length));
+                var time = TimeSpan.FromMilliseconds(Math.Round(Math.Clamp(Time.Current, 0, Editor.Track.Length)));
                 TxtClock.Text = time.ToString(@"mm\:ss\:fff", CultureInfo.InvariantCulture);
             }
 

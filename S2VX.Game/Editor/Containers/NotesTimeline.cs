@@ -248,6 +248,9 @@ namespace S2VX.Game.Editor.Containers {
                 rightTickTime *= Math.Ceiling(currentTick);
             }
 
+            leftTickTime += Story.Offset;
+            rightTickTime += Story.Offset;
+
             if (snapLeft) {
                 Editor.Seek(Math.Clamp(leftTickTime, 0, Editor.Track.Length));
             } else {

@@ -173,14 +173,6 @@
       "Type": "HoldNotesOutlineThickness"
     },
     {
-      "StartValue": 242.0,
-      "EndValue": 242.0,
-      "StartTime": 0.0,
-      "EndTime": 368002.0,
-      "Easing": 0,
-      "Type": "TimingChange"
-    },
-    {
       "StartValue": 45.0,
       "EndValue": -45.0,
       "StartTime": 0.0,
@@ -229,6 +221,22 @@
       "EndTime": 0.0,
       "Easing": 0,
       "Type": "HoldNotesAlpha"
+    },
+    {
+      "StartValue": 120.0,
+      "EndValue": 120.0,
+      "StartTime": 0.0,
+      "EndTime": 100.0,
+      "Easing": 0,
+      "Type": "TimingChange"
+    },
+    {
+      "StartValue": 60.0,
+      "EndValue": 60.0,
+      "StartTime": 100.0,
+      "EndTime": 72727.0,
+      "Easing": 0,
+      "Type": "TimingChange"
     }
   ],
   "Notes": [
