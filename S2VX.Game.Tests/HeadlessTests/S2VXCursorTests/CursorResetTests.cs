@@ -10,7 +10,7 @@ using System.IO;
 
 namespace S2VX.Game.Tests.HeadlessTests.S2VXCursorTests {
     [HeadlessTest]
-    public class CursorReset : S2VXTestScene {
+    public class CursorResetTests : S2VXTestScene {
         [Cached]
         private ScreenStack ScreenStack { get; set; } = new();
 
