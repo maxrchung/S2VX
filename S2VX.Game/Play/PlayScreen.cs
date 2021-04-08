@@ -78,7 +78,6 @@ namespace S2VX.Game.Play {
             };
 
             Track.Start();
-            Track.TempoTo(0.3);
 
             ConfigHitErrorBarVisibility = config.GetBindable<bool>(S2VXSetting.HitErrorBarVisibility);
             ConfigScoreVisibility = config.GetBindable<bool>(S2VXSetting.ScoreVisibility);
