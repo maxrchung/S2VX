@@ -163,7 +163,7 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             switch (State) {
                 case HoldNoteState.During:
-                    // No need to update TotalTime here since release should not increase score
+                    // No need to update TotalTime here since this does not increase score
                     ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, EndTime);
                     break;
                 default: // Should never get here
@@ -192,8 +192,8 @@ namespace S2VX.Game.Story.Note {
                             case Action.Release: // Early release
                                 TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, EndTime);
                                 break;
-                            case Action.Press: // There was no early release, no action is needed
-                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, EndTime);
+                            case Action.Press: // There was no early release, no scoring is needed
+                                ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, EndTime);
                                 break;
                         }
                     }
