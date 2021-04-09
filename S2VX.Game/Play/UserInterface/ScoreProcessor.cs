@@ -94,14 +94,11 @@ namespace S2VX.Game.Play.UserInterface {
             return score;
         }
 
-        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteEndTime) {
             var notes = Story.Notes;
             var score = 0.0;
 
-            if (scoreTime < noteHitTime) { // Before hold
-                return 0;
-
-            } else if (scoreTime < noteEndTime) { // During hold
+            if (scoreTime < noteEndTime) { // During hold
                 if (isPress) {
                     // Score is dependent on the last release kept track by the GameHoldNote 
                     score = scoreTime - lastReleaseTime;
