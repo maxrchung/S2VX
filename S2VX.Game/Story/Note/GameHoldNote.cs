@@ -24,7 +24,15 @@ namespace S2VX.Game.Story.Note {
         public HoldNoteState State { get; private set; } = HoldNoteState.NotVisible;
         private Action LastAction { get; set; } = Action.None;
         private bool IsHitScored { get; set; } // If multiple presses come within HitWindow, we penalize only the first press
-        private double LastReleaseDuringTime { get; set; }  // Holds the last time of a ReleaseDuring
+
+        /// <summary>
+        /// Used during hold score calculation to reference the last pressed time
+        /// It can be:<br/>
+        ///     - Set to HitTime: By default<br/>
+        ///     - Set to HitTime + MissThreshold: When you reach HitTime + MissThreshold without hitting<br/>
+        ///     - Set in OnReleased
+        /// </summary>
+        private double LastHoldReferenceTime { get; set; }
         private bool IsEndScored { get; set; } // Process only first UpdateScore() called in VisibleAfter
         private double TotalScore { get; set; }
         private int InputsHeld { get; set; }
@@ -33,7 +41,7 @@ namespace S2VX.Game.Story.Note {
         public override bool HandlePositionalInput => true;
 
         [BackgroundDependencyLoader]
-        private void Load() => LastReleaseDuringTime = HitTime;
+        private void Load() => LastHoldReferenceTime = HitTime;
 
         private void FlagForRemoval() {
             PlayScreen.HitErrorBar.RecordHitError((int)Math.Round(TotalScore));
@@ -63,7 +71,7 @@ namespace S2VX.Game.Story.Note {
             if (!IsFlaggedForRemoval && InputsHeld > 0 && --InputsHeld == 0) { // Only execute a Release if this is the last key being released
                 LastAction = Action.Release;
                 if (State == HoldNoteState.During) {
-                    LastReleaseDuringTime = Time.Current;
+                    LastHoldReferenceTime = Time.Current;
                 }
                 ProcessReleasedScore();
             }
@@ -143,7 +151,7 @@ namespace S2VX.Game.Story.Note {
                         IsHitScored = true;
                         TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
                     } else {
-                        TotalScore += ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, true, HitTime, EndTime);
+                        TotalScore += ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, true, HitTime, EndTime);
                     }
                     break;
                 default: // Should never get here
@@ -156,7 +164,7 @@ namespace S2VX.Game.Story.Note {
             switch (State) {
                 case HoldNoteState.During:
                     // No need to update TotalTime here since release should not increase score
-                    ScoreProcessor.ProcessHold(time, LastReleaseDuringTime, false, HitTime, EndTime);
+                    ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, HitTime, EndTime);
                     break;
                 default: // Should never get here
                     break;
@@ -173,7 +181,7 @@ namespace S2VX.Game.Story.Note {
                     if (!IsHitScored && time > missTime) {
                         IsHitScored = true;
                         TotalScore += ScoreProcessor.ProcessHit(missTime, HitTime);
-                        LastReleaseDuringTime = missTime;
+                        LastHoldReferenceTime = missTime;
                     }
                     break;
                 case HoldNoteState.VisibleAfter:
@@ -182,10 +190,10 @@ namespace S2VX.Game.Story.Note {
                         switch (LastAction) {
                             case Action.None: // There was never any action, entire hold note was missed
                             case Action.Release: // Early release
-                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastReleaseDuringTime, false, HitTime, EndTime);
+                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime);
                                 break;
                             case Action.Press: // There was no early release, no action is needed
-                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastReleaseDuringTime, true, HitTime, EndTime);
+                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime);
                                 break;
                         }
                     }
