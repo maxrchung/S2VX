@@ -326,7 +326,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         [Test]
-        public void OnPress_LongerNote_HasNoScore() {
+        public void OnPress_LongerNotePerfectHold_HasNoScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(0, 1000);
@@ -334,7 +334,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         [Test]
-        public void OnPress_LongerNote_HasHalfScore() {
+        public void OnPress_LongerNoteHalfwayHold_HasHalfScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(500, 500);
@@ -342,7 +342,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         [Test]
-        public void OnPress_LongerNote_HasFullScore() {
+        public void OnPress_LongerNoteNoHold_HasFullScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
             AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
