@@ -99,7 +99,7 @@ namespace S2VX.Game.Play.UserInterface {
             var score = 0.0;
 
             if (scoreTime < noteHitTime) { // Before hold
-                // Break out early so that we don't update score, cursor, or hitsounds
+                // Return early so we don't update score, cursor, or hitsounds
                 return score;
 
             } else if (scoreTime < noteEndTime) { // During hold
