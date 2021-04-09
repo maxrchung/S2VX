@@ -24,8 +24,8 @@ namespace S2VX.Game.Story.Note {
             if (IsFlaggedForRemoval) {
                 throw new InvalidOperationException("Flagged for removal twice. Fix immediately.");
             }
-            PlayScreen.HitErrorBar.RecordHitError((int)Math.Round(TimingError));
-            ScoreProcessor.Process(Time.Current, this);
+            PlayScreen.HitErrorBar.RecordHitError(TimingError);
+            ScoreProcessor.ProcessHit(Time.Current, HitTime);
             IsFlaggedForRemoval = true;
         }
 
@@ -35,12 +35,12 @@ namespace S2VX.Game.Story.Note {
             var isWithinMissThreshold = Math.Abs(TimingError) <= Story.Notes.MissThreshold;
 
             // Has IsFlaggedForRemoval check to prevent race condition that can cause double flagging for removal.
-            return !Story.Notes.HasClickedNote && !IsFlaggedForRemoval && IsHovered && Alpha != 0 && isWithinMissThreshold;
+            return !Story.Notes.HasPressedNote && !IsFlaggedForRemoval && IsHovered && Alpha != 0 && isWithinMissThreshold;
         }
 
         public bool OnPressed(PlayAction action) {
             if (action == PlayAction.Input && IsClickable()) {
-                Story.Notes.HasClickedNote = true;
+                Story.Notes.HasPressedNote = true;
                 FlagForRemoval();
             }
 

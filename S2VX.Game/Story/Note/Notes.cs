@@ -36,7 +36,7 @@ namespace S2VX.Game.Story.Note {
         public float HitThreshold { get; set; } = 100;
         public float MissThreshold { get; set; } = 200;
 
-        public bool HasClickedNote { get; set; }
+        public bool HasPressedNote { get; set; }
 
         public void AddNote(S2VXNote note) {
             Children.Add(note);
@@ -55,7 +55,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void Update() {
-            HasClickedNote = false;
+            HasPressedNote = false;
             var notesToRemove = new List<S2VXNote>();
 
             foreach (var note in Children) {

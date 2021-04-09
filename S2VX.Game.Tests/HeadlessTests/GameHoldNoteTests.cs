@@ -15,17 +15,14 @@ using System.Linq;
 namespace S2VX.Game.Tests.HeadlessTests {
     [HeadlessTest]
     public class GameHoldNoteTests : S2VXTestScene {
-        [Resolved]
-        private AudioManager Audio { get; set; }
-
         private S2VXStory Story { get; set; } = new S2VXStory();
         private StopwatchClock Stopwatch { get; set; }
         private PlayScreen PlayScreen { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() {
+        private void Load(AudioManager audio) {
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
-            Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXTrack.Open(audioPath, Audio))));
+            Add(new ScreenStack(PlayScreen = new PlayScreen(false, Story, S2VXTrack.Open(audioPath, audio))));
         }
 
         [SetUpSteps]
@@ -35,7 +32,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Reset clock", () => Story.Clock = new FramedClock(Stopwatch = new StopwatchClock()));
         }
 
-        public void PressAndRelease(double timeToPress, double holdDuration) {
+        private void PressAndRelease(double timeToPress, double holdDuration) {
             AddStep($"Seek to {timeToPress}", () => Stopwatch.Seek(timeToPress));
             AddStep("Press note", () => InputManager.PressKey(Key.Z));
             AddStep($"Seek to {timeToPress + holdDuration}", () => Stopwatch.Seek(timeToPress + holdDuration));
@@ -53,6 +50,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         //     HitWindow: 950-1150
         //     During: 1150-1250
         //     VisibleAfter: 1250-1350
+
         [Test]
         public void GetState_NotVisible() {
             GameHoldNote note = null;
@@ -71,7 +69,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Seek before MissThreshold", () => Stopwatch.Seek(note.HitTime - GameHoldNote.MissThreshold - 50));
+            AddStep("Seek before MissThreshold", () => Stopwatch.Seek(note.HitTime - Story.Notes.MissThreshold - 50));
             AddAssert("Note is in VisibleBefore state", () => note.State == HoldNoteState.VisibleBefore);
         }
 
@@ -82,7 +80,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Seek within MissThreshold", () => Stopwatch.Seek(note.HitTime - GameHoldNote.MissThreshold / 2));
+            AddStep("Seek within MissThreshold", () => Stopwatch.Seek(note.HitTime - Story.Notes.MissThreshold / 2));
             AddAssert("Note is in HitWindow state", () => note.State == HoldNoteState.HitWindow);
         }
 
@@ -325,6 +323,69 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after hold note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
             AddAssert("Hits the later note", () => PlayScreen.ScoreProcessor.Score == holdNoteEndTime - holdNoteHitTime);
+        }
+
+        [Test]
+        public void OnPress_LongerNotePerfectHold_HasNoScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(0, 1000);
+            AddAssert("Has no score", () => PlayScreen.ScoreProcessor.Score == 0);
+        }
+
+        [Test]
+        public void OnPress_LongerNoteHalfwayHold_HasHalfScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(500, 500);
+            AddAssert("Has half score", () => PlayScreen.ScoreProcessor.Score == 500);
+        }
+
+        [Test]
+        public void OnPress_LongerNoteNoHold_HasFullScore() {
+            AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
+            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.Score == 1000);
+        }
+
+        [Test]
+        public void OnPress_ConsecutiveHoldNotes_PlaysSecondNoteOutOfOrder() {
+            GameHoldNote note = null;
+            AddStep("Add notes", () => {
+                Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 });
+                Story.AddNote(note = new GameHoldNote {
+                    HitTime = 1001,
+                    EndTime = 2000,
+                    Coordinates = Vector2.One,
+                    EndCoordinates = Vector2.One
+                });
+            });
+            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(note));
+            PressAndRelease(1001, 2000);
+            AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.Score == 1000);
+        }
+
+        [Test]
+        public void OnPress_MultipleHitsInMissThresholdBeforeHitTime_PlaysHitSoundOnce() {
+            GameHoldNote note = null;
+            AddStep("Add notes", () => Story.AddNote(note = new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Seek before HitTime", () => Stopwatch.Seek(note.HitTime - 1));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Plays hit sound once", () => PlayScreen.ScoreProcessor.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void OnPress_2ReleasesInDuringState_Plays2MissSounds() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(50, 200);
+            PressAndRelease(600, 100);
+            AddAssert("Plays 2 miss sounds", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 2);
         }
     }
 }

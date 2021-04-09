@@ -4,7 +4,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using S2VX.Game.Story;
-using S2VX.Game.Story.Note;
 using System;
 using System.Globalization;
 
@@ -58,30 +57,75 @@ namespace S2VX.Game.Play.UserInterface {
             Miss.Reset();
         }
 
-        public void Process(double time, GameNote note) {
+        public double ProcessHit(double scoreTime, double noteHitTime) {
             var notes = Story.Notes;
-            var score = Math.Abs(time - note.HitTime);
+            var relativeTime = scoreTime - noteHitTime;
+            var score = Math.Abs(scoreTime - noteHitTime);
 
-            if (score > notes.HitThreshold) { // miss
-                AddScore(notes.MissThreshold);
+            if (relativeTime < -notes.MissThreshold) { // Before miss
+                return 0;
+
+            } else if (relativeTime < -notes.HitThreshold) { // Early miss
+                AddScore(score);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
 
-            } else if (time - note.HitTime < -notes.PerfectThreshold) { // early
+            } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
 
-            } else if (time - note.HitTime > notes.PerfectThreshold) { // late
+            } else if (relativeTime < notes.PerfectThreshold) { // Perfect
+                AddScore(score);
+                Cursor.UpdateColor(notes.PerfectColor);
+                Hit.Play();
+
+            } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
 
-            } else { // perfect
-                AddScore(score);
-                Cursor.UpdateColor(notes.PerfectColor);
-                Hit.Play();
+            } else { // Late miss and beyond
+                AddScore(notes.MissThreshold);
+                Cursor.UpdateColor(notes.MissColor);
+                Miss.Play();
             }
+
+            return score;
+        }
+
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
+            var notes = Story.Notes;
+            var score = 0.0;
+
+            if (scoreTime < noteHitTime) { // Before hold
+                // Return early so we don't update score, cursor, or hitsounds
+                return score;
+
+            } else if (scoreTime < noteEndTime) { // During hold
+                if (isPress) {
+                    // Score is dependent on the last release kept track by the GameHoldNote 
+                    score = scoreTime - lastReleaseTime;
+                    // Only update score on press
+                    AddScore(score);
+                    Cursor.UpdateColor(notes.LateColor);
+                } else {
+                    Cursor.UpdateColor(notes.MissColor);
+                    Miss.Play();
+                }
+
+            } else { // After hold
+                if (isPress) {
+                    Hit.Play();
+                } else {
+                    score = noteEndTime - lastReleaseTime;
+                    AddScore(score);
+                    Cursor.UpdateColor(notes.MissColor);
+                    Miss.Play();
+                }
+            }
+
+            return score;
         }
     }
 }
