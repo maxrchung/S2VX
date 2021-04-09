@@ -30,6 +30,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
+    # A workaround to resolve nuget-issue: https://github.com/dotnet/installer/issues/10171
+    - name: NuGet - Add nuget.org (WORKAROUND)
+      run: dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+
     # Addresses Windows pipeline issue as described here: https://github.com/actions/setup-dotnet/issues/155#issuecomment-748452076
     - name: Clean output
       run: dotnet clean ./S2VX.sln --configuration Release
