@@ -18,7 +18,7 @@ namespace StoryMerge {
         /// (0-0, 0-1000)
         /// (0-1000, 500-1500)
         /// </summary>
-        public static Result Merge(List<S2VXStory> inputStories, S2VXStory outputStory) {
+        public static Result Merge(IEnumerable<S2VXStory> inputStories, S2VXStory outputStory) {
             var infos = new List<NoteTimeInfo>();
             foreach (var input in inputStories) {
                 foreach (var note in input.Notes.GetNonHoldNotes()) {
@@ -26,7 +26,7 @@ namespace StoryMerge {
                     infos.Add(new NoteTimeInfo(note));
                 }
                 foreach (var holdNote in input.Notes.GetHoldNotes()) {
-                    outputStory.AddHoldNote(CopyHoldNote(holdNote));
+                    outputStory.AddNote(CopyHoldNote(holdNote));
                     infos.Add(new NoteTimeInfo(holdNote));
                 }
             }

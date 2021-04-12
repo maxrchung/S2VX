@@ -30,7 +30,7 @@ namespace S2VX.Game.Editor.ToolState {
             Child = PreviewContainer;
         }
 
-        public override bool OnToolClick(ClickEvent _) {
+        public override bool OnToolClick(ClickEvent e) {
             if (!IsRecording) {
                 HitTime = Time.Current;
                 Coordinates = Editor.MousePosition;

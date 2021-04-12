@@ -6,14 +6,11 @@ using System;
 namespace S2VX.Game.Story.JSONConverters {
     // Specially converts Command so that a Type field is added based on the Type name
     public class CommandConverter : JsonConverter<S2VXCommand> {
-        private static JsonConverter[] Converters { get; } = {
-            new Vector2Converter(),
-        };
 
-        public override void WriteJson(JsonWriter writer, S2VXCommand command, JsonSerializer serializer) {
-            var serializedCommand = JsonConvert.SerializeObject(command, Converters);
+        public override void WriteJson(JsonWriter writer, S2VXCommand value, JsonSerializer serializer) {
+            var serializedCommand = JsonConvert.SerializeObject(value);
             var obj = JObject.Parse(serializedCommand);
-            var commandName = command.GetCommandName();
+            var commandName = value.GetCommandName();
             obj.Add("Type", commandName);
             obj.WriteTo(writer);
         }

@@ -27,6 +27,17 @@ namespace S2VX.Game.Story.Note {
         public Color4 PreviewNoteColor { get; set; }
         public Color4 PreviewHoldNoteColor { get; set; }
 
+        // TODO: Remove these defaults and use command classes
+        public Color4 PerfectColor { get; set; } = S2VXColorConstants.LightYellow;
+        public Color4 EarlyColor { get; set; } = S2VXColorConstants.White;
+        public Color4 LateColor { get; set; } = S2VXColorConstants.DarkYellow;
+        public Color4 MissColor { get; set; } = S2VXColorConstants.Red;
+        public float PerfectThreshold { get; set; } = 30;
+        public float HitThreshold { get; set; } = 100;
+        public float MissThreshold { get; set; } = 200;
+
+        public bool HasPressedNote { get; set; }
+
         public void AddNote(S2VXNote note) {
             Children.Add(note);
             Sort();
@@ -44,6 +55,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void Update() {
+            HasPressedNote = false;
             var notesToRemove = new List<S2VXNote>();
 
             foreach (var note in Children) {
@@ -57,7 +69,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => !(note is HoldNote)).ToList();
+        public List<S2VXNote> GetNonHoldNotes() => Children.Where(note => note is not HoldNote).ToList();
 
         public List<HoldNote> GetHoldNotes() => Children.OfType<HoldNote>().ToList();
 

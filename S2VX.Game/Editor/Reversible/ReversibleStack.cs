@@ -1,4 +1,11 @@
-﻿namespace S2VX.Game.Editor.Reversible {
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace S2VX.Game.Editor.Reversible {
+    [SuppressMessage(
+        "Naming",
+        "CA1711:Identifiers should not have incorrect suffix",
+        Justification = "This class behaves like a stack and should be named to reflect that"
+    )]
     public class ReversibleStack {
         private ReversibleNode Head { get; set; }
         private ReversibleNode Pointer { get; set; }

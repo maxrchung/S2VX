@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 
+[assembly: CLSCompliant(false)]
 namespace StoryMerge.Tests {
     public static class StoryMergerTests {
         public class Merge_MultipleNotesAndCommands {

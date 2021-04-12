@@ -9,7 +9,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
-using S2VX.Game.Play;
 
 namespace S2VX.Game.SongSelection.UserInterface {
     public class SelectedItemDisplay : CompositeDrawable {
@@ -43,8 +42,8 @@ namespace S2VX.Game.SongSelection.UserInterface {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var boxSize = Screens.DrawWidth / 4;
-            var textSize = Screens.DrawWidth / 40;
+            var boxSize = S2VXGameBase.GameWidth / 4;
+            var textSize = S2VXGameBase.GameWidth / 40;
 
             Width = boxSize;
             Height = boxSize;

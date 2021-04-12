@@ -1,50 +1,53 @@
 ﻿using Newtonsoft.Json;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Play;
+using S2VX.Game.Story;
 using S2VX.Game.Story.Settings;
+using System;
 using System.IO;
 
 namespace S2VX.Game.SongSelection.Containers {
     public class SongPreview : CompositeDrawable {
+        public IconButton BtnEdit { get; private set; }
+        public IconButton BtnPlay { get; private set; }
+
         private const string MetadataPath = "metadata.json";
 
         [Resolved]
         private ScreenStack Screens { get; set; }
 
-        public string CurSelectionPath { get; set; }
-        public string StoryPath { get; set; }
-        public string AudioPath { get; set; }
-        public StorageBackedResourceStore CurLevelResourceStore { get; set; }
-        public Texture ThumbnailTexture { get; set; }
+        [Resolved]
+        private AudioManager Audio { get; set; }
+
+        private string StoryDirectory { get; set; }
+        private string StoryPath { get; set; }
+        private string AudioPath { get; set; }
+        private Texture ThumbnailTexture { get; set; }
         private TextFlowContainer TextContainer { get; set; }
-        private IconButton BtnEdit { get; set; }
-        private IconButton BtnPlay { get; set; }
 
         public SongPreview(
-            string curSelectionPath,
-            string storyPath,
-            string audioPath,
-            StorageBackedResourceStore curLevelResourceStore,
+            string storyDirectory,
+            string storyFileName,
+            string audioFileName,
             Texture thumbnailTexture = null
         ) {
-            CurSelectionPath = curSelectionPath;
-            StoryPath = storyPath;
-            AudioPath = audioPath;
-            CurLevelResourceStore = curLevelResourceStore;
+            StoryDirectory = storyDirectory;
+            StoryPath = Path.Combine(storyDirectory, storyFileName);
+            AudioPath = Path.Combine(storyDirectory, audioFileName);
             ThumbnailTexture = thumbnailTexture;
         }
 
         private void AddSongMetadata() {
-            var metadataPath = Path.Combine(CurSelectionPath, MetadataPath);
+            var metadataPath = Path.Combine(StoryDirectory, MetadataPath);
             var metadata = new MetadataSettings();
             if (File.Exists(metadataPath)) {
                 var text = File.ReadAllText(metadataPath);
@@ -59,36 +62,37 @@ namespace S2VX.Game.SongSelection.Containers {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var fullWidth = Width;
-            var fullHeight = Height;
-            var songInfoHeight = fullHeight * 0.6f;
-            var btnHeight = fullHeight * 0.4f;
+            var width = S2VXGameBase.GameWidth;
+            var songInfoHeight = width * 0.6f;
+            var btnHeight = width * 0.4f;
             var spacingMargin = 0.05f;
-            var textSize = Height * 0.05f;
-            var thumbnailSize = fullWidth * 0.3f;
-            var btnSize = new Vector2(fullWidth / 5, fullHeight / 10);
+            var textSize = width * 0.05f;
+            var thumbnailSize = width * 0.3f;
+            var btnSize = new Vector2(width / 5, width / 10);
 
-            BtnEdit = new IconButton() {
+            BtnEdit = new() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Edit,
-                Action = () =>
-                    Screens.Push(new EditorScreen(CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                BorderColour = Color4.Red,
+                Masking = true,
+                Action = LoadEditor
             };
-            BtnPlay = new IconButton {
+            BtnPlay = new() {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 Size = btnSize,
                 Icon = FontAwesome.Solid.Play,
-                Action = () =>
-                    Screens.Push(new PlayScreen(false, CurSelectionPath, StoryPath, CurLevelResourceStore, AudioPath)),
+                BorderColour = Color4.Red,
+                Masking = true,
+                Action = LoadPlay
             };
 
-            InternalChildren = new Drawable[] {
+            InternalChildren = new[] {
                 // TODO: add blurred background
                 new FillFlowContainer {
-                    Width = fullWidth,
+                    Width = width,
                     Height = songInfoHeight,
                     Children = new Drawable[] {
                         // Thumbnail
@@ -97,17 +101,17 @@ namespace S2VX.Game.SongSelection.Containers {
                             Anchor = Anchor.TopLeft,
                             Origin = Anchor.TopLeft,
                             Margin = new MarginPadding {
-                                Horizontal = fullWidth * spacingMargin,
-                                Vertical = fullHeight * spacingMargin,
+                                Horizontal = width * spacingMargin,
+                                Vertical = width * spacingMargin,
                             },
                             Texture = ThumbnailTexture,
                             TextureName = "logo",
                         },
                         TextContainer = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            Width = fullWidth - thumbnailSize - fullWidth * spacingMargin * 2,
+                            Width = width - thumbnailSize - width * spacingMargin * 2,
                             Height = songInfoHeight,
                             Margin = new MarginPadding {
-                                Vertical = fullHeight * spacingMargin,
+                                Vertical = width * spacingMargin,
                             },
                             TextAnchor = Anchor.TopLeft,
                             Colour = Color4.White,
@@ -116,13 +120,13 @@ namespace S2VX.Game.SongSelection.Containers {
                     }
                 },
                 new FillFlowContainer {
-                    Width = fullWidth,
+                    Width = width,
                     Height = btnHeight,
                     Y = songInfoHeight,
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     Direction = FillDirection.Horizontal,
-                    Children = new Drawable[] {
+                    Children = new[] {
                         BtnEdit,
                         BtnPlay,
                     }
@@ -132,5 +136,26 @@ namespace S2VX.Game.SongSelection.Containers {
             AddSongMetadata();
         }
 
+        private void LoadEditor() {
+            try {
+                var story = new S2VXStory(StoryPath, true);
+                var track = S2VXTrack.Open(AudioPath, Audio);
+                Screens.Push(new EditorScreen(story, track));
+            } catch (Exception exception) {
+                BtnEdit.BorderThickness = 5;
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void LoadPlay() {
+            try {
+                var story = new S2VXStory(StoryPath, false);
+                var track = S2VXTrack.Open(AudioPath, Audio);
+                Screens.Push(new PlayScreen(false, story, track));
+            } catch (Exception exception) {
+                BtnPlay.BorderThickness = 5;
+                Console.WriteLine(exception);
+            }
+        }
     }
 }

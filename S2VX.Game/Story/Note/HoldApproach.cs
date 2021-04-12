@@ -56,14 +56,14 @@ namespace S2VX.Game.Story.Note {
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
-            // Show time to End time
+            // Show time (to Hit time) to End time
             else if (time < EndTime) {
                 Alpha = 1;
             }
             // End time to Fade out time
             else if (time < EndTime + notes.FadeOutTime) {
-                var startTime = HitTime;
-                var endTime = HitTime + notes.FadeOutTime;
+                var startTime = EndTime;
+                var endTime = EndTime + notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;

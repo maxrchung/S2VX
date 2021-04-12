@@ -99,139 +99,135 @@ namespace S2VX.Game.Editor.Containers {
                 {
                     Colour = Color4.Black.Opacity(0.9f)
                 },
-                new Container {
-                    RelativePositionAxes = Axes.Both,
-                    RelativeSizeAxes = Axes.Both,
-                    Width = TimelineWidth / 1.25f,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    X = -0.05f,
-                    Y = 0.3f,
+                CreateTimeline(),
+                CreateSnapDivisor(),
+                CreateZoomButtons()
+            };
+        }
 
-                    Children = new Drawable[] {
-                        new RelativeBox {
-                            Colour = Color4.White,
-                            Height = TimelineHeight / 3.5f,
-                        },
-                        new RelativeBox {
-                            Colour = Color4.White,
-                            Width = TimelineWidth / 350,
-                            Height = 0.8f,
-                            Anchor = Anchor.TopCentre,
-                            Y = 0.1f,
-                        },
-                        NoteSelectionIndicators,
-                        TickBarContent,
-                    }
-                },
-                new FillFlowContainer
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    RelativePositionAxes = Axes.Both,
-                    Height = 0.565f,
-                    Width = TimelineWidth / 10,
-                    Anchor = Anchor.TopRight,
-                    Origin = Anchor.TopRight,
-                    X = -0.025f,
-                    Y = 0.05f,
-                    Direction = FillDirection.Vertical,
+        private Container CreateTimeline() =>
+            new() {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Width = TimelineWidth / 1.25f,
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                X = -0.05f,
+                Y = 0.3f,
 
-                    Children = new Drawable[]
-                    {
-                        TxtBeatSnapDivisorLabel,
-                        new Container
-                        {
-                            RelativeSizeAxes = Axes.Both,
+                Children = new Drawable[] {
+                    new RelativeBox {
+                        Colour = Color4.White,
+                        Height = TimelineHeight / 3.5f,
+                    },
+                    new RelativeBox {
+                        Colour = Color4.White,
+                        Width = TimelineWidth / 350,
+                        Height = 0.8f,
+                        Anchor = Anchor.TopCentre,
+                        Y = 0.1f,
+                    },
+                    NoteSelectionIndicators,
+                    TickBarContent,
+                }
+            };
 
-                            Children = new Drawable[]
-                            {
-                                new BasicButton
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    RelativePositionAxes = Axes.Both,
-                                    Width = 0.25f,
-                                    Action = () => ChangeBeatDivisor(false),
-                                    Text = "-",
-                                },
-                                new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    RelativePositionAxes = Axes.Both,
-                                    Colour = Color4.Black,
-                                    Width = 0.5f,
-                                    X = 0.25f,
-                                },
-                                new BasicButton
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    RelativePositionAxes = Axes.Both,
-                                    Width = 0.25f,
-                                    X = 0.75f,
-                                    Action = () => ChangeBeatDivisor(true),
-                                    Text = "+",
-                                },
-                                TxtBeatSnapDivisor,
-                            }
+        private FillFlowContainer CreateSnapDivisor() =>
+            new() {
+                RelativeSizeAxes = Axes.Both,
+                RelativePositionAxes = Axes.Both,
+                Height = 0.565f,
+                Width = TimelineWidth / 10,
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+                X = -0.025f,
+                Y = 0.05f,
+                Direction = FillDirection.Vertical,
+
+                Children = new Drawable[] {
+                    TxtBeatSnapDivisorLabel,
+                    new Container {
+                        RelativeSizeAxes = Axes.Both,
+
+                        Children = new Drawable[] {
+                            new BasicButton {
+                                RelativeSizeAxes = Axes.Both,
+                                RelativePositionAxes = Axes.Both,
+                                Width = 0.25f,
+                                Action = () => ChangeBeatDivisor(false),
+                                Text = "-",
+                            },
+                            new Box {
+                                RelativeSizeAxes = Axes.Both,
+                                RelativePositionAxes = Axes.Both,
+                                Colour = Color4.Black,
+                                Width = 0.5f,
+                                X = 0.25f,
+                            },
+                            new BasicButton {
+                                RelativeSizeAxes = Axes.Both,
+                                RelativePositionAxes = Axes.Both,
+                                Width = 0.25f,
+                                X = 0.75f,
+                                Action = () => ChangeBeatDivisor(true),
+                                Text = "+",
+                            },
+                            TxtBeatSnapDivisor,
                         }
-                    }
-                },
-                new Container
-                {
-                    RelativePositionAxes = Axes.Both,
-                    RelativeSizeAxes = Axes.Both,
-                    Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
-                    Height = 0.75f,
-                    Width = 0.03f,
-                    X = 0.01f,
-                    Y = -0.045f,
-
-                    Children = new Drawable[]
-                    {
-                        new BasicButton
-                        {
-                            Colour = Color4.Black,
-                            RelativePositionAxes = Axes.Both,
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            Height = 0.5f,
-                            Action = () => HandleZoom(false),
-                        },
-                        new BasicButton
-                        {
-                            Colour = Color4.Black,
-                            RelativePositionAxes = Axes.Both,
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            Height = 0.5f,
-                            Y = 0.5f,
-                            Action = () => HandleZoom(true),
-                        },
-                        new SpriteIcon
-                        {
-                            RelativePositionAxes = Axes.Both,
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            Icon = FontAwesome.Solid.SearchMinus,
-                            Size = new Vector2(.5f),
-                        },
-                        new SpriteIcon
-                        {
-                            RelativePositionAxes = Axes.Both,
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            Icon = FontAwesome.Solid.SearchPlus,
-                            Size = new Vector2(.5f),
-                            Y = 0.5f,
-                        },
                     }
                 }
             };
-        }
+
+        private Container CreateZoomButtons() =>
+            new() {
+                RelativePositionAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Both,
+                Anchor = Anchor.CentreLeft,
+                Origin = Anchor.CentreLeft,
+                Height = 0.75f,
+                Width = 0.03f,
+                X = 0.01f,
+                Y = -0.045f,
+
+                Children = new Drawable[] {
+                    new BasicButton {
+                        Colour = Color4.Black,
+                        RelativePositionAxes = Axes.Both,
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Height = 0.5f,
+                        Action = () => HandleZoom(false),
+                    },
+                    new BasicButton {
+                        Colour = Color4.Black,
+                        RelativePositionAxes = Axes.Both,
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Height = 0.5f,
+                        Y = 0.5f,
+                        Action = () => HandleZoom(true),
+                    },
+                    new SpriteIcon {
+                        RelativePositionAxes = Axes.Both,
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Icon = FontAwesome.Solid.SearchMinus,
+                        Size = new Vector2(.5f),
+                    },
+                    new SpriteIcon {
+                        RelativePositionAxes = Axes.Both,
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Icon = FontAwesome.Solid.SearchPlus,
+                        Size = new Vector2(.5f),
+                        Y = 0.5f,
+                    },
+                }
+            };
 
         public void SnapToTick(bool snapLeft) {
             var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
@@ -252,6 +248,9 @@ namespace S2VX.Game.Editor.Containers {
                 rightTickTime *= Math.Ceiling(currentTick);
             }
 
+            leftTickTime += Story.Offset;
+            rightTickTime += Story.Offset;
+
             if (snapLeft) {
                 Editor.Seek(Math.Clamp(leftTickTime, 0, Editor.Track.Length));
             } else {
@@ -265,7 +264,7 @@ namespace S2VX.Game.Editor.Containers {
             var upperBound = Time.Current + sectionDuration / 2;
             foreach (var note in Story.Notes.Children) {
                 RelativeBox visibleNote = null;
-                var color = note.GetColor();
+                var color = note.InnerColor();
                 // Clamp so that RelativeBoxes never draw outside of lower and upper bound
                 var relativePosition = Math.Clamp((note.HitTime - lowerBound) / sectionDuration, 0, 1);
 

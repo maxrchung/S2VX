@@ -40,11 +40,10 @@ namespace S2VX.Game.Story.Command {
             var allCommands = types.Where(
                 t => string.Equals(t.Namespace, "S2VX.Game.Story.Command", StringComparison.Ordinal)
             );
+            // Skips compiler auto-generated classes and only get derived commands
             var validCommands = allCommands.Where(t =>
-                // Skips compiler auto-generated classes
-                t.Name.Contains("Command", StringComparison.Ordinal)
-                // Only get derived commands
-                && !string.Equals(t.Name, "S2VXCommand", StringComparison.Ordinal)
+                t.Name.Contains("Command", StringComparison.Ordinal) &&
+                !string.Equals(t.Name, "S2VXCommand", StringComparison.Ordinal)
             );
             return validCommands;
         }

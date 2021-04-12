@@ -15,8 +15,13 @@ namespace S2VX.Game.Story {
     // Per Microsoft docs, class names should not conflict with their namespace,
     // so I've prepended S2VX to fix these problems
     public class S2VXStory : CompositeDrawable {
+        [Resolved]
+        private S2VXCursor Cursor { get; set; }
+
         public double BPM { get; set; }
         public double Offset { get; set; }
+
+        public string StoryPath { get; set; }
 
         public Camera Camera { get; } = new Camera();
         public RelativeBox Background { get; } = new RelativeBox();
@@ -32,7 +37,6 @@ namespace S2VX.Game.Story {
 
         private static JsonConverter[] Converters { get; } = {
             new CommandConverter(),
-            new Vector2Converter(),
             new HoldNoteConverter(),
             new NoteConverter(),
         };
@@ -40,6 +44,11 @@ namespace S2VX.Game.Story {
         public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
 
         public DifficultySettings DifficultySettings { get; private set; } = new DifficultySettings();
+
+        public S2VXStory() { }
+
+        public S2VXStory(string filePath, bool isForEditor) =>
+            Open(filePath, isForEditor);
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -52,6 +61,15 @@ namespace S2VX.Game.Story {
                 Notes,
                 Approaches
             };
+        }
+
+        public void Reset() {
+            ClearActives();
+            Commands = new List<S2VXCommand>();
+            Notes.SetChildren(new List<S2VXNote>());
+            Approaches.SetChildren(new List<Approach>());
+            EditorSettings = new EditorSettings();
+            DifficultySettings = new DifficultySettings();
         }
 
         public void ClearActives() {
@@ -81,7 +99,7 @@ namespace S2VX.Game.Story {
             note.Approach = approach;
         }
 
-        public void AddHoldNote(HoldNote note) {
+        public void AddNote(HoldNote note) {
             Notes.AddNote(note);
             var approach = Approaches.AddHoldApproach(note);
             note.Approach = approach;
@@ -140,6 +158,8 @@ namespace S2VX.Game.Story {
             EditorSettings = JsonConvert.DeserializeObject<EditorSettings>(story[nameof(EditorSettings)].ToString());
             DifficultySettings = JsonConvert.DeserializeObject<DifficultySettings>(story[nameof(DifficultySettings)].ToString());
             DifficultySettings.Calculate(this);
+
+            StoryPath = path;
         }
 
         public void Save(string path) {
@@ -196,6 +216,13 @@ namespace S2VX.Game.Story {
                 }
             }
             Actives = newActives;
+
+            UpdateCursor();
+        }
+
+        private void UpdateCursor() {
+            Cursor.UpdateRotation(Camera.Rotation);
+            Cursor.UpdateSize(Camera.Scale);
         }
     }
 }

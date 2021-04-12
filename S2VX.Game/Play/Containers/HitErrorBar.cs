@@ -2,18 +2,16 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using S2VX.Game.Play.UserInterface;
+using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Play.Containers {
-    public class PlayInfoBar : CompositeDrawable {
-
-        public const float InfoBarHeight = 0.06f;
-        public const float InfoBarWidth = 1.0f;
+    public class HitErrorBar : CompositeDrawable {
 
         private int HitErrorDisplayIndex;
         private const int HitErrorDisplayCount = 10;
 
-        public void RecordHitError(int timingError) {
+        public void RecordHitError(double timingError) {
             var currHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             currHit.IndicatorBox.FadeOut();
 
@@ -21,7 +19,8 @@ namespace S2VX.Game.Play.Containers {
             var nextHit = (HitErrorDisplay)HitErrorDisplays[HitErrorDisplayIndex];
             nextHit.IndicatorBox.FadeIn();
 
-            currHit.UpdateHitError(timingError);
+            var roundedError = (int)Math.Round(timingError);
+            currHit.UpdateHitError(roundedError);
         }
 
         private FillFlowContainer HitErrorDisplays { get; set; } = new FillFlowContainer {
@@ -44,20 +43,14 @@ namespace S2VX.Game.Play.Containers {
             return hitErrors;
         }
 
-        [Resolved]
-        private ScoreInfo ScoreInfo { get; set; }
-
         [BackgroundDependencyLoader]
         private void Load() {
             RelativeSizeAxes = Axes.Both;
             RelativePositionAxes = Axes.Both;
-            Height = InfoBarHeight;
-            Width = InfoBarWidth;
 
             InternalChildren = new Drawable[]
             {
                 HitErrorDisplays,
-                ScoreInfo,
             };
         }
     }

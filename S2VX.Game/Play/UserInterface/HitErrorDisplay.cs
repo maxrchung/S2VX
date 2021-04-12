@@ -3,15 +3,11 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Screens;
 using osuTK.Graphics;
 using System.Globalization;
 
 namespace S2VX.Game.Play.UserInterface {
     public class HitErrorDisplay : CompositeDrawable {
-        [Resolved]
-        private ScreenStack Screens { get; set; }
-
         public bool IsInitiallySelected { get; set; }
         public RelativeBox IndicatorBox { get; private set; }
         private RelativeBox HitErrorBox { get; set; }
@@ -19,7 +15,7 @@ namespace S2VX.Game.Play.UserInterface {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var boxSize = Screens.DrawWidth / 20;
+            var boxSize = S2VXGameBase.GameWidth / 20;
             Width = boxSize;
             Height = boxSize;
             Margin = new MarginPadding {
@@ -35,7 +31,7 @@ namespace S2VX.Game.Play.UserInterface {
                 HitErrorBox = new RelativeBox {
                     Colour = Color4.Red.Opacity(0.5f)
                 },
-                TxtHitError = new TextFlowContainer(s => s.Font = new FontUsage("default", Screens.DrawWidth / 40)) {
+                TxtHitError = new TextFlowContainer(s => s.Font = new FontUsage("default", S2VXGameBase.GameWidth / 40)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.Centre,

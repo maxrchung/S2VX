@@ -5,20 +5,20 @@ using System;
 
 namespace S2VX.Game.Story.JSONConverters {
     public class HoldNoteConverter : JsonConverter<HoldNote> {
-        public override void WriteJson(JsonWriter writer, HoldNote note, JsonSerializer serializer) {
+        public override void WriteJson(JsonWriter writer, HoldNote value, JsonSerializer serializer) {
             var obj = new JObject {
-                { "HitTime", note.HitTime },
-                { "EndTime", note.EndTime },
+                { "HitTime", value.HitTime },
+                { "EndTime", value.EndTime },
             };
             var coordinates = new JObject {
-                { "X", note.Coordinates.X },
-                { "Y", note.Coordinates.Y }
+                { "x", value.Coordinates.X },
+                { "y", value.Coordinates.Y }
             };
             obj.Add("Coordinates", coordinates);
 
             var endCoordinates = new JObject {
-                { "X", note.EndCoordinates.X },
-                { "Y", note.EndCoordinates.Y }
+                { "x", value.EndCoordinates.X },
+                { "y", value.EndCoordinates.Y }
             };
             obj.Add("EndCoordinates", endCoordinates);
             obj.WriteTo(writer);
