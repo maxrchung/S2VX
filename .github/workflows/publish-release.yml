@@ -17,8 +17,8 @@ jobs:
       run: |
         cd S2VX.Desktop
         dotnet publish -p:PublishProfile=win-x64
-        zip -j S2VX.zip bin/Release/netcoreapp3.1/publish/S2VX.exe
-        zip -r S2VX.zip Stories
+        cd bin/publish
+        zip --recurse-paths S2VX.zip .
 
     - name: Publish release to GitHub
       id: release-drafter
@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.release-drafter.outputs.upload_url }}
-        asset_path: ./S2VX.Desktop/S2VX.zip
+        asset_path: ./S2VX.Desktop/bin/publish/S2VX.zip
         asset_name: S2VX.zip
         asset_content_type: application/zip
       env:
