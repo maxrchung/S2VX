@@ -3,7 +3,7 @@ name: Publish GitHub release and artifact
 on:
   push:
     branches:
-    - release
+    - release2
 
 jobs:
   publish-release:
