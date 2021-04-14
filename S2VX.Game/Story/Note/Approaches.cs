@@ -16,6 +16,7 @@ namespace S2VX.Game.Story.Note {
         public float Distance { get; set; }
         public float Thickness { get; set; }
         public Color4 ApproachColor { get; set; }
+        public Color4 HoldApproachColor { get; set; }
 
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {

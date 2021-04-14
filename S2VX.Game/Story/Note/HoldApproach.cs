@@ -48,6 +48,7 @@ namespace S2VX.Game.Story.Note {
         }
 
         protected override void UpdateColor() {
+            Colour = Story.Approaches.HoldApproachColor;
             var time = Time.Current;
             var notes = Story.Notes;
             // Fade in time to Show time

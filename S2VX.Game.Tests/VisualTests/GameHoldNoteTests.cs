@@ -5,7 +5,6 @@ using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using osu.Framework.Utils;
-using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;

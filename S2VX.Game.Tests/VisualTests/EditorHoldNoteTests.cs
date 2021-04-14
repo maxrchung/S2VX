@@ -4,6 +4,7 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Utils;
+using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
@@ -59,6 +60,20 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start play", () => Editor.Play(true));
             AddUntilStep("Play until after end time", () => Story.Clock.CurrentTime > NoteToTest.EndTime);
             AddAssert("Plays twice", () => NoteToTest.Hit.PlayCount == 2);
+        }
+
+        [Test]
+        public void UpdateColor_HoldApproachesColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldApproachesColorCommand", () => Story.AddCommand(new HoldApproachesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold approach is green", () => note.Approach.Colour == Color4.Green);
         }
 
         [Test]
