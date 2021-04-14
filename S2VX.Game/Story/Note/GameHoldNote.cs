@@ -116,22 +116,22 @@ namespace S2VX.Game.Story.Note {
         protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
-
+            var maxAlpha = notes.HoldNoteAlpha;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
             // Show time to End time
             else if (time < EndTime) {
-                Alpha = 1;
+                Alpha = maxAlpha;
             }
             // End time to Fade out time
             else if (time < EndTime + notes.FadeOutTime) {
                 var startTime = EndTime;
                 var endTime = EndTime + notes.FadeOutTime;
-                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, maxAlpha, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
             }

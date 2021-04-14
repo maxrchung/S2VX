@@ -2,7 +2,9 @@ using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Tests.VisualTests {
@@ -40,6 +42,17 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start clock", () => StoryClock.Start());
             AddUntilStep("Play until after hit time", () => StoryClock.CurrentTime > NoteToTest.HitTime);
             AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void UpdateColor_ApproachesColorCommand_IsGreen() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote { HitTime = 1000 }));
+            AddStep("Apply Green ApproachesColorCommand", () => Story.AddCommand(new ApproachesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Approach is green", () => note.Approach.Colour == Color4.Green);
         }
     }
 }

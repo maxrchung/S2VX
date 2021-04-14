@@ -4,9 +4,11 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 using System.IO;
 using System.Linq;
@@ -50,6 +52,17 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Does not trigger multiple notes", () =>
                 (originalNoteCount - 1) * Story.Notes.MissThreshold == PlayScreen.ScoreProcessor.Score
             );
+        }
+
+        [Test]
+        public void UpdateColor_ApproachesColorCommand_IsGreen() {
+            GameNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameNote { HitTime = 1000 }));
+            AddStep("Apply Green ApproachesColorCommand", () => Story.AddCommand(new ApproachesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Approach is green", () => note.Approach.Colour == Color4.Green);
         }
     }
 }

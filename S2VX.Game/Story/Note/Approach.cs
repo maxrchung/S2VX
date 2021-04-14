@@ -44,6 +44,7 @@ namespace S2VX.Game.Story.Note {
         /// Updates an approach's color/alpha
         /// </summary>
         protected virtual void UpdateColor() {
+            Colour = Story.Approaches.ApproachColor;
             var time = Time.Current;
             var notes = Story.Notes;
             // Fade in time to Show time

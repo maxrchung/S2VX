@@ -3,8 +3,10 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
+using osu.Framework.Utils;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 using System.IO;
 
@@ -57,6 +59,20 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start play", () => Editor.Play(true));
             AddUntilStep("Play until after end time", () => Story.Clock.CurrentTime > NoteToTest.EndTime);
             AddAssert("Plays twice", () => NoteToTest.Hit.PlayCount == 2);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesAlphaCommand_IsHalf() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply half HoldNotesAlphaCommand", () => Story.AddCommand(new HoldNotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Hold note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
     }
 }

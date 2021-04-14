@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osuTK.Graphics;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
@@ -11,8 +12,10 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = Children;
         }
 
+        // Set by commands
         public float Distance { get; set; }
         public float Thickness { get; set; }
+        public Color4 ApproachColor { get; set; }
 
         public Approach AddApproach(S2VXNote note) {
             var approach = new Approach {

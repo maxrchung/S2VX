@@ -4,9 +4,12 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osu.Framework.Utils;
+using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 using System.IO;
 using System.Linq;
@@ -51,6 +54,20 @@ namespace S2VX.Game.Tests.VisualTests {
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddAssert("Does not trigger multiple notes", () => PlayScreen.ScoreProcessor.Score == (originalNoteCount - 1) * 100);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesAlphaCommand_IsHalf() {
+            GameHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply half HoldNotesAlphaCommand", () => Story.AddCommand(new HoldNotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Hold note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
     }
 }
