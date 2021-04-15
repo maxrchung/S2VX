@@ -89,5 +89,19 @@ namespace S2VX.Game.Tests.VisualTests {
             }));
             AddAssert("Hold note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
+
+        [Test]
+        public void UpdateColor_HoldNotesColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesColorCommand", () => Story.AddCommand(new HoldNotesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note is green", () => note.Colour == Color4.Green);
+        }
     }
 }

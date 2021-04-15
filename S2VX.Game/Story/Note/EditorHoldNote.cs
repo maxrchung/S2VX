@@ -110,6 +110,7 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
             var maxAlpha = notes.HoldNoteAlpha;
+            Colour = notes.HoldNoteColor;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;

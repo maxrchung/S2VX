@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using osu.Framework.Utils;
+using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
@@ -67,6 +68,20 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndValue = 0.5f
             }));
             AddAssert("Hold note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesColorCommand_IsGreen() {
+            GameHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesColorCommand", () => Story.AddCommand(new HoldNotesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note is green", () => note.Colour == Color4.Green);
         }
     }
 }
