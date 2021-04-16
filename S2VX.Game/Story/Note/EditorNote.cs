@@ -34,6 +34,9 @@ namespace S2VX.Game.Story.Note {
             var time = Time.Current;
             var notes = Story.Notes;
             var maxAlpha = notes.NoteAlpha;
+            InnerColor = notes.NoteColor;
+            OutlineColor = notes.NoteOutlineColor;
+            OutlineThickness = notes.NoteOutlineThickness;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;

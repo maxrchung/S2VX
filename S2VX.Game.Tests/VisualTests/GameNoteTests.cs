@@ -78,5 +78,44 @@ namespace S2VX.Game.Tests.VisualTests {
             }));
             AddAssert("Note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
+
+        [Test]
+        public void UpdateColor_NotesColorCommand_IsGreen() {
+            GameNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply green NotesColorCommand", () => Story.AddCommand(new NotesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Note is green", () => note.InnerColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesOutlineColorCommand_IsGreen() {
+            GameNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply green NotesOutlineColorCommand", () => Story.AddCommand(new NotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Note outline is green", () => note.OutlineColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesOutlineThicknessCommand_IsTwoHundredths() {
+            GameNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply 0.02 NotesOutlineThicknessCommand", () => Story.AddCommand(new NotesOutlineThicknessCommand {
+                StartValue = 0.02f,
+                EndValue = 0.02f
+            }));
+            AddAssert("Note outline is 0.02 thick", () => Precision.AlmostEquals(note.OutlineThickness, 0.02f));
+        }
     }
 }
