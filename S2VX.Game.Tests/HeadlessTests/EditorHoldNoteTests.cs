@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using osu.Framework.Testing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 using System.IO;
 
@@ -37,6 +38,10 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorHoldNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime,
                 EndTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime + HoldDuration
+            }));
+            AddStep("Set max note alpha to 1", () => Story.AddCommand(new HoldNotesAlphaCommand {
+                StartValue = 1.0f,
+                EndValue = 1.0f
             }));
         }
 
