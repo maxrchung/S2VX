@@ -101,7 +101,21 @@ namespace S2VX.Game.Tests.VisualTests {
                 StartValue = Color4.Green,
                 EndValue = Color4.Green
             }));
-            AddAssert("Hold note is green", () => note.Colour == Color4.Green);
+            AddAssert("Hold note is green", () => note.InnerColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesOutlineColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesOutlineColorCommand", () => Story.AddCommand(new HoldNotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note outline is green", () => note.OutlineColor == Color4.Green);
         }
     }
 }

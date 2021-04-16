@@ -28,6 +28,7 @@ namespace S2VX.Game.Story.Note {
         public Color4 PreviewHoldNoteColor { get; set; }
         public float HoldNoteAlpha { get; set; }
         public Color4 HoldNoteColor { get; set; }
+        public Color4 HoldNoteOutlineColor { get; set; }
 
         // TODO: Remove these defaults and use command classes
         public Color4 PerfectColor { get; set; } = S2VXColorConstants.LightYellow;
