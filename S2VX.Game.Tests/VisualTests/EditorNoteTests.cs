@@ -2,6 +2,7 @@ using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osu.Framework.Utils;
 using osuTK.Graphics;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
@@ -53,6 +54,19 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndValue = Color4.Green
             }));
             AddAssert("Approach is green", () => note.Approach.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesAlphaCommand_IsHalf() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply half NotesAlphaCommand", () => Story.AddCommand(new NotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
     }
 }

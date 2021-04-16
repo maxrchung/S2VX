@@ -4,6 +4,7 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osu.Framework.Utils;
 using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.Play;
@@ -63,6 +64,19 @@ namespace S2VX.Game.Tests.VisualTests {
                 EndValue = Color4.Green
             }));
             AddAssert("Approach is green", () => note.Approach.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesAlphaCommand_IsHalf() {
+            GameNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply half NotesAlphaCommand", () => Story.AddCommand(new NotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
         }
     }
 }
