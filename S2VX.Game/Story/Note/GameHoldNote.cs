@@ -119,6 +119,7 @@ namespace S2VX.Game.Story.Note {
             var maxAlpha = notes.HoldNoteAlpha;
             InnerColor = notes.HoldNoteColor;
             OutlineColor = notes.HoldNoteOutlineColor;
+            OutlineThickness = notes.HoldNoteOutlineThickness;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
                 var startTime = HitTime - notes.ShowTime - notes.FadeInTime;

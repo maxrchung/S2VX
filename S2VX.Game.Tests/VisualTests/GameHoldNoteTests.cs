@@ -97,5 +97,33 @@ namespace S2VX.Game.Tests.VisualTests {
             }));
             AddAssert("Hold note outline is green", () => note.OutlineColor == Color4.Green);
         }
+
+        [Test]
+        public void UpdateSliderPath_HoldNotesOutlineColorCommand_IsGreen() {
+            GameHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesOutlineColorCommand", () => Story.AddCommand(new HoldNotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note path is green", () => note.SliderPath.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesOutlineThicknessCommand_IsTwoHundredths() {
+            GameHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply 0.02 HoldNotesOutlineThicknessCommand", () => Story.AddCommand(new HoldNotesOutlineThicknessCommand {
+                StartValue = 0.02f,
+                EndValue = 0.02f
+            }));
+            AddAssert("Hold note outline is 0.02 thick", () => Precision.AlmostEquals(note.OutlineThickness, 0.02f));
+        }
     }
 }
