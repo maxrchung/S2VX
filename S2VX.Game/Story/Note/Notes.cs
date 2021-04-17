@@ -24,8 +24,6 @@ namespace S2VX.Game.Story.Note {
         public float FadeOutTime { get; set; }
 
         // Used by Note and HoldNote Tools, set by Commands
-        public Color4 PreviewNoteColor { get; set; }
-        public Color4 PreviewHoldNoteColor { get; set; }
         public float HoldNoteAlpha { get; set; }
         public Color4 HoldNoteColor { get; set; }
         public Color4 HoldNoteOutlineColor { get; set; }
