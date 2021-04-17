@@ -2,7 +2,10 @@ using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osu.Framework.Utils;
+using osuTK.Graphics;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Tests.VisualTests {
@@ -40,6 +43,69 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start clock", () => StoryClock.Start());
             AddUntilStep("Play until after hit time", () => StoryClock.CurrentTime > NoteToTest.HitTime);
             AddAssert("Plays once", () => NoteToTest.Hit.PlayCount == 1);
+        }
+
+        [Test]
+        public void UpdateColor_ApproachesColorCommand_IsGreen() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote { HitTime = 1000 }));
+            AddStep("Apply Green ApproachesColorCommand", () => Story.AddCommand(new ApproachesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Approach is green", () => note.Approach.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesAlphaCommand_IsHalf() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply half NotesAlphaCommand", () => Story.AddCommand(new NotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
+        }
+
+        [Test]
+        public void UpdateColor_NotesColorCommand_IsGreen() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply green NotesColorCommand", () => Story.AddCommand(new NotesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Note is green", () => note.InnerColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesOutlineColorCommand_IsGreen() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply green NotesOutlineColorCommand", () => Story.AddCommand(new NotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Note outline is green", () => note.OutlineColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_NotesOutlineThicknessCommand_IsTwoHundredths() {
+            EditorNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+                HitTime = Story.Notes.ShowTime - 100
+            }));
+            AddStep("Apply 0.02 NotesOutlineThicknessCommand", () => Story.AddCommand(new NotesOutlineThicknessCommand {
+                StartValue = 0.02f,
+                EndValue = 0.02f
+            }));
+            AddAssert("Note outline is 0.02 thick", () => Precision.AlmostEquals(note.OutlineThickness, 0.02f));
         }
     }
 }

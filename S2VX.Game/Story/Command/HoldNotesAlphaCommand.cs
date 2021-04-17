@@ -1,10 +1,10 @@
 ﻿namespace S2VX.Game.Story.Command {
     public class HoldNotesAlphaCommand : S2VXCommand {
-        public float StartValue { get; set; } = 1;
-        public float EndValue { get; set; } = 1;
+        public float StartValue { get; set; } = 0.7f;
+        public float EndValue { get; set; } = 0.7f;
         public override void Apply(double time, S2VXStory story) {
             var value = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
-            story.Notes.GetHoldNotes().ForEach(note => note.SetAlpha(value));
+            story.Notes.HoldNoteAlpha = value;
         }
         protected override string ToValues() => $"{StartValue}|{EndValue}";
         public static HoldNotesAlphaCommand FromString(string[] split) {

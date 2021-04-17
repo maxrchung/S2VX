@@ -3,6 +3,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 
 namespace S2VX.Game.Tests.HeadlessTests {
@@ -29,6 +30,10 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
             AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
+            }));
+            AddStep("Set max note alpha to 1", () => Story.AddCommand(new NotesAlphaCommand {
+                StartValue = 1.0f,
+                EndValue = 1.0f
             }));
         }
 

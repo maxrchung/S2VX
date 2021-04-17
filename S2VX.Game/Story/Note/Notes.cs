@@ -24,8 +24,14 @@ namespace S2VX.Game.Story.Note {
         public float FadeOutTime { get; set; }
 
         // Used by Note and HoldNote Tools, set by Commands
-        public Color4 PreviewNoteColor { get; set; }
-        public Color4 PreviewHoldNoteColor { get; set; }
+        public float HoldNoteAlpha { get; set; }
+        public Color4 HoldNoteColor { get; set; }
+        public Color4 HoldNoteOutlineColor { get; set; }
+        public float HoldNoteOutlineThickness { get; set; }
+        public float NoteAlpha { get; set; }
+        public Color4 NoteColor { get; set; }
+        public Color4 NoteOutlineColor { get; set; }
+        public float NoteOutlineThickness { get; set; }
 
         // TODO: Remove these defaults and use command classes
         public Color4 PerfectColor { get; set; } = S2VXColorConstants.LightYellow;

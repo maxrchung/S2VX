@@ -3,8 +3,11 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
+using osu.Framework.Utils;
+using osuTK.Graphics;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
+using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
 using System.IO;
 
@@ -57,6 +60,90 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Start play", () => Editor.Play(true));
             AddUntilStep("Play until after end time", () => Story.Clock.CurrentTime > NoteToTest.EndTime);
             AddAssert("Plays twice", () => NoteToTest.Hit.PlayCount == 2);
+        }
+
+        [Test]
+        public void UpdateColor_HoldApproachesColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldApproachesColorCommand", () => Story.AddCommand(new HoldApproachesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold approach is green", () => note.Approach.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesAlphaCommand_IsHalf() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply half HoldNotesAlphaCommand", () => Story.AddCommand(new HoldNotesAlphaCommand {
+                StartValue = 0.5f,
+                EndValue = 0.5f
+            }));
+            AddAssert("Hold note is half alpha", () => Precision.AlmostEquals(note.Alpha, 0.5f));
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesColorCommand", () => Story.AddCommand(new HoldNotesColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note is green", () => note.InnerColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesOutlineColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesOutlineColorCommand", () => Story.AddCommand(new HoldNotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note outline is green", () => note.OutlineColor == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateSliderPath_HoldNotesOutlineColorCommand_IsGreen() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply green HoldNotesOutlineColorCommand", () => Story.AddCommand(new HoldNotesOutlineColorCommand {
+                StartValue = Color4.Green,
+                EndValue = Color4.Green
+            }));
+            AddAssert("Hold note path is green", () => note.SliderPath.Colour == Color4.Green);
+        }
+
+        [Test]
+        public void UpdateColor_HoldNotesOutlineThicknessCommand_IsTwoHundredths() {
+            EditorHoldNote note = null;
+            AddStep("Add a note", () => Story.AddNote(note = new EditorHoldNote {
+                HitTime = Story.Notes.ShowTime - 100,
+                EndTime = Story.Notes.ShowTime + 100
+            }));
+            AddStep("Apply 0.02 HoldNotesOutlineThicknessCommand", () => Story.AddCommand(new HoldNotesOutlineThicknessCommand {
+                StartValue = 0.02f,
+                EndValue = 0.02f
+            }));
+            AddAssert("Hold note outline is 0.02 thick", () => Precision.AlmostEquals(note.OutlineThickness, 0.02f));
         }
     }
 }
