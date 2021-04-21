@@ -1,8 +1,9 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+
 using System;
 using osu.Framework.Graphics.UserInterface;
 
 namespace S2VX.Game.Editor.ColorPicker {
-
     public class HexTextBox : BasicTextBox {
         /// <summary>
         /// Only support Hex and start with `#`

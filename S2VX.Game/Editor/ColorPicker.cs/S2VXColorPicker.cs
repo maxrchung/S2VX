@@ -1,5 +1,4 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
-// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Bindables;
 using osu.Framework.Caching;
@@ -10,7 +9,6 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
-using System.Globalization;
 
 namespace S2VX.Game.Editor.ColorPicker {
     public class S2VXColorPicker : Container, IHasCurrentValue<Color4> {

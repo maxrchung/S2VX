@@ -27,15 +27,11 @@ namespace S2VX.Game.Editor.ColorPicker {
         public HueSlideContainer() {
             Drawable picker;
             Padding = new MarginPadding { Bottom = 20 };
-            Children = new[]
-            {
-                new GridContainer
-                {
+            Children = new[] {
+                new GridContainer {
                     RelativeSizeAxes = Axes.Both,
-                    Content = new[]
-                    {
-                        new Drawable[]
-                        {
+                    Content = new[] {
+                        new Drawable[] {
                             new GradientPart(Color4.Red, Color4.Magenta),
                             new GradientPart(Color4.Magenta, Color4.Blue),
                             new GradientPart(Color4.Blue, Color4.Aqua),
