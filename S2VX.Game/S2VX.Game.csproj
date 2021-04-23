@@ -23,6 +23,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.421.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.422.1" />
   </ItemGroup>
 </Project>
