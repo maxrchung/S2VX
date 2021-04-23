@@ -23,6 +23,7 @@ namespace S2VX.Game.Editor {
         private const int MaxSnapDivisor = 16;
 
         public int SnapDivisor { get; private set; }
+        public int EditorApproachRate { get; private set; }
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
         public ReversibleStack Reversibles { get; } = new ReversibleStack();
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
