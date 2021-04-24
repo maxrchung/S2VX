@@ -13,7 +13,7 @@ using osuTK.Graphics;
 namespace S2VX.Game.Editor.ColorPicker {
     public class S2VXColorPicker : Container, IHasCurrentValue<Color4> {
         // Change current value will cause recursive change, so need a record to disable this change.
-        private readonly Cached InternalUpdate = new Cached();
+        private readonly Cached InternalUpdate = new();
 
         private readonly BindableWithCurrent<Color4> CurrentColor = new();
 
