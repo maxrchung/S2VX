@@ -16,7 +16,7 @@ namespace S2VX.Game.Editor.ColorPicker {
         private readonly Cached InternalUpdate = new Cached();
 
         private readonly BindableWithCurrent<Color4> CurrentColor =
-            new BindableWithCurrent<Color4> { Default = Color4.White };
+            new();
 
         public Bindable<Color4> Current {
             get => CurrentColor.Current;
