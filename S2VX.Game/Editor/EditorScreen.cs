@@ -25,6 +25,7 @@ namespace S2VX.Game.Editor {
 
         public int SnapDivisor { get; private set; }
         public int EditorApproachRate { get; private set; }
+        public float EditorShowTime => EditorApproachRate * Story.Notes.ShowTime;
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
         public ReversibleStack Reversibles { get; } = new ReversibleStack();
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
@@ -158,6 +159,8 @@ namespace S2VX.Game.Editor {
                             new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
                             new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
+                            new MenuItem("Decrease Editor Approach Rate (MouseWheelDown over Approach Rate)", ApproachRateDecrease),
+                            new MenuItem("Increase Editor Approach Rate (MouseWheelUp over Approach Rate)", ApproachRateIncrease),
                         }
                     },
                     new MenuItem("Tool")

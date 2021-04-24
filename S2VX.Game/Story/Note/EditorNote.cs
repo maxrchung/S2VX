@@ -12,6 +12,9 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [Resolved]
+        private EditorScreen Editor { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) =>
             Hit = new S2VXSample("hit", audio);
@@ -38,9 +41,9 @@ namespace S2VX.Game.Story.Note {
             OutlineColor = notes.NoteOutlineColor;
             OutlineThickness = notes.NoteOutlineThickness;
             // Fade in time to Show time
-            if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
-                var endTime = HitTime - notes.ShowTime;
+            if (time < HitTime - Editor.EditorShowTime) {
+                var startTime = HitTime - Editor.EditorShowTime - notes.FadeInTime;
+                var endTime = HitTime - Editor.EditorShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
             // Show time to Hit time
