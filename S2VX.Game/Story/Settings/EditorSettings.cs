@@ -5,5 +5,6 @@
         public double TrackPlaybackRate { get; set; } = 1.0;
         public int SnapDivisor { get; set; } = 2;
         public int BeatSnapDivisorIndex { get; set; } = 3;
+        public int EditorApproachRate { get; set; } = 2;
     }
 }

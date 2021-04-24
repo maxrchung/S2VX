@@ -21,6 +21,7 @@ namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
         public const double TrackTimeTolerance = 0.03;  // ms away from a tick or end of track will be considered to be on that tick or end of track
         private const int MaxSnapDivisor = 16;
+        private const int MaxApproachRate = 8;
 
         public int SnapDivisor { get; private set; }
         public int EditorApproachRate { get; private set; }
@@ -85,6 +86,7 @@ namespace S2VX.Game.Editor {
             PlaybackSetRate(editorSettings.TrackPlaybackRate);
             SnapDivisor = editorSettings.SnapDivisor;
             NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
+            EditorApproachRate = editorSettings.EditorApproachRate;
         }
 
         private EditorUI CreateEditorUI() {
@@ -456,6 +458,18 @@ namespace S2VX.Game.Editor {
                 default:
                     SnapDivisor /= 2;
                     break;
+            }
+        }
+
+        public void ApproachRateIncrease() {
+            if (EditorApproachRate < MaxApproachRate) {
+                EditorApproachRate *= 2;
+            }
+        }
+
+        public void ApproachRateDecrease() {
+            if (EditorApproachRate > 1) {
+                EditorApproachRate /= 2;
             }
         }
 

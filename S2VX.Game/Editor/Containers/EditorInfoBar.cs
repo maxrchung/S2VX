@@ -50,6 +50,16 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopRight,
         };
 
+        private ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
+            RelativeSizeAxes = Axes.Both,
+            RelativePositionAxes = Axes.Both,
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            X = 0.16f,
+            Width = 0.2f,
+            TextAnchor = Anchor.TopRight,
+        };
+
         public const float InfoBarHeight = 0.03f;
         public const float InfoBarWidth = 1.0f;
 
@@ -68,7 +78,8 @@ namespace S2VX.Game.Editor.Containers {
                 ToolDisplay,
                 NoteSnapDivisorDisplay,
                 MousePositionDisplay,
-                VolumeDisplay
+                VolumeDisplay,
+                ApproachRateDisplay
             };
         }
     }
