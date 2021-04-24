@@ -13,9 +13,9 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Editor.ColorPicker {
     public class PickerAreaContainer : Container {
-        public BindableFloat Hue { get; } = new BindableFloat();
-        public BindableFloat Saturation { get; } = new BindableFloat();
-        public BindableFloat Value { get; } = new BindableFloat();
+        public BindableFloat Hue { get; } = new();
+        public BindableFloat Saturation { get; } = new();
+        public BindableFloat Value { get; } = new();
 
         protected static Drawable CreatePicker() => new Circle {
             Size = new Vector2(10),

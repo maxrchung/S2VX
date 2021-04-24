@@ -12,7 +12,7 @@ using osuTK.Graphics;
 
 namespace S2VX.Game.Editor.ColorPicker {
     public class HueSlideContainer : Container {
-        public BindableFloat Hue { get; } = new BindableFloat();
+        public BindableFloat Hue { get; } = new();
 
         protected static Drawable CreatePicker() => new Triangle {
             Size = new Vector2(15),

@@ -15,8 +15,7 @@ namespace S2VX.Game.Editor.ColorPicker {
         // Change current value will cause recursive change, so need a record to disable this change.
         private readonly Cached InternalUpdate = new Cached();
 
-        private readonly BindableWithCurrent<Color4> CurrentColor =
-            new BindableWithCurrent<Color4> { Default = Color4.White };
+        private readonly BindableWithCurrent<Color4> CurrentColor = new();
 
         public Bindable<Color4> Current {
             get => CurrentColor.Current;
