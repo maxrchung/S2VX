@@ -42,8 +42,8 @@ namespace S2VX.Game.Editor.ColorPicker {
             // Re-calculate display color if HSV's hue changed.
             Hue.BindValueChanged(value => {
                 var color = Color4Extensions.FromHSV(value.NewValue, 1, 1);
-                horizontalBackground.Colour = ColourInfo.GradientHorizontal(new Color4(), color);
-                verticalBackground.Colour = ColourInfo.GradientVertical(new Color4(), Color4.Black);
+                horizontalBackground.Colour = ColourInfo.GradientHorizontal(new(), color);
+                verticalBackground.Colour = ColourInfo.GradientVertical(new(), Color4.Black);
             }, true);
 
             // Update picker position
