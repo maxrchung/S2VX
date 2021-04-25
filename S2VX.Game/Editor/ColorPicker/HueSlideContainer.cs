@@ -1,21 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 
-using System;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
+using System;
 
 namespace S2VX.Game.Editor.ColorPicker {
     public class HueSlideContainer : Container {
         public BindableFloat Hue { get; } = new();
 
         protected static Drawable CreatePicker() => new Triangle {
-            Size = new Vector2(15),
+            Size = new(15),
             Colour = Color4.Red,
             Anchor = Anchor.BottomLeft,
             Origin = Anchor.TopCentre
@@ -23,7 +22,7 @@ namespace S2VX.Game.Editor.ColorPicker {
 
         public HueSlideContainer() {
             Drawable picker;
-            Padding = new MarginPadding { Bottom = 20 };
+            Padding = new() { Bottom = 20 };
             Children = new[] {
                 new GridContainer {
                     RelativeSizeAxes = Axes.Both,

@@ -1,6 +1,5 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 
-using System;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -8,8 +7,8 @@ using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
+using System;
 
 namespace S2VX.Game.Editor.ColorPicker {
     public class PickerAreaContainer : Container {
@@ -18,7 +17,7 @@ namespace S2VX.Game.Editor.ColorPicker {
         public BindableFloat Value { get; } = new();
 
         protected static Drawable CreatePicker() => new Circle {
-            Size = new Vector2(10),
+            Size = new(10),
             Colour = Color4.Red,
             Origin = Anchor.Centre
         };

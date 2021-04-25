@@ -7,7 +7,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
-using osuTK;
 using osuTK.Graphics;
 
 namespace S2VX.Game.Editor.ColorPicker {
@@ -36,27 +35,27 @@ namespace S2VX.Game.Editor.ColorPicker {
         public S2VXColorPicker() {
             AutoSizeAxes = Axes.Both;
             Children = new Drawable[] {
-                Background = new Box {
+                Background = new() {
                     RelativeSizeAxes = Axes.Both,
                     Colour = Color4.Gray
                 },
                 new FillFlowContainer {
-                    Margin = new MarginPadding(10),
+                    Margin = new(10),
                     AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Vertical,
-                    Spacing = new Vector2(0, 10),
+                    Spacing = new(0, 10),
                     Children = new Drawable[] {
-                        PickerArea = new PickerAreaContainer {
-                            Size = new Vector2(200),
+                        PickerArea = new() {
+                            Size = new(200),
                         },
-                        HueSlider = new HueSlideContainer {
+                        HueSlider = new() {
                             RelativeSizeAxes = Axes.X,
                             Height = 50,
                         },
                         new Container {
                             RelativeSizeAxes = Axes.X,
                             Height = 40,
-                            Padding = new MarginPadding(10),
+                            Padding = new(10),
                             Child = new GridContainer {
                                 RelativeSizeAxes = Axes.Both,
                                 Content = new[] {
