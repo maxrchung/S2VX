@@ -50,7 +50,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopRight,
         };
 
-        private ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
+        public ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,

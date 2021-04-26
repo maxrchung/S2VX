@@ -49,6 +49,7 @@ namespace S2VX.Game.Editor {
         };
         public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
         private Timeline Timeline { get; } = new Timeline();
+        public EditorInfoBar EditorInfoBar { get; } = new EditorInfoBar();
         public CommandPanel CommandPanel { get; } = new CommandPanel();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
@@ -97,7 +98,7 @@ namespace S2VX.Game.Editor {
                         NoteSelectionIndicators,
                         ToolContainer,
                         NotesTimeline,
-                        new EditorInfoBar(),
+                        EditorInfoBar,
                         CreateMenu(),
                         Timeline,
                         CommandPanel
