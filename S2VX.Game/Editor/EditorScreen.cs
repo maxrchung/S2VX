@@ -81,7 +81,7 @@ namespace S2VX.Game.Editor {
             };
         }
 
-        private void LoadEditorSettings() {
+        public void LoadEditorSettings() {
             var editorSettings = Story.EditorSettings;
             Seek(editorSettings.TrackTime);
             PlaybackSetRate(editorSettings.TrackPlaybackRate);
