@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace S2VX.Game.Story.Note {
-    public class HoldApproach : Approach {
+    public abstract class HoldApproach : Approach {
         public double EndTime { get; set; }
 
         public Vector2 EndCoordinates { get; set; }
@@ -13,7 +13,7 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private List<RelativeBox> ReleaseLines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> ReleaseLines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // up
             new RelativeBox(), // down
@@ -21,7 +21,7 @@ namespace S2VX.Game.Story.Note {
             new RelativeBox()  // left
         };
 
-        private List<RelativeBox> HoldIndicatorLines { get; set; } = new List<RelativeBox>()
+        protected List<RelativeBox> HoldIndicatorLines { get; } = new List<RelativeBox>()
         {
             new RelativeBox(), // top left
             new RelativeBox(), // top right
@@ -42,18 +42,13 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        public override void UpdateApproach() {
-            UpdateColor();
-            UpdatePosition();
-        }
-
-        protected override void UpdateColor() {
+        protected override void UpdateColor(float fadeInTime) {
             var time = Time.Current;
             var notes = Story.Notes;
             Colour = Story.Approaches.HoldApproachColor;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var startTime = HitTime - notes.ShowTime - fadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
@@ -71,7 +66,7 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        protected override void UpdatePosition() {
+        protected virtual void UpdateHoldApproachPosition(float fadeInTime) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -82,7 +77,7 @@ namespace S2VX.Game.Story.Note {
 
             var time = Time.Current;
             var coordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdateInnerApproachPosition(coordinates);
+            UpdateInnerApproachPosition(coordinates, fadeInTime);
 
             // Calculate outer approach values
             var startTime = EndTime - notes.ShowTime - notes.FadeInTime;

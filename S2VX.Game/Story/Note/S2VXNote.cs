@@ -85,5 +85,7 @@ namespace S2VX.Game.Story.Note {
         /// Pushes a Reversible to the Editor Reversibles stack
         /// </summary>
         public virtual void ReversibleRemove(S2VXStory story, EditorScreen editor) { }
+
+        public abstract Approach AddApproach();
     }
 }

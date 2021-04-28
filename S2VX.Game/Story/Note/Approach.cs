@@ -6,12 +6,12 @@ using System;
 using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
-    public class Approach : CompositeDrawable, IComparable<Approach> {
+    public abstract class Approach : CompositeDrawable, IComparable<Approach> {
         public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
 
         [Resolved]
-        private S2VXStory Story { get; set; } = null;
+        private S2VXStory Story { get; set; }
 
         protected List<RelativeBox> Lines { get; } = new List<RelativeBox>()
         {
@@ -35,21 +35,18 @@ namespace S2VX.Game.Story.Note {
         /// <summary>
         /// Main entrypoint for an approach's Update functionality
         /// </summary>
-        public virtual void UpdateApproach() {
-            UpdateColor();
-            UpdatePosition();
-        }
+        public abstract void UpdateApproach();
 
         /// <summary>
         /// Updates an approach's color/alpha
         /// </summary>
-        protected virtual void UpdateColor() {
+        protected virtual void UpdateColor(float fadeInTime) {
             var time = Time.Current;
             var notes = Story.Notes;
             Colour = Story.Approaches.ApproachColor;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var startTime = HitTime - notes.ShowTime - fadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
@@ -70,13 +67,13 @@ namespace S2VX.Game.Story.Note {
         /// <summary>
         /// Updates an approach's position/rotation/size
         /// </summary>
-        protected virtual void UpdatePosition() => UpdateInnerApproachPosition(Coordinates);
+        protected virtual void UpdatePosition() => UpdateInnerApproachPosition(Coordinates, Story.Notes.FadeInTime);
 
         /// <summary>
         /// Both Approach and HoldApproach use this helper to set the inner approach's position
         /// </summary>
         /// <param name="coordinates">S2VX coordinates that the approach is closing onto</param>
-        protected void UpdateInnerApproachPosition(Vector2 coordinates) {
+        protected void UpdateInnerApproachPosition(Vector2 coordinates, float fadeInTime) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -86,7 +83,7 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
             var time = Time.Current;
 
-            var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+            var startTime = HitTime - notes.ShowTime - fadeInTime;
             var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);

@@ -16,7 +16,6 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
-
         [Resolved]
         private EditorScreen Editor { get; set; }
 
@@ -117,9 +116,9 @@ namespace S2VX.Game.Story.Note {
             OutlineColor = notes.HoldNoteOutlineColor;
             OutlineThickness = notes.HoldNoteOutlineThickness;
             // Fade in time to Show time
-            if (time < HitTime - Editor.EditorShowTime) {
-                var startTime = HitTime - Editor.EditorShowTime - notes.FadeInTime;
-                var endTime = HitTime - Editor.EditorShowTime;
+            if (time < HitTime - notes.ShowTime) {
+                var startTime = HitTime - notes.ShowTime - Editor.EditorFadeInTime;
+                var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
             // Show time (to Hit time) to End time
@@ -151,5 +150,12 @@ namespace S2VX.Game.Story.Note {
 
         public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
             editor.Reversibles.Push(new ReversibleRemoveHoldNote(story, this, editor));
+
+        public override Approach AddApproach() => new EditorHoldApproach {
+            Coordinates = Coordinates,
+            HitTime = HitTime,
+            EndTime = EndTime,
+            EndCoordinates = EndCoordinates
+        };
     }
 }
