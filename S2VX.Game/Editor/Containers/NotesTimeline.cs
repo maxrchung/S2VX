@@ -20,6 +20,17 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        // Tick information is calculated by GetTickInfo for a given time
+        private struct TickInfo {
+            public double NumTicks;
+            public double TimeBetweenTicks;
+            public double CurrentTick;
+            public double CurrentTickTime;
+            public int NearestTick;
+            public double NearestTickTime;
+            public bool OnTick;
+        }
+
         public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
         public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<S2VXNote, RelativeBox>();
 
@@ -109,7 +120,7 @@ namespace S2VX.Game.Editor.Containers {
             new() {
                 RelativePositionAxes = Axes.Both,
                 RelativeSizeAxes = Axes.Both,
-                Width = TimelineWidth / 1.25f,
+                Width = TimelineWidth * 0.8f,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 X = -0.05f,
@@ -229,23 +240,38 @@ namespace S2VX.Game.Editor.Containers {
                 }
             };
 
-        public void SnapToTick(bool snapLeft) {
+        public double GetNearestTickTime(double time) => GetTickInfo(time).NearestTickTime;
+
+        private TickInfo GetTickInfo(double time) {
             var numTicks = Story.BPM / 60f * (Editor.Track.Length / SecondsToMS) * Divisor;
             var timeBetweenTicks = Editor.Track.Length / numTicks;
-            var currentTick = (Time.Current - Story.Offset) / timeBetweenTicks;
+            var currentTick = (time - Story.Offset) / timeBetweenTicks;
             var currentTickTime = currentTick * timeBetweenTicks;
-            var nearestTick = Math.Round(currentTick);
+            var nearestTick = (int)Math.Round(currentTick);
             var nearestTickTime = nearestTick * timeBetweenTicks;
             var onTick = Math.Abs(nearestTickTime - currentTickTime) <= EditorScreen.TrackTimeTolerance;
-            var leftTickTime = timeBetweenTicks;
-            var rightTickTime = timeBetweenTicks;
-            if (onTick) {
-                leftTickTime *= nearestTick - 1;
-                rightTickTime *= nearestTick + 1;
+            return new TickInfo {
+                NumTicks = numTicks,
+                TimeBetweenTicks = timeBetweenTicks,
+                CurrentTick = currentTick,
+                CurrentTickTime = currentTickTime,
+                NearestTick = nearestTick,
+                NearestTickTime = nearestTickTime,
+                OnTick = onTick
+            };
+        }
+
+        public void SnapToTick(bool snapLeft) {
+            var tickInfo = GetTickInfo(Time.Current);
+            var leftTickTime = tickInfo.TimeBetweenTicks;
+            var rightTickTime = tickInfo.TimeBetweenTicks;
+            if (tickInfo.OnTick) {
+                leftTickTime *= tickInfo.NearestTick - 1;
+                rightTickTime *= tickInfo.NearestTick + 1;
             } else {
                 // Current time is between two ticks
-                leftTickTime *= Math.Floor(currentTick);
-                rightTickTime *= Math.Ceiling(currentTick);
+                leftTickTime *= Math.Floor(tickInfo.CurrentTick);
+                rightTickTime *= Math.Ceiling(tickInfo.CurrentTick);
             }
 
             leftTickTime += Story.Offset;
