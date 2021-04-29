@@ -6,8 +6,8 @@ using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story.Command;
 
-namespace S2VX.Game.Tests.VisualTests {
-    public class CommandPanelInputBarTests : S2VXTestScene {
+namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
+    public class AddAndEditTests : S2VXTestScene {
 
         private static void ValueChangedHandler(ValueChangedEvent<string> _) { }
 
