@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: ppy.osu.Framework
+    versions:
+    - 2021.204.0
+    - 2021.413.0
+    - 2021.415.0
+    - 2021.422.1
+    - 2021.424.1
+  - dependency-name: Menees.Analyzers
+    versions:
+    - 2.0.6
+  - dependency-name: NUnit3TestAdapter
+    versions:
+    - 3.17.0
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - 16.8.3
+  - dependency-name: NUnit
+    versions:
+    - 3.13.1
+  - dependency-name: Microsoft.CodeAnalysis.FxCopAnalyzers
+    versions:
+    - 3.3.2
