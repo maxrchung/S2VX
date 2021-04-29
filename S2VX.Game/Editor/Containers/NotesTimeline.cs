@@ -38,7 +38,7 @@ namespace S2VX.Game.Editor.Containers {
         public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
         public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<S2VXNote, RelativeBox>();
 
-        private Container TickBarContent { get; } = new Container {
+        public Container TickBarContent { get; } = new Container {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
