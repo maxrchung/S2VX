@@ -15,13 +15,13 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Clear drawables", () => Clear());
-            AddStep("Add input bar", () => InputBar = CommandPanelInputBar.CreateAddInputBar(_ => { }, () => { }));
+            AddStep("Add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(_ => { }, () => { })));
         }
 
         [Test]
         public void ShowColorPicker_NonColorCommand_DoesNotShowColorPicker() {
             AddStep("Load non-color command", () => InputBar.CommandToValues(new ApproachesDistanceCommand()));
-            AddAssert("Does not show color picker", () => InputBar.ColorPicker.Alpha == 1);
+            AddAssert("Does not show color picker", () => InputBar.StartColorPicker.Alpha == 0);
         }
 
         [Test]

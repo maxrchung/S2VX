@@ -20,6 +20,7 @@ namespace S2VX.Game.Editor.Containers {
         private S2VXStory Story { get; set; } = null;
 
         public static Vector2 InputSize { get; } = new Vector2(100, 30);
+        public static float InputBarHeight { get; } = 70;
         private static Vector2 PanelSize { get; } = new Vector2(727, 727);
         private CommandPanelInputBar AddInputBar { get; set; }
         private CommandPanelInputBar EditInputBar { get; set; }
@@ -188,9 +189,9 @@ namespace S2VX.Game.Editor.Containers {
                 new BasicScrollContainer
                 {
                     // This is so mega fucked?
-                    Position = new Vector2(0, 70),
+                    Position = new Vector2(0, InputBarHeight),
                     Width = PanelSize.X,
-                    Height = PanelSize.Y - 70,
+                    Height = PanelSize.Y - InputBarHeight,
                     Child = CommandsList
                 },
                 new FillFlowContainer

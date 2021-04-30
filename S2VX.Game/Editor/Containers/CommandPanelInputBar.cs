@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
+using S2VX.Game.Editor.ColorPicker;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,12 @@ namespace S2VX.Game.Editor.Containers {
         public TextBox TxtStartTime { get; } = CreateErrorTextBox();
         public TextBox TxtEndTime { get; } = CreateErrorTextBox();
         public TextBox TxtStartValue { get; } = CreateErrorTextBox();
+        public S2VXColorPicker StartColorPicker { get; } = new S2VXColorPicker() { Alpha = 0 };
         public TextBox TxtEndValue { get; } = CreateErrorTextBox();
+        public S2VXColorPicker EndColorPicker { get; } = new S2VXColorPicker() { Alpha = 0 };
         public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
         public Button BtnSave { get; }
-
         private Action<ValueChangedEvent<string>> HandleTypeSelect { get; }
-        private Action HandleSaveClick { get; }
 
         private static TextBox CreateErrorTextBox() =>
             new BasicTextBox() {
@@ -43,7 +44,6 @@ namespace S2VX.Game.Editor.Containers {
                 Icon = saveIcon
             };
             HandleTypeSelect = handleTypeSelect;
-            HandleSaveClick = handleSaveClick;
 
             // We initialize the inputs here instead of in Load because the
             // outer CommandPanel needs some of these values to be set
@@ -55,7 +55,7 @@ namespace S2VX.Game.Editor.Containers {
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
             DropType.Current.BindValueChanged(HandleTypeSelect);
-            BtnSave.Action = HandleSaveClick;
+            BtnSave.Action = handleSaveClick;
         }
 
         public void AddErrorIndicator() {
@@ -98,30 +98,53 @@ namespace S2VX.Game.Editor.Containers {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            AutoSizeAxes = Axes.Both;
+            AutoSizeAxes = Axes.X;
+            Height = CommandPanel.InputBarHeight;
+
             AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
             AddTabbableInput("EndTime", TxtEndTime);
-            AddTabbableInput("StartValue", TxtStartValue);
-            AddTabbableInput("EndValue", TxtEndValue);
+            AddValueInput("StartValue", TxtStartValue, StartColorPicker);
+            AddValueInput("EndValue", TxtEndValue, EndColorPicker);
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
         }
 
         private void AddInput(string text, Drawable input) =>
-            AddInternal(
-                new FillFlowContainer {
-                    AutoSizeAxes = Axes.Both,
-                    Direction = FillDirection.Vertical,
-                    Children = new Drawable[] {
-                        new SpriteText { Text = text },
-                        input
-                    }
+            Add(new FillFlowContainer {
+                AutoSizeAxes = Axes.Both,
+                Direction = FillDirection.Vertical,
+                Children = new Drawable[] {
+                    new SpriteText { Text = text },
+                    input
                 }
-            );
+            });
 
         private void AddTabbableInput(string text, TabbableContainer input) {
             AddInput(text, input);
+            input.TabbableContentContainer = this;
+        }
+
+        private void AddValueInput(string text, TabbableContainer input, S2VXColorPicker colorPicker) {
+            Add(new FillFlowContainer {
+                Width = CommandPanel.InputSize.X,
+                Direction = FillDirection.Vertical,
+                Children = new Drawable[] {
+                    new SpriteText { Text = text },
+                    input,
+                    colorPicker,
+                    new BasicButton {
+                        Text = "OK",
+                        Action = () => {},
+                        Size = CommandPanel.InputSize
+                    },
+                    new BasicButton {
+                        Text = "Cancel",
+                        Action = () => {},
+                        Size = CommandPanel.InputSize
+                    }
+                }
+            });
             input.TabbableContentContainer = this;
         }
     }
