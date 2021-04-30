@@ -102,9 +102,9 @@ namespace S2VX.Game.Editor.ToolState {
 
         private TimelineEdge IsMouseAtTimelineEdge(Vector2 mousePos) {
             var nearestTick = NotesTimeline.GetNearestTick(GetGameTimeAtMouse(mousePos));
-            return nearestTick == NotesTimeline.FirstVisibleTick
+            return nearestTick <= NotesTimeline.FirstVisibleTick
                 ? TimelineEdge.Left
-                : nearestTick == NotesTimeline.LastVisibleTick ? TimelineEdge.Right : TimelineEdge.None;
+                : nearestTick >= NotesTimeline.LastVisibleTick ? TimelineEdge.Right : TimelineEdge.None;
         }
 
         private double GetGameTimeAtMouse(Vector2 localMousePos) {

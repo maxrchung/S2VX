@@ -85,5 +85,77 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             });
             AddAssert("NotesTimeline ticks have scrolled left", () => oldFirstVisibleTick > Editor.NotesTimeline.FirstVisibleTick);
         }
+
+        [Test]
+        public void OnToolDrag_DragEndOfTimelineHoldNoteLeft_DoesNotScrollTimelineLeft() {
+            var oldFirstVisibleTick = int.MinValue;
+            AddStep("Seek to 2.1s", () => Editor.Seek(2100));
+            AddStep("Init value to compare with", () => oldFirstVisibleTick = Editor.NotesTimeline.FirstVisibleTick);
+            AddStep("Move mouse to end of hold note", () => {
+                var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
+                var offsetVector = new Vector2(halfWidth - 5, 0);
+                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+            });
+            AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
+            AddStep("Move mouse past left edge of NotesTimeline", () =>
+                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+            AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
+            AddStep("Undo note move", () => {
+                InputManager.PressKey(Key.LControl);
+                InputManager.PressKey(Key.Z);
+                InputManager.ReleaseKey(Key.LControl);
+                InputManager.ReleaseKey(Key.Z);
+            });
+            AddAssert("NotesTimeline ticks have not scrolled left", () => oldFirstVisibleTick == Editor.NotesTimeline.FirstVisibleTick);
+        }
+
+        [Test]
+        public void OnToolDrag_DragEndOfTimelineHoldNoteRight_ScrollsTimelineRight() {
+            var oldFirstVisibleTick = int.MinValue;
+            AddStep("Seek to 2.1s", () => Editor.Seek(2100));
+            AddStep("Init value to compare with", () => oldFirstVisibleTick = Editor.NotesTimeline.FirstVisibleTick);
+            AddStep("Move mouse to end of hold note", () => {
+                var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
+                var offsetVector = new Vector2(halfWidth - 5, 0);
+                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+            });
+            AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
+            AddStep("Move mouse past right edge of NotesTimeline", () =>
+                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+            AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
+            AddStep("Undo note move", () => {
+                InputManager.PressKey(Key.LControl);
+                InputManager.PressKey(Key.Z);
+                InputManager.ReleaseKey(Key.LControl);
+                InputManager.ReleaseKey(Key.Z);
+            });
+            AddAssert("NotesTimeline ticks have scrolled right", () => oldFirstVisibleTick < Editor.NotesTimeline.FirstVisibleTick);
+        }
+
+        [Test]
+        public void OnToolDrag_DragEndOfTimelineHoldNoteRightThenLeft_ScrollsTimelineBack() {
+            var oldFirstVisibleTick = int.MinValue;
+            AddStep("Seek to 2.1s", () => Editor.Seek(2100));
+            AddStep("Init value to compare with", () => oldFirstVisibleTick = Editor.NotesTimeline.FirstVisibleTick);
+            AddStep("Move mouse to end of hold note", () => {
+                var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
+                var offsetVector = new Vector2(halfWidth - 5, 0);
+                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+            });
+            AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
+            AddStep("Move mouse past right edge of NotesTimeline", () =>
+                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+            AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
+            AddStep("Move mouse to end of hold note", () => {
+                var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
+                var offsetVector = new Vector2(halfWidth - 5, 0);
+                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+            });
+            AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
+            AddStep("Move mouse past left edge of NotesTimeline", () =>
+                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+            AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
+            AddAssert("NotesTimeline ticks are at their original position", () => oldFirstVisibleTick == Editor.NotesTimeline.FirstVisibleTick);
+        }
     }
 }
