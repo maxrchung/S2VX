@@ -16,9 +16,11 @@ namespace S2VX.Game.Editor.Containers {
         public TextBox TxtStartTime { get; } = CreateErrorTextBox();
         public TextBox TxtEndTime { get; } = CreateErrorTextBox();
         public TextBox TxtStartValue { get; } = CreateErrorTextBox();
-        public S2VXColorPicker StartColorPicker { get; } = new S2VXColorPicker() { Alpha = 0 };
+        public FillFlowContainer StartColorContainer { get; private set; }
+        public S2VXColorPicker StartColorPicker { get; } = new S2VXColorPicker();
         public TextBox TxtEndValue { get; } = CreateErrorTextBox();
-        public S2VXColorPicker EndColorPicker { get; } = new S2VXColorPicker() { Alpha = 0 };
+        public FillFlowContainer EndColorContainer { get; private set; }
+        public S2VXColorPicker EndColorPicker { get; } = new S2VXColorPicker();
         public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
         public Button BtnSave { get; }
         private Action<ValueChangedEvent<string>> HandleTypeSelect { get; }
@@ -104,11 +106,31 @@ namespace S2VX.Game.Editor.Containers {
             AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
             AddTabbableInput("EndTime", TxtEndTime);
-            AddValueInput("StartValue", TxtStartValue, StartColorPicker);
-            AddValueInput("EndValue", TxtEndValue, EndColorPicker);
+
+            StartColorContainer = CreateColorContainer(StartColorPicker);
+            AddValueInput("EndValue", TxtEndValue, StartColorContainer);
+
+            EndColorContainer = CreateColorContainer(EndColorPicker);
+            AddValueInput("EndValue", TxtEndValue, EndColorContainer);
+
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
+
+            TxtEndValue.OnPressed(_ => Console.WriteLine("hello"));
         }
+
+        private static FillFlowContainer CreateColorContainer(S2VXColorPicker colorPicker) =>
+            new() {
+                Direction = FillDirection.Vertical,
+                Children = new Drawable[] {
+                    colorPicker,
+                    new BasicButton {
+                        Text = "OK",
+                        Action = () => colorPicker.Hide(),
+                        Size = CommandPanel.InputSize
+                    }
+                }
+            };
 
         private void AddInput(string text, Drawable input) =>
             Add(new FillFlowContainer {
@@ -125,24 +147,14 @@ namespace S2VX.Game.Editor.Containers {
             input.TabbableContentContainer = this;
         }
 
-        private void AddValueInput(string text, TabbableContainer input, S2VXColorPicker colorPicker) {
+        private void AddValueInput(string text, TabbableContainer input, FillFlowContainer colorContainer) {
             Add(new FillFlowContainer {
                 Width = CommandPanel.InputSize.X,
                 Direction = FillDirection.Vertical,
                 Children = new Drawable[] {
                     new SpriteText { Text = text },
                     input,
-                    colorPicker,
-                    new BasicButton {
-                        Text = "OK",
-                        Action = () => {},
-                        Size = CommandPanel.InputSize
-                    },
-                    new BasicButton {
-                        Text = "Cancel",
-                        Action = () => {},
-                        Size = CommandPanel.InputSize
-                    }
+                    colorContainer
                 }
             });
             input.TabbableContentContainer = this;

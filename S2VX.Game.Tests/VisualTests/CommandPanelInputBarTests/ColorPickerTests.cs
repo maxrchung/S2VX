@@ -1,10 +1,5 @@
 ﻿using NUnit.Framework;
-using osu.Framework.Bindables;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Testing;
-using osuTK.Graphics;
-using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story.Command;
 
@@ -29,12 +24,9 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         }
 
         [Test]
-        public void ConfirmColorSelection_RedColor_SavesRedColor() {
+        public void SelectColor_RedColor_SavesRedColor() {
         }
 
-        [Test]
-        public void CancelColorSelection_GreenColor_DoesNotSaveGreenColor() {
-        }
 
         [Test]
         public void ValuesToString_RedStartColor_ContainsRedStartColor() {
