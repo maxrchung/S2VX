@@ -145,13 +145,6 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past right edge of NotesTimeline", () =>
                 InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
-            AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
-            AddStep("Move mouse to end of hold note", () => {
-                var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
-                var offsetVector = new Vector2(halfWidth - 5, 0);
-                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
-            });
-            AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past left edge of NotesTimeline", () =>
                 InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
