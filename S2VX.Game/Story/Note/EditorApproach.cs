@@ -7,10 +7,10 @@ namespace S2VX.Game.Story.Note {
         private EditorScreen Editor { get; set; }
 
         public override void UpdateApproach() {
-            UpdateColor(Editor.EditorFadeInTime);
+            UpdateColor(Editor.EditorApproachRate);
             UpdatePosition();
         }
 
-        protected override void UpdatePosition() => UpdateInnerApproachPosition(Coordinates, Editor.EditorFadeInTime);
+        protected override void UpdatePosition() => UpdateInnerApproachPosition(Coordinates, Editor.EditorApproachRate);
     }
 }

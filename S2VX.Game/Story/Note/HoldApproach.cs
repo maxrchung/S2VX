@@ -42,13 +42,13 @@ namespace S2VX.Game.Story.Note {
             InternalChildren = lines.Concat(ReleaseLines).Concat(HoldIndicatorLines).ToArray();
         }
 
-        protected override void UpdateColor(float fadeInTime) {
+        protected override void UpdateColor(int editorApproachRate = 1) {
             var time = Time.Current;
             var notes = Story.Notes;
             Colour = Story.Approaches.HoldApproachColor;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - fadeInTime;
+                var startTime = HitTime - notes.ShowTime - editorApproachRate * notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
@@ -57,16 +57,16 @@ namespace S2VX.Game.Story.Note {
                 Alpha = 1;
             }
             // End time to Fade out time
-            else if (time < EndTime + notes.FadeOutTime) {
+            else if (time < EndTime + editorApproachRate * notes.FadeOutTime) {
                 var startTime = EndTime;
-                var endTime = EndTime + notes.FadeOutTime;
+                var endTime = EndTime + editorApproachRate * notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
             }
         }
 
-        protected virtual void UpdateHoldApproachPosition(float fadeInTime) {
+        protected virtual void UpdateHoldApproachPosition(int editorApproachRate = 1) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -77,10 +77,10 @@ namespace S2VX.Game.Story.Note {
 
             var time = Time.Current;
             var coordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
-            UpdateInnerApproachPosition(coordinates, fadeInTime);
+            UpdateInnerApproachPosition(coordinates, editorApproachRate);
 
             // Calculate outer approach values
-            var startTime = EndTime - notes.ShowTime - notes.FadeInTime;
+            var startTime = EndTime - notes.ShowTime - editorApproachRate * notes.FadeInTime;
             var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, EndTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);

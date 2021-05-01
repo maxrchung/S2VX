@@ -21,11 +21,10 @@ namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
         public const double TrackTimeTolerance = 0.03;  // ms away from a tick or end of track will be considered to be on that tick or end of track
         private const int MaxSnapDivisor = 16;
-        private const int MaxApproachRate = 100;
+        private const int MaxApproachRate = 64;
 
         public int SnapDivisor { get; private set; }
         public int EditorApproachRate { get; private set; }
-        public float EditorFadeInTime => EditorApproachRate * Story.Notes.FadeInTime;
 
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
         public ReversibleStack Reversibles { get; } = new ReversibleStack();
@@ -385,6 +384,7 @@ namespace S2VX.Game.Editor {
             editorSettings.TrackPlaybackRate = Track.Tempo.Value;
             editorSettings.SnapDivisor = SnapDivisor;
             editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
+            editorSettings.EditorApproachRate = EditorApproachRate;
             Story.Save(Story.StoryPath);
         }
 

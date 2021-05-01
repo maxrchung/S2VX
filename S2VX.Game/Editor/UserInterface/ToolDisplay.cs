@@ -13,15 +13,13 @@ namespace S2VX.Game.Editor.UserInterface {
         public Anchor TextAnchor { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() =>
-            InternalChildren = new Drawable[]
-            {
-                TxtTool = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
-                    RelativeSizeAxes = Axes.Both,
-                    RelativePositionAxes = Axes.Both,
-                    TextAnchor = TextAnchor,
-                }
-            };
+        private void Load() {
+            AutoSizeAxes = Axes.Both;
+            AddInternal(TxtTool = new TextFlowContainer(s => s.Font = new FontUsage("default", SizeConsts.TextSize2, "500")) {
+                TextAnchor = TextAnchor,
+                AutoSizeAxes = Axes.Both
+            });
+        }
 
         protected override void Update() => TxtTool.Text = $"Tool: {Editor.ToolState.DisplayName()}";
 

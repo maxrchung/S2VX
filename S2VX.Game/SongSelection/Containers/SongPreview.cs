@@ -66,7 +66,7 @@ namespace S2VX.Game.SongSelection.Containers {
             var songInfoHeight = width * 0.6f;
             var btnHeight = width * 0.4f;
             var spacingMargin = 0.05f;
-            var textSize = width * 0.05f;
+            var textSize = SizeConsts.TextSize1;
             var thumbnailSize = width * 0.3f;
             var btnSize = new Vector2(width / 5, width / 10);
 

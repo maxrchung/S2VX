@@ -40,13 +40,13 @@ namespace S2VX.Game.Story.Note {
         /// <summary>
         /// Updates an approach's color/alpha
         /// </summary>
-        protected virtual void UpdateColor(float fadeInTime) {
+        protected virtual void UpdateColor(int editorApproachRate = 1) {
             var time = Time.Current;
             var notes = Story.Notes;
             Colour = Story.Approaches.ApproachColor;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - fadeInTime;
+                var startTime = HitTime - notes.ShowTime - editorApproachRate * notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
             }
@@ -55,9 +55,9 @@ namespace S2VX.Game.Story.Note {
                 Alpha = 1;
             }
             // Hit time to Fade out time
-            else if (time < HitTime + notes.FadeOutTime) {
+            else if (time < HitTime + editorApproachRate * notes.FadeOutTime) {
                 var startTime = HitTime;
-                var endTime = HitTime + notes.FadeOutTime;
+                var endTime = HitTime + editorApproachRate * notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
@@ -67,13 +67,13 @@ namespace S2VX.Game.Story.Note {
         /// <summary>
         /// Updates an approach's position/rotation/size
         /// </summary>
-        protected virtual void UpdatePosition() => UpdateInnerApproachPosition(Coordinates, Story.Notes.FadeInTime);
+        protected abstract void UpdatePosition();
 
         /// <summary>
         /// Both Approach and HoldApproach use this helper to set the inner approach's position
         /// </summary>
         /// <param name="coordinates">S2VX coordinates that the approach is closing onto</param>
-        protected void UpdateInnerApproachPosition(Vector2 coordinates, float fadeInTime) {
+        protected void UpdateInnerApproachPosition(Vector2 coordinates, int editorApproachRate = 1) {
             var notes = Story.Notes;
             var camera = Story.Camera;
             var approaches = Story.Approaches;
@@ -83,7 +83,7 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
             var time = Time.Current;
 
-            var startTime = HitTime - notes.ShowTime - fadeInTime;
+            var startTime = HitTime - notes.ShowTime - editorApproachRate * Story.Notes.FadeInTime;
             var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, HitTime);
             var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
             var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);

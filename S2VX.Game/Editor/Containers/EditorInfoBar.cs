@@ -12,51 +12,38 @@ namespace S2VX.Game.Editor.Containers {
         private EditorScreen Editor { get; set; }
 
         private ToolDisplay ToolDisplay { get; } = new ToolDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Width = 0.4f,
+            Width = 400,
             TextAnchor = Anchor.TopLeft,
+        };
+        public ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            X = 365,
+            Width = 200,
+            TextAnchor = Anchor.TopRight,
         };
 
         private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new NoteSnapDivisorDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 0.4f,
-            Width = 0.2f,
+            X = 565,
+            Width = 200,
             TextAnchor = Anchor.TopCentre,
         };
 
         private MousePositionDisplay MousePositionDisplay { get; } = new MousePositionDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 0.6f,
-            Width = 0.2f,
+            X = 770,
+            Width = 200,
             TextAnchor = Anchor.TopCentre,
         };
 
         private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopLeft,
-            Origin = Anchor.TopLeft,
-            X = 0.8f,
-            Width = 0.2f,
-            TextAnchor = Anchor.TopRight,
-        };
-
-        public ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopLeft,
-            Origin = Anchor.TopLeft,
-            X = 0.16f,
-            Width = 0.2f,
+            Anchor = Anchor.TopRight,
+            Origin = Anchor.TopRight,
             TextAnchor = Anchor.TopRight,
         };
 

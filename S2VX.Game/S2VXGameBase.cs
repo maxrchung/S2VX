@@ -14,6 +14,7 @@ namespace S2VX.Game {
         // the screen scaling for all components including the test browser and framework overlays.
 
         // The "default" resolution from which things are scaled and positioned
+        // THIS SHOULD NEVER BE CHANGED
         public const float GameWidth = 1000.0f;
 
         [Cached]

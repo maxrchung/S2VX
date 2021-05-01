@@ -117,7 +117,7 @@ namespace S2VX.Game.Story.Note {
             OutlineThickness = notes.HoldNoteOutlineThickness;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - Editor.EditorFadeInTime;
+                var startTime = HitTime - notes.ShowTime - Editor.EditorApproachRate * notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
@@ -126,9 +126,9 @@ namespace S2VX.Game.Story.Note {
                 Alpha = maxAlpha;
             }
             // End time to Fade out time
-            else if (time < EndTime + notes.FadeOutTime) {
+            else if (time < EndTime + Editor.EditorApproachRate * notes.FadeOutTime) {
                 var startTime = EndTime;
-                var endTime = EndTime + notes.FadeOutTime;
+                var endTime = EndTime + Editor.EditorApproachRate * notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, maxAlpha, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
