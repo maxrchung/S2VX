@@ -10,6 +10,7 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
@@ -24,7 +25,7 @@ namespace S2VX.Game.Editor {
 
         public int SnapDivisor { get; private set; }
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
-        public ReversibleStack Reversibles { get; } = new ReversibleStack();
+        public ReversibleStack Reversibles { get; } = new();
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
 
         [Resolved]
@@ -36,17 +37,17 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; }
         public S2VXTrack Track { get; }
         private EditorUI EditorUI { get; set; }
-        public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
+        public Container<RelativeBox> NoteSelectionIndicators { get; } = new() {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
-        private Container ToolContainer { get; set; } = new Container {
+        private Container ToolContainer { get; set; } = new() {
             RelativeSizeAxes = Axes.Both,
             Size = Vector2.One
         };
-        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
-        private Timeline Timeline { get; } = new Timeline();
-        public CommandPanel CommandPanel { get; } = new CommandPanel();
+        public NotesTimeline NotesTimeline { get; } = new();
+        private Timeline Timeline { get; } = new();
+        public S2VXCommandPanel CommandPanel { get; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;

@@ -2,7 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Testing;
 using osuTK.Graphics;
-using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
@@ -29,7 +29,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
 
         [Test]
         public void BindTxtValueChange_GreenColor_SetsColorPickerToGreen() {
-            AddStep("Load color command", () => InputBar.CommandToValues(new ApproachesColorCommand()));
+            AddStep("Load color command", () => InputBar.CommandToValues(new NotesColorCommand()));
             AddStep("Set text value to green", () => InputBar.StartValue.TxtValue.Text = "(0,1,0)");
             AddAssert("Sets color picker to green", () => InputBar.StartValue.ColorPicker.Current.Value == Color4.Green);
         }

@@ -6,7 +6,7 @@ using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using S2VX.Game.Editor.ColorPicker;
 
-namespace S2VX.Game.Editor.Containers {
+namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelValueInput : Container {
         public TextBox TxtValue { get; } = CommandPanelInputBar.CreateErrorTextBox();
 
@@ -15,12 +15,12 @@ namespace S2VX.Game.Editor.Containers {
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
             Position = new(-5, 5),
-            Size = new(CommandPanel.InputSize.Y - 10)
+            Size = new(S2VXCommandPanel.InputSize.Y - 10)
         };
 
         public S2VXColorPicker ColorPicker { get; } = new S2VXColorPicker() {
             Alpha = 0,
-            Position = new(0, CommandPanel.InputSize.Y)
+            Position = new(0, S2VXCommandPanel.InputSize.Y)
         };
 
         public void UseColorPicker(bool isColorValue) {
@@ -69,7 +69,7 @@ namespace S2VX.Game.Editor.Containers {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Size = CommandPanel.InputSize;
+            Size = S2VXCommandPanel.InputSize;
 
             Children = new Drawable[] {
                 TxtValue,

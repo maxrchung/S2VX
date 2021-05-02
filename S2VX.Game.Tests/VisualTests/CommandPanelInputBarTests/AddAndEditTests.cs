@@ -3,7 +3,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osuTK.Input;
-using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {

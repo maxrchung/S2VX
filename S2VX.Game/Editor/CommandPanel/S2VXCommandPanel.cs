@@ -11,8 +11,8 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 
-namespace S2VX.Game.Editor.Containers {
-    public class CommandPanel : OverlayContainer {
+namespace S2VX.Game.Editor.CommandPanel {
+    public class S2VXCommandPanel : OverlayContainer {
 
         [Resolved]
         private EditorScreen Editor { get; set; } = null;

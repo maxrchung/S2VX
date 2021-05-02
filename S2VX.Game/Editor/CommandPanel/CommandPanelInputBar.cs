@@ -9,19 +9,19 @@ using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor.Containers {
+namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelInputBar : FillFlowContainer {
         public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
         public TextBox TxtStartTime { get; } = CreateErrorTextBox();
         public TextBox TxtEndTime { get; } = CreateErrorTextBox();
         public CommandPanelValueInput StartValue { get; } = new();
         public CommandPanelValueInput EndValue { get; } = new();
-        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
+        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = S2VXCommandPanel.InputSize.X };
         public Button BtnSave { get; }
 
         public static BasicTextBox CreateErrorTextBox() =>
             new() {
-                Size = CommandPanel.InputSize,
+                Size = S2VXCommandPanel.InputSize,
                 BorderColour = Color4.Red,
                 Masking = true
             };
@@ -35,8 +35,8 @@ namespace S2VX.Game.Editor.Containers {
         private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleCommitClick) {
             var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
             BtnSave = new IconButton() {
-                Width = CommandPanel.InputSize.Y,
-                Height = CommandPanel.InputSize.Y,
+                Width = S2VXCommandPanel.InputSize.Y,
+                Height = S2VXCommandPanel.InputSize.Y,
                 Icon = saveIcon
             };
 
@@ -99,7 +99,7 @@ namespace S2VX.Game.Editor.Containers {
         [BackgroundDependencyLoader]
         private void Load() {
             AutoSizeAxes = Axes.X;
-            Height = CommandPanel.InputBarHeight;
+            Height = S2VXCommandPanel.InputBarHeight;
 
             AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
