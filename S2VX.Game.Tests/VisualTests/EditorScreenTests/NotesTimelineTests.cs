@@ -148,6 +148,12 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             AddStep("Move mouse past left edge of NotesTimeline", () =>
                 InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
+            AddStep("Undo note move", () => {
+                InputManager.PressKey(Key.LControl);
+                InputManager.PressKey(Key.Z);
+                InputManager.ReleaseKey(Key.LControl);
+                InputManager.ReleaseKey(Key.Z);
+            });
             AddAssert("NotesTimeline ticks are at their original position", () => oldFirstVisibleTick == Editor.NotesTimeline.FirstVisibleTick);
         }
     }

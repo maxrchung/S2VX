@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Testing;
-using osuTK;
 
 namespace S2VX.Game.Tests {
     /// <summary>
@@ -12,11 +11,7 @@ namespace S2VX.Game.Tests {
     public class S2VXTestScene : ManualInputManagerTestScene {
         protected override Container<Drawable> Content { get; }
 
-        public const float GameWidth = 1000.0f;
-
-        public S2VXTestScene() => base.Content.Add(Content = new DrawSizePreservingFillContainer {
-            TargetDrawSize = new Vector2(GameWidth, GameWidth)
-        });
+        public S2VXTestScene() => base.Content.Add(Content = new SquareContainer());
 
         protected override ITestSceneTestRunner CreateRunner() => new S2VXTestSceneTestRunner();
     }
