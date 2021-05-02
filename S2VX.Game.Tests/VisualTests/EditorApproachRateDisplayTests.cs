@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using osu.Framework.Testing;
 using S2VX.Game.Editor;
 using S2VX.Game.Story;
+using System;
 using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
@@ -28,34 +29,27 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
-        public void EditorApproachRateDisplay_ScrollWheelDown_ApproachRateIsOne() {
+        public void EditorApproachRateDisplay_ScrollWheelUpThenDown_ApproachRateIsOne() {
             AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
+            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
             AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
             AddAssert("Editor approach rate is 1", () => Editor.EditorApproachRate == 1);
         }
 
-        [Test]
-        public void EditorApproachRateDisplay_ScrollWheelUp_ApproachRateIsFour() {
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
+        [TestCase(7)] // Tests scrolling up after reaching maximum AR
+        public void EditorApproachRateDisplay_ScrollWheelUp_ApproachRateIsCorrect(int numScrolls) {
             AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddAssert("Editor approach rate is 4", () => Editor.EditorApproachRate == 4);
-        }
-
-        [Test]
-        public void EditorApproachRateDisplay_ScrollWheelUpTwice_ApproachRateIsEight() {
-            AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddAssert("Editor approach rate is 8", () => Editor.EditorApproachRate == 8);
-        }
-
-        [Test]
-        public void EditorApproachRateDisplay_ScrollWheelUpThreeTimes_ApproachRateIsStillEight() {
-            AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddAssert("Editor approach rate is 8", () => Editor.EditorApproachRate == 8);
+            for (var i = 0; i < numScrolls; ++i) {
+                AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
+            }
+            var expectedAR = Math.Clamp(Math.Pow(2, numScrolls), 1, 64);
+            AddAssert($"Editor approach rate is {expectedAR}", () => Editor.EditorApproachRate == expectedAR);
         }
 
         [Test]
