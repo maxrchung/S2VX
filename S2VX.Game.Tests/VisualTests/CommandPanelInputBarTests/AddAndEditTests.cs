@@ -37,7 +37,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
                 InputManager.PressKey(Key.LShift);
                 InputManager.PressKey(Key.Tab);
             });
-            AddAssert("Shifts focus to last input", () => InputBar.TxtEndValue.HasFocus);
+            AddAssert("Shifts focus to last input", () => InputBar.EndValue.TxtValue.HasFocus);
         }
 
         [Test]
@@ -58,8 +58,8 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
             AddStep("Update command type", () => InputBar.DropType.Current.Value = new GridAlphaCommand().GetCommandName());
             AddStep("Update start time", () => InputBar.TxtStartTime.Current.Value = "123");
             AddStep("Update end time", () => InputBar.TxtEndTime.Current.Value = "456789");
-            AddStep("Update start value", () => InputBar.TxtStartValue.Current.Value = "0.1");
-            AddStep("Update end value", () => InputBar.TxtEndValue.Current.Value = "1");
+            AddStep("Update start value", () => InputBar.StartValue.TxtValue.Current.Value = "0.1");
+            AddStep("Update end value", () => InputBar.EndValue.TxtValue.Current.Value = "1");
             AddStep("Update easing", () => InputBar.DropEasing.Current.Value = Easing.OutQuint.ToString());
             AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridAlpha|123|456789|OutQuint|0.1|1");
         }
@@ -97,13 +97,13 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void CommandToValues_GivenCommand_HasCorrectStartValue() {
             SetUpCommandToValues();
-            AddAssert("Has correct start value", () => InputBar.TxtStartValue.Current.Value == "0.999");
+            AddAssert("Has correct start value", () => InputBar.StartValue.TxtValue.Current.Value == "0.999");
         }
 
         [Test]
         public void CommandToValues_GivenCommand_HasCorrectEndValue() {
             SetUpCommandToValues();
-            AddAssert("Has correct end value", () => InputBar.TxtEndValue.Current.Value == "0.001");
+            AddAssert("Has correct end value", () => InputBar.EndValue.TxtValue.Current.Value == "0.001");
         }
 
         [Test]
