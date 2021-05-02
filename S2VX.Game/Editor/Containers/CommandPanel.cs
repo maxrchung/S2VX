@@ -40,7 +40,7 @@ namespace S2VX.Game.Editor.Containers {
             CommandsList.Clear();
             if (EditCommandReference != null) {
                 // Reconstruct EditInputBar since it has been disposed
-                HandleEditCommand(EditCommandReference);
+                ResetEditInputBar(EditCommandReference);
             }
             var type = AddInputBar.DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
@@ -59,13 +59,13 @@ namespace S2VX.Game.Editor.Containers {
             CommandsList.Add(new FillFlowContainer {
                 AutoSizeAxes = Axes.Both,
                 Children = new Drawable[] {
-                                new IconButton {
-                                    Action = () => HandleCancelCommand(),
-                                    Width = InputSize.Y,
-                                    Height = InputSize.Y,
-                                    Icon = FontAwesome.Solid.Times
-                                }
-                            }
+                    new IconButton {
+                        Action = () => HandleCancelCommand(),
+                        Width = InputSize.Y,
+                        Height = InputSize.Y,
+                        Icon = FontAwesome.Solid.Times
+                    }
+                }
             });
             CommandsList.Add(EditInputBar);
         }
@@ -99,7 +99,7 @@ namespace S2VX.Game.Editor.Containers {
             });
 
         private void HandleAddClick() {
-            AddInputBar.ClearErrorIndicator();
+            AddInputBar.Reset();
             var commandString = AddInputBar.ValuesToString();
             try {
                 var command = S2VXCommand.FromString(commandString);
@@ -129,12 +129,11 @@ namespace S2VX.Game.Editor.Containers {
         private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
-            AddInputBar.ClearErrorIndicator();
             AddInputBar.CommandToValues(command);
             LoadCommandsList();
         }
 
-        private void HandleEditCommand(S2VXCommand command) {
+        private void ResetEditInputBar(S2VXCommand command) {
             EditInputBar = CreateEditInputBar();
             EditInputBar.CommandToValues(command);
         }
@@ -157,7 +156,7 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
-            AddInputBar.ClearErrorIndicator();
+            AddInputBar.Reset();
             HandleCancelCommand();  // Cancel edit if type filter is changed
             LoadCommandsList();
         }

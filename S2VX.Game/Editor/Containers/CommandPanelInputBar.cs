@@ -5,7 +5,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
-using S2VX.Game.Editor.ColorPicker;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
@@ -15,18 +14,13 @@ namespace S2VX.Game.Editor.Containers {
         public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
         public TextBox TxtStartTime { get; } = CreateErrorTextBox();
         public TextBox TxtEndTime { get; } = CreateErrorTextBox();
-        public TextBox TxtStartValue { get; } = CreateErrorTextBox();
-        public FillFlowContainer StartColorContainer { get; private set; }
-        public S2VXColorPicker StartColorPicker { get; } = new S2VXColorPicker();
-        public TextBox TxtEndValue { get; } = CreateErrorTextBox();
-        public FillFlowContainer EndColorContainer { get; private set; }
-        public S2VXColorPicker EndColorPicker { get; } = new S2VXColorPicker();
+        public CommandPanelValueInput StartValue { get; } = new();
+        public CommandPanelValueInput EndValue { get; } = new();
         public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
         public Button BtnSave { get; }
-        private Action<ValueChangedEvent<string>> HandleTypeSelect { get; }
 
-        private static TextBox CreateErrorTextBox() =>
-            new BasicTextBox() {
+        public static BasicTextBox CreateErrorTextBox() =>
+            new() {
                 Size = CommandPanel.InputSize,
                 BorderColour = Color4.Red,
                 Masking = true
@@ -38,14 +32,13 @@ namespace S2VX.Game.Editor.Containers {
         public static CommandPanelInputBar CreateEditInputBar(Action handleSaveClick) =>
             new(true, _ => { }, handleSaveClick);
 
-        private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleSaveClick) {
+        private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleCommitClick) {
             var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
             BtnSave = new IconButton() {
                 Width = CommandPanel.InputSize.Y,
                 Height = CommandPanel.InputSize.Y,
                 Icon = saveIcon
             };
-            HandleTypeSelect = handleTypeSelect;
 
             // We initialize the inputs here instead of in Load because the
             // outer CommandPanel needs some of these values to be set
@@ -56,33 +49,37 @@ namespace S2VX.Game.Editor.Containers {
             allCommands.AddRange(allCommandNames);
             DropType.Items = allCommands;
             DropEasing.Items = Enum.GetNames(typeof(Easing));
-            DropType.Current.BindValueChanged(HandleTypeSelect);
-            BtnSave.Action = handleSaveClick;
+            DropType.Current.BindValueChanged(handleTypeSelect);
+            BtnSave.Action = handleCommitClick;
         }
 
         public void AddErrorIndicator() {
             TxtStartTime.BorderThickness = 5;
             TxtEndTime.BorderThickness = 5;
-            TxtStartValue.BorderThickness = 5;
-            TxtEndValue.BorderThickness = 5;
+            StartValue.TxtValue.BorderThickness = 5;
+            EndValue.TxtValue.BorderThickness = 5;
         }
 
-        public void ClearErrorIndicator() {
+        public void Reset() {
             TxtStartTime.BorderThickness = 0;
             TxtEndTime.BorderThickness = 0;
-            TxtStartValue.BorderThickness = 0;
-            TxtEndValue.BorderThickness = 0;
+            StartValue.TxtValue.BorderThickness = 0;
+            EndValue.TxtValue.BorderThickness = 0;
+
+            // Checks if we have to re-enable color picker toggle
+            var isColorValue = DropType.Current.Value.Contains("Color", StringComparison.Ordinal);
+            StartValue.UseColorPicker(isColorValue);
+            EndValue.UseColorPicker(isColorValue);
         }
 
         public string ValuesToString() {
-            var data = new string[]
-            {
+            var data = new string[] {
                 $"{DropType.Current.Value}",
                 $"{TxtStartTime.Current.Value}",
                 $"{TxtEndTime.Current.Value}",
                 $"{DropEasing.Current.Value}",
-                $"{TxtStartValue.Current.Value}",
-                $"{TxtEndValue.Current.Value}"
+                $"{StartValue.TxtValue.Current.Value}",
+                $"{EndValue.TxtValue.Current.Value}"
             };
             var commandString = string.Join("|", data);
             return commandString;
@@ -94,8 +91,9 @@ namespace S2VX.Game.Editor.Containers {
             TxtStartTime.Text = data[1];
             TxtEndTime.Text = data[2];
             DropEasing.Current.Value = data[3];
-            TxtStartValue.Text = data[4];
-            TxtEndValue.Text = data[5];
+            StartValue.TxtValue.Text = data[4];
+            EndValue.TxtValue.Text = data[5];
+            Reset();
         }
 
         [BackgroundDependencyLoader]
@@ -106,31 +104,11 @@ namespace S2VX.Game.Editor.Containers {
             AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
             AddTabbableInput("EndTime", TxtEndTime);
-
-            StartColorContainer = CreateColorContainer(StartColorPicker);
-            AddValueInput("EndValue", TxtEndValue, StartColorContainer);
-
-            EndColorContainer = CreateColorContainer(EndColorPicker);
-            AddValueInput("EndValue", TxtEndValue, EndColorContainer);
-
+            AddValueInput("StartValue", StartValue);
+            AddValueInput("EndValue", EndValue);
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
-
-            TxtEndValue.OnPressed(_ => Console.WriteLine("hello"));
         }
-
-        private static FillFlowContainer CreateColorContainer(S2VXColorPicker colorPicker) =>
-            new() {
-                Direction = FillDirection.Vertical,
-                Children = new Drawable[] {
-                    colorPicker,
-                    new BasicButton {
-                        Text = "OK",
-                        Action = () => colorPicker.Hide(),
-                        Size = CommandPanel.InputSize
-                    }
-                }
-            };
 
         private void AddInput(string text, Drawable input) =>
             Add(new FillFlowContainer {
@@ -147,17 +125,9 @@ namespace S2VX.Game.Editor.Containers {
             input.TabbableContentContainer = this;
         }
 
-        private void AddValueInput(string text, TabbableContainer input, FillFlowContainer colorContainer) {
-            Add(new FillFlowContainer {
-                Width = CommandPanel.InputSize.X,
-                Direction = FillDirection.Vertical,
-                Children = new Drawable[] {
-                    new SpriteText { Text = text },
-                    input,
-                    colorContainer
-                }
-            });
-            input.TabbableContentContainer = this;
+        private void AddValueInput(string text, CommandPanelValueInput input) {
+            AddInput(text, input);
+            input.TxtValue.TabbableContentContainer = this;
         }
     }
 }
