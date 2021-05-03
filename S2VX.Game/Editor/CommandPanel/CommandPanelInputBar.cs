@@ -103,8 +103,8 @@ namespace S2VX.Game.Editor.CommandPanel {
 
             AddInput("Type", DropType);
             AddTabbableInput("StartTime", TxtStartTime);
-            AddTabbableInput("EndTime", TxtEndTime);
             AddValueInput("StartValue", StartValue);
+            AddTabbableInput("EndTime", TxtEndTime);
             AddValueInput("EndValue", EndValue);
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
