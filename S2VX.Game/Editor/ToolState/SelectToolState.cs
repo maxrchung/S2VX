@@ -107,6 +107,13 @@ namespace S2VX.Game.Editor.ToolState {
                 : nearestTick >= NotesTimeline.LastVisibleTick ? TimelineEdge.Right : TimelineEdge.None;
         }
 
+        public double GetClosestTickTime(double gameTime) {
+            var timeBetweenTicks = NotesTimeline.TimeBetweenTicks;
+            var leftOffset = (gameTime - Story.Offset) % timeBetweenTicks;
+            var rightOffset = timeBetweenTicks - leftOffset;
+            return gameTime + (leftOffset <= rightOffset ? -leftOffset : rightOffset);
+        }
+
         private double GetGameTimeAtMouse(Vector2 localMousePos) {
             var noteSelectionIndicators = Editor.NotesTimeline.NoteSelectionIndicators;
             var mousePosX = ToSpaceOfOtherDrawable(ToLocalSpace(localMousePos), noteSelectionIndicators).X;
@@ -201,8 +208,7 @@ namespace S2VX.Game.Editor.ToolState {
                 case SelectToolDragState.DragTimelineNote:
                     foreach (var noteAndTime in NotesTimeline.SelectedNoteToTime) {
                         var note = noteAndTime.Key;
-                        var mouseTime = note.HitTime - selectedNoteTime + GetGameTimeAtMouse(e.ScreenSpaceMouseDownPosition);
-                        TimelineNoteToDragPointDelta[note] = mouseTime - note.HitTime;
+                        TimelineNoteToDragPointDelta[note] = GetGameTimeAtMouse(e.ScreenSpaceMouseDownPosition) - selectedNoteTime;
                     }
                     break;
                 case SelectToolDragState.DragNote:
@@ -235,7 +241,7 @@ namespace S2VX.Game.Editor.ToolState {
                                 break;
                         }
                         foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                            var newTime = NotesTimeline.GetNearestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
+                            var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                             note.UpdateEndTime(newTime + oldDuration);
                             NotesTimeline.AddNoteTimelineSelection(note);
                         }
@@ -252,7 +258,7 @@ namespace S2VX.Game.Editor.ToolState {
                                 break;
                         }
                         foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                            var newTime = NotesTimeline.GetNearestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
+                            var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                             note.UpdateHitTime(newTime);
                             NotesTimeline.AddNoteTimelineSelection(note);
                         }
@@ -281,7 +287,7 @@ namespace S2VX.Game.Editor.ToolState {
                     var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
 
                     foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                        var newTime = NotesTimeline.GetNearestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
+                        var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                         var oldDuration = OldEndTime - OldHitTime;
                         Editor.Reversibles.Push(new ReversibleUpdateNoteEndTime(note, OldEndTime, newTime + oldDuration, Editor));
                     }
@@ -291,7 +297,7 @@ namespace S2VX.Game.Editor.ToolState {
                     var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
 
                     foreach (var note in NotesTimeline.SelectedNoteToTime.Keys.ToList()) {
-                        var newTime = NotesTimeline.GetNearestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
+                        var newTime = GetClosestTickTime(gameTimeAtMouse - TimelineNoteToDragPointDelta[note]);
                         Editor.Reversibles.Push(new ReversibleUpdateNoteHitTime(note, OldHitTime, newTime, Editor));
                     }
                     break;

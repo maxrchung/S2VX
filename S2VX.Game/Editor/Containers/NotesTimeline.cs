@@ -25,30 +25,27 @@ namespace S2VX.Game.Editor.Containers {
             public double CurrentTick;
             public double CurrentTickTime;
             public int NearestTick;
-            public double NearestTickTime;
             public bool OnTick;
         }
 
-        public double NumTicks { get; private set; }
         public double TimeBetweenTicks { get; private set; }
-        private int NumVisibleTicks { get; set; }
         public int FirstVisibleTick { get; private set; }
         public int LastVisibleTick { get; private set; }
 
-        public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new Dictionary<S2VXNote, double>();
-        public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new Dictionary<S2VXNote, RelativeBox>();
+        public Dictionary<S2VXNote, double> SelectedNoteToTime { get; private set; } = new();
+        public Dictionary<S2VXNote, RelativeBox> NoteToTimelineNote { get; } = new();
 
-        public Container TickBarContent { get; } = new Container {
+        public Container TickBarContent { get; } = new() {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
-        public Container NoteSelectionIndicators { get; } = new Container {
+        public Container NoteSelectionIndicators { get; } = new() {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
 
         private static readonly int[] ValidBeatDivisors = { 1, 2, 3, 4, 6, 8, 12, 16 };
-        private static readonly Color4[][] TickColoring = new Color4[][]
+        private static readonly Color4[][] TickColoring =
         {
             new Color4[] { Color4.White },
             new Color4[] { Color4.White, Color4.Red },
@@ -73,12 +70,12 @@ namespace S2VX.Game.Editor.Containers {
         public int DivisorIndex { get; set; } = 3;
         public int Divisor { get; private set; } = 4;
 
-        private SpriteText TxtBeatSnapDivisorLabel { get; } = new SpriteText {
+        private SpriteText TxtBeatSnapDivisorLabel { get; } = new() {
             Text = "Beat Snap Divisor",
             Font = new FontUsage("default", 23, "500"),
         };
 
-        private SpriteText TxtBeatSnapDivisor { get; } = new SpriteText {
+        private SpriteText TxtBeatSnapDivisor { get; } = new() {
             RelativeSizeAxes = Axes.Both,
             RelativePositionAxes = Axes.Both,
             Font = new FontUsage("default", 23, "500"),
@@ -246,8 +243,6 @@ namespace S2VX.Game.Editor.Containers {
 
         public int GetNearestTick(double time) => GetTickInfo(time).NearestTick;
 
-        public double GetNearestTickTime(double time) => GetTickInfo(time).NearestTickTime;
-
         private TickInfo GetTickInfo(double time) {
             var currentTick = (time - Story.Offset) / TimeBetweenTicks;
             var currentTickTime = currentTick * TimeBetweenTicks;
@@ -258,7 +253,6 @@ namespace S2VX.Game.Editor.Containers {
                 CurrentTick = currentTick,
                 CurrentTickTime = currentTickTime,
                 NearestTick = nearestTick,
-                NearestTickTime = nearestTickTime,
                 OnTick = onTick
             };
         }
@@ -351,8 +345,8 @@ namespace S2VX.Game.Editor.Containers {
             Divisor = ValidBeatDivisors[DivisorIndex];
             var microTickSpacing = tickSpacing / Divisor;
 
-            NumTicks = bps * totalSeconds * Divisor;
-            TimeBetweenTicks = Editor.Track.Length / NumTicks;
+            var numTicks = bps * totalSeconds * Divisor;
+            TimeBetweenTicks = Editor.Track.Length / numTicks;
             var numVisibleTicks = 0;
 
             for (var tickPos = (0.5f - relativeMidTickOffset) % tickSpacing - tickSpacing; tickPos <= 1;) {
@@ -386,12 +380,11 @@ namespace S2VX.Game.Editor.Containers {
                 }
             }
 
-            NumVisibleTicks = numVisibleTicks;
             var tickInfo = GetTickInfo(Time.Current);
             var nearestTick = tickInfo.NearestTick;
-            FirstVisibleTick = nearestTick - NumVisibleTicks / 2;
-            LastVisibleTick = nearestTick + NumVisibleTicks / 2;
-            if (NumVisibleTicks % 2 == 0) {
+            FirstVisibleTick = nearestTick - numVisibleTicks / 2;
+            LastVisibleTick = nearestTick + numVisibleTicks / 2;
+            if (numVisibleTicks % 2 == 0) {
                 // Move one in from the side we're closer to
                 if (tickInfo.CurrentTick > nearestTick) {
                     ++FirstVisibleTick;
