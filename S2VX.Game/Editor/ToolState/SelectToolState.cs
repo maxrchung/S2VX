@@ -33,7 +33,7 @@ namespace S2VX.Game.Editor.ToolState {
         private Vector2 OldCoords { get; set; }
         private int OldFirstVisibleTick { get; set; }
 
-        private enum TimelineEdge {
+        private enum Direction {
             None,
             Left,
             Right
@@ -100,12 +100,19 @@ namespace S2VX.Game.Editor.ToolState {
             return u >= 0 && v >= 0 && u <= 1 && v <= 1;
         }
 
-        private TimelineEdge IsMouseAtTimelineEdge(Vector2 mousePos) {
+        private Direction GetTimelineScrollDirection(DragEvent e) {
+            var result = Direction.None;
+            var mousePos = e.ScreenSpaceMousePosition;
             var nearestTick = NotesTimeline.GetNearestTick(GetGameTimeAtMouse(mousePos));
-            return nearestTick <= NotesTimeline.FirstVisibleTick
-                ? TimelineEdge.Left
-                : nearestTick >= NotesTimeline.LastVisibleTick ? TimelineEdge.Right : TimelineEdge.None;
+            if (nearestTick <= NotesTimeline.FirstVisibleTick && MouseDragDirection(e) == Direction.Left) {
+                result = Direction.Left;
+            } else if (nearestTick >= NotesTimeline.LastVisibleTick && MouseDragDirection(e) == Direction.Right) {
+                result = Direction.Right;
+            }
+            return result;
         }
+
+        private static Direction MouseDragDirection(DragEvent e) => e.Delta.X > 0 ? Direction.Right : e.Delta.X < 0 ? Direction.Left : Direction.None;
 
         public double GetClosestTickTime(double gameTime) {
             var timeBetweenTicks = NotesTimeline.TimeBetweenTicks;
@@ -229,14 +236,14 @@ namespace S2VX.Game.Editor.ToolState {
                     case SelectToolDragState.DragHoldNoteEndTime: {
                         var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
                         var oldDuration = OldEndTime - OldHitTime;
-                        switch (IsMouseAtTimelineEdge(e.ScreenSpaceMousePosition)) {
-                            case TimelineEdge.Left:
+                        switch (GetTimelineScrollDirection(e)) {
+                            case Direction.Left:
                                 // When modifying the end time of a HoldNote we should not scroll left from where we started
                                 if (NotesTimeline.FirstVisibleTick > OldFirstVisibleTick) {
                                     NotesTimeline.SnapToTick(true);
                                 }
                                 break;
-                            case TimelineEdge.Right:
+                            case Direction.Right:
                                 NotesTimeline.SnapToTick(false);
                                 break;
                         }
@@ -249,11 +256,11 @@ namespace S2VX.Game.Editor.ToolState {
                     }
                     case SelectToolDragState.DragTimelineNote: {
                         var gameTimeAtMouse = GetGameTimeAtMouse(e.ScreenSpaceMousePosition);
-                        switch (IsMouseAtTimelineEdge(e.ScreenSpaceMousePosition)) {
-                            case TimelineEdge.Left:
+                        switch (GetTimelineScrollDirection(e)) {
+                            case Direction.Left:
                                 NotesTimeline.SnapToTick(true);
                                 break;
-                            case TimelineEdge.Right:
+                            case Direction.Right:
                                 NotesTimeline.SnapToTick(false);
                                 break;
                         }
