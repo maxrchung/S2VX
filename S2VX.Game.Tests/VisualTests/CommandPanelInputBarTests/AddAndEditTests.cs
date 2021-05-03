@@ -26,7 +26,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
             CreateAddInputBar();
             AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.TxtStartTime));
             AddStep("Press tab", () => InputManager.PressKey(Key.Tab));
-            AddAssert("Shifts focus to next input", () => InputBar.TxtEndTime.HasFocus);
+            AddAssert("Shifts focus to next input", () => InputBar.StartValue.TxtValue.HasFocus);
         }
 
         [Test]
