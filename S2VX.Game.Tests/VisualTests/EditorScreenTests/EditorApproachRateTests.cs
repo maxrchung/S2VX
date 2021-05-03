@@ -47,6 +47,7 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
                 HitTime = 10000,
                 EndTime = 10001,
             }));
+            AddStep("Increase editor approach rate multiplier to 2", () => Editor.ApproachRateIncrease());
         }
 
         [Test]
@@ -64,21 +65,21 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
 
         [Test]
         public void EditorApproachRate_ApproachRateTwo_NoteIsNotVisible() {
-            AddStep("Seek right before note is visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 2 - Story.Notes.FadeInTime));
+            AddStep("Seek right before note is visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 2));
             AddAssert("Note is not visible", () => NoteToTest.Alpha == 0);
         }
 
         [Test]
         public void EditorApproachRate_ApproachRateFour_NoteIsVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 2 - Story.Notes.FadeInTime));
+            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 2));
             AddAssert("Note is visible", () => NoteToTest.Alpha != 0);
         }
 
         [Test]
         public void EditorApproachRate_ApproachRateFour_NoteIsNotVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 4 - Story.Notes.FadeInTime));
+            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 4));
             AddAssert("Note is visible", () => NoteToTest.Alpha == 0);
         }
 
@@ -86,7 +87,7 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
         public void EditorApproachRate_ApproachRateEight_NoteIsVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
             AddStep("Increase editor approach rate multiplier to 8", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 4 - Story.Notes.FadeInTime));
+            AddStep("Seek right before note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 4));
             AddAssert("Note is visible", () => NoteToTest.Alpha != 0);
         }
 
@@ -105,21 +106,21 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
 
         [Test]
         public void EditorApproachRate_ApproachRateTwo_HoldNoteIsNotVisible() {
-            AddStep("Seek right before hold note is visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 2 - Story.Notes.FadeInTime));
+            AddStep("Seek right before hold note is visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 2));
             AddAssert("Hold Note is not visible", () => HoldNoteToTest.Alpha == 0);
         }
 
         [Test]
         public void EditorApproachRate_ApproachRateFour_HoldNoteIsVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 2 - Story.Notes.FadeInTime));
+            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 2));
             AddAssert("Hold Note is visible", () => HoldNoteToTest.Alpha != 0);
         }
 
         [Test]
         public void EditorApproachRate_ApproachRateFour_HoldNoteIsNotVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 4 - Story.Notes.FadeInTime));
+            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 4));
             AddAssert("Hold Note is visible", () => HoldNoteToTest.Alpha == 0);
         }
 
@@ -127,7 +128,7 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
         public void EditorApproachRate_ApproachRateEight_HoldNoteIsVisible() {
             AddStep("Increase editor approach rate multiplier to 4", () => Editor.ApproachRateIncrease());
             AddStep("Increase editor approach rate multiplier to 8", () => Editor.ApproachRateIncrease());
-            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime * 4 - Story.Notes.FadeInTime));
+            AddStep("Seek right before hold note would be visible", () => Editor.Seek(NoteToTest.HitTime - Story.Notes.ShowTime - Story.Notes.FadeInTime * 4));
             AddAssert("Hold Note is visible", () => HoldNoteToTest.Alpha != 0);
         }
     }
