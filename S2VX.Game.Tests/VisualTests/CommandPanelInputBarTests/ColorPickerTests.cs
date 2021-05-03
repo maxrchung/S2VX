@@ -28,10 +28,10 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         }
 
         [Test]
-        public void BindTxtValueChange_GreenColor_SetsColorPickerToGreen() {
+        public void BindTxtValueChange_LimeColor_SetsColorPickerToLime() {
             AddStep("Load color command", () => InputBar.CommandToValues(new NotesColorCommand()));
-            AddStep("Set text value to green", () => InputBar.StartValue.TxtValue.Text = "(0,1,0)");
-            AddAssert("Sets color picker to green", () => InputBar.StartValue.ColorPicker.Current.Value == Color4.Green);
+            AddStep("Set text value to lime", () => InputBar.StartValue.TxtValue.Text = "(0,1,0)");
+            AddAssert("Sets color picker to lime", () => InputBar.StartValue.ColorPicker.Current.Value == Color4.Lime);
         }
 
         [Test]
