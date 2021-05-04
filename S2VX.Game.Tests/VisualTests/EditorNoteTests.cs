@@ -25,7 +25,6 @@ namespace S2VX.Game.Tests.VisualTests {
 
         private EditorNote NoteToTest { get; set; }
         private StopwatchClock StoryClock { get; set; }
-
         private readonly float NoteAppearTime = 1000.0f;
 
         [BackgroundDependencyLoader]
@@ -39,7 +38,7 @@ namespace S2VX.Game.Tests.VisualTests {
         // All tests will have a note that starts to appear in 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            var stepButton = AddStep("Reset story", () => Story.Reset());
+            AddStep("Reset story", () => Story.Reset());
             AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
             AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
