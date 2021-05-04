@@ -206,11 +206,15 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
-        public override Approach AddApproach() => new GameHoldApproach {
-            Coordinates = Coordinates,
-            HitTime = HitTime,
-            EndTime = EndTime,
-            EndCoordinates = EndCoordinates
-        };
+        public override Approach AddApproach() {
+            var approach = new GameHoldApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime,
+                EndTime = EndTime,
+                EndCoordinates = EndCoordinates
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }

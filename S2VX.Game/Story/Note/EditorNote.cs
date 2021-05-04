@@ -63,9 +63,13 @@ namespace S2VX.Game.Story.Note {
         public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
             editor.Reversibles.Push(new ReversibleRemoveNote(story, this, editor));
 
-        public override Approach AddApproach() => new EditorApproach {
-            Coordinates = Coordinates,
-            HitTime = HitTime
-        };
+        public override Approach AddApproach() {
+            var approach = new EditorApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }
