@@ -29,7 +29,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="ppy.osu.Framework" Version="2021.416.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.427.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="VisualTests\EditorScreenTests\ValidStory.s2ry">

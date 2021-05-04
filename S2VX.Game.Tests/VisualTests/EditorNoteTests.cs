@@ -1,33 +1,45 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using osu.Framework.Utils;
 using osuTK.Graphics;
+using S2VX.Game.Editor;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using S2VX.Game.Story.Note;
+using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class EditorNoteTests : S2VXTestScene {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
+#pragma warning disable IDE0052 // Remove unread private members
+        private EditorScreen Editor { get; set; }
+#pragma warning restore IDE0052 // Remove unread private members
+
+        [Resolved]
+        private AudioManager Audio { get; set; }
 
         private EditorNote NoteToTest { get; set; }
         private StopwatchClock StoryClock { get; set; }
+
         private readonly float NoteAppearTime = 1000.0f;
 
         [BackgroundDependencyLoader]
         private void Load() {
             StoryClock = new StopwatchClock();
             Story.Clock = new FramedClock(StoryClock);
-            Add(Story);
+            var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
+            Add(new ScreenStack(Editor = new EditorScreen(Story, S2VXTrack.Open(audioPath, Audio))));
         }
 
         // All tests will have a note that starts to appear in 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Reset story", () => Story.Reset());
+            var stepButton = AddStep("Reset story", () => Story.Reset());
             AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
             AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
