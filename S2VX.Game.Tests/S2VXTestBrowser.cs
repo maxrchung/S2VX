@@ -4,7 +4,7 @@ using osu.Framework.Testing;
 
 namespace S2VX.Game.Tests {
     /// <summary>
-    /// Tests ran  through the osu!framework visual test runner use this class.
+    /// Tests ran through the osu!framework visual test runner use this class.
     /// Tests ran through Test Explorer or the GitHub pipeline do not use this
     /// class.
     /// </summary>
