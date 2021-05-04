@@ -33,8 +33,11 @@ namespace S2VX.Game.Editor.CommandPanel {
         private CommandPanelInputBar CreateAddInputBar() =>
             CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick);
 
-        private CommandPanelInputBar CreateEditInputBar() =>
-            CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
+        private CommandPanelInputBar CreateEditInputBar() {
+            var editInputBar = CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
+            editInputBar.Depth = -1;
+            return editInputBar;
+        }
 
         private void LoadCommandsList() {
             CommandsList.Clear();
