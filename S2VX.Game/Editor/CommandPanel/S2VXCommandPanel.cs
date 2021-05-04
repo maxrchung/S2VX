@@ -11,15 +11,16 @@ using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 
-namespace S2VX.Game.Editor.Containers {
-    public class CommandPanel : OverlayContainer {
+namespace S2VX.Game.Editor.CommandPanel {
+    public class S2VXCommandPanel : OverlayContainer {
 
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        public static Vector2 InputSize { get; } = new Vector2(100, 30);
+        public static Vector2 InputSize { get; } = new Vector2(106, 30);
+        public static float InputBarHeight { get; } = 70;
         private static Vector2 PanelSize { get; } = new Vector2(727, 727);
         private CommandPanelInputBar AddInputBar { get; set; }
         private CommandPanelInputBar EditInputBar { get; set; }
@@ -32,14 +33,17 @@ namespace S2VX.Game.Editor.Containers {
         private CommandPanelInputBar CreateAddInputBar() =>
             CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick);
 
-        private CommandPanelInputBar CreateEditInputBar() =>
-            CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
+        private CommandPanelInputBar CreateEditInputBar() {
+            var editInputBar = CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
+            editInputBar.Depth = -1;
+            return editInputBar;
+        }
 
         private void LoadCommandsList() {
             CommandsList.Clear();
             if (EditCommandReference != null) {
                 // Reconstruct EditInputBar since it has been disposed
-                HandleEditCommand(EditCommandReference);
+                ResetEditInputBar(EditCommandReference);
             }
             var type = AddInputBar.DropType.Current.Value;
             for (var i = 0; i < Story.Commands.Count; ++i) {
@@ -58,13 +62,13 @@ namespace S2VX.Game.Editor.Containers {
             CommandsList.Add(new FillFlowContainer {
                 AutoSizeAxes = Axes.Both,
                 Children = new Drawable[] {
-                                new IconButton {
-                                    Action = () => HandleCancelCommand(),
-                                    Width = InputSize.Y,
-                                    Height = InputSize.Y,
-                                    Icon = FontAwesome.Solid.Times
-                                }
-                            }
+                    new IconButton {
+                        Action = () => HandleCancelCommand(),
+                        Width = InputSize.Y,
+                        Height = InputSize.Y,
+                        Icon = FontAwesome.Solid.Times
+                    }
+                }
             });
             CommandsList.Add(EditInputBar);
         }
@@ -98,7 +102,7 @@ namespace S2VX.Game.Editor.Containers {
             });
 
         private void HandleAddClick() {
-            AddInputBar.ClearErrorIndicator();
+            AddInputBar.Reset();
             var commandString = AddInputBar.ValuesToString();
             try {
                 var command = S2VXCommand.FromString(commandString);
@@ -128,12 +132,11 @@ namespace S2VX.Game.Editor.Containers {
         private void HandleRemoveCommand(S2VXCommand command) => Editor.Reversibles.Push(new ReversibleRemoveCommand(command, this));
 
         private void HandleCopyCommand(S2VXCommand command) {
-            AddInputBar.ClearErrorIndicator();
             AddInputBar.CommandToValues(command);
             LoadCommandsList();
         }
 
-        private void HandleEditCommand(S2VXCommand command) {
+        private void ResetEditInputBar(S2VXCommand command) {
             EditInputBar = CreateEditInputBar();
             EditInputBar.CommandToValues(command);
         }
@@ -156,7 +159,7 @@ namespace S2VX.Game.Editor.Containers {
         }
 
         private void HandleTypeSelect(ValueChangedEvent<string> e) {
-            AddInputBar.ClearErrorIndicator();
+            AddInputBar.Reset();
             HandleCancelCommand();  // Cancel edit if type filter is changed
             LoadCommandsList();
         }
@@ -188,9 +191,9 @@ namespace S2VX.Game.Editor.Containers {
                 new BasicScrollContainer
                 {
                     // This is so mega fucked?
-                    Position = new Vector2(0, 70),
+                    Position = new Vector2(0, InputBarHeight),
                     Width = PanelSize.X,
-                    Height = PanelSize.Y - 70,
+                    Height = PanelSize.Y - InputBarHeight,
                     Child = CommandsList
                 },
                 new FillFlowContainer

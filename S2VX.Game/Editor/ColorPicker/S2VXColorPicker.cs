@@ -84,11 +84,6 @@ namespace S2VX.Game.Editor.ColorPicker {
                 ColorCodeTextBox.Text = newColor.ToHex().ToUpperInvariant();
                 PreviewColorBox.Colour = newColor;
 
-                // Prevent internal update cause recursive
-                if (!InternalUpdate.IsValid) {
-                    return;
-                }
-
                 // Assign canvas and scroller to change to current color
                 (var h, var s, var v) = newColor.ToHSV();
                 HueSlider.Hue.Value = h;
