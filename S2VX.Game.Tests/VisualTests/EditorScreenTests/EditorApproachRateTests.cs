@@ -30,7 +30,6 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
         }
 
         [SetUpSteps]
-
         public void SetUpSteps() {
             AddStep("Pause editor", () => Editor.Play(false));
             AddStep("Restart editor", () => Editor.Restart());

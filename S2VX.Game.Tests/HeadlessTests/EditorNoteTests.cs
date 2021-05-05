@@ -15,9 +15,6 @@ namespace S2VX.Game.Tests.HeadlessTests {
     public class EditorNoteTests : S2VXTestScene {
         [Cached]
         private S2VXStory Story { get; set; } = new S2VXStory();
-#pragma warning disable IDE0052 // Remove unread private members
-        private EditorScreen Editor { get; set; }
-#pragma warning restore IDE0052 // Remove unread private members
 
         [Resolved]
         private AudioManager Audio { get; set; }
@@ -31,7 +28,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             StoryClock = new StopwatchClock();
             Story.Clock = new FramedClock(StoryClock);
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
-            Add(new ScreenStack(Editor = new EditorScreen(Story, S2VXTrack.Open(audioPath, Audio))));
+            Add(new ScreenStack(new EditorScreen(Story, S2VXTrack.Open(audioPath, Audio))));
         }
 
         // All tests will have a note that starts to appear in 1 second

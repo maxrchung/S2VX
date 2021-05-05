@@ -21,7 +21,6 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [SetUpSteps]
-
         public void SetUpSteps() {
             AddStep("Pause editor", () => Editor.Play(false));
             AddStep("Restart editor", () => Editor.Restart());

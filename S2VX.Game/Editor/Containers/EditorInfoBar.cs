@@ -11,13 +11,13 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private EditorScreen Editor { get; set; }
 
-        private ToolDisplay ToolDisplay { get; } = new ToolDisplay {
+        private ToolDisplay ToolDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             Width = 400,
             TextAnchor = Anchor.TopLeft,
         };
-        public ApproachRateDisplay ApproachRateDisplay { get; } = new ApproachRateDisplay {
+        public ApproachRateDisplay ApproachRateDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             X = 365,
@@ -25,7 +25,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopRight,
         };
 
-        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new NoteSnapDivisorDisplay {
+        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             X = 565,
@@ -33,7 +33,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopCentre,
         };
 
-        private MousePositionDisplay MousePositionDisplay { get; } = new MousePositionDisplay {
+        private MousePositionDisplay MousePositionDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             X = 770,
@@ -41,7 +41,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopCentre,
         };
 
-        private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
+        private VolumeDisplay VolumeDisplay { get; } = new() {
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
             TextAnchor = Anchor.TopRight,
