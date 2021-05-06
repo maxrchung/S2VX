@@ -12,9 +12,12 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        [Resolved]
+        private EditorScreen Editor { get; set; }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) =>
-            Hit = new S2VXSample("hit", audio);
+            Hit = new("hit", audio);
 
         public override bool UpdateNote() {
             UpdateColor();
@@ -39,7 +42,7 @@ namespace S2VX.Game.Story.Note {
             OutlineThickness = notes.NoteOutlineThickness;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var startTime = HitTime - notes.ShowTime - Editor.EditorApproachRate * notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
@@ -48,9 +51,9 @@ namespace S2VX.Game.Story.Note {
                 Alpha = maxAlpha;
             }
             // Hit time to Fade out time
-            else if (time < HitTime + notes.FadeOutTime) {
+            else if (time < HitTime + Editor.EditorApproachRate * notes.FadeOutTime) {
                 var startTime = HitTime;
-                var endTime = HitTime + notes.FadeOutTime;
+                var endTime = HitTime + Editor.EditorApproachRate * notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, maxAlpha, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
@@ -59,5 +62,14 @@ namespace S2VX.Game.Story.Note {
 
         public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
             editor.Reversibles.Push(new ReversibleRemoveNote(story, this, editor));
+
+        public override Approach AddApproach() {
+            var approach = new EditorApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }

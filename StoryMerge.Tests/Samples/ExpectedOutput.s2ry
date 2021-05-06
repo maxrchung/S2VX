@@ -60,7 +60,8 @@
     "TrackTime": 0.0,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
-    "BeatSnapDivisorIndex": 3
+    "BeatSnapDivisorIndex": 3,
+    "EditorApproachRate": 1
   },
   "DifficultySettings": {
     "SlowestBPM": 0.0,

@@ -2,7 +2,6 @@
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using System.Globalization;
 
@@ -19,15 +18,15 @@ namespace S2VX.Game.Editor.UserInterface {
         public Anchor TextAnchor { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() =>
-            InternalChildren = new Drawable[]
-            {
-                TxtVolume = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
-                    RelativeSizeAxes = Axes.Both,
-                    RelativePositionAxes = Axes.Both,
-                    TextAnchor = TextAnchor,
-                }
-            };
+        private void Load() {
+            AutoSizeAxes = Axes.Both;
+            AddInternal(TxtVolume = new(s => s.Font = new("default", SizeConsts.TextSize2, "500")) {
+                TextAnchor = TextAnchor,
+                Origin = Anchor.TopRight,
+                Anchor = Anchor.TopRight,
+                AutoSizeAxes = Axes.Both,
+            });
+        }
 
         protected override void Update() => TxtVolume.Text = $"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
 

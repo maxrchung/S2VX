@@ -93,5 +93,14 @@ namespace S2VX.Game.Story.Note {
                 Alpha = 0;
             }
         }
+
+        public override Approach AddApproach() {
+            var approach = new GameApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }

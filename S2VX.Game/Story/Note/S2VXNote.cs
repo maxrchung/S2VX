@@ -12,8 +12,8 @@ namespace S2VX.Game.Story.Note {
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
         public virtual Approach Approach { get; set; }
 
-        protected RelativeBox BoxOuter { get; } = new RelativeBox();
-        protected RelativeBox BoxInner { get; } = new RelativeBox();
+        protected RelativeBox BoxOuter { get; } = new();
+        protected RelativeBox BoxInner { get; } = new();
 
         public Color4 InnerColor { get => BoxInner.Colour; set => BoxInner.Colour = value; }
         public Color4 OutlineColor { get => BoxOuter.Colour; set => BoxOuter.Colour = value; }
@@ -85,5 +85,7 @@ namespace S2VX.Game.Story.Note {
         /// Pushes a Reversible to the Editor Reversibles stack
         /// </summary>
         public virtual void ReversibleRemove(S2VXStory story, EditorScreen editor) { }
+
+        public abstract Approach AddApproach();
     }
 }

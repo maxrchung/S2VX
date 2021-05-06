@@ -205,5 +205,16 @@ namespace S2VX.Game.Story.Note {
                     break;
             }
         }
+
+        public override Approach AddApproach() {
+            var approach = new GameHoldApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime,
+                EndTime = EndTime,
+                EndCoordinates = EndCoordinates
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }

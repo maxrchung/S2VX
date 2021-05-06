@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class Approaches : CompositeDrawable {
-        public List<Approach> Children { get; private set; } = new List<Approach>();
+        public List<Approach> Children { get; private set; } = new();
         public void SetChildren(List<Approach> approaches) {
             Children = approaches;
             InternalChildren = Children;
@@ -18,26 +18,9 @@ namespace S2VX.Game.Story.Note {
         public Color4 ApproachColor { get; set; }
         public Color4 HoldApproachColor { get; set; }
 
-        public Approach AddApproach(S2VXNote note) {
-            var approach = new Approach {
-                Coordinates = note.Coordinates,
-                HitTime = note.HitTime
-            };
+        public void AddApproach(Approach approach) {
             Children.Add(approach);
             AddInternal(approach);
-            return approach;
-        }
-
-        public HoldApproach AddHoldApproach(HoldNote note) {
-            var approach = new HoldApproach {
-                Coordinates = note.Coordinates,
-                HitTime = note.HitTime,
-                EndTime = note.EndTime,
-                EndCoordinates = note.EndCoordinates
-            };
-            Children.Add(approach);
-            AddInternal(approach);
-            return approach;
         }
 
         public void RemoveApproach(S2VXNote note) {

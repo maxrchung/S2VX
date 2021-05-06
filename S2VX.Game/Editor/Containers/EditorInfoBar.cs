@@ -11,42 +11,39 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private EditorScreen Editor { get; set; }
 
-        private ToolDisplay ToolDisplay { get; } = new ToolDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
+        private ToolDisplay ToolDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            Width = 0.4f,
+            Width = 400,
             TextAnchor = Anchor.TopLeft,
         };
-
-        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new NoteSnapDivisorDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
+        public ApproachRateDisplay ApproachRateDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 0.4f,
-            Width = 0.2f,
+            X = 365,
+            Width = 200,
+            TextAnchor = Anchor.TopRight,
+        };
+
+        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new() {
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            X = 565,
+            Width = 200,
             TextAnchor = Anchor.TopCentre,
         };
 
-        private MousePositionDisplay MousePositionDisplay { get; } = new MousePositionDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
+        private MousePositionDisplay MousePositionDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 0.6f,
-            Width = 0.2f,
+            X = 770,
+            Width = 200,
             TextAnchor = Anchor.TopCentre,
         };
 
-        private VolumeDisplay VolumeDisplay { get; } = new VolumeDisplay {
-            RelativeSizeAxes = Axes.Both,
-            RelativePositionAxes = Axes.Both,
-            Anchor = Anchor.TopLeft,
-            Origin = Anchor.TopLeft,
-            X = 0.8f,
-            Width = 0.2f,
+        private VolumeDisplay VolumeDisplay { get; } = new() {
+            Anchor = Anchor.TopRight,
+            Origin = Anchor.TopRight,
             TextAnchor = Anchor.TopRight,
         };
 
@@ -68,7 +65,8 @@ namespace S2VX.Game.Editor.Containers {
                 ToolDisplay,
                 NoteSnapDivisorDisplay,
                 MousePositionDisplay,
-                VolumeDisplay
+                VolumeDisplay,
+                ApproachRateDisplay
             };
         }
     }
