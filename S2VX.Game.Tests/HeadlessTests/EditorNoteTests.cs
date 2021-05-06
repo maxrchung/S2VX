@@ -14,7 +14,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
     [HeadlessTest]
     public class EditorNoteTests : S2VXTestScene {
         [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; } = new();
 
         [Resolved]
         private AudioManager Audio { get; set; }
@@ -25,7 +25,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            StoryClock = new StopwatchClock();
+            StoryClock = new();
             Story.Clock = new FramedClock(StoryClock);
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             Add(new ScreenStack(new EditorScreen(Story, S2VXTrack.Open(audioPath, Audio))));
@@ -35,8 +35,8 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Reset story", () => Story.Reset());
-            AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
-            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
+            AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new()));
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new() {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
             }));
             AddStep("Set max note alpha to 1", () => Story.AddCommand(new NotesAlphaCommand {

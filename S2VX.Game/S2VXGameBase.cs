@@ -44,7 +44,7 @@ namespace S2VX.Game {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Resources.AddStore(ResourceStore = new DllResourceStore(S2VXResources.ResourceAssembly));
+            Resources.AddStore(ResourceStore = new(S2VXResources.ResourceAssembly));
             Dependencies.CacheAs(new S2VXConfigManager(Host.Storage));
         }
 

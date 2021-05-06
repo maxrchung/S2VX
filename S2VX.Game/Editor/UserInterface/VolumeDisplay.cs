@@ -2,7 +2,6 @@
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using System.Globalization;
 
@@ -21,7 +20,7 @@ namespace S2VX.Game.Editor.UserInterface {
         [BackgroundDependencyLoader]
         private void Load() {
             AutoSizeAxes = Axes.Both;
-            AddInternal(TxtVolume = new TextFlowContainer(s => s.Font = new FontUsage("default", SizeConsts.TextSize2, "500")) {
+            AddInternal(TxtVolume = new(s => s.Font = new("default", SizeConsts.TextSize2, "500")) {
                 TextAnchor = TextAnchor,
                 Origin = Anchor.TopRight,
                 Anchor = Anchor.TopRight,

@@ -4,7 +4,6 @@ using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
 using S2VX.Game.Editor;
-using S2VX.Game.Story;
 using System;
 using System.IO;
 
@@ -17,7 +16,7 @@ namespace S2VX.Game.Tests.VisualTests {
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             var track = S2VXTrack.Open(audioPath, audio);
 
-            Add(new ScreenStack(Editor = new EditorScreen(new S2VXStory(), track)));
+            Add(new ScreenStack(Editor = new(new(), track)));
         }
 
         [SetUpSteps]

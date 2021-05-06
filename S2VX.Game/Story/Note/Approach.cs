@@ -13,12 +13,12 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
-        protected List<RelativeBox> Lines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> Lines { get; } = new()
         {
-            new RelativeBox(), // up
-            new RelativeBox(), // down
-            new RelativeBox(), // right
-            new RelativeBox()  // left
+            new(), // up
+            new(), // down
+            new(), // right
+            new()  // left
         };
 
         protected Vector2 HitApproachTopLeftCorner { get; private set; }
@@ -85,8 +85,8 @@ namespace S2VX.Game.Story.Note {
 
             var startTime = HitTime - notes.ShowTime - editorApproachRate * Story.Notes.FadeInTime;
             var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, HitTime);
-            var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
-            var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
+            var rotationX = S2VXUtils.Rotate(new(distance, 0), rotation);
+            var rotationY = S2VXUtils.Rotate(new(0, distance), rotation);
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
@@ -98,19 +98,19 @@ namespace S2VX.Game.Story.Note {
 
             Lines[0].Position = offset + rotationY;
             Lines[0].Rotation = rotation;
-            Lines[0].Size = new Vector2(overlap, thickness);
+            Lines[0].Size = new(overlap, thickness);
 
             Lines[1].Position = offset - rotationY;
             Lines[1].Rotation = rotation;
-            Lines[1].Size = new Vector2(overlap, thickness);
+            Lines[1].Size = new(overlap, thickness);
 
             Lines[2].Position = offset + rotationX;
             Lines[2].Rotation = rotation;
-            Lines[2].Size = new Vector2(thickness, overlap);
+            Lines[2].Size = new(thickness, overlap);
 
             Lines[3].Position = offset - rotationX;
             Lines[3].Rotation = rotation;
-            Lines[3].Size = new Vector2(thickness, overlap);
+            Lines[3].Size = new(thickness, overlap);
         }
 
         // Sort Approaches from highest end time to lowest end time

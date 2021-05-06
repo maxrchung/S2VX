@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 
 namespace S2VX.Game.Editor.UserInterface {
     public class MousePositionDisplay : CompositeDrawable {
@@ -15,7 +14,7 @@ namespace S2VX.Game.Editor.UserInterface {
         [BackgroundDependencyLoader]
         private void Load() {
             AutoSizeAxes = Axes.Both;
-            AddInternal(TxtMousePosition = new TextFlowContainer(s => s.Font = new FontUsage("default", SizeConsts.TextSize2, "500")) {
+            AddInternal(TxtMousePosition = new(s => s.Font = new("default", SizeConsts.TextSize2, "500")) {
                 TextAnchor = TextAnchor,
                 AutoSizeAxes = Axes.Both
             });

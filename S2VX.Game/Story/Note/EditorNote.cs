@@ -17,7 +17,7 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) =>
-            Hit = new S2VXSample("hit", audio);
+            Hit = new("hit", audio);
 
         public override bool UpdateNote() {
             UpdateColor();

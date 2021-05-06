@@ -13,20 +13,20 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        protected List<RelativeBox> ReleaseLines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> ReleaseLines { get; } = new()
         {
-            new RelativeBox(), // up
-            new RelativeBox(), // down
-            new RelativeBox(), // right
-            new RelativeBox()  // left
+            new(), // up
+            new(), // down
+            new(), // right
+            new()  // left
         };
 
-        protected List<RelativeBox> HoldIndicatorLines { get; } = new List<RelativeBox>()
+        protected List<RelativeBox> HoldIndicatorLines { get; } = new()
         {
-            new RelativeBox(), // top left
-            new RelativeBox(), // top right
-            new RelativeBox(), // bottom left
-            new RelativeBox()  // bottom right
+            new(), // top left
+            new(), // top right
+            new(), // bottom left
+            new()  // bottom right
         };
 
         private Vector2 ReleaseApproachTopLeftCorner { get; set; }
@@ -82,27 +82,27 @@ namespace S2VX.Game.Story.Note {
             // Calculate outer approach values
             var startTime = EndTime - notes.ShowTime - editorApproachRate * notes.FadeInTime;
             var distance = S2VXUtils.ClampedInterpolation(time, approaches.Distance, scale.X / 2, startTime, EndTime);
-            var rotationX = S2VXUtils.Rotate(new Vector2(distance, 0), rotation);
-            var rotationY = S2VXUtils.Rotate(new Vector2(0, distance), rotation);
+            var rotationX = S2VXUtils.Rotate(new(distance, 0), rotation);
+            var rotationY = S2VXUtils.Rotate(new(0, distance), rotation);
             // Add extra thickness so corners overlap
             var overlap = distance * 2 + thickness;
 
             var offset = S2VXUtils.Rotate(coordinates - position, rotation) * scale;
             ReleaseLines[0].Position = offset + rotationY;
             ReleaseLines[0].Rotation = rotation;
-            ReleaseLines[0].Size = new Vector2(overlap, thickness);
+            ReleaseLines[0].Size = new(overlap, thickness);
 
             ReleaseLines[1].Position = offset - rotationY;
             ReleaseLines[1].Rotation = rotation;
-            ReleaseLines[1].Size = new Vector2(overlap, thickness);
+            ReleaseLines[1].Size = new(overlap, thickness);
 
             ReleaseLines[2].Position = offset + rotationX;
             ReleaseLines[2].Rotation = rotation;
-            ReleaseLines[2].Size = new Vector2(thickness, overlap);
+            ReleaseLines[2].Size = new(thickness, overlap);
 
             ReleaseLines[3].Position = offset - rotationX;
             ReleaseLines[3].Rotation = rotation;
-            ReleaseLines[3].Size = new Vector2(thickness, overlap);
+            ReleaseLines[3].Size = new(thickness, overlap);
 
             ReleaseApproachTopLeftCorner = offset - rotationX - rotationY;
             ReleaseApproachTopRightCorner = offset + rotationX - rotationY;
@@ -117,19 +117,19 @@ namespace S2VX.Game.Story.Note {
 
             HoldIndicatorLines[0].Position = topLeftPosition;
             HoldIndicatorLines[0].Rotation = rotation - 45;
-            HoldIndicatorLines[0].Size = new Vector2(thickness, indicatorLength);
+            HoldIndicatorLines[0].Size = new(thickness, indicatorLength);
 
             HoldIndicatorLines[1].Position = topRightPosition;
             HoldIndicatorLines[1].Rotation = rotation + 45;
-            HoldIndicatorLines[1].Size = new Vector2(thickness, indicatorLength);
+            HoldIndicatorLines[1].Size = new(thickness, indicatorLength);
 
             HoldIndicatorLines[2].Position = bottomLeftPosition;
             HoldIndicatorLines[2].Rotation = rotation + 45;
-            HoldIndicatorLines[2].Size = new Vector2(thickness, indicatorLength);
+            HoldIndicatorLines[2].Size = new(thickness, indicatorLength);
 
             HoldIndicatorLines[3].Position = bottomRightPosition;
             HoldIndicatorLines[3].Rotation = rotation - 45;
-            HoldIndicatorLines[3].Size = new Vector2(thickness, indicatorLength);
+            HoldIndicatorLines[3].Size = new(thickness, indicatorLength);
         }
     }
 }

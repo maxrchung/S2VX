@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 
 namespace S2VX.Game.Editor.UserInterface {
@@ -16,7 +15,7 @@ namespace S2VX.Game.Editor.UserInterface {
         [BackgroundDependencyLoader]
         private void Load() {
             AutoSizeAxes = Axes.Both;
-            AddInternal(TxtNoteSnapDivisor = new TextFlowContainer(s => s.Font = new FontUsage("default", SizeConsts.TextSize2, "500")) {
+            AddInternal(TxtNoteSnapDivisor = new(s => s.Font = new("default", SizeConsts.TextSize2, "500")) {
                 TextAnchor = TextAnchor,
                 AutoSizeAxes = Axes.Both
             });

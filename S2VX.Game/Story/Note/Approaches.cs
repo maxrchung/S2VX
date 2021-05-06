@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Story.Note {
     public class Approaches : CompositeDrawable {
-        public List<Approach> Children { get; private set; } = new List<Approach>();
+        public List<Approach> Children { get; private set; } = new();
         public void SetChildren(List<Approach> approaches) {
             Children = approaches;
             InternalChildren = Children;

@@ -8,7 +8,7 @@ using System.Linq;
 namespace S2VX.Game.Story.Note {
     public class Notes : CompositeDrawable {
 
-        public List<S2VXNote> Children { get; private set; } = new List<S2VXNote>();
+        public List<S2VXNote> Children { get; private set; } = new();
         public void SetChildren(List<S2VXNote> notes) {
             Children = notes;
             InternalChildren = Children;

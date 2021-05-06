@@ -21,16 +21,16 @@ namespace S2VX.Game.Story.Note {
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Hit = new S2VXSample("hit", audio);
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
-            HeadAnchor = new EditorHoldNoteAnchor(this, true);
-            TailAnchor = new EditorHoldNoteAnchor(this, false);
+            Hit = new("hit", audio);
+            HitSoundTimes = new() { HitTime, EndTime };
+            HeadAnchor = new(this, true);
+            TailAnchor = new(this, false);
             AddInternal(AnchorPath);
             AddInternal(HeadAnchor);
             AddInternal(TailAnchor);
         }
 
-        private Path AnchorPath { get; set; } = new Path() {
+        private Path AnchorPath { get; set; } = new() {
             Anchor = Anchor.Centre,
         };
 
@@ -42,7 +42,7 @@ namespace S2VX.Game.Story.Note {
             EndTime = hitTime + EndTime - HitTime;
             base.UpdateHitTime(hitTime);
             HoldApproach.EndTime = EndTime;
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HitSoundTimes = new() { HitTime, EndTime };
         }
 
         public override void UpdateEndTime(double endTime) {
@@ -51,7 +51,7 @@ namespace S2VX.Game.Story.Note {
             }
             EndTime = endTime;
             HoldApproach.EndTime = EndTime;
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HitSoundTimes = new() { HitTime, EndTime };
         }
 
         public void UpdateEndCoordinates(Vector2 coordinates) {

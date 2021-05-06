@@ -15,7 +15,7 @@ using System.IO;
 namespace S2VX.Game.Tests.VisualTests {
     public class EditorNoteTests : S2VXTestScene {
         [Cached]
-        private S2VXStory Story { get; set; } = new S2VXStory();
+        private S2VXStory Story { get; set; } = new();
 
         [Resolved]
         private AudioManager Audio { get; set; }
@@ -26,7 +26,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            StoryClock = new StopwatchClock();
+            StoryClock = new();
             Story.Clock = new FramedClock(StoryClock);
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             Add(new ScreenStack(new EditorScreen(Story, S2VXTrack.Open(audioPath, Audio))));
@@ -36,8 +36,8 @@ namespace S2VX.Game.Tests.VisualTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Reset story", () => Story.Reset());
-            AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new StopwatchClock()));
-            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
+            AddStep("Reset clock", () => Story.Clock = new FramedClock(StoryClock = new()));
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new() {
                 HitTime = Story.Notes.ShowTime + Story.Notes.FadeInTime + NoteAppearTime
             }));
         }
@@ -56,7 +56,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void UpdateColor_ApproachesColorCommand_IsGreen() {
             EditorNote note = null;
-            AddStep("Add a note", () => Story.AddNote(note = new EditorNote { HitTime = 1000 }));
+            AddStep("Add a note", () => Story.AddNote(note = new() { HitTime = 1000 }));
             AddStep("Apply Green ApproachesColorCommand", () => Story.AddCommand(new ApproachesColorCommand {
                 StartValue = Color4.Green,
                 EndValue = Color4.Green
@@ -67,7 +67,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void UpdateColor_NotesAlphaCommand_IsHalf() {
             EditorNote note = null;
-            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+            AddStep("Add a note", () => Story.AddNote(note = new() {
                 HitTime = Story.Notes.ShowTime - 100
             }));
             AddStep("Apply half NotesAlphaCommand", () => Story.AddCommand(new NotesAlphaCommand {
@@ -80,7 +80,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void UpdateColor_NotesColorCommand_IsGreen() {
             EditorNote note = null;
-            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+            AddStep("Add a note", () => Story.AddNote(note = new() {
                 HitTime = Story.Notes.ShowTime - 100
             }));
             AddStep("Apply green NotesColorCommand", () => Story.AddCommand(new NotesColorCommand {
@@ -93,7 +93,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void UpdateColor_NotesOutlineColorCommand_IsGreen() {
             EditorNote note = null;
-            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+            AddStep("Add a note", () => Story.AddNote(note = new() {
                 HitTime = Story.Notes.ShowTime - 100
             }));
             AddStep("Apply green NotesOutlineColorCommand", () => Story.AddCommand(new NotesOutlineColorCommand {
@@ -106,7 +106,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void UpdateColor_NotesOutlineThicknessCommand_IsTwoHundredths() {
             EditorNote note = null;
-            AddStep("Add a note", () => Story.AddNote(note = new EditorNote {
+            AddStep("Add a note", () => Story.AddNote(note = new() {
                 HitTime = Story.Notes.ShowTime - 100
             }));
             AddStep("Apply 0.02 NotesOutlineThicknessCommand", () => Story.AddCommand(new NotesOutlineThicknessCommand {

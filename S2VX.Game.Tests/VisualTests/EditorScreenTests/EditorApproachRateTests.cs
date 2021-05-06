@@ -20,13 +20,13 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             var storyPath = Path.Combine("VisualTests", "EditorScreenTests", "ValidStory.s2ry");
-            Story = new S2VXStory();
+            Story = new();
             Story.Open(storyPath, true);
 
             var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
             Track = S2VXTrack.Open(audioPath, audio);
 
-            Add(new ScreenStack(Editor = new EditorScreen(Story, Track)));
+            Add(new ScreenStack(Editor = new(Story, Track)));
         }
 
         [SetUpSteps]
@@ -39,10 +39,10 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
                 StartValue = 1000,
                 EndValue = 1000,
             }));
-            AddStep("Add note", () => Story.AddNote(NoteToTest = new EditorNote {
+            AddStep("Add note", () => Story.AddNote(NoteToTest = new() {
                 HitTime = 10000,
             }));
-            AddStep("Add hold note", () => Story.AddNote(HoldNoteToTest = new EditorHoldNote {
+            AddStep("Add hold note", () => Story.AddNote(HoldNoteToTest = new() {
                 HitTime = 10000,
                 EndTime = 10001,
             }));
