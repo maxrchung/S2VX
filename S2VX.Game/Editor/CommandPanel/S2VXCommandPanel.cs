@@ -164,6 +164,9 @@ namespace S2VX.Game.Editor.CommandPanel {
             LoadCommandsList();
         }
 
+        //public string GetCurrentTimeString() =>
+        //    Editor.Track.CurrentTime.ToString(CultureInfo.InvariantCulture);
+
         // Non-reversibly add a command and reload command list
         public void AddCommand(S2VXCommand command) {
             Story.AddCommand(command);

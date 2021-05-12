@@ -2,13 +2,30 @@
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using S2VX.Game.Editor.ColorPicker;
 
 namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelValueInput : Container {
-        public TextBox TxtValue { get; } = CommandPanelInputBar.CreateErrorTextBox();
+        public TextBox TxtValue { get; } = CreateErrorTextBox();
+
+        private static BasicTextBox CreateErrorTextBox() =>
+            new() {
+                Size = S2VXCommandPanel.InputSize,
+                BorderColour = Color4.Red,
+                Masking = true
+            };
+
+        public IconButton BtnApplyCurrentTime { get; } = new IconButton() {
+            Icon = FontAwesome.Solid.Clock,
+            Alpha = 0,
+            Anchor = Anchor.TopRight,
+            Origin = Anchor.TopRight,
+            Position = new(-5, 5),
+            Size = new(S2VXCommandPanel.InputSize.Y - 10)
+        };
 
         public BasicButton BtnToggle { get; } = new BasicButton() {
             Alpha = 0,
@@ -23,6 +40,8 @@ namespace S2VX.Game.Editor.CommandPanel {
             Position = new(0, S2VXCommandPanel.InputSize.Y)
         };
 
+        public void UseApplyCurrentTime() => BtnApplyCurrentTime.Show();
+
         public void UseColorPicker(bool isColorValue) {
             ColorPicker.Hide();
             if (isColorValue) {
@@ -31,6 +50,8 @@ namespace S2VX.Game.Editor.CommandPanel {
                 BtnToggle.Hide();
             }
         }
+
+        //private void ApplyCurrentTime() => TxtValue.Current.Value = Time.Current.ToString(CultureInfo.InvariantCulture);
 
         private void TogglePicker() {
             if (ColorPicker.Alpha == 0) {
@@ -62,6 +83,7 @@ namespace S2VX.Game.Editor.CommandPanel {
         // Bindings need to be set up early so that they can trigger before
         // Load() happens
         public CommandPanelValueInput() {
+            //BtnApplyCurrentTime.Action = ApplyCurrentTime;
             BtnToggle.Action = TogglePicker;
             TxtValue.Current.BindValueChanged(BindTxtValueChange);
             ColorPicker.Current.BindValueChanged(BindColorPickerChange);
@@ -73,6 +95,7 @@ namespace S2VX.Game.Editor.CommandPanel {
 
             Children = new Drawable[] {
                 TxtValue,
+                BtnApplyCurrentTime,
                 BtnToggle,
                 ColorPicker
             };

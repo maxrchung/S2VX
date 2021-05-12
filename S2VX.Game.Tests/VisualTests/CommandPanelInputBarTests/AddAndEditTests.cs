@@ -24,7 +24,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void Tab_FocusOnFirstInput_ShiftsFocusToNextInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.TxtStartTime));
+            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime));
             AddStep("Press tab", () => InputManager.PressKey(Key.Tab));
             AddAssert("Shifts focus to next input", () => InputBar.StartValue.TxtValue.HasFocus);
         }
@@ -32,7 +32,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void ShiftTab_FocusOnFirstInput_ShiftsFocusToLastInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.TxtStartTime));
+            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime));
             AddStep("Press shift tab", () => {
                 InputManager.PressKey(Key.LShift);
                 InputManager.PressKey(Key.Tab);
@@ -56,8 +56,8 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         public void ValuesToString_UpdatedValues_CreatesCorrectString() {
             CreateAddInputBar();
             AddStep("Update command type", () => InputBar.DropType.Current.Value = new GridAlphaCommand().GetCommandName());
-            AddStep("Update start time", () => InputBar.TxtStartTime.Current.Value = "123");
-            AddStep("Update end time", () => InputBar.TxtEndTime.Current.Value = "456789");
+            AddStep("Update start time", () => InputBar.StartTime.TxtValue.Current.Value = "123");
+            AddStep("Update end time", () => InputBar.EndTime.TxtValue.Current.Value = "456789");
             AddStep("Update start value", () => InputBar.StartValue.TxtValue.Current.Value = "0.1");
             AddStep("Update end value", () => InputBar.EndValue.TxtValue.Current.Value = "1");
             AddStep("Update easing", () => InputBar.DropEasing.Current.Value = Easing.OutQuint.ToString());
@@ -85,13 +85,13 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void CommandToValues_GivenCommand_HasCorrectStartTime() {
             SetUpCommandToValues();
-            AddAssert("Has correct start time", () => InputBar.TxtStartTime.Current.Value == "999");
+            AddAssert("Has correct start time", () => InputBar.StartTime.TxtValue.Current.Value == "999");
         }
 
         [Test]
         public void CommandToValues_GivenCommand_HasCorrectEndTime() {
             SetUpCommandToValues();
-            AddAssert("Has correct end time", () => InputBar.TxtEndTime.Current.Value == "999");
+            AddAssert("Has correct end time", () => InputBar.EndTime.TxtValue.Current.Value == "999");
         }
 
         [Test]

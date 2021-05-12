@@ -4,7 +4,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
-using osuTK.Graphics;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
@@ -12,19 +11,12 @@ using System.Collections.Generic;
 namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelInputBar : FillFlowContainer {
         public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
-        public TextBox TxtStartTime { get; } = CreateErrorTextBox();
-        public TextBox TxtEndTime { get; } = CreateErrorTextBox();
+        public CommandPanelValueInput StartTime { get; } = new();
+        public CommandPanelValueInput EndTime { get; } = new();
         public CommandPanelValueInput StartValue { get; } = new();
         public CommandPanelValueInput EndValue { get; } = new();
         public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = S2VXCommandPanel.InputSize.X };
         public Button BtnSave { get; }
-
-        public static BasicTextBox CreateErrorTextBox() =>
-            new() {
-                Size = S2VXCommandPanel.InputSize,
-                BorderColour = Color4.Red,
-                Masking = true
-            };
 
         public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick) =>
             new(false, handleTypeSelect, handleAddClick);
@@ -54,15 +46,15 @@ namespace S2VX.Game.Editor.CommandPanel {
         }
 
         public void AddErrorIndicator() {
-            TxtStartTime.BorderThickness = 5;
-            TxtEndTime.BorderThickness = 5;
+            StartTime.BorderThickness = 5;
+            EndTime.BorderThickness = 5;
             StartValue.TxtValue.BorderThickness = 5;
             EndValue.TxtValue.BorderThickness = 5;
         }
 
         public void Reset() {
-            TxtStartTime.BorderThickness = 0;
-            TxtEndTime.BorderThickness = 0;
+            StartTime.BorderThickness = 0;
+            EndTime.BorderThickness = 0;
             StartValue.TxtValue.BorderThickness = 0;
             EndValue.TxtValue.BorderThickness = 0;
 
@@ -75,8 +67,8 @@ namespace S2VX.Game.Editor.CommandPanel {
         public string ValuesToString() {
             var data = new string[] {
                 $"{DropType.Current.Value}",
-                $"{TxtStartTime.Current.Value}",
-                $"{TxtEndTime.Current.Value}",
+                $"{StartTime.TxtValue.Current.Value}",
+                $"{EndTime.TxtValue.Current.Value}",
                 $"{DropEasing.Current.Value}",
                 $"{StartValue.TxtValue.Current.Value}",
                 $"{EndValue.TxtValue.Current.Value}"
@@ -88,8 +80,8 @@ namespace S2VX.Game.Editor.CommandPanel {
         public void CommandToValues(S2VXCommand command) {
             var data = command.ToString().Split('{', '|', '}');
             DropType.Current.Value = data[0];
-            TxtStartTime.Text = data[1];
-            TxtEndTime.Text = data[2];
+            StartTime.TxtValue.Text = data[1];
+            EndTime.TxtValue.Text = data[2];
             DropEasing.Current.Value = data[3];
             StartValue.TxtValue.Text = data[4];
             EndValue.TxtValue.Text = data[5];
@@ -102,12 +94,14 @@ namespace S2VX.Game.Editor.CommandPanel {
             Height = S2VXCommandPanel.InputBarHeight;
 
             AddInput("Type", DropType);
-            AddTabbableInput("StartTime", TxtStartTime);
-            AddValueInput("StartValue", StartValue);
-            AddTabbableInput("EndTime", TxtEndTime);
-            AddValueInput("EndValue", EndValue);
+            AddTextInput("StartTime", StartTime);
+            AddTextInput("StartValue", StartValue);
+            AddTextInput("EndTime", EndTime);
+            AddTextInput("EndValue", EndValue);
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
+            StartTime.UseApplyCurrentTime();
+            EndTime.UseApplyCurrentTime();
         }
 
         private void AddInput(string text, Drawable input) =>
@@ -120,12 +114,7 @@ namespace S2VX.Game.Editor.CommandPanel {
                 }
             });
 
-        private void AddTabbableInput(string text, TabbableContainer input) {
-            AddInput(text, input);
-            input.TabbableContentContainer = this;
-        }
-
-        private void AddValueInput(string text, CommandPanelValueInput input) {
+        private void AddTextInput(string text, CommandPanelValueInput input) {
             AddInput(text, input);
             input.TxtValue.TabbableContentContainer = this;
         }
