@@ -6,9 +6,13 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using S2VX.Game.Editor.ColorPicker;
+using System.Globalization;
 
 namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelValueInput : Container {
+        [Resolved]
+        private EditorScreen Editor { get; set; }
+
         public TextBox TxtValue { get; } = CreateErrorTextBox();
 
         private static BasicTextBox CreateErrorTextBox() =>
@@ -51,7 +55,7 @@ namespace S2VX.Game.Editor.CommandPanel {
             }
         }
 
-        //private void ApplyCurrentTime() => TxtValue.Current.Value = Time.Current.ToString(CultureInfo.InvariantCulture);
+        private void ApplyCurrentTime() => TxtValue.Current.Value = Editor.Track.CurrentTime.ToString(CultureInfo.InvariantCulture);
 
         private void TogglePicker() {
             if (ColorPicker.Alpha == 0) {
@@ -83,7 +87,7 @@ namespace S2VX.Game.Editor.CommandPanel {
         // Bindings need to be set up early so that they can trigger before
         // Load() happens
         public CommandPanelValueInput() {
-            //BtnApplyCurrentTime.Action = ApplyCurrentTime;
+            BtnApplyCurrentTime.Action = ApplyCurrentTime;
             BtnToggle.Action = TogglePicker;
             TxtValue.Current.BindValueChanged(BindTxtValueChange);
             ColorPicker.Current.BindValueChanged(BindColorPickerChange);
