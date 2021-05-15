@@ -98,14 +98,12 @@ namespace S2VX.Game.Editor.CommandPanel {
             Height = S2VXCommandPanel.InputBarHeight;
 
             AddInput("Type", DropType);
-            AddTextInput("StartTime", StartTime);
-            AddTextInput("StartValue", StartValue);
-            AddTextInput("EndTime", EndTime);
-            AddTextInput("EndValue", EndValue);
+            AddValueInput("StartTime", StartTime);
+            AddValueInput("StartValue", StartValue);
+            AddValueInput("EndTime", EndTime);
+            AddValueInput("EndValue", EndValue);
             AddInput("Easing", DropEasing);
             AddInput(" ", BtnSave);
-            StartTime.UseApplyCurrentTime();
-            EndTime.UseApplyCurrentTime();
         }
 
         private void AddInput(string text, Drawable input) =>
@@ -118,7 +116,7 @@ namespace S2VX.Game.Editor.CommandPanel {
                 }
             });
 
-        private void AddTextInput(string text, CommandPanelValueInput input) {
+        private void AddValueInput(string text, CommandPanelValueInput input) {
             AddInput(text, input);
             input.TxtValue.TabbableContentContainer = this;
         }

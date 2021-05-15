@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Testing;
@@ -10,20 +9,16 @@ using S2VX.Game.Story.Command;
 namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
     public class AddAndEditTests : S2VXTestScene {
 
-        private static void ValueChangedHandler(ValueChangedEvent<string> _) { }
-
-        private static void EmptyHandler() { }
-
         private CommandPanelInputBar InputBar { get; set; }
 
         [SetUpSteps]
         public void SetUpSteps() => AddStep("Clear drawables", () => Clear());
 
         private void CreateAddInputBar() =>
-            AddStep("Create add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(ValueChangedHandler, EmptyHandler, null)));
+            AddStep("Create add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(null, null, () => 0)));
 
         private void CreateEditInputBar() =>
-            AddStep("Create edit input bar", () => Add(InputBar = CommandPanelInputBar.CreateEditInputBar(EmptyHandler, null)));
+            AddStep("Create edit input bar", () => Add(InputBar = CommandPanelInputBar.CreateEditInputBar(null, () => 0)));
 
         [Test]
         public void Tab_FocusOnFirstInput_ShiftsFocusToNextInput() {

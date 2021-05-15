@@ -43,10 +43,6 @@ namespace S2VX.Game.Editor.CommandPanel {
             Position = new(0, S2VXCommandPanel.InputSize.Y)
         };
 
-        public Func<double> CurrentTimeDelegate { get; private set; }
-
-        public void UseApplyCurrentTime() => BtnApplyCurrentTime.Show();
-
         public void UseColorPicker(bool isColorValue) {
             ColorPicker.Hide();
             if (isColorValue) {
@@ -56,7 +52,8 @@ namespace S2VX.Game.Editor.CommandPanel {
             }
         }
 
-        private void ApplyCurrentTime() => TxtValue.Current.Value = CurrentTimeDelegate().ToString(CultureInfo.InvariantCulture);
+        private void ApplyCurrentTime(Func<double> currentTimeDelegate) =>
+            TxtValue.Current.Value = currentTimeDelegate().ToString(CultureInfo.InvariantCulture);
 
         private void TogglePicker() {
             if (ColorPicker.Alpha == 0) {
@@ -88,8 +85,10 @@ namespace S2VX.Game.Editor.CommandPanel {
         // Bindings need to be set up early so that they can trigger before
         // Load() happens
         public CommandPanelValueInput(Func<double> currentTimeDelegate = null) {
-            CurrentTimeDelegate = currentTimeDelegate;
-            BtnApplyCurrentTime.Action = ApplyCurrentTime;
+            BtnApplyCurrentTime.Action = () => ApplyCurrentTime(currentTimeDelegate);
+            if (currentTimeDelegate != null) {
+                BtnApplyCurrentTime.Show();
+            }
             BtnToggle.Action = TogglePicker;
             TxtValue.Current.BindValueChanged(BindTxtValueChange);
             ColorPicker.Current.BindValueChanged(BindColorPickerChange);

@@ -12,7 +12,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Clear drawables", () => Clear());
-            AddStep("Add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(_ => { }, () => { }, null)));
+            AddStep("Add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(null, null, () => 0)));
         }
 
         [Test]
