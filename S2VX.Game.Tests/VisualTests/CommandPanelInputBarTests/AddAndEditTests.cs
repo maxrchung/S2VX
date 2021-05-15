@@ -28,7 +28,11 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void Tab_FocusOnFirstInput_ShiftsFocusToNextInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime));
+            AddStep("Focus start time input", () => {
+                InputManager.MoveMouseTo(InputBar.StartTime);
+                InputManager.PressButton(MouseButton.Left);
+                InputManager.ReleaseButton(MouseButton.Left);
+            });
             AddStep("Press tab", () => InputManager.PressKey(Key.Tab));
             AddAssert("Shifts focus to next input", () => InputBar.StartValue.TxtValue.HasFocus);
         }
@@ -36,7 +40,11 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void ShiftTab_FocusOnFirstInput_ShiftsFocusToLastInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime));
+            AddStep("Focus start time input", () => {
+                InputManager.MoveMouseTo(InputBar.StartTime);
+                InputManager.PressButton(MouseButton.Left);
+                InputManager.ReleaseButton(MouseButton.Left);
+            });
             AddStep("Press shift tab", () => {
                 InputManager.PressKey(Key.LShift);
                 InputManager.PressKey(Key.Tab);
