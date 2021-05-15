@@ -2,6 +2,7 @@
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Testing;
 using osuTK.Input;
 using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Story.Command;
@@ -15,11 +16,14 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
 
         private CommandPanelInputBar InputBar { get; set; }
 
+        [SetUpSteps]
+        public void SetUpSteps() => AddStep("Clear drawables", () => Clear());
+
         private void CreateAddInputBar() =>
-            AddStep("Create add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(ValueChangedHandler, EmptyHandler)));
+            AddStep("Create add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(ValueChangedHandler, EmptyHandler, null)));
 
         private void CreateEditInputBar() =>
-            AddStep("Create edit input bar", () => Add(InputBar = CommandPanelInputBar.CreateEditInputBar(EmptyHandler)));
+            AddStep("Create edit input bar", () => Add(InputBar = CommandPanelInputBar.CreateEditInputBar(EmptyHandler, null)));
 
         [Test]
         public void Tab_FocusOnFirstInput_ShiftsFocusToNextInput() {

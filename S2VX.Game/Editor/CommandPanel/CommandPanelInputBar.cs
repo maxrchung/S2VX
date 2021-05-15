@@ -11,26 +11,30 @@ using System.Collections.Generic;
 namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelInputBar : FillFlowContainer {
         public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
-        public CommandPanelValueInput StartTime { get; } = new();
-        public CommandPanelValueInput EndTime { get; } = new();
+        public CommandPanelValueInput StartTime { get; }
+        public CommandPanelValueInput EndTime { get; }
         public CommandPanelValueInput StartValue { get; } = new();
         public CommandPanelValueInput EndValue { get; } = new();
         public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = S2VXCommandPanel.InputSize.X };
         public Button BtnSave { get; }
 
-        public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick) =>
-            new(false, handleTypeSelect, handleAddClick);
+        public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick,
+            Func<double> currentTimeDelegate) =>
+            new(false, handleTypeSelect, handleAddClick, currentTimeDelegate);
 
-        public static CommandPanelInputBar CreateEditInputBar(Action handleSaveClick) =>
-            new(true, _ => { }, handleSaveClick);
+        public static CommandPanelInputBar CreateEditInputBar(Action handleSaveClick, Func<double> currentTimeDelegate) =>
+            new(true, _ => { }, handleSaveClick, currentTimeDelegate);
 
-        private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleCommitClick) {
+        private CommandPanelInputBar(bool isEditBar, Action<ValueChangedEvent<string>> handleTypeSelect, Action handleCommitClick,
+            Func<double> currentTimeDelegate) {
             var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
             BtnSave = new IconButton() {
                 Width = S2VXCommandPanel.InputSize.Y,
                 Height = S2VXCommandPanel.InputSize.Y,
                 Icon = saveIcon
             };
+            StartTime = new(currentTimeDelegate);
+            EndTime = new(currentTimeDelegate);
 
             // We initialize the inputs here instead of in Load because the
             // outer CommandPanel needs some of these values to be set

@@ -31,10 +31,10 @@ namespace S2VX.Game.Editor.CommandPanel {
         };
 
         private CommandPanelInputBar CreateAddInputBar() =>
-            CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick);
+            CommandPanelInputBar.CreateAddInputBar(HandleTypeSelect, HandleAddClick, Editor.CurrentTime);
 
         private CommandPanelInputBar CreateEditInputBar() {
-            var editInputBar = CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference));
+            var editInputBar = CommandPanelInputBar.CreateEditInputBar(() => HandleSaveCommand(EditCommandReference), Editor.CurrentTime);
             editInputBar.Depth = -1;
             return editInputBar;
         }

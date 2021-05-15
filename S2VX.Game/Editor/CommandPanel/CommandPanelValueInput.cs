@@ -6,12 +6,11 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using S2VX.Game.Editor.ColorPicker;
+using System;
 using System.Globalization;
 
 namespace S2VX.Game.Editor.CommandPanel {
     public class CommandPanelValueInput : Container {
-        [Resolved]
-        private EditorScreen Editor { get; set; }
 
         public TextBox TxtValue { get; } = CreateErrorTextBox();
 
@@ -44,6 +43,8 @@ namespace S2VX.Game.Editor.CommandPanel {
             Position = new(0, S2VXCommandPanel.InputSize.Y)
         };
 
+        public Func<double> CurrentTimeDelegate { get; private set; }
+
         public void UseApplyCurrentTime() => BtnApplyCurrentTime.Show();
 
         public void UseColorPicker(bool isColorValue) {
@@ -55,7 +56,7 @@ namespace S2VX.Game.Editor.CommandPanel {
             }
         }
 
-        private void ApplyCurrentTime() => TxtValue.Current.Value = Editor.Track.CurrentTime.ToString(CultureInfo.InvariantCulture);
+        private void ApplyCurrentTime() => TxtValue.Current.Value = CurrentTimeDelegate().ToString(CultureInfo.InvariantCulture);
 
         private void TogglePicker() {
             if (ColorPicker.Alpha == 0) {
@@ -86,7 +87,8 @@ namespace S2VX.Game.Editor.CommandPanel {
 
         // Bindings need to be set up early so that they can trigger before
         // Load() happens
-        public CommandPanelValueInput() {
+        public CommandPanelValueInput(Func<double> currentTimeDelegate = null) {
+            CurrentTimeDelegate = currentTimeDelegate;
             BtnApplyCurrentTime.Action = ApplyCurrentTime;
             BtnToggle.Action = TogglePicker;
             TxtValue.Current.BindValueChanged(BindTxtValueChange);
