@@ -12,7 +12,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [SetUpSteps]
         public void SetUpSteps() {
             AddStep("Clear drawables", () => Clear());
-            AddStep("Add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(_ => { }, () => { })));
+            AddStep("Add input bar", () => Add(InputBar = CommandPanelInputBar.CreateAddInputBar(null, null, () => 0)));
         }
 
         [Test]
@@ -44,8 +44,8 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void ValuesToString_BlueStartAndEndColor_CreatesCorrectString() {
             AddStep("Update command type", () => InputBar.DropType.Current.Value = new GridColorCommand().GetCommandName());
-            AddStep("Update start time", () => InputBar.TxtStartTime.Current.Value = "12");
-            AddStep("Update end time", () => InputBar.TxtEndTime.Current.Value = "345");
+            AddStep("Update start time", () => InputBar.StartTime.TxtValue.Current.Value = "12");
+            AddStep("Update end time", () => InputBar.EndTime.TxtValue.Current.Value = "345");
             AddStep("Update start value", () => InputBar.StartValue.ColorPicker.Current.Value = Color4.Blue);
             AddStep("Update end value", () => InputBar.EndValue.ColorPicker.Current.Value = Color4.Blue);
             AddStep("Update easing", () => InputBar.DropEasing.Current.Value = Easing.OutBounce.ToString());
