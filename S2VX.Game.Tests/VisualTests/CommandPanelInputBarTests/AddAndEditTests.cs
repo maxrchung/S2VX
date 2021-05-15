@@ -28,26 +28,23 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void Tab_FocusOnFirstInput_ShiftsFocusToNextInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => {
-                InputManager.MoveMouseTo(InputBar.StartTime);
-                InputManager.PressButton(MouseButton.Left);
-                InputManager.ReleaseButton(MouseButton.Left);
-            });
+            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime.TxtValue));
             AddStep("Press tab", () => InputManager.PressKey(Key.Tab));
+            AddStep("Release tab", () => InputManager.ReleaseKey(Key.Tab));
             AddAssert("Shifts focus to next input", () => InputBar.StartValue.TxtValue.HasFocus);
         }
 
         [Test]
         public void ShiftTab_FocusOnFirstInput_ShiftsFocusToLastInput() {
             CreateAddInputBar();
-            AddStep("Focus start time input", () => {
-                InputManager.MoveMouseTo(InputBar.StartTime);
-                InputManager.PressButton(MouseButton.Left);
-                InputManager.ReleaseButton(MouseButton.Left);
-            });
+            AddStep("Focus start time input", () => InputManager.ChangeFocus(InputBar.StartTime.TxtValue));
             AddStep("Press shift tab", () => {
                 InputManager.PressKey(Key.LShift);
                 InputManager.PressKey(Key.Tab);
+            });
+            AddStep("Release shift tab", () => {
+                InputManager.ReleaseKey(Key.LShift);
+                InputManager.ReleaseKey(Key.Tab);
             });
             AddAssert("Shifts focus to last input", () => InputBar.EndValue.TxtValue.HasFocus);
         }
