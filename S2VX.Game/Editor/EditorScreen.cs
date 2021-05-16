@@ -360,6 +360,8 @@ namespace S2VX.Game.Editor {
             Story.ClearActives();
         }
 
+        public Func<double> CurrentTime => () => Track.CurrentTime;
+
         private void ProjectPreview() {
             ProjectSave();
             var newStory = new S2VXStory(Story.StoryPath, false);
