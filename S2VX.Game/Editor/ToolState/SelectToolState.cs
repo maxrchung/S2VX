@@ -188,7 +188,7 @@ namespace S2VX.Game.Editor.ToolState {
             foreach (var noteAndTime in NotesTimeline.SelectedNoteToTime) {
                 var note = noteAndTime.Key;
                 var noteToTimelineNote = Editor.NotesTimeline.NoteToTimelineNote;
-                if (noteToTimelineNote.ContainsKey(note) && IsMouseOnTimelineNote(mousePos, noteToTimelineNote[note])) {
+                if (noteToTimelineNote.TryGetValue(note, out var timelineNote) && IsMouseOnTimelineNote(mousePos, timelineNote)) {
                     ToDrag = SelectToolDragState.DragTimelineNote;
                     OldHitTime = selectedNoteTime = note.HitTime;
                     if (note is HoldNote holdNote && IsMouseOnEndOfHoldNote(mousePos, holdNote)) {

@@ -31,12 +31,11 @@ namespace StoryMerge {
             var dictInfo = new Dictionary<string, CommandTimeInfo>();
             foreach (var info in infos) {
                 var type = info.Type;
-                if (!dictInfo.ContainsKey(type)) {
+                if (!dictInfo.TryGetValue(type, out var latestInfo)) {
                     dictInfo[type] = info;
                     continue;
                 }
 
-                var latestInfo = dictInfo[type];
                 if (info.StartTime == latestInfo.StartTime && info.EndTime == latestInfo.EndTime) {
                     messages.Add($"Command conflict:\n{latestInfo}\n{info}");
                 } else if (info.StartTime >= latestInfo.EndTime && info.EndTime >= latestInfo.EndTime) {
