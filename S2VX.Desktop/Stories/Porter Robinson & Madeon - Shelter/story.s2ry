@@ -908,24 +908,6 @@
     },
     {
       "StartValue": {
-        "R": 0.43529412,
-        "G": 0.8117647,
-        "B": 0.5764706,
-        "A": 1.0
-      },
-      "EndValue": {
-        "R": 0.34509805,
-        "G": 0.7254902,
-        "B": 0.49019608,
-        "A": 1.0
-      },
-      "StartTime": 29201.995464852607,
-      "EndTime": 29801.995464852607,
-      "Easing": 2,
-      "Type": "BackgroundColor"
-    },
-    {
-      "StartValue": {
         "x": -29.0,
         "y": 25.5
       },
@@ -5319,7 +5301,7 @@
     }
   ],
   "EditorSettings": {
-    "TrackTime": 0.0,
+    "TrackTime": 56951.99546485261,
     "TrackPlaybackRate": 1.0,
     "SnapDivisor": 2,
     "BeatSnapDivisorIndex": 3,
@@ -5329,7 +5311,7 @@
     "SlowestBPM": 100.0,
     "FastestBPM": 100.0,
     "StoryLength": 115200.0,
-    "CommandCount": 213,
+    "CommandCount": 212,
     "NoteCount": 244
   }
 }
