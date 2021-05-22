@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using osu.Framework.IO.Serialization;
+using System;
+using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.IO;
@@ -17,6 +20,13 @@ namespace StoryMerge {
                     new []{"--output", "-o" },
                     "File path to output to"
                 ),
+            };
+
+            // osu! framework initializes the Json serializer to use their Vector2Converter as part of their GameHost startup
+            // Since this utility does not have a GameHost, we must set it up here
+            // https://github.com/ppy/osu-framework/pull/4285/
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
+                Converters = new List<JsonConverter> { new Vector2Converter() }
             };
 
             root.Handler = CommandHandler.Create(
