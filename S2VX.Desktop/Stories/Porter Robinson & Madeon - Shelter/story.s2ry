@@ -1,0 +1,5317 @@
+{
+  "Commands": [
+    {
+      "StartValue": {
+        "R": 0.23529412,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.23137255,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 1.0,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.4509804,
+        "G": 0.8862745,
+        "B": 0.9411765,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.4509804,
+        "G": 0.8862745,
+        "B": 0.9411765,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 1.0,
+      "Easing": 0,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.23529412,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.23137255,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 2652.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.6509804,
+        "G": 0.5411765,
+        "B": 0.34901962,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.54509807,
+        "G": 0.4509804,
+        "B": 0.2901961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 3801.9954648526077,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.654902,
+        "G": 0.6039216,
+        "B": 0.5176471,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.53333336,
+        "G": 0.48235294,
+        "B": 0.39215687,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 3801.9954648526077,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": 100.0,
+      "EndValue": 100.0,
+      "StartTime": 402.0,
+      "EndTime": 11600.0,
+      "Easing": 0,
+      "Type": "TimingChange"
+    },
+    {
+      "StartValue": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": 7.0,
+        "y": -0.0
+      },
+      "StartTime": 1751.9954648526077,
+      "EndTime": 2501.9954648526077,
+      "Easing": 2,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "x": 7.0,
+        "y": -0.0
+      },
+      "EndValue": {
+        "x": 10.5,
+        "y": 0.0
+      },
+      "StartTime": 4001.9954648526077,
+      "EndTime": 4301.995464852608,
+      "Easing": 2,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": -22.5,
+      "StartTime": 4001.9954648526077,
+      "EndTime": 4301.995464852608,
+      "Easing": 2,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.7607843,
+        "G": 0.5137255,
+        "B": 0.83137256,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.56078434,
+        "G": 0.8666667,
+        "B": 0.8980392,
+        "A": 1.0
+      },
+      "StartTime": 5652.0,
+      "EndTime": 2652.0,
+      "Easing": 2,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "x": 10.5,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": 10.5,
+        "y": -0.0
+      },
+      "StartTime": 6551.995464852608,
+      "EndTime": 6551.995464852608,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -28.125,
+      "EndValue": -22.5,
+      "StartTime": 6551.995464852608,
+      "EndTime": 6551.995464852608,
+      "Easing": 2,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "EndValue": {
+        "x": 0.10625,
+        "y": 0.10625
+      },
+      "StartTime": 6551.995464852608,
+      "EndTime": 6851.995464852607,
+      "Easing": 2,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "x": 10.5,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": 13.0,
+        "y": 1.5
+      },
+      "StartTime": 6551.995464852608,
+      "EndTime": 7001.995464852608,
+      "Easing": 2,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.56078434,
+        "G": 0.8666667,
+        "B": 0.8980392,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.6156863,
+        "G": 0.56078434,
+        "B": 0.8980392,
+        "A": 1.0
+      },
+      "StartTime": 10002.0,
+      "EndTime": 19602.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "x": 13.0,
+        "y": 1.5
+      },
+      "EndValue": {
+        "x": 13.0,
+        "y": 5.0
+      },
+      "StartTime": 13451.995464852607,
+      "EndTime": 13901.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "x": 13.0,
+        "y": 5.0
+      },
+      "EndValue": {
+        "x": 23.0,
+        "y": 5.0
+      },
+      "StartTime": 14801.995464852607,
+      "EndTime": 15251.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "x": 23.0,
+        "y": 5.0
+      },
+      "EndValue": {
+        "x": 23.0,
+        "y": -0.5
+      },
+      "StartTime": 15851.995464852609,
+      "EndTime": 16601.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.44313726,
+        "G": 0.5019608,
+        "B": 0.8235294,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.30980393,
+        "G": 0.38431373,
+        "B": 0.76862746,
+        "A": 1.0
+      },
+      "StartTime": 19601.995464852607,
+      "EndTime": 20201.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 23.0,
+        "y": -0.5
+      },
+      "EndValue": {
+        "x": 17.0,
+        "y": -0.5
+      },
+      "StartTime": 19601.995464852607,
+      "EndTime": 20201.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.44313726,
+        "G": 0.5019608,
+        "B": 0.8235294,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.30980393,
+        "G": 0.38431373,
+        "B": 0.76862746,
+        "A": 1.0
+      },
+      "StartTime": 19601.995464852607,
+      "EndTime": 20201.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.4509804,
+        "G": 0.8862745,
+        "B": 0.9411765,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.3647059,
+        "G": 0.8235294,
+        "B": 0.88235295,
+        "A": 1.0
+      },
+      "StartTime": 19601.995464852607,
+      "EndTime": 20201.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 0.0,
+      "StartTime": 19601.995464852607,
+      "EndTime": 25601.995464852607,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": {
+        "x": 17.0,
+        "y": -0.5
+      },
+      "EndValue": {
+        "x": 17.0,
+        "y": 3.5
+      },
+      "StartTime": 20201.995464852607,
+      "EndTime": 20501.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -28.125,
+      "EndValue": -90.0,
+      "StartTime": 20201.995464852607,
+      "EndTime": 20501.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.30588236,
+        "G": 0.38039216,
+        "B": 0.76862746,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.24705882,
+        "G": 0.3137255,
+        "B": 0.6627451,
+        "A": 1.0
+      },
+      "StartTime": 20801.995464852607,
+      "EndTime": 21401.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 17.0,
+        "y": 3.5
+      },
+      "EndValue": {
+        "x": 12.0,
+        "y": 3.5
+      },
+      "StartTime": 20801.995464852607,
+      "EndTime": 21401.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.30588236,
+        "G": 0.38039216,
+        "B": 0.76862746,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.24705882,
+        "G": 0.3137255,
+        "B": 0.6627451,
+        "A": 1.0
+      },
+      "StartTime": 20801.995464852607,
+      "EndTime": 21401.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.3647059,
+        "G": 0.8235294,
+        "B": 0.88235295,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2784314,
+        "G": 0.77254903,
+        "B": 0.8352941,
+        "A": 1.0
+      },
+      "StartTime": 20801.995464852607,
+      "EndTime": 21401.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "x": 12.0,
+        "y": 3.5
+      },
+      "EndValue": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "StartTime": 21401.995464852607,
+      "EndTime": 21701.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -90.0,
+      "EndValue": -135.0,
+      "StartTime": 21401.995464852607,
+      "EndTime": 21701.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.10625,
+        "y": 0.10625
+      },
+      "EndValue": {
+        "x": 0.15,
+        "y": 0.15
+      },
+      "StartTime": 21401.995464852607,
+      "EndTime": 21701.995464852607,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.24313726,
+        "G": 0.30980393,
+        "B": 0.6627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.70980394,
+        "A": 1.0
+      },
+      "StartTime": 22001.995464852607,
+      "EndTime": 22601.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "EndValue": {
+        "x": -0.5,
+        "y": 3.5
+      },
+      "StartTime": 22001.995464852607,
+      "EndTime": 22601.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.24705882,
+        "G": 0.3137255,
+        "B": 0.6627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.70980394,
+        "A": 1.0
+      },
+      "StartTime": 22001.995464852607,
+      "EndTime": 22601.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.2784314,
+        "G": 0.77254903,
+        "B": 0.8352941,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2,
+        "G": 0.7294118,
+        "B": 0.79607844,
+        "A": 1.0
+      },
+      "StartTime": 22001.995464852607,
+      "EndTime": 22601.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "x": -0.5,
+        "y": 3.5
+      },
+      "EndValue": {
+        "x": -7.5,
+        "y": 4.0
+      },
+      "StartTime": 22601.995464852607,
+      "EndTime": 22901.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -135.0,
+      "EndValue": -180.0,
+      "StartTime": 22601.995464852607,
+      "EndTime": 22901.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.15,
+        "y": 0.15
+      },
+      "EndValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "StartTime": 22601.995464852607,
+      "EndTime": 22901.995464852607,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.70980394,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.12941177,
+        "G": 0.22352941,
+        "B": 0.7137255,
+        "A": 1.0
+      },
+      "StartTime": 23201.995464852607,
+      "EndTime": 23801.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -7.5,
+        "y": 4.0
+      },
+      "EndValue": {
+        "x": -13.5,
+        "y": 4.0
+      },
+      "StartTime": 23201.995464852607,
+      "EndTime": 23801.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.70980394,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1254902,
+        "G": 0.22352941,
+        "B": 0.7137255,
+        "A": 1.0
+      },
+      "StartTime": 23201.995464852607,
+      "EndTime": 23801.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.2,
+        "G": 0.7294118,
+        "B": 0.79607844,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.15294118,
+        "G": 0.6745098,
+        "B": 0.7411765,
+        "A": 1.0
+      },
+      "StartTime": 23201.995464852607,
+      "EndTime": 23801.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "x": -13.5,
+        "y": 4.0
+      },
+      "EndValue": {
+        "x": -20.0,
+        "y": -0.0
+      },
+      "StartTime": 23801.995464852607,
+      "EndTime": 24101.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -180.0,
+      "EndValue": -135.0,
+      "StartTime": 23801.995464852607,
+      "EndTime": 24101.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "EndValue": {
+        "x": 0.075,
+        "y": 0.075
+      },
+      "StartTime": 23801.995464852607,
+      "EndTime": 24101.995464852607,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.12941177,
+        "G": 0.22352941,
+        "B": 0.7137255,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.08235294,
+        "G": 0.18039216,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "StartTime": 24401.995464852607,
+      "EndTime": 25001.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -20.0,
+        "y": -0.0
+      },
+      "EndValue": {
+        "x": -26.0,
+        "y": 0.0
+      },
+      "StartTime": 24401.995464852607,
+      "EndTime": 25001.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.1254902,
+        "G": 0.22352941,
+        "B": 0.7137255,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.08235294,
+        "G": 0.18039216,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "StartTime": 24401.995464852607,
+      "EndTime": 25001.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.15294118,
+        "G": 0.6745098,
+        "B": 0.7411765,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.078431375,
+        "G": 0.5803922,
+        "B": 0.64705884,
+        "A": 1.0
+      },
+      "StartTime": 24401.995464852607,
+      "EndTime": 25001.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "x": -26.0,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": -29.0,
+        "y": 13.75
+      },
+      "StartTime": 25001.995464852607,
+      "EndTime": 25301.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -135.0,
+      "EndValue": -90.0,
+      "StartTime": 25001.995464852607,
+      "EndTime": 25301.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.075,
+        "y": 0.075
+      },
+      "EndValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "StartTime": 25001.995464852607,
+      "EndTime": 25301.995464852607,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.23529412,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.23529412,
+        "G": 0.54509807,
+        "B": 0.14901961,
+        "A": 1.0
+      },
+      "StartTime": 25601.995464852607,
+      "EndTime": 25601.995464852607,
+      "Easing": 2,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.08235294,
+        "G": 0.18039216,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.03137255,
+        "G": 0.12941177,
+        "B": 0.61960787,
+        "A": 1.0
+      },
+      "StartTime": 25601.995464852607,
+      "EndTime": 26201.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -29.0,
+        "y": 13.75
+      },
+      "EndValue": {
+        "x": -29.0,
+        "y": 25.5
+      },
+      "StartTime": 25601.995464852607,
+      "EndTime": 26201.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.08235294,
+        "G": 0.18039216,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.03137255,
+        "G": 0.12941177,
+        "B": 0.61960787,
+        "A": 1.0
+      },
+      "StartTime": 25601.995464852607,
+      "EndTime": 26201.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.078431375,
+        "G": 0.5803922,
+        "B": 0.64705884,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.050980393,
+        "G": 0.50980395,
+        "B": 0.5686275,
+        "A": 1.0
+      },
+      "StartTime": 25601.995464852607,
+      "EndTime": 26201.995464852607,
+      "Easing": 2,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": 1.0,
+      "EndValue": 1.0,
+      "StartTime": 26201.995464852607,
+      "EndTime": 26386.984126984127,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": {
+        "R": 0.39215687,
+        "G": 0.48235294,
+        "B": 0.9372549,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.39215687,
+        "G": 0.48235294,
+        "B": 0.9372549,
+        "A": 1.0
+      },
+      "StartTime": 26201.995464852607,
+      "EndTime": 26446.984126984127,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.43529412,
+        "G": 0.8117647,
+        "B": 0.5764706,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.34509805,
+        "G": 0.7254902,
+        "B": 0.49019608,
+        "A": 1.0
+      },
+      "StartTime": 29201.995464852607,
+      "EndTime": 29801.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -29.0,
+        "y": 25.5
+      },
+      "EndValue": {
+        "x": -29.0,
+        "y": 37.0
+      },
+      "StartTime": 29201.995464852607,
+      "EndTime": 29801.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.43529412,
+        "G": 0.8117647,
+        "B": 0.5764706,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.34509805,
+        "G": 0.7254902,
+        "B": 0.49019608,
+        "A": 1.0
+      },
+      "StartTime": 29201.995464852607,
+      "EndTime": 29801.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 0.0,
+      "StartTime": 29201.995464852607,
+      "EndTime": 35651.99546485261,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": {
+        "x": -29.0,
+        "y": 37.0
+      },
+      "EndValue": {
+        "x": -37.0,
+        "y": 46.5
+      },
+      "StartTime": 29801.995464852607,
+      "EndTime": 30101.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -90.0,
+      "EndValue": -135.0,
+      "StartTime": 29801.995464852607,
+      "EndTime": 30101.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.61960787,
+        "G": 0.6509804,
+        "B": 0.16470589,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.61960787,
+        "G": 0.6509804,
+        "B": 0.16470589,
+        "A": 1.0
+      },
+      "StartTime": 29801.995464852607,
+      "EndTime": 30246.984126984127,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.34509805,
+        "G": 0.7254902,
+        "B": 0.4862745,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.27450982,
+        "G": 0.65882355,
+        "B": 0.41960785,
+        "A": 1.0
+      },
+      "StartTime": 30401.995464852607,
+      "EndTime": 31001.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -37.0,
+        "y": 46.5
+      },
+      "EndValue": {
+        "x": -37.0,
+        "y": 56.5
+      },
+      "StartTime": 30401.995464852607,
+      "EndTime": 31001.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.34509805,
+        "G": 0.7254902,
+        "B": 0.49019608,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.27450982,
+        "G": 0.65882355,
+        "B": 0.41960785,
+        "A": 1.0
+      },
+      "StartTime": 30401.995464852607,
+      "EndTime": 31001.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": -135.0,
+      "EndValue": -45.0,
+      "StartTime": 31001.995464852607,
+      "EndTime": 31301.995464852607,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.27450982,
+        "G": 0.65882355,
+        "B": 0.41960785,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.21960784,
+        "G": 0.5921569,
+        "B": 0.36078432,
+        "A": 1.0
+      },
+      "StartTime": 31601.995464852607,
+      "EndTime": 32201.995464852607,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -37.0,
+        "y": 56.5
+      },
+      "EndValue": {
+        "x": -37.0,
+        "y": 65.0
+      },
+      "StartTime": 31601.995464852607,
+      "EndTime": 32201.995464852607,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.27450982,
+        "G": 0.65882355,
+        "B": 0.41960785,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.21960784,
+        "G": 0.5921569,
+        "B": 0.36078432,
+        "A": 1.0
+      },
+      "StartTime": 31601.995464852607,
+      "EndTime": 32201.995464852607,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "x": -37.0,
+        "y": 65.0
+      },
+      "EndValue": {
+        "x": -39.5,
+        "y": 71.5
+      },
+      "StartTime": 32201.995464852607,
+      "EndTime": 32501.995464852604,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -45.0,
+      "EndValue": -135.0,
+      "StartTime": 32201.995464852607,
+      "EndTime": 32501.995464852604,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.21960784,
+        "G": 0.5921569,
+        "B": 0.36078432,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.15686275,
+        "G": 0.5254902,
+        "B": 0.29803923,
+        "A": 1.0
+      },
+      "StartTime": 32801.99546485261,
+      "EndTime": 33401.99546485261,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -39.5,
+        "y": 71.5
+      },
+      "EndValue": {
+        "x": -39.5,
+        "y": 83.0
+      },
+      "StartTime": 32801.99546485261,
+      "EndTime": 33401.99546485261,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.21960784,
+        "G": 0.5921569,
+        "B": 0.36078432,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.15686275,
+        "G": 0.5254902,
+        "B": 0.29803923,
+        "A": 1.0
+      },
+      "StartTime": 32801.99546485261,
+      "EndTime": 33401.99546485261,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": -135.0,
+      "EndValue": -90.0,
+      "StartTime": 33401.99546485261,
+      "EndTime": 33701.99546485261,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": -90.0,
+      "EndValue": -45.0,
+      "StartTime": 33701.99546485261,
+      "EndTime": 33851.9954648526,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.15686275,
+        "G": 0.5254902,
+        "B": 0.29803923,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.10980392,
+        "G": 0.4627451,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "StartTime": 34001.9954648526,
+      "EndTime": 34601.9954648526,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -39.5,
+        "y": 83.0
+      },
+      "EndValue": {
+        "x": -39.5,
+        "y": 94.0
+      },
+      "StartTime": 34001.9954648526,
+      "EndTime": 34601.9954648526,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.15686275,
+        "G": 0.5254902,
+        "B": 0.29803923,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.10980392,
+        "G": 0.4627451,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "StartTime": 34001.9954648526,
+      "EndTime": 34601.9954648526,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "x": -39.5,
+        "y": 94.0
+      },
+      "EndValue": {
+        "x": -44.0,
+        "y": 100.0
+      },
+      "StartTime": 34601.9954648526,
+      "EndTime": 34901.99546485261,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -45.0,
+      "EndValue": 90.0,
+      "StartTime": 34601.9954648526,
+      "EndTime": 34901.99546485261,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.10980392,
+        "G": 0.4627451,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.08235294,
+        "G": 0.43529412,
+        "B": 0.21960784,
+        "A": 1.0
+      },
+      "StartTime": 35201.99546485261,
+      "EndTime": 35801.99546485261,
+      "Easing": 2,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -44.0,
+        "y": 100.0
+      },
+      "EndValue": {
+        "x": -44.0,
+        "y": 111.0
+      },
+      "StartTime": 35201.99546485261,
+      "EndTime": 35801.99546485261,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.10980392,
+        "G": 0.4627451,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.08235294,
+        "G": 0.43529412,
+        "B": 0.21960784,
+        "A": 1.0
+      },
+      "StartTime": 35201.99546485261,
+      "EndTime": 35801.99546485261,
+      "Easing": 2,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": 1.0,
+      "EndValue": 1.0,
+      "StartTime": 35801.99546485261,
+      "EndTime": 35986.98412698413,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": {
+        "R": 0.3529412,
+        "G": 0.64705884,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.3529412,
+        "G": 0.64705884,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "StartTime": 35801.99546485261,
+      "EndTime": 35995.48752834467,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7764706,
+        "G": 0.8745098,
+        "B": 0.92941177,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.99215686,
+        "G": 0.92941177,
+        "B": 0.9019608,
+        "A": 1.0
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 41201.99546485261,
+      "Easing": 1,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7764706,
+        "G": 0.8745098,
+        "B": 0.92941177,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.99215686,
+        "G": 0.92941177,
+        "B": 0.9019608,
+        "A": 1.0
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 41201.99546485261,
+      "Easing": 1,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 41201.99546485261,
+      "Easing": 1,
+      "Type": "HoldNotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 41201.99546485261,
+      "Easing": 1,
+      "Type": "NotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": 1.75,
+        "y": -1.0
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 43001.9954648526,
+      "Easing": 22,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 45.0,
+      "StartTime": 38801.99546485261,
+      "EndTime": 43001.9954648526,
+      "Easing": 22,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "EndValue": {
+        "x": 0.125,
+        "y": 0.125
+      },
+      "StartTime": 38801.99546485261,
+      "EndTime": 43001.9954648526,
+      "Easing": 22,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "x": 1.75,
+        "y": -1.0
+      },
+      "EndValue": {
+        "x": 2.25,
+        "y": -0.5
+      },
+      "StartTime": 43001.9954648526,
+      "EndTime": 43551.99546485261,
+      "Easing": 5,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 45.0,
+      "EndValue": 67.5,
+      "StartTime": 43001.9954648526,
+      "EndTime": 43551.99546485261,
+      "Easing": 5,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.99215686,
+        "G": 0.92941177,
+        "B": 0.9019608,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.8392157,
+        "G": 0.6156863,
+        "B": 0.5882353,
+        "A": 1.0
+      },
+      "StartTime": 43001.9954648526,
+      "EndTime": 43601.9954648526,
+      "Easing": 5,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.99215686,
+        "G": 0.92941177,
+        "B": 0.9019608,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.8392157,
+        "G": 0.6156863,
+        "B": 0.5882353,
+        "A": 1.0
+      },
+      "StartTime": 43001.9954648526,
+      "EndTime": 43601.9954648526,
+      "Easing": 5,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8353,
+        "A": 1.0
+      },
+      "StartTime": 43001.9954648526,
+      "EndTime": 43601.9954648526,
+      "Easing": 5,
+      "Type": "HoldNotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8353,
+        "A": 1.0
+      },
+      "StartTime": 43001.9954648526,
+      "EndTime": 43601.9954648526,
+      "Easing": 5,
+      "Type": "NotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "x": 2.25,
+        "y": -0.5
+      },
+      "EndValue": {
+        "x": 1.0,
+        "y": -0.0
+      },
+      "StartTime": 43601.9954648526,
+      "EndTime": 45251.9954648526,
+      "Easing": 6,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "x": 1.0,
+        "y": -0.0
+      },
+      "EndValue": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "StartTime": 45851.9954648526,
+      "EndTime": 46601.9954648526,
+      "Easing": 4,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46151.99546485261,
+      "EndTime": 46301.99546485261,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46151.99546485261,
+      "EndTime": 46301.99546485261,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 46301.99546485261,
+      "EndTime": 46451.99546485261,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 46301.99546485261,
+      "EndTime": 46451.99546485261,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46451.99546485261,
+      "EndTime": 46601.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46451.99546485261,
+      "EndTime": 46601.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 46601.9954648526,
+      "EndTime": 46751.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 46601.9954648526,
+      "EndTime": 46751.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46751.9954648526,
+      "EndTime": 46901.99546485261,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 46751.9954648526,
+      "EndTime": 46901.99546485261,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 47351.9954648526,
+      "EndTime": 47351.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 47351.9954648526,
+      "EndTime": 47351.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.8392157,
+        "G": 0.6156863,
+        "B": 0.5882353,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1254902,
+        "G": 0.24313726,
+        "B": 0.6509804,
+        "A": 1.0
+      },
+      "StartTime": 47801.99546485261,
+      "EndTime": 48401.99546485261,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "EndValue": {
+        "x": 0.25,
+        "y": 1.0
+      },
+      "StartTime": 47801.99546485261,
+      "EndTime": 48401.99546485261,
+      "Easing": 28,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 67.5,
+      "EndValue": 90.0,
+      "StartTime": 47801.99546485261,
+      "EndTime": 48401.99546485261,
+      "Easing": 24,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.8392157,
+        "G": 0.6156863,
+        "B": 0.5882353,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1254902,
+        "G": 0.24313726,
+        "B": 0.6509804,
+        "A": 1.0
+      },
+      "StartTime": 47801.99546485261,
+      "EndTime": 48401.99546485261,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "x": 0.25,
+        "y": 1.0
+      },
+      "EndValue": {
+        "x": 3.0,
+        "y": 2.5
+      },
+      "StartTime": 48401.99546485261,
+      "EndTime": 53201.99546485261,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "x": 0.125,
+        "y": 0.125
+      },
+      "EndValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "StartTime": 48401.99546485261,
+      "EndTime": 57401.99546485261,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": 90.0,
+      "EndValue": 0.0,
+      "StartTime": 53201.99546485261,
+      "EndTime": 57401.99546485261,
+      "Easing": 2,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.1254902,
+        "G": 0.24313726,
+        "B": 0.6509804,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 53201.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 3.0,
+        "y": 2.5
+      },
+      "EndValue": {
+        "x": 0.25,
+        "y": -0.0
+      },
+      "StartTime": 53201.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": {
+        "R": 0.1254902,
+        "G": 0.24313726,
+        "B": 0.6509804,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745098,
+        "G": 0.21176471,
+        "B": 0.25490198,
+        "A": 1.0
+      },
+      "StartTime": 53201.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2901961,
+        "G": 0.1764706,
+        "B": 0.19215687,
+        "A": 1.0
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.012,
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.37254903,
+        "G": 0.9764706,
+        "B": 0.95686275,
+        "A": 1.0
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 45.0,
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "EndValue": {
+        "x": 0.12,
+        "y": 0.12
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": 0.005,
+      "EndValue": 0.0,
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "GridThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.15686275,
+        "G": 0.6313726,
+        "B": 0.59607846,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7294118,
+        "G": 0.41960785,
+        "B": 0.52156866,
+        "A": 1.0
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "HoldApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.15686275,
+        "G": 0.6313726,
+        "B": 0.59607846,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7294118,
+        "G": 0.41960785,
+        "B": 0.52156866,
+        "A": 1.0
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.012,
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.2901961,
+        "G": 0.1764706,
+        "B": 0.19215687,
+        "A": 1.0
+      },
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 7,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.012,
+      "StartTime": 57401.99546485261,
+      "EndTime": 58001.9954648526,
+      "Easing": 0,
+      "Type": "NotesOutlineThickness"
+    },
+    {
+      "StartValue": 0.25,
+      "EndValue": 0.25,
+      "StartTime": 57402.0,
+      "EndTime": 57402.0,
+      "Easing": 0,
+      "Type": "ApproachesDistance"
+    },
+    {
+      "StartValue": {
+        "R": 0.37254903,
+        "G": 0.9764706,
+        "B": 0.95686275,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.11764706,
+        "G": 0.32941177,
+        "B": 0.29411766,
+        "A": 1.0
+      },
+      "StartTime": 58001.9954648526,
+      "EndTime": 67601.9954648526,
+      "Easing": 6,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": 45.0,
+      "EndValue": -90.0,
+      "StartTime": 58001.9954648526,
+      "EndTime": 67601.9954648526,
+      "Easing": 6,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.11764706,
+        "G": 0.32941177,
+        "B": 0.29411766,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.31764707,
+        "G": 0.9843137,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "StartTime": 67601.9954648526,
+      "EndTime": 75701.9954648526,
+      "Easing": 8,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": -90.0,
+      "EndValue": 0.0,
+      "StartTime": 67601.9954648526,
+      "EndTime": 76001.99546485262,
+      "Easing": 8,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0
+      },
+      "StartTime": 76001.99546485262,
+      "EndTime": 76001.99546485262,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.31764707,
+        "G": 0.9843137,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.19215687,
+        "G": 0.28627452,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "StartTime": 76001.99546485262,
+      "EndTime": 76151.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 0.1,
+      "StartTime": 76001.99546485262,
+      "EndTime": 76601.9954648526,
+      "Easing": 0,
+      "Type": "GridAlpha"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": 0.006,
+      "StartTime": 76001.99546485262,
+      "EndTime": 76601.9954648526,
+      "Easing": 7,
+      "Type": "GridThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.19215687,
+        "G": 0.28627452,
+        "B": 0.6784314,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.43137255,
+        "G": 0.61960787,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "StartTime": 76151.9954648526,
+      "EndTime": 76301.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.43137255,
+        "G": 0.61960787,
+        "B": 0.24705882,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.4509804,
+        "G": 0.6666667,
+        "B": 0.9490196,
+        "A": 1.0
+      },
+      "StartTime": 76301.9954648526,
+      "EndTime": 76451.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.4509804,
+        "G": 0.6666667,
+        "B": 0.9490196,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7254902,
+        "G": 0.9019608,
+        "B": 0.627451,
+        "A": 1.0
+      },
+      "StartTime": 76451.9954648526,
+      "EndTime": 76601.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7254902,
+        "G": 0.9019608,
+        "B": 0.627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.20784314,
+        "G": 0.21568628,
+        "B": 0.62352943,
+        "A": 1.0
+      },
+      "StartTime": 76601.9954648526,
+      "EndTime": 76751.99546485262,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.20784314,
+        "G": 0.21568628,
+        "B": 0.62352943,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.8784314,
+        "G": 0.9882353,
+        "B": 0.80784315,
+        "A": 1.0
+      },
+      "StartTime": 76751.99546485262,
+      "EndTime": 77201.9954648526,
+      "Easing": 6,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.8784314,
+        "G": 0.9882353,
+        "B": 0.80784315,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.37254903,
+        "G": 0.5529412,
+        "B": 0.88235295,
+        "A": 1.0
+      },
+      "StartTime": 77201.9954648526,
+      "EndTime": 79601.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": -0.125,
+        "y": 2.625
+      },
+      "StartTime": 77201.9954648526,
+      "EndTime": 79601.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": -50.625,
+      "StartTime": 77201.9954648526,
+      "EndTime": 79601.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.37254903,
+        "G": 0.5529412,
+        "B": 0.88235295,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.12156863,
+        "A": 1.0
+      },
+      "StartTime": 79601.9954648526,
+      "EndTime": 82001.99546485262,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -0.125,
+        "y": 2.625
+      },
+      "EndValue": {
+        "x": -0.75,
+        "y": 2.0625
+      },
+      "StartTime": 79601.9954648526,
+      "EndTime": 82001.99546485262,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -50.625,
+      "EndValue": -16.875,
+      "StartTime": 79601.9954648526,
+      "EndTime": 82001.99546485262,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.16862746,
+        "G": 0.25490198,
+        "B": 0.12156863,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.07450981,
+        "G": 0.09019608,
+        "B": 0.35686275,
+        "A": 1.0
+      },
+      "StartTime": 82001.99546485262,
+      "EndTime": 84401.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -0.75,
+        "y": 2.0625
+      },
+      "EndValue": {
+        "x": -3.1875,
+        "y": 0.0
+      },
+      "StartTime": 82001.99546485262,
+      "EndTime": 84401.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": -16.875,
+      "EndValue": 33.75,
+      "StartTime": 82001.99546485262,
+      "EndTime": 84401.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.07450981,
+        "G": 0.09019608,
+        "B": 0.35686275,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.75686276,
+        "G": 0.8862745,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "StartTime": 84401.9954648526,
+      "EndTime": 86801.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -3.1875,
+        "y": 0.0
+      },
+      "EndValue": {
+        "x": -1.6875,
+        "y": 3.625
+      },
+      "StartTime": 84401.9954648526,
+      "EndTime": 86801.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 33.75,
+      "EndValue": 84.375,
+      "StartTime": 84401.9954648526,
+      "EndTime": 86801.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.75686276,
+        "G": 0.8862745,
+        "B": 0.4627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.32156864,
+        "G": 0.42745098,
+        "B": 0.8156863,
+        "A": 1.0
+      },
+      "StartTime": 86801.9954648526,
+      "EndTime": 89201.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -1.6875,
+        "y": 3.625
+      },
+      "EndValue": {
+        "x": -1.8125,
+        "y": 0.875
+      },
+      "StartTime": 86801.9954648526,
+      "EndTime": 89201.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 84.375,
+      "EndValue": 140.625,
+      "StartTime": 86801.9954648526,
+      "EndTime": 89201.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.32156864,
+        "G": 0.42745098,
+        "B": 0.8156863,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.31764707,
+        "G": 0.5568628,
+        "B": 0.22745098,
+        "A": 1.0
+      },
+      "StartTime": 89201.9954648526,
+      "EndTime": 91601.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": -1.8125,
+        "y": 0.875
+      },
+      "EndValue": {
+        "x": 1.0625,
+        "y": 0.3125
+      },
+      "StartTime": 89201.9954648526,
+      "EndTime": 91601.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 140.625,
+      "EndValue": 78.75,
+      "StartTime": 89201.9954648526,
+      "EndTime": 91601.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.31764707,
+        "G": 0.5568628,
+        "B": 0.22745098,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.11764706,
+        "G": 0.32941177,
+        "B": 0.29411766,
+        "A": 1.0
+      },
+      "StartTime": 91601.9954648526,
+      "EndTime": 94001.99546485262,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 1.0625,
+        "y": 0.3125
+      },
+      "EndValue": {
+        "x": 1.1875,
+        "y": 2.3125
+      },
+      "StartTime": 91601.9954648526,
+      "EndTime": 94001.99546485262,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 78.75,
+      "EndValue": 140.625,
+      "StartTime": 91601.9954648526,
+      "EndTime": 94001.99546485262,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.11764706,
+        "G": 0.32941177,
+        "B": 0.29411766,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.37254903,
+        "G": 0.9764706,
+        "B": 0.95686275,
+        "A": 1.0
+      },
+      "StartTime": 94001.99546485262,
+      "EndTime": 95801.9954648526,
+      "Easing": 7,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 1.1875,
+        "y": 2.3125
+      },
+      "EndValue": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "StartTime": 94001.99546485262,
+      "EndTime": 95801.9954648526,
+      "Easing": 16,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 140.625,
+      "EndValue": 180.0,
+      "StartTime": 94001.99546485262,
+      "EndTime": 95801.9954648526,
+      "Easing": 16,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": 0.25,
+      "EndValue": 0.5,
+      "StartTime": 95801.9954648526,
+      "EndTime": 96401.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesDistance"
+    },
+    {
+      "StartValue": 0.012,
+      "EndValue": 0.01,
+      "StartTime": 95801.9954648526,
+      "EndTime": 96401.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesThickness"
+    },
+    {
+      "StartValue": 180.0,
+      "EndValue": 0.0,
+      "StartTime": 95801.9954648526,
+      "EndTime": 96401.9954648526,
+      "Easing": 28,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "StartTime": 96401.9954648526,
+      "EndTime": 96551.9954648526,
+      "Easing": 19,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "x": 0.1,
+        "y": 0.1
+      },
+      "EndValue": {
+        "x": 0.125,
+        "y": 0.125
+      },
+      "StartTime": 96401.9954648526,
+      "EndTime": 96551.9954648526,
+      "Easing": 19,
+      "Type": "CameraScale"
+    },
+    {
+      "StartValue": {
+        "R": 0.02745098,
+        "G": 0.21176471,
+        "B": 0.25490198,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "StartTime": 96401.9954648526,
+      "EndTime": 96551.9954648526,
+      "Easing": 19,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": 0.0,
+      "EndValue": -45.0,
+      "StartTime": 96401.9954648526,
+      "EndTime": 103301.9954648526,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.16470589,
+        "B": 0.21176471,
+        "A": 1.0
+      },
+      "StartTime": 103601.9954648526,
+      "EndTime": 106001.99546485262,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745098,
+        "G": 0.21176471,
+        "B": 0.25490198,
+        "A": 1.0
+      },
+      "StartTime": 103601.9954648526,
+      "EndTime": 106001.99546485262,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "StartTime": 106001.99546485262,
+      "EndTime": 106001.99546485262,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "StartTime": 106001.99546485262,
+      "EndTime": 106151.9954648526,
+      "Easing": 19,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.02745098,
+        "G": 0.21176471,
+        "B": 0.25490198,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "StartTime": 106001.99546485262,
+      "EndTime": 106151.9954648526,
+      "Easing": 19,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": -45.0,
+      "EndValue": 0.0,
+      "StartTime": 106001.99546485262,
+      "EndTime": 115601.9954648526,
+      "Easing": 0,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 106076.98412698413,
+      "EndTime": 106151.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 106076.98412698413,
+      "EndTime": 106151.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 106151.9954648526,
+      "EndTime": 106301.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 106151.9954648526,
+      "EndTime": 106301.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 106301.9954648526,
+      "EndTime": 106451.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 106301.9954648526,
+      "EndTime": 106451.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 106451.9954648526,
+      "EndTime": 106601.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 106451.9954648526,
+      "EndTime": 106601.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108176.98412698413,
+      "EndTime": 108251.99546485262,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108176.98412698413,
+      "EndTime": 108251.99546485262,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108251.99546485262,
+      "EndTime": 108401.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108251.99546485262,
+      "EndTime": 108401.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108401.9954648526,
+      "EndTime": 108551.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108401.9954648526,
+      "EndTime": 108551.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108551.9954648526,
+      "EndTime": 108701.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108551.9954648526,
+      "EndTime": 108701.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108701.9954648526,
+      "EndTime": 108851.9954648526,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "StartTime": 108701.9954648526,
+      "EndTime": 108851.9954648526,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108851.9954648526,
+      "EndTime": 109001.99546485262,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 1.0,
+        "G": 0.654902,
+        "B": 0.0,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.79607844,
+        "G": 0.2901961,
+        "B": 0.08627451,
+        "A": 1.0
+      },
+      "StartTime": 108851.9954648526,
+      "EndTime": 109001.99546485262,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.16470589,
+        "B": 0.21176471,
+        "A": 1.0
+      },
+      "StartTime": 113201.9954648526,
+      "EndTime": 115601.9954648526,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.5294118,
+        "G": 0.8392157,
+        "B": 0.42352942,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745098,
+        "G": 0.21176471,
+        "B": 0.25490198,
+        "A": 1.0
+      },
+      "StartTime": 113201.9954648526,
+      "EndTime": 115601.9954648526,
+      "Easing": 0,
+      "Type": "GridColor"
+    }
+  ],
+  "Notes": [
+    {
+      "HitTime": 115601.9954648526,
+      "Coordinates": {
+        "x": -0.125,
+        "y": 0.125
+      }
+    },
+    {
+      "HitTime": 115451.9954648526,
+      "Coordinates": {
+        "x": -0.75,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 114851.9954648526,
+      "Coordinates": {
+        "x": -0.75,
+        "y": 0.75
+      }
+    },
+    {
+      "HitTime": 114251.99546485262,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 0.75
+      }
+    },
+    {
+      "HitTime": 113651.9954648526,
+      "Coordinates": {
+        "x": 0.5,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 112901.9954648526,
+      "Coordinates": {
+        "x": -1.75,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 112601.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.25
+      }
+    },
+    {
+      "HitTime": 111851.9954648526,
+      "Coordinates": {
+        "x": 0.25,
+        "y": 2.5
+      }
+    },
+    {
+      "HitTime": 111551.9954648526,
+      "Coordinates": {
+        "x": 1.25,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 110502.0,
+      "Coordinates": {
+        "x": 0.25,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 110202.0,
+      "Coordinates": {
+        "x": 0.5,
+        "y": -1.75
+      }
+    },
+    {
+      "HitTime": 109151.9954648526,
+      "Coordinates": {
+        "x": 0.875,
+        "y": 0.375
+      }
+    },
+    {
+      "HitTime": 109001.99546485262,
+      "Coordinates": {
+        "x": 0.375,
+        "y": 0.375
+      }
+    },
+    {
+      "HitTime": 108101.9954648526,
+      "Coordinates": {
+        "x": -0.25,
+        "y": -1.75
+      }
+    },
+    {
+      "HitTime": 106751.99546485262,
+      "Coordinates": {
+        "x": -0.125,
+        "y": -0.125
+      }
+    },
+    {
+      "HitTime": 106001.99546485262,
+      "Coordinates": {
+        "x": -0.5,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 105401.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 104801.9954648526,
+      "Coordinates": {
+        "x": -1.5,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 104201.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 103601.9954648526,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 103301.9954648526,
+      "Coordinates": {
+        "x": 2.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 102251.99546485262,
+      "Coordinates": {
+        "x": 2.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 101201.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 99851.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 99551.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": -0.75
+      }
+    },
+    {
+      "HitTime": 98501.99546485262,
+      "Coordinates": {
+        "x": 1.5,
+        "y": -1.5
+      }
+    },
+    {
+      "HitTime": 97452.0,
+      "Coordinates": {
+        "x": 1.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 96401.9954648526,
+      "Coordinates": {
+        "x": -0.5,
+        "y": -1.5
+      }
+    },
+    {
+      "HitTime": 92651.9954648526,
+      "Coordinates": {
+        "x": 2.125,
+        "y": 1.875
+      }
+    },
+    {
+      "HitTime": 90251.99546485262,
+      "Coordinates": {
+        "x": -0.5625,
+        "y": -2.1875
+      }
+    },
+    {
+      "HitTime": 88901.9954648526,
+      "Coordinates": {
+        "x": -3.8125,
+        "y": -0.375
+      }
+    },
+    {
+      "HitTime": 87852.0,
+      "Coordinates": {
+        "x": -3.8125,
+        "y": 1.1875
+      }
+    },
+    {
+      "HitTime": 83051.9954648526,
+      "Coordinates": {
+        "x": -3.1875,
+        "y": 1.75
+      }
+    },
+    {
+      "HitTime": 80651.9954648526,
+      "Coordinates": {
+        "x": -1.5,
+        "y": 1.125
+      }
+    },
+    {
+      "HitTime": 79302.0,
+      "Coordinates": {
+        "x": -0.8125,
+        "y": 3.9375
+      }
+    },
+    {
+      "HitTime": 78252.0,
+      "Coordinates": {
+        "x": 0.625,
+        "y": 2.625
+      }
+    },
+    {
+      "HitTime": 76601.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 76451.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 76301.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 76151.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 76001.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 73001.99546485262,
+      "Coordinates": {
+        "x": -2.375,
+        "y": 0.875
+      }
+    },
+    {
+      "HitTime": 72401.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 1.625
+      }
+    },
+    {
+      "HitTime": 70901.9954648526,
+      "Coordinates": {
+        "x": 1.5625,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 70601.9954648526,
+      "Coordinates": {
+        "x": 1.5625,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 70001.99546485262,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 69851.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 69701.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 69551.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 69401.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 69251.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 69101.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68951.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68801.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68651.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68501.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68351.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68201.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 68051.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 67901.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 67751.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 67601.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 67301.9954648526,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 67001.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 66701.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 64901.9954648526,
+      "Coordinates": {
+        "x": 0.125,
+        "y": -2.0625
+      }
+    },
+    {
+      "HitTime": 64602.0,
+      "Coordinates": {
+        "x": 0.125,
+        "y": -2.0625
+      }
+    },
+    {
+      "HitTime": 62501.9954648526,
+      "Coordinates": {
+        "x": -2.375,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 60101.9954648526,
+      "Coordinates": {
+        "x": 2.625,
+        "y": -0.75
+      }
+    },
+    {
+      "HitTime": 57701.99546485261,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 57401.99546485261,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 57101.9954648526,
+      "Coordinates": {
+        "x": 0.75,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 55001.9954648526,
+      "Coordinates": {
+        "x": 2.5,
+        "y": 3.5
+      }
+    },
+    {
+      "HitTime": 53951.99546485261,
+      "Coordinates": {
+        "x": 3.25,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 53802.0,
+      "Coordinates": {
+        "x": 3.5,
+        "y": 2.25
+      }
+    },
+    {
+      "HitTime": 53651.99546485261,
+      "Coordinates": {
+        "x": 3.75,
+        "y": 2.5
+      }
+    },
+    {
+      "HitTime": 53201.99546485261,
+      "Coordinates": {
+        "x": 1.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 51701.99546485261,
+      "Coordinates": {
+        "x": 1.5,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 50501.9954648526,
+      "Coordinates": {
+        "x": 2.5,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 49451.99546485261,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 49151.99546485261,
+      "Coordinates": {
+        "x": 1.5,
+        "y": 0.75
+      }
+    },
+    {
+      "HitTime": 49001.9954648526,
+      "Coordinates": {
+        "x": 1.25,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 47152.0,
+      "Coordinates": {
+        "x": -0.3125,
+        "y": 1.3125
+      }
+    },
+    {
+      "HitTime": 44951.99546485261,
+      "Coordinates": {
+        "x": 3.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 44651.99546485261,
+      "Coordinates": {
+        "x": 3.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 43602.0,
+      "Coordinates": {
+        "x": 1.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 42101.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 41651.99546485261,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 40901.99546485261,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 40601.9954648526,
+      "Coordinates": {
+        "x": 1.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 39701.99546485261,
+      "Coordinates": {
+        "x": 2.0,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 39401.99546485261,
+      "Coordinates": {
+        "x": 2.5,
+        "y": -1.5
+      }
+    },
+    {
+      "HitTime": 38601.9954648526,
+      "Coordinates": {
+        "x": -44.0,
+        "y": 109.0
+      }
+    },
+    {
+      "HitTime": 38401.99546485261,
+      "Coordinates": {
+        "x": -46.0,
+        "y": 109.0
+      }
+    },
+    {
+      "HitTime": 38201.99546485261,
+      "Coordinates": {
+        "x": -46.0,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 38001.9954648526,
+      "Coordinates": {
+        "x": -44.0,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 37801.99546485261,
+      "Coordinates": {
+        "x": -44.0,
+        "y": 109.0
+      }
+    },
+    {
+      "HitTime": 37601.9954648526,
+      "Coordinates": {
+        "x": -42.0,
+        "y": 109.0
+      }
+    },
+    {
+      "HitTime": 37401.99546485261,
+      "Coordinates": {
+        "x": -42.0,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 37201.99546485261,
+      "Coordinates": {
+        "x": -43.5,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 37001.9954648526,
+      "Coordinates": {
+        "x": -45.0,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 36801.99546485261,
+      "Coordinates": {
+        "x": -45.0,
+        "y": 112.5
+      }
+    },
+    {
+      "HitTime": 36601.9954648526,
+      "Coordinates": {
+        "x": -43.5,
+        "y": 112.5
+      }
+    },
+    {
+      "HitTime": 36401.99546485261,
+      "Coordinates": {
+        "x": -43.5,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 36101.9954648526,
+      "Coordinates": {
+        "x": -43.5,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 33701.99546485261,
+      "Coordinates": {
+        "x": -40.0,
+        "y": 83.0
+      }
+    },
+    {
+      "HitTime": 31294.489795918365,
+      "Coordinates": {
+        "x": -37.0,
+        "y": 57.0
+      }
+    },
+    {
+      "HitTime": 29001.995464852607,
+      "Coordinates": {
+        "x": -27.5,
+        "y": 29.0
+      }
+    },
+    {
+      "HitTime": 28801.995464852607,
+      "Coordinates": {
+        "x": -27.5,
+        "y": 27.5
+      }
+    },
+    {
+      "HitTime": 28601.995464852607,
+      "Coordinates": {
+        "x": -27.5,
+        "y": 26.0
+      }
+    },
+    {
+      "HitTime": 28401.995464852607,
+      "Coordinates": {
+        "x": -26.0,
+        "y": 26.0
+      }
+    },
+    {
+      "HitTime": 28201.995464852607,
+      "Coordinates": {
+        "x": -26.0,
+        "y": 24.5
+      }
+    },
+    {
+      "HitTime": 28001.995464852607,
+      "Coordinates": {
+        "x": -27.5,
+        "y": 24.5
+      }
+    },
+    {
+      "HitTime": 27801.995464852607,
+      "Coordinates": {
+        "x": -29.0,
+        "y": 24.5
+      }
+    },
+    {
+      "HitTime": 27601.995464852607,
+      "Coordinates": {
+        "x": -30.5,
+        "y": 24.5
+      }
+    },
+    {
+      "HitTime": 27401.995464852607,
+      "Coordinates": {
+        "x": -30.5,
+        "y": 26.0
+      }
+    },
+    {
+      "HitTime": 27201.995464852607,
+      "Coordinates": {
+        "x": -30.5,
+        "y": 27.5
+      }
+    },
+    {
+      "HitTime": 27001.995464852607,
+      "Coordinates": {
+        "x": -29.0,
+        "y": 27.5
+      }
+    },
+    {
+      "HitTime": 26801.995464852607,
+      "Coordinates": {
+        "x": -29.0,
+        "y": 26.0
+      }
+    },
+    {
+      "HitTime": 26501.995464852607,
+      "Coordinates": {
+        "x": -29.0,
+        "y": 26.0
+      }
+    },
+    {
+      "HitTime": 19401.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 19201.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 19001.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 18801.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": -2.0
+      }
+    },
+    {
+      "HitTime": 18601.995464852607,
+      "Coordinates": {
+        "x": 23.5,
+        "y": -2.0
+      }
+    },
+    {
+      "HitTime": 18401.995464852607,
+      "Coordinates": {
+        "x": 22.0,
+        "y": -2.0
+      }
+    },
+    {
+      "HitTime": 18201.995464852607,
+      "Coordinates": {
+        "x": 22.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 18001.995464852607,
+      "Coordinates": {
+        "x": 22.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 17801.995464852607,
+      "Coordinates": {
+        "x": 23.5,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 17601.995464852607,
+      "Coordinates": {
+        "x": 23.5,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 17401.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 17201.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 16901.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 14201.995464852607,
+      "Coordinates": {
+        "x": 10.0,
+        "y": 6.0
+      }
+    },
+    {
+      "HitTime": 11501.995464852607,
+      "Coordinates": {
+        "x": 14.0,
+        "y": 4.0
+      }
+    },
+    {
+      "HitTime": 11201.995464852607,
+      "Coordinates": {
+        "x": 14.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 10301.995464852607,
+      "Coordinates": {
+        "x": 11.0,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 10001.995464852607,
+      "Coordinates": {
+        "x": 14.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 9801.995464852607,
+      "Coordinates": {
+        "x": 14.5,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 9601.995464852609,
+      "Coordinates": {
+        "x": 14.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 9401.995464852607,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 9201.995464852607,
+      "Coordinates": {
+        "x": 11.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 9001.995464852607,
+      "Coordinates": {
+        "x": 11.5,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 8801.995464852607,
+      "Coordinates": {
+        "x": 11.5,
+        "y": 3.5
+      }
+    },
+    {
+      "HitTime": 8601.995464852609,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 3.5
+      }
+    },
+    {
+      "HitTime": 8401.995464852607,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 8201.995464852607,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 8001.995464852607,
+      "Coordinates": {
+        "x": 14.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 7801.995464852608,
+      "Coordinates": {
+        "x": 14.5,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 7601.995464852607,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 7302.0,
+      "Coordinates": {
+        "x": 13.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 6251.995464852608,
+      "Coordinates": {
+        "x": 8.0,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 5201.995464852608,
+      "Coordinates": {
+        "x": 12.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 3851.9954648526077,
+      "Coordinates": {
+        "x": 7.0,
+        "y": -3.0
+      }
+    },
+    {
+      "HitTime": 2801.9954648526077,
+      "Coordinates": {
+        "x": 4.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 1451.9954648526077,
+      "Coordinates": {
+        "x": 3.0,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 1151.9954648526077,
+      "Coordinates": {
+        "x": 3.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 1001.9954648526077,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 401.9954648526077,
+      "Coordinates": {
+        "x": 0.0,
+        "y": -1.0
+      }
+    }
+  ],
+  "HoldNotes": [
+    {
+      "HitTime": 115001.99546485262,
+      "EndTime": 115301.9954648526,
+      "Coordinates": {
+        "x": -0.75,
+        "y": 0.75
+      },
+      "EndCoordinates": {
+        "x": -0.75,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 114401.9954648526,
+      "EndTime": 114701.9954648526,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 0.75
+      },
+      "EndCoordinates": {
+        "x": -0.75,
+        "y": 0.75
+      }
+    },
+    {
+      "HitTime": 113802.0,
+      "EndTime": 114102.0,
+      "Coordinates": {
+        "x": 0.5,
+        "y": -0.5
+      },
+      "EndCoordinates": {
+        "x": 0.5,
+        "y": 0.75
+      }
+    },
+    {
+      "HitTime": 113201.9954648526,
+      "EndTime": 113501.99546485262,
+      "Coordinates": {
+        "x": -0.75,
+        "y": -0.5
+      },
+      "EndCoordinates": {
+        "x": 0.5,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 110801.9954648526,
+      "EndTime": 111401.9954648526,
+      "Coordinates": {
+        "x": -2.0,
+        "y": 0.25
+      },
+      "EndCoordinates": {
+        "x": 0.75,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 108401.9954648526,
+      "EndTime": 109451.9954648526,
+      "Coordinates": {
+        "x": -1.625,
+        "y": 0.25
+      },
+      "EndCoordinates": {
+        "x": 1.875,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 106602.0,
+      "EndTime": 107052.0,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 0.0
+      },
+      "EndCoordinates": {
+        "x": -2.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 105601.9954648526,
+      "EndTime": 105801.9954648526,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 1.5
+      },
+      "EndCoordinates": {
+        "x": 0.5,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 105002.0,
+      "EndTime": 105202.0,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 2.0
+      },
+      "EndCoordinates": {
+        "x": -1.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 104401.9954648526,
+      "EndTime": 104601.9954648526,
+      "Coordinates": {
+        "x": -1.5,
+        "y": 0.5
+      },
+      "EndCoordinates": {
+        "x": -1.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 103802.0,
+      "EndTime": 103952.0,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "EndCoordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 101801.9954648526,
+      "EndTime": 101952.0,
+      "Coordinates": {
+        "x": 2.0,
+        "y": 2.0
+      },
+      "EndCoordinates": {
+        "x": 2.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 100601.9954648526,
+      "EndTime": 100901.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": 0.0
+      },
+      "EndCoordinates": {
+        "x": -0.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 98801.9954648526,
+      "EndTime": 99401.9954648526,
+      "Coordinates": {
+        "x": 1.75,
+        "y": -0.25
+      },
+      "EndCoordinates": {
+        "x": -2.0,
+        "y": 0.25
+      }
+    },
+    {
+      "HitTime": 97001.99546485262,
+      "EndTime": 97151.9954648526,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": -0.75,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 95501.99546485262,
+      "EndTime": 95801.9954648526,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 0.3125
+      },
+      "EndCoordinates": {
+        "x": 0.0,
+        "y": -0.0625
+      }
+    },
+    {
+      "HitTime": 94901.9954648526,
+      "EndTime": 95201.9954648526,
+      "Coordinates": {
+        "x": -1.625,
+        "y": 1.375
+      },
+      "EndCoordinates": {
+        "x": -1.0,
+        "y": 0.3125
+      }
+    },
+    {
+      "HitTime": 94301.9954648526,
+      "EndTime": 94601.9954648526,
+      "Coordinates": {
+        "x": -1.25,
+        "y": 2.8125
+      },
+      "EndCoordinates": {
+        "x": -1.625,
+        "y": 1.375
+      }
+    },
+    {
+      "HitTime": 93701.9954648526,
+      "EndTime": 94001.99546485262,
+      "Coordinates": {
+        "x": -0.1875,
+        "y": 3.875
+      },
+      "EndCoordinates": {
+        "x": -1.25,
+        "y": 2.8125
+      }
+    },
+    {
+      "HitTime": 92201.9954648526,
+      "EndTime": 92351.9954648526,
+      "Coordinates": {
+        "x": 2.75,
+        "y": 1.1875
+      },
+      "EndCoordinates": {
+        "x": 2.125,
+        "y": 1.875
+      }
+    },
+    {
+      "HitTime": 91601.9954648526,
+      "EndTime": 91901.9954648526,
+      "Coordinates": {
+        "x": 2.875,
+        "y": -0.875
+      },
+      "EndCoordinates": {
+        "x": 2.75,
+        "y": 1.1875
+      }
+    },
+    {
+      "HitTime": 91002.0,
+      "EndTime": 91302.0,
+      "Coordinates": {
+        "x": 1.6875,
+        "y": -1.8125
+      },
+      "EndCoordinates": {
+        "x": 2.875,
+        "y": -0.875
+      }
+    },
+    {
+      "HitTime": 89801.9954648526,
+      "EndTime": 89951.9954648526,
+      "Coordinates": {
+        "x": -2.0,
+        "y": -1.9375
+      },
+      "EndCoordinates": {
+        "x": -0.5625,
+        "y": -2.1875
+      }
+    },
+    {
+      "HitTime": 89201.9954648526,
+      "EndTime": 89501.99546485262,
+      "Coordinates": {
+        "x": -3.8125,
+        "y": -0.375
+      },
+      "EndCoordinates": {
+        "x": -2.0,
+        "y": -1.9375
+      }
+    },
+    {
+      "HitTime": 87401.9954648526,
+      "EndTime": 87552.0045351474,
+      "Coordinates": {
+        "x": -3.5625,
+        "y": 3.1875
+      },
+      "EndCoordinates": {
+        "x": -3.8125,
+        "y": 1.1875
+      }
+    },
+    {
+      "HitTime": 86501.99546485262,
+      "EndTime": 86801.9954648526,
+      "Coordinates": {
+        "x": -0.375,
+        "y": 4.125
+      },
+      "EndCoordinates": {
+        "x": -2.3125,
+        "y": 4.75
+      }
+    },
+    {
+      "HitTime": 85901.9954648526,
+      "EndTime": 86201.9954648526,
+      "Coordinates": {
+        "x": 0.125,
+        "y": 2.0625
+      },
+      "EndCoordinates": {
+        "x": -0.375,
+        "y": 4.125
+      }
+    },
+    {
+      "HitTime": 85301.9954648526,
+      "EndTime": 85601.9954648526,
+      "Coordinates": {
+        "x": -0.8125,
+        "y": 0.5
+      },
+      "EndCoordinates": {
+        "x": 0.125,
+        "y": 2.0625
+      }
+    },
+    {
+      "HitTime": 84701.9954648526,
+      "EndTime": 85001.99546485262,
+      "Coordinates": {
+        "x": -2.75,
+        "y": -0.375
+      },
+      "EndCoordinates": {
+        "x": -0.8125,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 84101.9954648526,
+      "EndTime": 84401.9954648526,
+      "Coordinates": {
+        "x": -4.625,
+        "y": 0.4375
+      },
+      "EndCoordinates": {
+        "x": -2.75,
+        "y": -0.375
+      }
+    },
+    {
+      "HitTime": 82601.9954648526,
+      "EndTime": 82751.99546485262,
+      "Coordinates": {
+        "x": -1.9375,
+        "y": 2.4375
+      },
+      "EndCoordinates": {
+        "x": -3.1875,
+        "y": 1.75
+      }
+    },
+    {
+      "HitTime": 82001.99546485262,
+      "EndTime": 82301.9954648526,
+      "Coordinates": {
+        "x": 0.125,
+        "y": 2.75
+      },
+      "EndCoordinates": {
+        "x": -1.9375,
+        "y": 2.4375
+      }
+    },
+    {
+      "HitTime": 81401.9954648526,
+      "EndTime": 81701.9954648526,
+      "Coordinates": {
+        "x": 1.0,
+        "y": 1.125
+      },
+      "EndCoordinates": {
+        "x": 0.125,
+        "y": 2.75
+      }
+    },
+    {
+      "HitTime": 80201.9954648526,
+      "EndTime": 80351.9954648526,
+      "Coordinates": {
+        "x": -2.3125,
+        "y": 2.0625
+      },
+      "EndCoordinates": {
+        "x": -1.5,
+        "y": 1.125
+      }
+    },
+    {
+      "HitTime": 79601.9954648526,
+      "EndTime": 79901.9954648526,
+      "Coordinates": {
+        "x": -0.8125,
+        "y": 3.9375
+      },
+      "EndCoordinates": {
+        "x": -2.3125,
+        "y": 2.0625
+      }
+    },
+    {
+      "HitTime": 77801.9954648526,
+      "EndTime": 77951.9954648526,
+      "Coordinates": {
+        "x": 1.4375,
+        "y": 1.8125
+      },
+      "EndCoordinates": {
+        "x": 0.625,
+        "y": 2.625
+      }
+    },
+    {
+      "HitTime": 77201.9954648526,
+      "EndTime": 77501.99546485262,
+      "Coordinates": {
+        "x": 0.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": 1.4375,
+        "y": 1.8125
+      }
+    },
+    {
+      "HitTime": 74501.99546485262,
+      "EndTime": 75701.99999999999,
+      "Coordinates": {
+        "x": -1.125,
+        "y": -0.3125
+      },
+      "EndCoordinates": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 73301.9954648526,
+      "EndTime": 74202.0,
+      "Coordinates": {
+        "x": -2.375,
+        "y": 0.875
+      },
+      "EndCoordinates": {
+        "x": -1.125,
+        "y": -0.3125
+      }
+    },
+    {
+      "HitTime": 71801.9954648526,
+      "EndTime": 72101.9954648526,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 2.0
+      },
+      "EndCoordinates": {
+        "x": -1.0,
+        "y": 1.625
+      }
+    },
+    {
+      "HitTime": 71201.9954648526,
+      "EndTime": 71501.99546485262,
+      "Coordinates": {
+        "x": 1.5625,
+        "y": 1.0
+      },
+      "EndCoordinates": {
+        "x": 0.5,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 66101.9954648526,
+      "EndTime": 66401.9954648526,
+      "Coordinates": {
+        "x": 1.5625,
+        "y": -0.8125
+      },
+      "EndCoordinates": {
+        "x": 0.8125,
+        "y": -0.3125
+      }
+    },
+    {
+      "HitTime": 65201.9954648526,
+      "EndTime": 65651.9954648526,
+      "Coordinates": {
+        "x": 0.125,
+        "y": -2.0625
+      },
+      "EndCoordinates": {
+        "x": 1.5625,
+        "y": -0.8125
+      }
+    },
+    {
+      "HitTime": 63701.99546485261,
+      "EndTime": 64302.0,
+      "Coordinates": {
+        "x": -2.25,
+        "y": -0.8125
+      },
+      "EndCoordinates": {
+        "x": 0.125,
+        "y": -2.0625
+      }
+    },
+    {
+      "HitTime": 62801.99546485261,
+      "EndTime": 63252.0,
+      "Coordinates": {
+        "x": -2.375,
+        "y": 1.5
+      },
+      "EndCoordinates": {
+        "x": -2.25,
+        "y": -0.8125
+      }
+    },
+    {
+      "HitTime": 61301.99546485261,
+      "EndTime": 62202.00907029478,
+      "Coordinates": {
+        "x": 2.0625,
+        "y": 2.0
+      },
+      "EndCoordinates": {
+        "x": -1.1875,
+        "y": 2.375
+      }
+    },
+    {
+      "HitTime": 60401.99546485261,
+      "EndTime": 60852.0,
+      "Coordinates": {
+        "x": 2.625,
+        "y": -0.75
+      },
+      "EndCoordinates": {
+        "x": 2.0625,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 58901.99546485261,
+      "EndTime": 59501.9954648526,
+      "Coordinates": {
+        "x": -0.6875,
+        "y": -2.3125
+      },
+      "EndCoordinates": {
+        "x": 1.75,
+        "y": -1.625
+      }
+    },
+    {
+      "HitTime": 58002.0,
+      "EndTime": 58452.03628117917,
+      "Coordinates": {
+        "x": 0.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": -0.6875,
+        "y": -2.3125
+      }
+    },
+    {
+      "HitTime": 55301.99546485261,
+      "EndTime": 55451.99999999999,
+      "Coordinates": {
+        "x": 2.5,
+        "y": 2.5
+      },
+      "EndCoordinates": {
+        "x": 2.5,
+        "y": 2.5
+      }
+    },
+    {
+      "HitTime": 54251.9954648526,
+      "EndTime": 54702.0,
+      "Coordinates": {
+        "x": 2.25,
+        "y": 1.25
+      },
+      "EndCoordinates": {
+        "x": 1.25,
+        "y": 3.75
+      }
+    },
+    {
+      "HitTime": 52001.9954648526,
+      "EndTime": 52451.99546485261,
+      "Coordinates": {
+        "x": 2.5,
+        "y": 3.0
+      },
+      "EndCoordinates": {
+        "x": 4.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 50801.99546485261,
+      "EndTime": 51252.0,
+      "Coordinates": {
+        "x": 2.0,
+        "y": 1.0
+      },
+      "EndCoordinates": {
+        "x": 3.5,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 49901.99546485261,
+      "EndTime": 50201.99546485261,
+      "Coordinates": {
+        "x": 0.5,
+        "y": 4.25
+      },
+      "EndCoordinates": {
+        "x": 1.5,
+        "y": 3.5
+      }
+    },
+    {
+      "HitTime": 47801.99546485261,
+      "EndTime": 48401.99546485261,
+      "Coordinates": {
+        "x": -1.5,
+        "y": 1.5
+      },
+      "EndCoordinates": {
+        "x": -1.0,
+        "y": -0.75
+      }
+    },
+    {
+      "HitTime": 47014.489795918365,
+      "EndTime": 47464.489795918365,
+      "Coordinates": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "EndCoordinates": {
+        "x": -1.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 45251.9954648526,
+      "EndTime": 46601.9954648526,
+      "Coordinates": {
+        "x": 2.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": 2.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 44201.99546485261,
+      "EndTime": 44351.99999999999,
+      "Coordinates": {
+        "x": 3.5,
+        "y": -1.5
+      },
+      "EndCoordinates": {
+        "x": 3.5,
+        "y": -1.5
+      }
+    },
+    {
+      "HitTime": 42951.99546485261,
+      "EndTime": 43301.99999999999,
+      "Coordinates": {
+        "x": 2.0,
+        "y": -1.0
+      },
+      "EndCoordinates": {
+        "x": 1.25,
+        "y": -0.25
+      }
+    },
+    {
+      "HitTime": 42401.99546485261,
+      "EndTime": 42702.01814058956,
+      "Coordinates": {
+        "x": -0.0,
+        "y": -0.5
+      },
+      "EndCoordinates": {
+        "x": 0.75,
+        "y": -1.0
+      }
+    },
+    {
+      "HitTime": 41201.99546485261,
+      "EndTime": 41351.99999999999,
+      "Coordinates": {
+        "x": -0.5,
+        "y": 0.5
+      },
+      "EndCoordinates": {
+        "x": -0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 40001.9954648526,
+      "EndTime": 40301.99546485261,
+      "Coordinates": {
+        "x": 1.5,
+        "y": -0.5
+      },
+      "EndCoordinates": {
+        "x": 2.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 35202.0,
+      "EndTime": 35787.01133786848,
+      "Coordinates": {
+        "x": -43.5,
+        "y": 100.5
+      },
+      "EndCoordinates": {
+        "x": -43.5,
+        "y": 111.0
+      }
+    },
+    {
+      "HitTime": 34001.9954648526,
+      "EndTime": 34601.9954648526,
+      "Coordinates": {
+        "x": -40.0,
+        "y": 83.0
+      },
+      "EndCoordinates": {
+        "x": -40.0,
+        "y": 94.0
+      }
+    },
+    {
+      "HitTime": 32801.99546485261,
+      "EndTime": 33401.99546485261,
+      "Coordinates": {
+        "x": -40.0,
+        "y": 71.5
+      },
+      "EndCoordinates": {
+        "x": -40.0,
+        "y": 83.0
+      }
+    },
+    {
+      "HitTime": 31601.995464852607,
+      "EndTime": 32201.995464852607,
+      "Coordinates": {
+        "x": -37.0,
+        "y": 57.0
+      },
+      "EndCoordinates": {
+        "x": -37.0,
+        "y": 65.5
+      }
+    },
+    {
+      "HitTime": 30401.995464852607,
+      "EndTime": 31001.995464852607,
+      "Coordinates": {
+        "x": -39.0,
+        "y": 48.0
+      },
+      "EndCoordinates": {
+        "x": -39.0,
+        "y": 58.0
+      }
+    },
+    {
+      "HitTime": 29201.995464852607,
+      "EndTime": 29801.995464852607,
+      "Coordinates": {
+        "x": -29.5,
+        "y": 28.0
+      },
+      "EndCoordinates": {
+        "x": -29.5,
+        "y": 39.5
+      }
+    },
+    {
+      "HitTime": 25601.995464852607,
+      "EndTime": 26201.995464852607,
+      "Coordinates": {
+        "x": -29.0,
+        "y": 13.0
+      },
+      "EndCoordinates": {
+        "x": -29.0,
+        "y": 24.75
+      }
+    },
+    {
+      "HitTime": 24401.995464852607,
+      "EndTime": 25001.995464852607,
+      "Coordinates": {
+        "x": -20.0,
+        "y": 0.0
+      },
+      "EndCoordinates": {
+        "x": -26.0,
+        "y": 0.0
+      }
+    },
+    {
+      "HitTime": 23201.995464852607,
+      "EndTime": 23801.995464852607,
+      "Coordinates": {
+        "x": -6.0,
+        "y": 4.0
+      },
+      "EndCoordinates": {
+        "x": -12.0,
+        "y": 4.0
+      }
+    },
+    {
+      "HitTime": 22001.995464852607,
+      "EndTime": 22601.995464852607,
+      "Coordinates": {
+        "x": 5.0,
+        "y": 3.0
+      },
+      "EndCoordinates": {
+        "x": -0.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 20801.995464852607,
+      "EndTime": 21401.995464852607,
+      "Coordinates": {
+        "x": 19.0,
+        "y": 3.0
+      },
+      "EndCoordinates": {
+        "x": 14.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 19601.995464852607,
+      "EndTime": 20201.995464852607,
+      "Coordinates": {
+        "x": 25.0,
+        "y": -3.0
+      },
+      "EndCoordinates": {
+        "x": 19.0,
+        "y": -3.0
+      }
+    },
+    {
+      "HitTime": 15852.0,
+      "EndTime": 16602.0,
+      "Coordinates": {
+        "x": 22.0,
+        "y": 6.0
+      },
+      "EndCoordinates": {
+        "x": 22.0,
+        "y": 0.5
+      }
+    },
+    {
+      "HitTime": 15401.995464852607,
+      "EndTime": 15552.009070294785,
+      "Coordinates": {
+        "x": 25.0,
+        "y": 6.0
+      },
+      "EndCoordinates": {
+        "x": 24.0,
+        "y": 6.0
+      }
+    },
+    {
+      "HitTime": 14501.995464852607,
+      "EndTime": 14801.995464852607,
+      "Coordinates": {
+        "x": 12.0,
+        "y": 6.0
+      },
+      "EndCoordinates": {
+        "x": 14.5,
+        "y": 6.0
+      }
+    },
+    {
+      "HitTime": 13452.0,
+      "EndTime": 13947.006802721095,
+      "Coordinates": {
+        "x": 10.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": 10.0,
+        "y": 3.5
+      }
+    },
+    {
+      "HitTime": 13001.995464852607,
+      "EndTime": 13151.995464852607,
+      "Coordinates": {
+        "x": 11.5,
+        "y": -2.5
+      },
+      "EndCoordinates": {
+        "x": 11.5,
+        "y": -1.5
+      }
+    },
+    {
+      "HitTime": 12401.995464852607,
+      "EndTime": 12702.004535147393,
+      "Coordinates": {
+        "x": 15.0,
+        "y": -0.0
+      },
+      "EndCoordinates": {
+        "x": 13.0,
+        "y": -0.0
+      }
+    },
+    {
+      "HitTime": 11801.995464852607,
+      "EndTime": 12102.0,
+      "Coordinates": {
+        "x": 16.0,
+        "y": 4.0
+      },
+      "EndCoordinates": {
+        "x": 16.0,
+        "y": 2.0
+      }
+    },
+    {
+      "HitTime": 10601.995464852609,
+      "EndTime": 11051.995464852607,
+      "Coordinates": {
+        "x": 14.0,
+        "y": -1.0
+      },
+      "EndCoordinates": {
+        "x": 14.0,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 5801.995464852608,
+      "EndTime": 5951.995464852608,
+      "Coordinates": {
+        "x": 9.0,
+        "y": 3.0
+      },
+      "EndCoordinates": {
+        "x": 8.0,
+        "y": 3.0
+      }
+    },
+    {
+      "HitTime": 4601.995464852607,
+      "EndTime": 4901.995464852607,
+      "Coordinates": {
+        "x": 12.0,
+        "y": -2.0
+      },
+      "EndCoordinates": {
+        "x": 12.0,
+        "y": -0.5
+      }
+    },
+    {
+      "HitTime": 3401.9954648526077,
+      "EndTime": 3551.9954648526077,
+      "Coordinates": {
+        "x": 4.0,
+        "y": -3.0
+      },
+      "EndCoordinates": {
+        "x": 5.0,
+        "y": -3.0
+      }
+    }
+  ],
+  "EditorSettings": {
+    "TrackTime": 56951.99546485261,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3,
+    "EditorApproachRate": 1
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 100.0,
+    "FastestBPM": 100.0,
+    "StoryLength": 115200.0,
+    "CommandCount": 212,
+    "NoteCount": 244
+  }
+}

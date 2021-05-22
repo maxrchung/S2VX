@@ -37,6 +37,18 @@
     <PackageReference Include="ppy.osu.Framework" Version="2021.521.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\audio.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\story.s2ry">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\thumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Stories\Story\audio.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
