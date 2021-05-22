@@ -19,10 +19,10 @@
     <ProjectReference Include="..\S2VX.Resources\S2VX.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Menees.Analyzers" Version="2.0.6">
+    <PackageReference Include="Menees.Analyzers" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.410.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.521.0" />
   </ItemGroup>
 </Project>

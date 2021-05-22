@@ -23,17 +23,17 @@ namespace S2VX.Game.Story {
 
         public string StoryPath { get; set; }
 
-        public Camera Camera { get; } = new Camera();
-        public RelativeBox Background { get; } = new RelativeBox();
-        public Grid Grid { get; } = new Grid();
-        public Notes Notes { get; } = new Notes();
-        public Approaches Approaches { get; } = new Approaches();
+        public Camera Camera { get; } = new();
+        public RelativeBox Background { get; } = new();
+        public Grid Grid { get; } = new();
+        public Notes Notes { get; } = new();
+        public Approaches Approaches { get; } = new();
 
         public IEnumerable<S2VXCommand> DefaultCommands { get; } = S2VXCommand.GetDefaultCommands();
-        public List<S2VXCommand> Commands { get; private set; } = new List<S2VXCommand>();
+        public List<S2VXCommand> Commands { get; private set; } = new();
         private int NextActive { get; set; }
 
-        private List<S2VXCommand> Actives { get; set; } = new List<S2VXCommand>();
+        private List<S2VXCommand> Actives { get; set; } = new();
 
         private static JsonConverter[] Converters { get; } = {
             new CommandConverter(),
@@ -41,14 +41,16 @@ namespace S2VX.Game.Story {
             new NoteConverter(),
         };
 
-        public EditorSettings EditorSettings { get; private set; } = new EditorSettings();
+        public EditorSettings EditorSettings { get; private set; } = new();
 
-        public DifficultySettings DifficultySettings { get; private set; } = new DifficultySettings();
+        public DifficultySettings DifficultySettings { get; private set; } = new();
+
+        public bool IsForEditor { get; private set; }
 
         public S2VXStory() { }
 
         public S2VXStory(string filePath, bool isForEditor) =>
-            Open(filePath, isForEditor);
+            Open(filePath, IsForEditor = isForEditor);
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -65,11 +67,11 @@ namespace S2VX.Game.Story {
 
         public void Reset() {
             ClearActives();
-            Commands = new List<S2VXCommand>();
+            Commands = new();
             Notes.SetChildren(new List<S2VXNote>());
             Approaches.SetChildren(new List<Approach>());
-            EditorSettings = new EditorSettings();
-            DifficultySettings = new DifficultySettings();
+            EditorSettings = new();
+            DifficultySettings = new();
         }
 
         public void ClearActives() {
@@ -95,14 +97,8 @@ namespace S2VX.Game.Story {
 
         public void AddNote(S2VXNote note) {
             Notes.AddNote(note);
-            var approach = Approaches.AddApproach(note);
-            note.Approach = approach;
-        }
-
-        public void AddNote(HoldNote note) {
-            Notes.AddNote(note);
-            var approach = Approaches.AddHoldApproach(note);
-            note.Approach = approach;
+            var approach = note.AddApproach();
+            Approaches.AddApproach(approach);
         }
 
         public void RemoveNote(S2VXNote note) {
@@ -145,8 +141,16 @@ namespace S2VX.Game.Story {
             ).ToList());
             notes.Sort();
             Notes.SetChildren(notes);
-            var approaches = JsonConvert.DeserializeObject<List<Approach>>(story[nameof(Notes)].ToString());
-            approaches.AddRange(JsonConvert.DeserializeObject<List<HoldApproach>>(story["HoldNotes"].ToString()).Cast<Approach>());
+            var approaches = (
+                isForEditor
+                    ? JsonConvert.DeserializeObject<List<EditorApproach>>(story[nameof(Notes)].ToString()).Cast<Approach>()
+                    : JsonConvert.DeserializeObject<List<GameApproach>>(story[nameof(Notes)].ToString()).Cast<Approach>()
+            ).ToList();
+            approaches.AddRange((
+                isForEditor
+                    ? JsonConvert.DeserializeObject<List<EditorHoldApproach>>(story["HoldNotes"].ToString()).Cast<Approach>()
+                    : JsonConvert.DeserializeObject<List<GameHoldApproach>>(story["HoldNotes"].ToString()).Cast<Approach>()
+            ).ToList());
             approaches.Sort();
             Approaches.SetChildren(approaches);
 

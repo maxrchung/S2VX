@@ -10,6 +10,7 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
@@ -21,10 +22,13 @@ namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
         public const double TrackTimeTolerance = 0.03;  // ms away from a tick or end of track will be considered to be on that tick or end of track
         private const int MaxSnapDivisor = 16;
+        private const int MaxApproachRate = 64;
 
         public int SnapDivisor { get; private set; }
+        public int EditorApproachRate { get; private set; }
+
         public Vector2 MousePosition { get; private set; } = Vector2.Zero;
-        public ReversibleStack Reversibles { get; } = new ReversibleStack();
+        public ReversibleStack Reversibles { get; } = new();
         public S2VXToolState ToolState { get; private set; } = new SelectToolState();
 
         [Resolved]
@@ -36,17 +40,18 @@ namespace S2VX.Game.Editor {
         private S2VXStory Story { get; }
         public S2VXTrack Track { get; }
         private EditorUI EditorUI { get; set; }
-        public Container<RelativeBox> NoteSelectionIndicators { get; } = new Container<RelativeBox> {
+        public Container<RelativeBox> NoteSelectionIndicators { get; } = new() {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
         };
-        private Container ToolContainer { get; set; } = new Container {
+        private Container ToolContainer { get; set; } = new() {
             RelativeSizeAxes = Axes.Both,
             Size = Vector2.One
         };
-        public NotesTimeline NotesTimeline { get; } = new NotesTimeline();
-        private Timeline Timeline { get; } = new Timeline();
-        public CommandPanel CommandPanel { get; } = new CommandPanel();
+        public NotesTimeline NotesTimeline { get; } = new();
+        private Timeline Timeline { get; } = new();
+        public EditorInfoBar EditorInfoBar { get; } = new();
+        public S2VXCommandPanel CommandPanel { get; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
@@ -78,12 +83,13 @@ namespace S2VX.Game.Editor {
             };
         }
 
-        private void LoadEditorSettings() {
+        public void LoadEditorSettings() {
             var editorSettings = Story.EditorSettings;
             Seek(editorSettings.TrackTime);
             PlaybackSetRate(editorSettings.TrackPlaybackRate);
             SnapDivisor = editorSettings.SnapDivisor;
             NotesTimeline.DivisorIndex = editorSettings.BeatSnapDivisorIndex;
+            EditorApproachRate = editorSettings.EditorApproachRate;
         }
 
         private EditorUI CreateEditorUI() {
@@ -93,7 +99,7 @@ namespace S2VX.Game.Editor {
                         NoteSelectionIndicators,
                         ToolContainer,
                         NotesTimeline,
-                        new EditorInfoBar(),
+                        EditorInfoBar,
                         CreateMenu(),
                         Timeline,
                         CommandPanel
@@ -155,6 +161,8 @@ namespace S2VX.Game.Editor {
                             new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
                             new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
+                            new MenuItem("Decrease Editor Approach Rate (MouseWheelDown over Approach Rate)", ApproachRateDecrease),
+                            new MenuItem("Increase Editor Approach Rate (MouseWheelUp over Approach Rate)", ApproachRateIncrease),
                         }
                     },
                     new MenuItem("Tool")
@@ -352,6 +360,8 @@ namespace S2VX.Game.Editor {
             Story.ClearActives();
         }
 
+        public Func<double> CurrentTime => () => Track.CurrentTime;
+
         private void ProjectPreview() {
             ProjectSave();
             var newStory = new S2VXStory(Story.StoryPath, false);
@@ -377,6 +387,7 @@ namespace S2VX.Game.Editor {
             editorSettings.TrackPlaybackRate = Track.Tempo.Value;
             editorSettings.SnapDivisor = SnapDivisor;
             editorSettings.BeatSnapDivisorIndex = NotesTimeline.DivisorIndex;
+            editorSettings.EditorApproachRate = EditorApproachRate;
             Story.Save(Story.StoryPath);
         }
 
@@ -455,6 +466,18 @@ namespace S2VX.Game.Editor {
                 default:
                     SnapDivisor /= 2;
                     break;
+            }
+        }
+
+        public void ApproachRateIncrease() {
+            if (EditorApproachRate < MaxApproachRate) {
+                EditorApproachRate *= 2;
+            }
+        }
+
+        public void ApproachRateDecrease() {
+            if (EditorApproachRate > 1) {
+                EditorApproachRate /= 2;
             }
         }
 

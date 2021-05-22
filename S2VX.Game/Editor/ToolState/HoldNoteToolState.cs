@@ -66,7 +66,9 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         protected override void Update() {
-            Preview.Colour = Story.Notes.PreviewHoldNoteColor;
+            Preview.InnerColor = Story.Notes.HoldNoteColor;
+            Preview.OutlineColor = Story.Notes.HoldNoteOutlineColor;
+            Preview.OutlineThickness = Story.Notes.HoldNoteOutlineThickness;
 
             if (IsRecording) {
                 Preview.EndTime = Time.Current;

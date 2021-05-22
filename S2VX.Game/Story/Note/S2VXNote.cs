@@ -11,11 +11,13 @@ namespace S2VX.Game.Story.Note {
         public double HitTime { get; set; }
         public Vector2 Coordinates { get; set; } = Vector2.Zero;
         public virtual Approach Approach { get; set; }
-        public float OutlineThickness { get; set; }
-        public Color4 OutlineColor { get; set; }
 
-        protected RelativeBox BoxOuter { get; } = new RelativeBox();
-        protected RelativeBox BoxInner { get; } = new RelativeBox();
+        protected RelativeBox BoxOuter { get; } = new();
+        protected RelativeBox BoxInner { get; } = new();
+
+        public Color4 InnerColor { get => BoxInner.Colour; set => BoxInner.Colour = value; }
+        public Color4 OutlineColor { get => BoxOuter.Colour; set => BoxOuter.Colour = value; }
+        public float OutlineThickness { get; set; }
 
         [Resolved]
         private S2VXStory Story { get; set; }
@@ -74,12 +76,6 @@ namespace S2VX.Game.Story.Note {
             Position = S2VXUtils.Rotate(Coordinates - camera.Position, Rotation) * Size.X;
         }
 
-        public Color4 InnerColor() => BoxInner.Colour;
-
-        public void SetColor(Color4 color) => BoxInner.Colour = color;
-
-        public void SetOutlineColor(Color4 color) => BoxOuter.Colour = color;
-
         public void SetAlpha(float alpha) => BoxInner.Alpha = alpha;
 
         // Sort Notes from highest end time to lowest end time
@@ -89,5 +85,7 @@ namespace S2VX.Game.Story.Note {
         /// Pushes a Reversible to the Editor Reversibles stack
         /// </summary>
         public virtual void ReversibleRemove(S2VXStory story, EditorScreen editor) { }
+
+        public abstract Approach AddApproach();
     }
 }

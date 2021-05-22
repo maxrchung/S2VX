@@ -25,7 +25,7 @@ namespace S2VX.Game.Story.Note {
         [BackgroundDependencyLoader]
         private void Load() => AddInternal(SliderPath);
 
-        private Path SliderPath { get; set; } = new Path() {
+        public Path SliderPath { get; set; } = new() {
             // Show slider path behind note
             Depth = 100,
             Anchor = Anchor.Centre
@@ -58,6 +58,7 @@ namespace S2VX.Game.Story.Note {
             var drawWidth = S2VXGameBase.GameWidth;
             var pathRadius = OutlineThickness * drawWidth / 2;
             SliderPath.PathRadius = pathRadius;
+            SliderPath.Colour = Story.Notes.HoldNoteOutlineColor;
 
             var time = Time.Current;
             var notes = Story.Notes;
@@ -81,10 +82,10 @@ namespace S2VX.Game.Story.Note {
             var noteHalf = fittedWidth / 2;
 
             var vertices = new List<Vector2>() {
-                new Vector2(-noteHalf, -noteHalf),
-                new Vector2(noteHalf, -noteHalf),
-                new Vector2(noteHalf, noteHalf),
-                new Vector2(-noteHalf, noteHalf),
+                new(-noteHalf, -noteHalf),
+                new(noteHalf, -noteHalf),
+                new(noteHalf, noteHalf),
+                new(-noteHalf, noteHalf),
                 endPosition + new Vector2(-noteHalf, -noteHalf),
                 endPosition + new Vector2(noteHalf, -noteHalf),
                 endPosition + new Vector2(noteHalf, noteHalf),

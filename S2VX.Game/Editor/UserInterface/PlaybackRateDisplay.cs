@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using System.Globalization;
 
@@ -18,7 +17,7 @@ namespace S2VX.Game.Editor.UserInterface {
         private void Load() =>
             InternalChildren = new Drawable[]
             {
-                TxtPlaybackRate = new TextFlowContainer(s => s.Font = new FontUsage("default", Editor.DrawWidth / 40, "500")) {
+                TxtPlaybackRate = new(s => s.Font = new("default", Editor.DrawWidth / 40, "500")) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = TextAnchor,

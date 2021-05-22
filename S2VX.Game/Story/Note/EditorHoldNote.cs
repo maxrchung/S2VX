@@ -16,19 +16,21 @@ namespace S2VX.Game.Story.Note {
 
         [Resolved]
         private S2VXStory Story { get; set; }
+        [Resolved]
+        private EditorScreen Editor { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
-            Hit = new S2VXSample("hit", audio);
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
-            HeadAnchor = new EditorHoldNoteAnchor(this, true);
-            TailAnchor = new EditorHoldNoteAnchor(this, false);
+            Hit = new("hit", audio);
+            HitSoundTimes = new() { HitTime, EndTime };
+            HeadAnchor = new(this, true);
+            TailAnchor = new(this, false);
             AddInternal(AnchorPath);
             AddInternal(HeadAnchor);
             AddInternal(TailAnchor);
         }
 
-        private Path AnchorPath { get; set; } = new Path() {
+        private Path AnchorPath { get; set; } = new() {
             Anchor = Anchor.Centre,
         };
 
@@ -40,7 +42,7 @@ namespace S2VX.Game.Story.Note {
             EndTime = hitTime + EndTime - HitTime;
             base.UpdateHitTime(hitTime);
             HoldApproach.EndTime = EndTime;
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HitSoundTimes = new() { HitTime, EndTime };
         }
 
         public override void UpdateEndTime(double endTime) {
@@ -49,7 +51,7 @@ namespace S2VX.Game.Story.Note {
             }
             EndTime = endTime;
             HoldApproach.EndTime = EndTime;
-            HitSoundTimes = new List<double>() { HitTime, EndTime };
+            HitSoundTimes = new() { HitTime, EndTime };
         }
 
         public void UpdateEndCoordinates(Vector2 coordinates) {
@@ -109,21 +111,25 @@ namespace S2VX.Game.Story.Note {
         protected override void UpdateColor() {
             var time = Time.Current;
             var notes = Story.Notes;
+            var maxAlpha = notes.HoldNoteAlpha;
+            InnerColor = notes.HoldNoteColor;
+            OutlineColor = notes.HoldNoteOutlineColor;
+            OutlineThickness = notes.HoldNoteOutlineThickness;
             // Fade in time to Show time
             if (time < HitTime - notes.ShowTime) {
-                var startTime = HitTime - notes.ShowTime - notes.FadeInTime;
+                var startTime = HitTime - notes.ShowTime - Editor.EditorApproachRate * notes.FadeInTime;
                 var endTime = HitTime - notes.ShowTime;
-                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, 1.0f, startTime, endTime);
+                Alpha = S2VXUtils.ClampedInterpolation(time, 0.0f, maxAlpha, startTime, endTime);
             }
             // Show time (to Hit time) to End time
             else if (time < EndTime) {
-                Alpha = 1;
+                Alpha = maxAlpha;
             }
             // End time to Fade out time
-            else if (time < EndTime + notes.FadeOutTime) {
+            else if (time < EndTime + Editor.EditorApproachRate * notes.FadeOutTime) {
                 var startTime = EndTime;
-                var endTime = EndTime + notes.FadeOutTime;
-                Alpha = S2VXUtils.ClampedInterpolation(time, 1.0f, 0.0f, startTime, endTime);
+                var endTime = EndTime + Editor.EditorApproachRate * notes.FadeOutTime;
+                Alpha = S2VXUtils.ClampedInterpolation(time, maxAlpha, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;
             }
@@ -144,5 +150,16 @@ namespace S2VX.Game.Story.Note {
 
         public override void ReversibleRemove(S2VXStory story, EditorScreen editor) =>
             editor.Reversibles.Push(new ReversibleRemoveHoldNote(story, this, editor));
+
+        public override Approach AddApproach() {
+            var approach = new EditorHoldApproach {
+                Coordinates = Coordinates,
+                HitTime = HitTime,
+                EndTime = EndTime,
+                EndCoordinates = EndCoordinates
+            };
+            Approach = approach;
+            return approach;
+        }
     }
 }
