@@ -24,6 +24,7 @@
     <StartupObject></StartupObject>
   </PropertyGroup>
   <ItemGroup Label="Project References">
+    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
     <ProjectReference Include="..\S2VX.Game\S2VX.Game.csproj" />
   </ItemGroup>
   <ItemGroup Label="Resources">
@@ -34,7 +35,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.524.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Stories\Hate vs. Brilliance - Qubism\audio.mp3">
