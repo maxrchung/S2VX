@@ -227,6 +227,7 @@ namespace S2VX.Game.Editor {
                 );
                 MousePosition = closestSnap;
             }
+            EditorInfoBar.MousePositionDisplay.UpdateDisplay();
             return true;
         }
 

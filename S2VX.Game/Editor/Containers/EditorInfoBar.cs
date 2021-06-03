@@ -75,7 +75,7 @@ namespace S2VX.Game.Editor.Containers {
         public void UpdateAllDisplays() {
             ToolDisplay.UpdateDisplay();
             NoteSnapDivisorDisplay.UpdateDisplay();
-            //MousePositionDisplay.UpdateDisplay();
+            MousePositionDisplay.UpdateDisplay();
             VolumeDisplay.UpdateDisplay();
             //ApproachRateDisplay.UpdateDisplay();
         }
