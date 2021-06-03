@@ -22,7 +22,7 @@ namespace S2VX.Game.Editor.UserInterface {
         //    });
         //}
 
-        public void UpdateDisplay() => UpdateDisplay($"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}");
+        public override void UpdateDisplay() => UpdateDisplay($"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}");
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {

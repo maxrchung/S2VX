@@ -5,6 +5,6 @@ namespace S2VX.Game.Editor.UserInterface {
         [Resolved]
         private EditorScreen Editor { get; set; }
 
-        public void UpdateDisplay() => UpdateDisplay($"Tool: {Editor.ToolState.DisplayName()}");
+        public override void UpdateDisplay() => UpdateDisplay($"Tool: {Editor.ToolState.DisplayName()}");
     }
 }

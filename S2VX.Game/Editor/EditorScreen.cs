@@ -456,6 +456,7 @@ namespace S2VX.Game.Editor {
             } else {
                 SnapDivisor *= 2;
             }
+            EditorInfoBar.NoteSnapDivisorDisplay.UpdateDisplay();
         }
 
         public void SnapDivisorIncrease() {
@@ -471,6 +472,7 @@ namespace S2VX.Game.Editor {
                     SnapDivisor /= 2;
                     break;
             }
+            EditorInfoBar.NoteSnapDivisorDisplay.UpdateDisplay();
         }
 
         public void ApproachRateIncrease() {
