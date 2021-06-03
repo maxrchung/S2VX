@@ -58,7 +58,6 @@ namespace S2VX.Game.Editor.Containers {
             Width = InfoBarWidth;
             Y = NotesTimeline.TimelineHeight;
             Margin = new MarginPadding { Vertical = 24 };
-
             InternalChildren = new Drawable[]
             {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
@@ -68,6 +67,10 @@ namespace S2VX.Game.Editor.Containers {
                 VolumeDisplay,
                 ApproachRateDisplay
             };
+
+            UpdateVolumeDisplay();
         }
+
+        public void UpdateVolumeDisplay() => VolumeDisplay.UpdateVolumeDisplay();
     }
 }

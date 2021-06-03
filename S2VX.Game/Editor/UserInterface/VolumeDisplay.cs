@@ -28,7 +28,7 @@ namespace S2VX.Game.Editor.UserInterface {
             });
         }
 
-        protected override void Update() => TxtVolume.Text = $"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
+        public void UpdateVolumeDisplay() => TxtVolume.Text = $"Volume: {Audio.Volume.Value.ToString("P0", CultureInfo.InvariantCulture)}";
 
         protected override bool OnScroll(ScrollEvent e) {
             if (e.ScrollDelta.Y > 0) {
@@ -36,6 +36,7 @@ namespace S2VX.Game.Editor.UserInterface {
             } else {
                 Editor.VolumeDecrease();
             }
+            UpdateVolumeDisplay();
             return true;
         }
     }
