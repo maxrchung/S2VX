@@ -194,6 +194,7 @@ namespace S2VX.Game.Editor {
             ToolState.HandleExit();
             ToolState = newState;
             ToolContainer.Child = ToolState;
+            EditorInfoBar.ToolDisplay.UpdateDisplay();
         }
 
         protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
@@ -441,7 +442,7 @@ namespace S2VX.Game.Editor {
         // for example my path is: C:\Users\Wax Chug da Gwad\AppData\Roaming\S2VX\framework.ini
         private void VolumeSet(double volume = 1.0) {
             Audio.Volume.Value = volume;
-            EditorInfoBar.UpdateVolumeDisplay();
+            EditorInfoBar.VolumeDisplay.UpdateDisplay();
         }
 
         public void VolumeIncrease(double step = 0.1) => VolumeSet(Audio.Volume.Value + step);

@@ -11,12 +11,13 @@ namespace S2VX.Game.Editor.Containers {
         [Resolved]
         private EditorScreen Editor { get; set; }
 
-        private ToolDisplay ToolDisplay { get; } = new() {
+        public ToolDisplay ToolDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             Width = 400,
             TextAnchor = Anchor.TopLeft,
         };
+
         public ApproachRateDisplay ApproachRateDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
@@ -25,7 +26,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopRight,
         };
 
-        private NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new() {
+        public NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             X = 565,
@@ -33,7 +34,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopCentre,
         };
 
-        private MousePositionDisplay MousePositionDisplay { get; } = new() {
+        public MousePositionDisplay MousePositionDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
             X = 770,
@@ -41,7 +42,7 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopCentre,
         };
 
-        private VolumeDisplay VolumeDisplay { get; } = new() {
+        public VolumeDisplay VolumeDisplay { get; } = new() {
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
             TextAnchor = Anchor.TopRight,
@@ -68,9 +69,15 @@ namespace S2VX.Game.Editor.Containers {
                 ApproachRateDisplay
             };
 
-            UpdateVolumeDisplay();
+            UpdateAllDisplays();
         }
 
-        public void UpdateVolumeDisplay() => VolumeDisplay.UpdateVolumeDisplay();
+        public void UpdateAllDisplays() {
+            ToolDisplay.UpdateDisplay();
+            //NoteSnapDivisorDisplay.UpdateDisplay();
+            //MousePositionDisplay.UpdateDisplay();
+            VolumeDisplay.UpdateDisplay();
+            //ApproachRateDisplay.UpdateDisplay();
+        }
     }
 }
