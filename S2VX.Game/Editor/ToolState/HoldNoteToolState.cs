@@ -18,7 +18,14 @@ namespace S2VX.Game.Editor.ToolState {
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
-        private bool IsRecording { get; set; }
+        private bool IsRecording_;
+        private bool IsRecording {
+            get => IsRecording_;
+            set {
+                IsRecording_ = value;
+                Editor.EditorInfoBar.ToolDisplay.UpdateDisplay();
+            }
+        }
         private Vector2 Coordinates { get; set; }
         private double HitTime { get; set; }
 

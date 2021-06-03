@@ -69,8 +69,6 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            LoadEditorSettings();
-            SetTrackClock();
 
             ToolContainer.Child = ToolState;
 
@@ -81,6 +79,10 @@ namespace S2VX.Game.Editor {
                 Story,
                 EditorUI = CreateEditorUI()
             };
+
+            SetTrackClock();
+            LoadEditorSettings();
+            EditorInfoBar.UpdateAllDisplays();
         }
 
         public void LoadEditorSettings() {
@@ -425,7 +427,10 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
-        private void PlaybackSetRate(double rate = 1.0) => Track.TempoTo(Math.Clamp(rate, 0.1, 1));
+        private void PlaybackSetRate(double rate = 1.0) {
+            Track.TempoTo(Math.Clamp(rate, 0.1, 1));
+            Timeline.PlaybackRateDisplay.UpdateDisplay();
+        }
 
         private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.1);
 
@@ -480,12 +485,14 @@ namespace S2VX.Game.Editor {
             if (EditorApproachRate < MaxApproachRate) {
                 EditorApproachRate *= 2;
             }
+            EditorInfoBar.ApproachRateDisplay.UpdateDisplay();
         }
 
         public void ApproachRateDecrease() {
             if (EditorApproachRate > 1) {
                 EditorApproachRate /= 2;
             }
+            EditorInfoBar.ApproachRateDisplay.UpdateDisplay();
         }
 
         private void ToolSelect() => SetToolState(new SelectToolState());

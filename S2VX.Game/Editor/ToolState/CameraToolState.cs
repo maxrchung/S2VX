@@ -13,7 +13,14 @@ namespace S2VX.Game.Editor.ToolState {
         private Vector2 OldPosition { get; set; }
         private Vector2 OldScale { get; set; }
         private float OldRotation { get; set; }
-        private bool IsRecording { get; set; }
+        private bool IsRecording_;
+        private bool IsRecording {
+            get => IsRecording_;
+            set {
+                IsRecording_ = value;
+                Editor.EditorInfoBar.ToolDisplay.UpdateDisplay();
+            }
+        }
         private CameraMoveCommand MoveCommand { get; set; }
         private CameraScaleCommand ScaleCommand { get; set; }
         private CameraRotateCommand RotateCommand { get; set; }
