@@ -69,8 +69,6 @@ namespace S2VX.Game.Editor {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            LoadEditorSettings();
-            SetTrackClock();
 
             ToolContainer.Child = ToolState;
 
@@ -81,6 +79,10 @@ namespace S2VX.Game.Editor {
                 Story,
                 EditorUI = CreateEditorUI()
             };
+
+            SetTrackClock();
+            LoadEditorSettings();
+            EditorInfoBar.UpdateAllDisplays();
         }
 
         public void LoadEditorSettings() {
@@ -194,6 +196,7 @@ namespace S2VX.Game.Editor {
             ToolState.HandleExit();
             ToolState = newState;
             ToolContainer.Child = ToolState;
+            EditorInfoBar.ToolDisplay.UpdateDisplay();
         }
 
         protected override bool OnClick(ClickEvent e) => ToolState.OnToolClick(e);
@@ -226,6 +229,7 @@ namespace S2VX.Game.Editor {
                 );
                 MousePosition = closestSnap;
             }
+            EditorInfoBar.MousePositionDisplay.UpdateDisplay();
             return true;
         }
 
@@ -423,7 +427,10 @@ namespace S2VX.Game.Editor {
 
         private void PlaybackIncreaseBeatDivisor() => NotesTimeline.ChangeBeatDivisor(true);
 
-        private void PlaybackSetRate(double rate = 1.0) => Track.TempoTo(Math.Clamp(rate, 0.1, 1));
+        private void PlaybackSetRate(double rate = 1.0) {
+            Track.TempoTo(Math.Clamp(rate, 0.1, 1));
+            Timeline.PlaybackRateDisplay.UpdateDisplay();
+        }
 
         private void PlaybackIncreaseRate() => PlaybackIncreaseRate(0.1);
 
@@ -439,7 +446,10 @@ namespace S2VX.Game.Editor {
 
         // Note that Volume is set in a special framework.ini that is unique to your computer,
         // for example my path is: C:\Users\Wax Chug da Gwad\AppData\Roaming\S2VX\framework.ini
-        private void VolumeSet(double volume = 1.0) => Audio.Volume.Value = volume;
+        private void VolumeSet(double volume = 1.0) {
+            Audio.Volume.Value = volume;
+            EditorInfoBar.VolumeDisplay.UpdateDisplay();
+        }
 
         public void VolumeIncrease(double step = 0.1) => VolumeSet(Audio.Volume.Value + step);
 
@@ -452,6 +462,7 @@ namespace S2VX.Game.Editor {
             } else {
                 SnapDivisor *= 2;
             }
+            EditorInfoBar.NoteSnapDivisorDisplay.UpdateDisplay();
         }
 
         public void SnapDivisorIncrease() {
@@ -467,18 +478,21 @@ namespace S2VX.Game.Editor {
                     SnapDivisor /= 2;
                     break;
             }
+            EditorInfoBar.NoteSnapDivisorDisplay.UpdateDisplay();
         }
 
         public void ApproachRateIncrease() {
             if (EditorApproachRate < MaxApproachRate) {
                 EditorApproachRate *= 2;
             }
+            EditorInfoBar.ApproachRateDisplay.UpdateDisplay();
         }
 
         public void ApproachRateDecrease() {
             if (EditorApproachRate > 1) {
                 EditorApproachRate /= 2;
             }
+            EditorInfoBar.ApproachRateDisplay.UpdateDisplay();
         }
 
         private void ToolSelect() => SetToolState(new SelectToolState());

@@ -32,11 +32,10 @@ namespace S2VX.Game.Editor.Containers {
 
         private SpriteText TxtClock { get; set; } = new SpriteText();
 
-        private PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay {
-            RelativeSizeAxes = Axes.Both,
+        public PlaybackRateDisplay PlaybackRateDisplay { get; set; } = new PlaybackRateDisplay {
             Anchor = Anchor.CentreRight,
-            Origin = Anchor.CentreRight,
-            Width = 0.15f,
+            Origin = Anchor.Centre,
+            X = -75,
             TextAnchor = Anchor.Centre,
         };
 
