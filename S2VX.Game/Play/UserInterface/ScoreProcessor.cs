@@ -3,6 +3,7 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Lists;
 using S2VX.Game.Story;
 using System;
 using System.Globalization;
@@ -31,6 +32,9 @@ namespace S2VX.Game.Play.UserInterface {
         public int EarlyCount { get; private set; }
         public int LateCount { get; private set; }
         public int MissCount { get; private set; }
+        public SortedList<double> Scores { get; private set; } = new SortedList<double>();
+
+        public double Accuracy() => (double)PerfectCount / Scores.Count;
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
@@ -50,8 +54,9 @@ namespace S2VX.Game.Play.UserInterface {
             };
         }
 
-        public void AddScore(double moreScore) {
+        private void AddScore(double moreScore) {
             Score += moreScore;
+            Scores.Add(moreScore);
             TxtScore.Text = $"{Math.Round(Score)}";
         }
 
@@ -64,6 +69,7 @@ namespace S2VX.Game.Play.UserInterface {
             EarlyCount = 0;
             LateCount = 0;
             MissCount = 0;
+            Scores.Clear();
         }
 
         public double ProcessHit(double scoreTime, double noteHitTime) {

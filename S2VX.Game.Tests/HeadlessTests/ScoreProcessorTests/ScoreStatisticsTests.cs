@@ -14,13 +14,17 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         private ScoreProcessor Processor { get; } = new();
 
         [BackgroundDependencyLoader]
-        private void Load() {
-            Notes = Story.Notes;
-            Add(Processor);
-        }
+        private void Load() => Add(Processor);
 
         [SetUpSteps]
-        public void SetUpSteps() => AddStep("Reset score processor", () => Processor.Reset());
+        public void SetUpSteps() {
+            // Tried to put this line into Load() but ran into an issue where if
+            // I ran a test by itself through the Test Explorer, the Load()
+            // wasn't triggered
+            Notes = Story.Notes;
+
+            AddStep("Reset score processor", () => Processor.Reset());
+        }
 
         private void ProcessHit(double scoreTime) =>
             AddStep("Process note", () => Processor.ProcessHit(scoreTime, 0));
@@ -70,6 +74,13 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         public void ProcessHit_AfterMissHit_AddsToMissCount() {
             ProcessHit(Notes.MissThreshold + 1);
             AddAssert("Adds to miss count", () => Processor.MissCount == 1);
+        }
+
+        [Test]
+        public void Accuracy_1Perfect1Miss_IsHalf() {
+            ProcessHit(0);
+            ProcessHit(Notes.MissThreshold + 1);
+            AddAssert("Is half", () => Processor.Accuracy() == 0.5);
         }
     }
 }
