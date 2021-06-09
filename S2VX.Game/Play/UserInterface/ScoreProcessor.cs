@@ -82,6 +82,13 @@ namespace S2VX.Game.Play.UserInterface {
             }
         }
 
+        private void UpdateMiss() {
+            Cursor.UpdateColor(Story.Notes.MissColor);
+            Miss.Play();
+            ++MissCount;
+            Combo = 0;
+        }
+
         public void Reset() {
             Score = 0;
             TxtScore.Text = $"{Math.Round(Score)}";
@@ -106,10 +113,7 @@ namespace S2VX.Game.Play.UserInterface {
 
             } else if (relativeTime < -notes.HitThreshold) { // Early miss
                 AddScore(score);
-                Cursor.UpdateColor(notes.MissColor);
-                Miss.Play();
-                ++MissCount;
-                AddCombo();
+                UpdateMiss();
 
             } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
@@ -134,10 +138,7 @@ namespace S2VX.Game.Play.UserInterface {
 
             } else { // Late miss and beyond
                 AddScore(notes.MissThreshold);
-                Cursor.UpdateColor(notes.MissColor);
-                Miss.Play();
-                ++MissCount;
-                Combo = 0;
+                UpdateMiss();
             }
 
             return score;
@@ -159,8 +160,7 @@ namespace S2VX.Game.Play.UserInterface {
                     AddScore(score);
                     Cursor.UpdateColor(notes.LateColor);
                 } else {
-                    Cursor.UpdateColor(notes.MissColor);
-                    Miss.Play();
+                    UpdateMiss();
                 }
 
             } else { // After hold
@@ -169,8 +169,7 @@ namespace S2VX.Game.Play.UserInterface {
                 } else {
                     score = noteEndTime - lastReleaseTime;
                     AddScore(score);
-                    Cursor.UpdateColor(notes.MissColor);
-                    Miss.Play();
+                    UpdateMiss();
                 }
             }
 
