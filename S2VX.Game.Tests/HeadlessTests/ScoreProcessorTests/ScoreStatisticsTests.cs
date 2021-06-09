@@ -29,6 +29,9 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         private void ProcessHit(double scoreTime) =>
             AddStep("Process note", () => Processor.ProcessHit(scoreTime, 0));
 
+        private void ProcessHold(double scoreTime, bool isPress) =>
+            AddStep("Process note", () => Processor.ProcessHold(scoreTime, 0, isPress, 0, 1000));
+
         [Test]
         public void ProcessHit_PerfectHit_AddsToPerfectCount() {
             ProcessHit(0);
@@ -77,30 +80,6 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         }
 
         [Test]
-        public void Accuracy_1Perfect1Miss_IsHalf() {
-            ProcessHit(0);
-            ProcessHit(Notes.MissThreshold + 1);
-            AddAssert("Is half", () => Processor.Accuracy() == 0.5);
-        }
-
-        [Test]
-        public void Median_EvenNumberOfScores_IsAverageOfTwoMiddle() {
-            ProcessHit(40);
-            ProcessHit(20);
-            ProcessHit(10);
-            ProcessHit(30);
-            AddAssert("Is average of two middle", () => Processor.Median() == 25);
-        }
-
-        [Test]
-        public void Median_OddNumberOfScores_IsMiddle() {
-            ProcessHit(20);
-            ProcessHit(10);
-            ProcessHit(30);
-            AddAssert("Is middle", () => Processor.Median() == 20);
-        }
-
-        [Test]
         public void ProcessHit_NoComboBreak_IncrementsCombo() {
             ProcessHit(10);
             ProcessHit(20);
@@ -126,6 +105,36 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             ProcessHit(4000);
             ProcessHit(50);
             AddAssert("Updates max combo", () => Processor.MaxCombo == 3);
+        }
+
+        [Test]
+        public void ProcessHold_ReleaseDuring_AddsToMissCount() {
+            ProcessHold(500, false);
+            AddAssert("Colors cursor miss", () => Processor.MissCount == 1);
+        }
+
+        [Test]
+        public void Accuracy_1Perfect1Miss_IsHalf() {
+            ProcessHit(0);
+            ProcessHit(Notes.MissThreshold + 1);
+            AddAssert("Is half", () => Processor.Accuracy() == 0.5);
+        }
+
+        [Test]
+        public void Median_EvenNumberOfScores_IsAverageOfTwoMiddle() {
+            ProcessHit(40);
+            ProcessHit(20);
+            ProcessHit(10);
+            ProcessHit(30);
+            AddAssert("Is average of two middle", () => Processor.Median() == 25);
+        }
+
+        [Test]
+        public void Median_OddNumberOfScores_IsMiddle() {
+            ProcessHit(20);
+            ProcessHit(10);
+            ProcessHit(30);
+            AddAssert("Is middle", () => Processor.Median() == 20);
         }
     }
 }
