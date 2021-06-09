@@ -27,6 +27,9 @@ namespace S2VX.Game.Play.UserInterface {
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
 
+        public int PerfectHits { get; private set; }
+        public int EarlyHits { get; private set; }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = new S2VXSample("hit", audio);
@@ -74,11 +77,13 @@ namespace S2VX.Game.Play.UserInterface {
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
+                ++EarlyHits;
 
             } else if (relativeTime < notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
+                ++PerfectHits;
 
             } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
