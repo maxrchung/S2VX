@@ -50,15 +50,15 @@ namespace S2VX.Game.Editor.CommandPanel {
         }
 
         public void AddErrorIndicator() {
-            StartTime.BorderThickness = 5;
-            EndTime.BorderThickness = 5;
+            StartTime.TxtValue.BorderThickness = 5;
+            EndTime.TxtValue.BorderThickness = 5;
             StartValue.TxtValue.BorderThickness = 5;
             EndValue.TxtValue.BorderThickness = 5;
         }
 
         public void Reset() {
-            StartTime.BorderThickness = 0;
-            EndTime.BorderThickness = 0;
+            StartTime.TxtValue.BorderThickness = 0;
+            EndTime.TxtValue.BorderThickness = 0;
             StartValue.TxtValue.BorderThickness = 0;
             EndValue.TxtValue.BorderThickness = 0;
 
