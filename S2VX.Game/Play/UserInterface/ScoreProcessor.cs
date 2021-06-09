@@ -33,6 +33,8 @@ namespace S2VX.Game.Play.UserInterface {
         public int LateCount { get; private set; }
         public int MissCount { get; private set; }
         public SortedList<double> Scores { get; private set; } = new SortedList<double>();
+        public int Combo { get; private set; }
+        public int MaxCombo { get; private set; }
 
         public double Accuracy() => (double)PerfectCount / Scores.Count;
 
@@ -74,6 +76,12 @@ namespace S2VX.Game.Play.UserInterface {
             TxtScore.Text = $"{Math.Round(Score)}";
         }
 
+        private void AddCombo() {
+            if (++Combo > MaxCombo) {
+                MaxCombo = Combo;
+            }
+        }
+
         public void Reset() {
             Score = 0;
             TxtScore.Text = $"{Math.Round(Score)}";
@@ -84,6 +92,8 @@ namespace S2VX.Game.Play.UserInterface {
             LateCount = 0;
             MissCount = 0;
             Scores.Clear();
+            Combo = 0;
+            MaxCombo = 0;
         }
 
         public double ProcessHit(double scoreTime, double noteHitTime) {
@@ -99,30 +109,35 @@ namespace S2VX.Game.Play.UserInterface {
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
                 ++MissCount;
+                AddCombo();
 
             } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
                 ++EarlyCount;
+                AddCombo();
 
             } else if (relativeTime < notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
                 ++PerfectCount;
+                AddCombo();
 
             } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
                 ++LateCount;
+                AddCombo();
 
             } else { // Late miss and beyond
                 AddScore(notes.MissThreshold);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
                 ++MissCount;
+                Combo = 0;
             }
 
             return score;

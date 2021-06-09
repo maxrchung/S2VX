@@ -20,7 +20,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         public void SetUpSteps() {
             // Tried to put this line into Load() but ran into an issue where if
             // I ran a test by itself through the Test Explorer, the Load()
-            // wasn't triggered
+            // wasn't triggered correctly
             Notes = Story.Notes;
 
             AddStep("Reset score processor", () => Processor.Reset());
@@ -100,6 +100,32 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             AddAssert("Is middle", () => Processor.Median() == 20);
         }
 
+        [Test]
+        public void ProcessHit_NoComboBreak_IncrementsCombo() {
+            ProcessHit(10);
+            ProcessHit(20);
+            ProcessHit(30);
+            AddAssert("Increments combo", () => Processor.Combo == 3);
+        }
 
+        [Test]
+        public void ProcessHit_ComboBreak_ResetsCombo() {
+            ProcessHit(10);
+            ProcessHit(20);
+            ProcessHit(30);
+            ProcessHit(4000);
+            ProcessHit(50);
+            AddAssert("Resets combo", () => Processor.Combo == 1);
+        }
+
+        [Test]
+        public void ProcessHit_ComboBreak_UpdatesMaxCombo() {
+            ProcessHit(10);
+            ProcessHit(20);
+            ProcessHit(30);
+            ProcessHit(4000);
+            ProcessHit(50);
+            AddAssert("Updates max combo", () => Processor.MaxCombo == 3);
+        }
     }
 }
