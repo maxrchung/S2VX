@@ -82,5 +82,24 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             ProcessHit(Notes.MissThreshold + 1);
             AddAssert("Is half", () => Processor.Accuracy() == 0.5);
         }
+
+        [Test]
+        public void Median_EvenNumberOfScores_IsAverageOfTwoMiddle() {
+            ProcessHit(40);
+            ProcessHit(20);
+            ProcessHit(10);
+            ProcessHit(30);
+            AddAssert("Is average of two middle", () => Processor.Median() == 25);
+        }
+
+        [Test]
+        public void Median_OddNumberOfScores_IsMiddle() {
+            ProcessHit(20);
+            ProcessHit(10);
+            ProcessHit(30);
+            AddAssert("Is middle", () => Processor.Median() == 20);
+        }
+
+
     }
 }

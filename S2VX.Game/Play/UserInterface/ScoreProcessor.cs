@@ -36,6 +36,20 @@ namespace S2VX.Game.Play.UserInterface {
 
         public double Accuracy() => (double)PerfectCount / Scores.Count;
 
+        public double Median() {
+            if (Scores.Count == 0) {
+                return 0;
+            }
+
+            if (Scores.Count % 2 == 1) {
+                return Scores[Scores.Count / 2];
+            } else {
+                var left = Scores[Scores.Count / 2 - 1];
+                var right = Scores[Scores.Count / 2];
+                return (left + right) / 2;
+            }
+        }
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             Hit = new S2VXSample("hit", audio);
