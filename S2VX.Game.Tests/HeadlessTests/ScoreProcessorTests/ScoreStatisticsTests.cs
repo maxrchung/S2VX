@@ -28,43 +28,48 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         [Test]
         public void ProcessHit_PerfectHit_AddsToPerfectCount() {
             ProcessHit(0);
-            AddAssert("Adds to perfect count", () => Processor.PerfectHits == 1);
+            AddAssert("Adds to perfect count", () => Processor.PerfectCount == 1);
         }
 
         [Test]
         public void ProcessHit_EarlyHit_AddsToEarlyCount() {
             ProcessHit(-Notes.PerfectThreshold - 1);
-            AddAssert("Adds to early count", () => Processor.EarlyHits == 1);
+            AddAssert("Adds to early count", () => Processor.EarlyCount == 1);
         }
 
-        //[Test]
-        //public void ProcessHit_LateHit_ColorsCursorLate() {
-        //    ProcessHit(Notes.PerfectThreshold + 1);
-        //    AddAssert("Colors cursor late", () => Cursor.ActiveCursor.Colour == Notes.LateColor);
-        //}
+        [Test]
+        public void ProcessHit_LateHit_AddsToLateCount() {
+            ProcessHit(Notes.PerfectThreshold + 1);
+            AddAssert("Adds to late count", () => Processor.LateCount == 1);
+        }
 
-        //[Test]
-        //public void ProcessHit_EarlyMissHit_ColorsCursorMiss() {
-        //    ProcessHit(-Notes.HitThreshold - 1);
-        //    AddAssert("Colors cursor miss", () => Cursor.ActiveCursor.Colour == Notes.MissColor);
-        //}
+        [Test]
+        public void ProcessHit_EarlyMissHit_AddsToMissCount() {
+            ProcessHit(-Notes.HitThreshold - 1);
+            AddAssert("Adds to miss count", () => Processor.MissCount == 1);
+        }
 
-        //[Test]
-        //public void ProcessHit_LateMissHit_ColorsCursorMiss() {
-        //    ProcessHit(Notes.HitThreshold + 1);
-        //    AddAssert("Colors cursor miss", () => Cursor.ActiveCursor.Colour == Notes.MissColor);
-        //}
+        [Test]
+        public void ProcessHit_LateMissHit_AddsToMissCount() {
+            ProcessHit(Notes.HitThreshold + 1);
+            AddAssert("Adds to miss count", () => Processor.MissCount == 1);
+        }
 
-        //[Test]
-        //public void ProcessHit_BeforeMissHit_DoesNotColorCursor() {
-        //    ProcessHit(-Notes.MissThreshold - 1);
-        //    AddAssert("Does not color cursor", () => Cursor.ActiveCursor.Colour == Notes.PerfectColor);
-        //}
+        [Test]
+        public void ProcessHit_BeforeMissHit_DoesNotAddCount() {
+            ProcessHit(-Notes.MissThreshold - 1);
+            AddAssert("Does not add count", () =>
+                Processor.PerfectCount == 0 &&
+                Processor.EarlyCount == 0 &&
+                Processor.LateCount == 0 &&
+                Processor.MissCount == 0
+            );
+        }
 
-        //[Test]
-        //public void ProcessHit_AfterMissHit_ColorsCursorMiss() {
-        //    ProcessHit(Notes.MissThreshold + 1);
-        //    AddAssert("Colors cursor miss", () => Cursor.ActiveCursor.Colour == Notes.MissColor);
-        //}
+        [Test]
+        public void ProcessHit_AfterMissHit_AddsToMissCount() {
+            ProcessHit(Notes.MissThreshold + 1);
+            AddAssert("Adds to miss count", () => Processor.MissCount == 1);
+        }
     }
 }

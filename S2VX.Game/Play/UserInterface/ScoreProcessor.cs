@@ -27,8 +27,10 @@ namespace S2VX.Game.Play.UserInterface {
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
 
-        public int PerfectHits { get; private set; }
-        public int EarlyHits { get; private set; }
+        public int PerfectCount { get; private set; }
+        public int EarlyCount { get; private set; }
+        public int LateCount { get; private set; }
+        public int MissCount { get; private set; }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
@@ -58,6 +60,10 @@ namespace S2VX.Game.Play.UserInterface {
             TxtScore.Text = $"{Math.Round(Score)}";
             Hit.Reset();
             Miss.Reset();
+            PerfectCount = 0;
+            EarlyCount = 0;
+            LateCount = 0;
+            MissCount = 0;
         }
 
         public double ProcessHit(double scoreTime, double noteHitTime) {
@@ -72,28 +78,31 @@ namespace S2VX.Game.Play.UserInterface {
                 AddScore(score);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
+                ++MissCount;
 
             } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
-                ++EarlyHits;
+                ++EarlyCount;
 
             } else if (relativeTime < notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
-                ++PerfectHits;
+                ++PerfectCount;
 
             } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
+                ++LateCount;
 
             } else { // Late miss and beyond
                 AddScore(notes.MissThreshold);
                 Cursor.UpdateColor(notes.MissColor);
                 Miss.Play();
+                ++MissCount;
             }
 
             return score;
