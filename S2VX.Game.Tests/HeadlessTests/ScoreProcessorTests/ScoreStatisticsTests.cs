@@ -10,6 +10,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
     public class ScoreStatisticsTests : S2VXTestScene {
         [Cached]
         private S2VXStory Story { get; } = new();
+
         private Notes Notes { get; set; }
         private ScoreProcessor Processor { get; } = new();
 
