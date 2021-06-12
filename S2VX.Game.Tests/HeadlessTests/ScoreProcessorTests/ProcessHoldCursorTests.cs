@@ -1,13 +1,9 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
-using osu.Framework.Screens;
 using osu.Framework.Testing;
-using S2VX.Game.Play;
 using S2VX.Game.Play.UserInterface;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
-using System.IO;
 
 namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
     [HeadlessTest]
@@ -15,26 +11,24 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         [Resolved]
         private S2VXCursor Cursor { get; set; }
 
-        private PlayScreen PlayScreen { get; set; }
+        [Cached]
+        private S2VXStory Story { get; } = new();
+
         private Notes Notes { get; set; }
-        private ScoreProcessor GetProcessor() => PlayScreen.ScoreProcessor;
+        private ScoreProcessor Processor { get; } = new();
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
-            var story = new S2VXStory();
-            var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
-            Add(new ScreenStack(PlayScreen = new PlayScreen(false, story, S2VXTrack.Open(audioPath, audio))));
-            Notes = story.Notes;
-        }
+        private void Load() => Add(Processor);
 
         [SetUpSteps]
         public void SetUpSteps() {
+            Notes = Story.Notes;
             AddStep("Reset cursor", () => Cursor.Reset());
-            AddStep("Reset score processor", () => GetProcessor().Reset());
+            AddStep("Reset score processor", () => Processor.Reset());
         }
 
         private void ProcessHold(double scoreTime, bool isPress) =>
-            AddStep("Process note", () => GetProcessor().ProcessHold(scoreTime, 0, isPress, 0, 1000));
+            AddStep("Process note", () => Processor.ProcessHold(scoreTime, 0, isPress, 0, 1000));
 
         [Test]
         public void ProcessHold_PressBeforeDuring_DoesNotColorCursor() {
