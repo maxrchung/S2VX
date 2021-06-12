@@ -32,7 +32,7 @@ namespace S2VX.Game.Play.UserInterface {
         public int EarlyCount { get; private set; }
         public int LateCount { get; private set; }
         public int MissCount { get; private set; }
-        public SortedList<double> Scores { get; private set; } = new SortedList<double>();
+        public SortedList<double> Scores { get; private set; } = new();
         public int Combo { get; private set; }
         public int MaxCombo { get; private set; }
 
