@@ -36,7 +36,7 @@ namespace S2VX.Game.Play.UserInterface {
         public int Combo { get; private set; }
         public int MaxCombo { get; private set; }
 
-        public double Accuracy() => (double)PerfectCount / Scores.Count;
+        public double Accuracy => (double)PerfectCount / Scores.Count;
 
         public double Median() {
             if (Scores.Count == 0) {

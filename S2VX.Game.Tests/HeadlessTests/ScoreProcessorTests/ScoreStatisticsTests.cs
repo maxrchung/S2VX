@@ -118,7 +118,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         public void Accuracy_1Perfect1Miss_IsHalf() {
             ProcessHit(0);
             ProcessHit(Notes.MissThreshold + 1);
-            AddAssert("Is half", () => Processor.Accuracy() == 0.5);
+            AddAssert("Is half", () => Processor.Accuracy == 0.5);
         }
 
         [Test]
