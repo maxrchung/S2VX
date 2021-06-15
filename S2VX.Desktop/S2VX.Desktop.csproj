@@ -52,6 +52,9 @@
     <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\audio.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\leaderboard.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Stories\Porter Robinson &amp; Madeon - Shelter\metadata.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
