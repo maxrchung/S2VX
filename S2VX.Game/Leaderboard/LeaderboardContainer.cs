@@ -13,10 +13,11 @@ namespace S2VX.Game.Leaderboard {
         private TextFlowContainer ScoreColumn { get; set; }
         public int EntryCount { get; set; }
 
-        public LeaderboardContainer(string storyPath, string leaderboardFileName = DefaultLeaderboardFileName) {
+        // Width is needed in the constructor so we know where to draw the ScoreColumn
+        public LeaderboardContainer(string storyPath, float width, string leaderboardFileName = DefaultLeaderboardFileName) {
             var textSize = SizeConsts.TextSize1;
             Child = new Container {
-                Width = Width,
+                Width = width,
                 AutoSizeAxes = Axes.Y,
                 Children = new[] {
                     NameColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
