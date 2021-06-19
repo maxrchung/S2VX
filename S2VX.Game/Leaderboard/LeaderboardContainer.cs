@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -15,14 +14,6 @@ namespace S2VX.Game.Leaderboard {
         public int EntryCount { get; set; }
 
         public LeaderboardContainer(string storyPath, string leaderboardFileName = DefaultLeaderboardFileName) {
-            var leaderboardPath = Path.Combine(Path.GetDirectoryName(storyPath), leaderboardFileName);
-            if (File.Exists(leaderboardPath)) {
-                LoadLeaderboard(leaderboardPath);
-            }
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load() {
             var textSize = SizeConsts.TextSize1;
             Child = new Container {
                 Width = Width,
@@ -50,15 +41,26 @@ namespace S2VX.Game.Leaderboard {
                     },
                 },
             };
+
+            var leaderboardPath = Path.Combine(Path.GetDirectoryName(storyPath), leaderboardFileName);
+            if (File.Exists(leaderboardPath)) {
+                LoadLeaderboard(leaderboardPath);
+            }
         }
+
 
         private void LoadLeaderboard(string leaderboardPath) {
             var text = File.ReadAllText(leaderboardPath);
             var data = JsonConvert.DeserializeObject<LeaderboardEntries>(text);
-            foreach (var entry in data.Entries) {
-                NameColumn.AddParagraph(entry.Name);
-                ScoreColumn.AddParagraph(entry.Score);
-                ++EntryCount;
+            try {
+                foreach (var entry in data.Entries) {
+                    NameColumn.AddParagraph(entry.Name);
+                    ScoreColumn.AddParagraph(entry.Score);
+                    ++EntryCount;
+                }
+            } catch (System.NullReferenceException) {
+                NameColumn.AddParagraph("Malformed or corrupted Leaderboard file!");
+                EntryCount = -1;
             }
         }
     }

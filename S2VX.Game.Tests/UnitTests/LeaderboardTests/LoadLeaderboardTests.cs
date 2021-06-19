@@ -9,24 +9,24 @@ namespace S2VX.Game.Tests.UnitTests.LeaderboardTests {
         private readonly string StoryPath = Path.Combine("UnitTests", "LeaderboardTests", "story.s2ry");
 
         [Test]
-        public void NoStoryboardFile_Has0Entries() {
+        public void NoStoryboardFile_HasZeroEntries() {
             var input = "doesNotExist.json";
             var leaderboard = new LeaderboardContainer(StoryPath, input);
             Assert.AreEqual(0, leaderboard.EntryCount);
         }
 
-        //[Test]
-        //public void InvalidStoryboardFile_HasErrorMessage() {
-        //    var input = "invalid.json";
-        //    var leaderboard = new LeaderboardContainer(StoryPath, input);
-        //    Assert.AreEqual(0, leaderboard.EntryCount);
-        //}
+        [Test]
+        public void InvalidStoryboardFile_HasMinusOneEntries() {
+            var input = "invalid.json";
+            var leaderboard = new LeaderboardContainer(StoryPath, input);
+            Assert.AreEqual(-1, leaderboard.EntryCount);
+        }
 
-        //[Test]
-        //public void ValidStoryboardFile_Has3Entries() {
-        //    var input = "valid.json";
-        //    var leaderboard = new LeaderboardContainer(StoryPath, input);
-        //    Assert.AreEqual(3, leaderboard.EntryCount);
-        //}
+        [Test]
+        public void ValidStoryboardFile_HasThreeEntries() {
+            var input = "valid.json";
+            var leaderboard = new LeaderboardContainer(StoryPath, input);
+            Assert.AreEqual(3, leaderboard.EntryCount);
+        }
     }
 }

@@ -32,6 +32,12 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="UnitTests\LeaderboardTests\invalid.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="UnitTests\LeaderboardTests\valid.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="VisualTests\EditorScreenTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
