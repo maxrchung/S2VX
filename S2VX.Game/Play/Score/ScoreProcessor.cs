@@ -3,12 +3,11 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Lists;
 using S2VX.Game.Story;
 using System;
 using System.Globalization;
 
-namespace S2VX.Game.Play.UserInterface {
+namespace S2VX.Game.Play.Score {
     /// <summary>
     /// Handles the scoring of game notes and game hold notes - changes cursor
     /// color, plays hit sounds, and updates score amount
@@ -20,37 +19,10 @@ namespace S2VX.Game.Play.UserInterface {
         [Resolved]
         private S2VXCursor Cursor { get; set; }
 
-        // Score should be a double type because during a drag, score may add
-        // very small values that are between 0 and 1. If we int cast or round
-        // this drag value, we'll always get 0.
-        public double Score { get; private set; }
+        public ScoreStatistics ScoreStatistics { get; private set; } = new();
         private TextFlowContainer TxtScore { get; set; }
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
-
-        public int PerfectCount { get; private set; }
-        public int EarlyCount { get; private set; }
-        public int LateCount { get; private set; }
-        public int MissCount { get; private set; }
-        public SortedList<double> Scores { get; private set; } = new();
-        public int Combo { get; private set; }
-        public int MaxCombo { get; private set; }
-
-        public double Accuracy => (double)PerfectCount / Scores.Count;
-
-        public double Median() {
-            if (Scores.Count == 0) {
-                return 0;
-            }
-
-            if (Scores.Count % 2 == 1) {
-                return Scores[Scores.Count / 2];
-            } else {
-                var left = Scores[Scores.Count / 2 - 1];
-                var right = Scores[Scores.Count / 2];
-                return (left + right) / 2;
-            }
-        }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
@@ -65,42 +37,33 @@ namespace S2VX.Game.Play.UserInterface {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.CentreRight,
-                    Text = Score.ToString(CultureInfo.InvariantCulture)
+                    Text = ScoreStatistics.Score.ToString(CultureInfo.InvariantCulture)
                 }
             };
         }
 
         private void AddScore(double moreScore) {
-            Score += moreScore;
-            Scores.Add(moreScore);
-            TxtScore.Text = $"{Math.Round(Score)}";
+            ScoreStatistics.Score += moreScore;
+            ScoreStatistics.Scores.Add(moreScore);
+            TxtScore.Text = $"{Math.Round(ScoreStatistics.Score)}";
         }
 
         private void AddCombo() {
-            if (++Combo > MaxCombo) {
-                MaxCombo = Combo;
+            if (++ScoreStatistics.Combo > ScoreStatistics.MaxCombo) {
+                ScoreStatistics.MaxCombo = ScoreStatistics.Combo;
             }
         }
 
         private void UpdateMiss() {
             Cursor.UpdateColor(Story.Notes.MissColor);
             Miss.Play();
-            ++MissCount;
-            Combo = 0;
+            ++ScoreStatistics.MissCount;
+            ScoreStatistics.Combo = 0;
         }
 
         public void Reset() {
-            Score = 0;
-            TxtScore.Text = $"{Math.Round(Score)}";
-            Hit.Reset();
-            Miss.Reset();
-            PerfectCount = 0;
-            EarlyCount = 0;
-            LateCount = 0;
-            MissCount = 0;
-            Scores.Clear();
-            Combo = 0;
-            MaxCombo = 0;
+            ScoreStatistics = new();
+            TxtScore.Text = $"{Math.Round(ScoreStatistics.Score)}";
         }
 
         public double ProcessHit(double scoreTime, double noteHitTime) {
@@ -119,21 +82,21 @@ namespace S2VX.Game.Play.UserInterface {
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
-                ++EarlyCount;
+                ++ScoreStatistics.EarlyCount;
                 AddCombo();
 
             } else if (relativeTime < notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
-                ++PerfectCount;
+                ++ScoreStatistics.PerfectCount;
                 AddCombo();
 
             } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
-                ++LateCount;
+                ++ScoreStatistics.LateCount;
                 AddCombo();
 
             } else { // Late miss and beyond

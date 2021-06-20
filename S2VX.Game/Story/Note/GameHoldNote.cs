@@ -1,7 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Input.Bindings;
 using S2VX.Game.Play;
-using S2VX.Game.Play.UserInterface;
+using S2VX.Game.Play.Score;
 using System;
 
 namespace S2VX.Game.Story.Note {

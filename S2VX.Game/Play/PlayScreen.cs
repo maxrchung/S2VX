@@ -8,7 +8,7 @@ using osu.Framework.Timing;
 using osuTK.Input;
 using S2VX.Game.Configuration;
 using S2VX.Game.Play.Containers;
-using S2VX.Game.Play.UserInterface;
+using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
 
 namespace S2VX.Game.Play {

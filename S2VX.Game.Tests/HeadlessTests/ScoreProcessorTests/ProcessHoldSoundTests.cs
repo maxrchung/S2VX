@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
-using S2VX.Game.Play.UserInterface;
+using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
 
 namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
