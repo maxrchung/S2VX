@@ -3,18 +3,20 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace S2VX.Game.Leaderboard {
     public class LeaderboardContainer : BasicScrollContainer {
 
         private const string DefaultLeaderboardFileName = "leaderboard.json";
-        private TextFlowContainer NameColumn { get; set; }
-        private TextFlowContainer ScoreColumn { get; set; }
+        private TextFlowContainer NameColumn { get; }
+        private TextFlowContainer ScoreColumn { get; }
         public int EntryCount { get; set; }
 
         // Width is needed in the constructor so we know where to draw the ScoreColumn
-        public LeaderboardContainer(string storyPath, float width, string leaderboardFileName = DefaultLeaderboardFileName) {
+        public LeaderboardContainer(string storyPath, float width = 500, string leaderboardFileName = DefaultLeaderboardFileName) {
             var textSize = SizeConsts.TextSize1;
             Child = new Container {
                 Width = width,
@@ -52,14 +54,14 @@ namespace S2VX.Game.Leaderboard {
 
         private void LoadLeaderboard(string leaderboardPath) {
             var text = File.ReadAllText(leaderboardPath);
-            var data = JsonConvert.DeserializeObject<LeaderboardEntries>(text);
             try {
-                foreach (var entry in data.Entries) {
+                var data = JsonConvert.DeserializeObject<IEnumerable<LeaderboardEntry>>(text);
+                foreach (var entry in data) {
                     NameColumn.AddParagraph(entry.Name);
                     ScoreColumn.AddParagraph(entry.Score);
                     ++EntryCount;
                 }
-            } catch (System.NullReferenceException) {
+            } catch (Exception) {
                 NameColumn.AddParagraph("Malformed or corrupted Leaderboard file!");
                 EntryCount = -1;
             }
