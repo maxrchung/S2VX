@@ -7,8 +7,6 @@ namespace S2VX.Game.Play.Score {
         // very small values that are between 0 and 1. If we int cast or round
         // this drag value, we'll always get 0.
         public double Score { get; set; }
-        public S2VXSample Hit { get; set; }
-        public S2VXSample Miss { get; set; }
         public int PerfectCount { get; set; }
         public int EarlyCount { get; set; }
         public int LateCount { get; set; }
@@ -16,7 +14,7 @@ namespace S2VX.Game.Play.Score {
         public SortedList<double> Scores { get; } = new();
         public int Combo { get; set; }
         public int MaxCombo { get; set; }
-        public double Accuracy => (double)PerfectCount / Scores.Count;
+        public double Accuracy => Scores.Count == 0 ? 0 : (double)PerfectCount / Scores.Count;
 
         public double Median() {
             if (Scores.Count == 0) {
