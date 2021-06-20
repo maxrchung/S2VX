@@ -61,9 +61,10 @@ namespace S2VX.Game.Leaderboard {
                     ScoreColumn.AddParagraph(entry.Score);
                     ++EntryCount;
                 }
-            } catch (Exception) {
+            } catch (Exception ex) {
                 NameColumn.AddParagraph("Malformed or corrupted Leaderboard file!");
                 EntryCount = -1;
+                Console.WriteLine(ex);
             }
         }
     }
