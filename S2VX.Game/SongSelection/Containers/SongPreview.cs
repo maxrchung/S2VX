@@ -122,7 +122,7 @@ namespace S2VX.Game.SongSelection.Containers {
                         },
                     }
                 },
-                new LeaderboardContainer(StoryPath, leaderboardWidth) {
+                new LeaderboardContainer(StoryPath) {
                     Width = leaderboardWidth,
                     Height = leaderboardHeight,
                     Y = songInfoHeight,

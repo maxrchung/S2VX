@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -11,15 +12,19 @@ namespace S2VX.Game.Leaderboard {
     public class LeaderboardContainer : BasicScrollContainer {
 
         private const string DefaultLeaderboardFileName = "leaderboard.json";
-        private TextFlowContainer NameColumn { get; }
-        private TextFlowContainer ScoreColumn { get; }
+        private string LeaderboardPath { get; set; }
+        private TextFlowContainer NameColumn { get; set; }
+        private TextFlowContainer ScoreColumn { get; set; }
         public int EntryCount { get; set; }
 
-        // Width is needed in the constructor so we know where to draw the ScoreColumn
-        public LeaderboardContainer(string storyPath, float width = 500, string leaderboardFileName = DefaultLeaderboardFileName) {
+        public LeaderboardContainer(string storyPath, string leaderboardFileName = DefaultLeaderboardFileName) =>
+            LeaderboardPath = Path.Combine(Path.GetDirectoryName(storyPath), leaderboardFileName);
+
+        [BackgroundDependencyLoader]
+        private void Load() {
             var textSize = SizeConsts.TextSize1;
             Child = new Container {
-                Width = width,
+                Width = Width,
                 AutoSizeAxes = Axes.Y,
                 Children = new[] {
                     NameColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
@@ -45,12 +50,10 @@ namespace S2VX.Game.Leaderboard {
                 },
             };
 
-            var leaderboardPath = Path.Combine(Path.GetDirectoryName(storyPath), leaderboardFileName);
-            if (File.Exists(leaderboardPath)) {
-                LoadLeaderboard(leaderboardPath);
+            if (File.Exists(LeaderboardPath)) {
+                LoadLeaderboard(LeaderboardPath);
             }
         }
-
 
         private void LoadLeaderboard(string leaderboardPath) {
             var text = File.ReadAllText(leaderboardPath);
@@ -62,7 +65,7 @@ namespace S2VX.Game.Leaderboard {
                     ++EntryCount;
                 }
             } catch (Exception ex) {
-                NameColumn.AddParagraph("Malformed or corrupted Leaderboard file!");
+                NameColumn.AddParagraph("Error parsing leaderboard!");
                 EntryCount = -1;
                 Console.WriteLine(ex);
             }
