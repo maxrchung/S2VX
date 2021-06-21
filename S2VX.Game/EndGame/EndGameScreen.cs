@@ -11,45 +11,22 @@ using System.Diagnostics.CodeAnalysis;
 namespace S2VX.Game.EndGame {
     [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members")]
     public class EndGameScreen : Screen {
-        private ScoreStatisticsDisplay ScoreStatisticsDisplay { get; }
+        private ScoreStatistics ScoreStatistics { get; }
         private string LeaderboardPath { get; }
 
         public EndGameScreen(ScoreStatistics scoreStatistics, string leaderboardPath) {
-            ScoreStatisticsDisplay = new ScoreStatisticsDisplay(scoreStatistics) {
-                Width = 500,
-                Height = 500
-            };
+            ScoreStatistics = scoreStatistics;
             LeaderboardPath = leaderboardPath;
         }
 
         [BackgroundDependencyLoader]
         private void Load() =>
             InternalChildren = new Drawable[] {
-                new Box {
-                    Colour = Color4.DarkBlue,
+                new ScoreStatisticsDisplay(ScoreStatistics) {
+                    Y = 500,
                     Width = 500,
                     Height = 500
-                },
-                ScoreStatisticsDisplay,
-                //new TableContainer {
-                //    Colour = Color4.White,
-                //    Width = 500,
-                //    Height = 500,
-                //    Content = new Drawable[,] {
-                //        {
-                //            new Box { Anchor = Anchor.CentreRight, Origin = Anchor.CentreRight, Colour = Color4.Red, Width = 50, Height = 50 },
-                //            new Box { Anchor = Anchor.CentreLeft, Origin = Anchor.CentreLeft,  Colour = Color4.Blue, Width = 100, Height = 100 }
-                //        },
-                //        {
-                //            new Box { Anchor = Anchor.CentreRight, Origin = Anchor.CentreRight, Colour = Color4.Blue, Width = 100, Height = 100 },
-                //            new Box { Anchor = Anchor.CentreLeft, Origin = Anchor.CentreLeft, Colour = Color4.Red, Width = 50, Height = 50 }
-                //        },
-                //        {
-                //            new Box { Anchor = Anchor.CentreRight, Origin = Anchor.CentreRight, Colour = Color4.Blue, Width = 100, Height = 100 },
-                //            new Box { Anchor = Anchor.CentreLeft, Origin = Anchor.CentreLeft, Colour = Color4.Red, Width = 50, Height = 50 }
-                //        },
-                //    }
-                //}
+                }
             };
     }
 }

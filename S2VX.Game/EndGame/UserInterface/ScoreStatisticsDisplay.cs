@@ -30,7 +30,7 @@ namespace S2VX.Game.EndGame.UserInterface {
                 X = 10,
                 Text = value.ToString()
             };
-            return new Drawable[] { keyDisplay, valueDisplay };
+            return new[] { keyDisplay, valueDisplay };
         }
     }
 }
