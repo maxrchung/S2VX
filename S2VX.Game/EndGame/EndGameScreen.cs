@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using osuTK.Graphics;
 using S2VX.Game.EndGame.UserInterface;
 using S2VX.Game.Play.Score;
+using S2VX.Game.SongSelection.UserInterface;
 using System.Diagnostics.CodeAnalysis;
 
 // Using "EndGame" because "End" is a reserved word in C#
@@ -22,10 +23,15 @@ namespace S2VX.Game.EndGame {
         [BackgroundDependencyLoader]
         private void Load() =>
             InternalChildren = new Drawable[] {
+                new BorderOuterBox(),
+                new Box {
+                    Colour = Color4.Black,
+                    Position = new(100),
+                    Size = new(800)
+                },
                 new ScoreStatisticsDisplay(ScoreStatistics) {
                     Y = 500,
-                    Width = 500,
-                    Height = 500
+                    Size = new(500)
                 }
             };
     }
