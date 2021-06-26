@@ -20,7 +20,7 @@
     <ProjectReference Include="..\S2VX.Resources\S2VX.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Menees.Analyzers" Version="3.0.2">
+    <PackageReference Include="Menees.Analyzers" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

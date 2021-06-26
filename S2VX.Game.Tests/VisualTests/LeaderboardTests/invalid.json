@@ -1,0 +1,17 @@
+﻿{
+  "malform": [
+    {
+      "Name": "Aaron",
+      "Score": "10201"
+    },
+    {
+      "lol": "malformed",
+      "not": "corrupted",
+      "correct": "error"
+    },
+    {
+      "Name": "Max",
+      "Score": "12100"
+    }
+  ]
+}
