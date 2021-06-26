@@ -113,12 +113,11 @@ namespace S2VX.Game.Play {
         }
 
         private void OnTrackCompleted() {
-            //if (!IsUsingEditorSettings) {
-            this.MakeCurrent();
-            var storyDirectory = Path.GetDirectoryName(Story.StoryPath);
-            var leaderboardPath = Path.Combine(storyDirectory, "leaderboard.json");
-            this.Push(new EndGameScreen(ScoreProcessor.ScoreStatistics, leaderboardPath));
-            //}
+            if (!IsUsingEditorSettings) {
+                this.MakeCurrent();
+                var storyDirectory = Path.GetDirectoryName(Story.StoryPath);
+                this.Push(new EndGameScreen(ScoreProcessor.ScoreStatistics, storyDirectory));
+            }
         }
     }
 }
