@@ -64,6 +64,8 @@ namespace S2VX.Game.Play.Score {
         public void Reset() {
             ScoreStatistics = new();
             TxtScore.Text = $"{Math.Round(ScoreStatistics.Score)}";
+            Hit.Reset();
+            Miss.Reset();
         }
 
         public double ProcessHit(double scoreTime, double noteHitTime) {
