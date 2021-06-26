@@ -2,11 +2,15 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Screens;
 using osuTK.Graphics;
 using S2VX.Game.SongSelection.UserInterface;
 
 namespace S2VX.Game.SongSelection.Containers {
     public class Border : CompositeDrawable {
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         public string CurSelectionPath { get; set; }
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
 
@@ -24,9 +28,7 @@ namespace S2VX.Game.SongSelection.Containers {
             Height = fullHeight;
 
             InternalChildren = new Drawable[] {
-                // BorderOuterBox
-                new BorderOuterBox { },
-                // TextContainer
+                new BorderOuterBox(() => Screens.Exit()),
                 new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
                     Height = borderSize,
@@ -38,14 +40,7 @@ namespace S2VX.Game.SongSelection.Containers {
                     Colour = Color4.Black,
                     // TODO: truncate text if it's too long
                 },
-                // BorderInnerBox
-                new BorderInnerBox {
-                    Colour = Color4.Black,
-                    Width = InnerBoxRelativeSize,
-                    Height = InnerBoxRelativeSize,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                },
+                new BorderInnerBox(),
             };
         }
 

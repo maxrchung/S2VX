@@ -23,12 +23,11 @@ namespace S2VX.Game.EndGame {
         [BackgroundDependencyLoader]
         private void Load() =>
             InternalChildren = new Drawable[] {
-                new BorderOuterBox(),
-                new Box {
-                    Colour = Color4.Black,
-                    Position = new(100),
-                    Size = new(800)
-                },
+                // EndGameScreen is pushed on top of the PlayScreen, so to get
+                // back to the song preview screen we need to go up the parent
+                // chain twice
+                new BorderOuterBox(() => this.GetParentScreen().GetParentScreen().MakeCurrent()),
+                new BorderInnerBox(),
                 new ScoreStatisticsDisplay(ScoreStatistics) {
                     Y = 500,
                     Size = new(500)

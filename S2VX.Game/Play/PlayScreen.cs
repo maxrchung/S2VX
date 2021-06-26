@@ -7,9 +7,11 @@ using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK.Input;
 using S2VX.Game.Configuration;
+using S2VX.Game.EndGame;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
+using System.IO;
 
 namespace S2VX.Game.Play {
     public class PlayScreen : Screen {
@@ -31,6 +33,7 @@ namespace S2VX.Game.Play {
             IsUsingEditorSettings = isUsingEditorSettings;
             Story = story;
             Track = track;
+            track.Completed += OnTrackCompleted;
         }
 
         public ScoreProcessor ScoreProcessor { get; private set; }
@@ -107,6 +110,15 @@ namespace S2VX.Game.Play {
         public override bool OnExiting(IScreen next) {
             Cursor.Reset();
             return false;
+        }
+
+        private void OnTrackCompleted() {
+            //if (!IsUsingEditorSettings) {
+            this.MakeCurrent();
+            var storyDirectory = Path.GetDirectoryName(Story.StoryPath);
+            var leaderboardPath = Path.Combine(storyDirectory, "leaderboard.json");
+            this.Push(new EndGameScreen(ScoreProcessor.ScoreStatistics, leaderboardPath));
+            //}
         }
     }
 }
