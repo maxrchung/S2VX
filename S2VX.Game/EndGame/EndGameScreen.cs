@@ -1,8 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Screens;
-using osuTK.Graphics;
 using S2VX.Game.EndGame.UserInterface;
 using S2VX.Game.Play.Score;
 using S2VX.Game.SongSelection.UserInterface;

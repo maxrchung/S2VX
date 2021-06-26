@@ -11,7 +11,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public BorderOuterBox(Action onExit) => OnExit = onExit;
 
         [BackgroundDependencyLoader]
-        private void Load(Action onExit) {
+        private void Load() {
             Colour = Color4.White;
             Size = new(1000);
         }
