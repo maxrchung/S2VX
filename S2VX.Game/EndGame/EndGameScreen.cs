@@ -10,6 +10,8 @@ namespace S2VX.Game.EndGame {
     public class EndGameScreen : Screen {
         private ScoreStatistics ScoreStatistics { get; }
         private string StoryDirectory { get; }
+        public Border Border { get; private set; }
+        public ScoreStatisticsDisplay ScoreStatisticsDisplay { get; private set; }
 
         public EndGameScreen(ScoreStatistics scoreStatistics, string storyDirectory) {
             ScoreStatistics = scoreStatistics;
@@ -22,8 +24,8 @@ namespace S2VX.Game.EndGame {
                 // EndGameScreen is pushed on top of the PlayScreen, so to get
                 // back to the song preview screen we need to go up the parent
                 // chain twice
-                new Border(StoryDirectory, () => this.GetParentScreen().GetParentScreen().MakeCurrent()),
-                new ScoreStatisticsDisplay(ScoreStatistics) {
+                Border = new Border(StoryDirectory, () => this.GetParentScreen().GetParentScreen().MakeCurrent()),
+                ScoreStatisticsDisplay = new ScoreStatisticsDisplay(ScoreStatistics) {
                     Y = 500,
                     Size = new(500)
                 }

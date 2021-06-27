@@ -112,7 +112,7 @@ namespace S2VX.Game.Play {
             return false;
         }
 
-        private void OnTrackCompleted() {
+        public void OnTrackCompleted() {
             if (!IsUsingEditorSettings) {
                 this.MakeCurrent();
                 var storyDirectory = Path.GetDirectoryName(Story.StoryPath);

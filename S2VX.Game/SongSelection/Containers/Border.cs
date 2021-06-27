@@ -11,6 +11,9 @@ namespace S2VX.Game.SongSelection.Containers {
         public string CurSelectionPath { get; set; }
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
         private Action OnExit { get; }
+        public BorderOuterBox BorderOuter { get; private set; }
+        public TextFlowContainer TxtPath { get; private set; }
+        public BorderInnerBox BorderInner { get; private set; }
 
         public Border(string curSelectionPath, Action onExit) {
             CurSelectionPath = curSelectionPath;
@@ -29,8 +32,8 @@ namespace S2VX.Game.SongSelection.Containers {
             Height = fullHeight;
 
             InternalChildren = new Drawable[] {
-                new BorderOuterBox(OnExit),
-                new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
+                BorderOuter = new BorderOuterBox(OnExit),
+                TxtPath = new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
                     Height = borderSize,
                     Margin = new MarginPadding {
@@ -41,7 +44,7 @@ namespace S2VX.Game.SongSelection.Containers {
                     Colour = Color4.Black,
                     // TODO: truncate text if it's too long
                 },
-                new BorderInnerBox(),
+                BorderInner = new BorderInnerBox(),
             };
         }
 
