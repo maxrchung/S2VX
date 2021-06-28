@@ -37,7 +37,19 @@ namespace S2VX.Game.Tests.VisualTests {
         public void Push_DefaultEndGameScreen_ShowsZeroScore() {
             EndGameScreen endGameScreen = null;
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen = new(new(), "")));
+
+            // This looks pretty messed up and it kind of is. I am encountering
+            // some wacky behavior where a newly pushed screen is asynchronously
+            // loaded, causing some weird issues. If I don't have this UntilStep
+            // to ensure that the new screen is loaded, the screen could
+            // SOMETIMES be loaded by the time future steps run, and that'll
+            // lead to irregular errors.
+            //
+            // To add onto the strangeness, it seems like this behavior only
+            // occurs when running through Test Explorer or the pipeline. I had
+            // no issues in the visual GUI.
             AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+
             AddAssert("Shows zero score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "0");
         }
 
