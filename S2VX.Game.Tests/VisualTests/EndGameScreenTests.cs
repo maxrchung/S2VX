@@ -17,7 +17,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Cached]
         private ScreenStack ScreenStack { get; } = new();
-        private SongSelectionScreen SongSelectionScreen { get; } = new SongSelectionScreen();
+        private SongSelectionScreen SongSelectionScreen { get; } = new();
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -37,7 +37,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Push_DefaultEndGameScreen_ShowsZeroScore() {
             EndGameScreen endGameScreen = null;
-            AddStep("Set end game screen", () => endGameScreen = new EndGameScreen(new(), ""));
+            AddStep("Set end game screen", () => endGameScreen = new(new(), ""));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
             AddAssert("Shows zero score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "0");
         }
@@ -45,7 +45,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Push_Score_ShowsCorrectScore() {
             EndGameScreen endGameScreen = null;
-            AddStep("Set end game screen", () => endGameScreen = new EndGameScreen(new() { Score = 1234 }, ""));
+            AddStep("Set end game screen", () => endGameScreen = new(new() { Score = 1234 }, ""));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
             AddAssert("Shows correct score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "1234");
         }
@@ -58,19 +58,22 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Push_StoryDirectory_ShowsCorrectDirectory() {
             EndGameScreen endGameScreen = null;
-            AddStep("Set end game screen", () => endGameScreen = new EndGameScreen(new(), "StoryDirectory"));
+            AddStep("Set end game screen", () => endGameScreen = new(new(), "StoryDirectory"));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
             AddAssert("Shows correct directory", () => GetTextInTextFlowContainer(endGameScreen.Border.TxtPath) == "StoryDirectory");
         }
 
-        [Test]
-        public void OnTrackCompleted_PlayScreenTrackComplete_PushesEndGameScreen() {
-            PlayScreen playScreen = null;
-            AddStep("Set play screen", () => playScreen = new PlayScreen(
+        private PlayScreen CreatePlayScreen() =>
+            new(
                 false,
                 new("HeadlessTests/SongPreviewTests/ValidStory.s2ry", false),
                 S2VXTrack.Open(Path.Combine("TestTracks", "10-seconds-of-silence.mp3"), Audio)
-            ));
+            );
+
+        [Test]
+        public void OnTrackCompleted_PlayScreenTrackComplete_PushesEndGameScreen() {
+            PlayScreen playScreen = null;
+            AddStep("Set play screen", () => playScreen = CreatePlayScreen());
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
             AddAssert("Pushes end game screen", () => ScreenStack.CurrentScreen is EndGameScreen);
@@ -79,7 +82,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void OnTrackCompleted_EditorTestPlayTrackComplete_StaysOnPlayScreen() {
             PlayScreen playScreen = null;
-            AddStep("Set play screen", () => playScreen = new PlayScreen(
+            AddStep("Set play screen", () => playScreen = new(
                 true,
                 new("HeadlessTests/SongPreviewTests/ValidStory.s2ry", false),
                 S2VXTrack.Open(Path.Combine("TestTracks", "10-seconds-of-silence.mp3"), Audio)
@@ -92,14 +95,10 @@ namespace S2VX.Game.Tests.VisualTests {
         [Test]
         public void Exit_SongSelectionToPlayToEndGame_GoesBackToSongSelection() {
             PlayScreen playScreen = null;
-            AddStep("Set play screen", () => playScreen = new PlayScreen(
-                false,
-                new("HeadlessTests/SongPreviewTests/ValidStory.s2ry", false),
-                S2VXTrack.Open(Path.Combine("TestTracks", "10-seconds-of-silence.mp3"), Audio)
-            ));
+            AddStep("Set play screen", () => playScreen = CreatePlayScreen());
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
             EndGameScreen endGameScreen = null;
-            AddStep("Set end game screen", () => endGameScreen = new EndGameScreen(new() { Score = 1234 }, ""));
+            AddStep("Set end game screen", () => endGameScreen = new(new(), ""));
             AddStep("Add end game screen", () => playScreen.Push(endGameScreen));
             AddStep("Click outer border", () => endGameScreen.Border.BorderOuter.Click());
             AddAssert("Goes back to song selection", () => ScreenStack.CurrentScreen is SongSelectionScreen);
