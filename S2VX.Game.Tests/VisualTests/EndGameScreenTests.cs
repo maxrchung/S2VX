@@ -25,7 +25,6 @@ namespace S2VX.Game.Tests.VisualTests {
             Add(ScreenStack);
         }
 
-
         [SetUpSteps]
         private void SetUpSteps() => AddStep("Reset to song selection screen", () => SongSelectionScreen.MakeCurrent());
 
@@ -39,6 +38,8 @@ namespace S2VX.Game.Tests.VisualTests {
             EndGameScreen endGameScreen = null;
             AddStep("Set end game screen", () => endGameScreen = new(new(), ""));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+
             AddAssert("Shows zero score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "0");
         }
 
@@ -47,6 +48,8 @@ namespace S2VX.Game.Tests.VisualTests {
             EndGameScreen endGameScreen = null;
             AddStep("Set end game screen", () => endGameScreen = new(new() { Score = 1234 }, ""));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+
             AddAssert("Shows correct score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "1234");
         }
 
@@ -60,6 +63,8 @@ namespace S2VX.Game.Tests.VisualTests {
             EndGameScreen endGameScreen = null;
             AddStep("Set end game screen", () => endGameScreen = new(new(), "StoryDirectory"));
             AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+
             AddAssert("Shows correct directory", () => GetTextInTextFlowContainer(endGameScreen.Border.TxtPath) == "StoryDirectory");
         }
 
@@ -75,6 +80,8 @@ namespace S2VX.Game.Tests.VisualTests {
             PlayScreen playScreen = null;
             AddStep("Set play screen", () => playScreen = CreatePlayScreen());
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
+            AddUntilStep("Load play screen", () => playScreen.IsLoaded);
+
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
             AddAssert("Pushes end game screen", () => ScreenStack.CurrentScreen is EndGameScreen);
         }
@@ -88,6 +95,8 @@ namespace S2VX.Game.Tests.VisualTests {
                 S2VXTrack.Open(Path.Combine("TestTracks", "10-seconds-of-silence.mp3"), Audio)
             ));
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
+            AddUntilStep("Load play screen", () => playScreen.IsLoaded);
+
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
             AddAssert("Stays on play screen", () => ScreenStack.CurrentScreen is PlayScreen);
         }
@@ -96,10 +105,14 @@ namespace S2VX.Game.Tests.VisualTests {
         public void Exit_SongSelectionToPlayToEndGame_GoesBackToSongSelection() {
             PlayScreen playScreen = null;
             AddStep("Set play screen", () => playScreen = CreatePlayScreen());
-            AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
             EndGameScreen endGameScreen = null;
+            AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen));
+            AddUntilStep("Load play screen", () => playScreen.IsLoaded);
+
             AddStep("Set end game screen", () => endGameScreen = new(new(), ""));
             AddStep("Add end game screen", () => playScreen.Push(endGameScreen));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+
             AddStep("Click outer border", () => endGameScreen.Border.BorderOuter.Click());
             AddAssert("Goes back to song selection", () => ScreenStack.CurrentScreen is SongSelectionScreen);
         }
