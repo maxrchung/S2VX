@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
-using S2VX.Game.Play.UserInterface;
+using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 
@@ -15,20 +15,20 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         private S2VXStory Story { get; } = new();
 
         private Notes Notes { get; set; }
-        private ScoreProcessor Processor { get; } = new();
+        private ScoreProcessor ScoreProcessor { get; } = new();
 
         [BackgroundDependencyLoader]
-        private void Load() => Add(Processor);
+        private void Load() => Add(ScoreProcessor);
 
         [SetUpSteps]
         public void SetUpSteps() {
             Notes = Story.Notes;
             AddStep("Reset cursor", () => Cursor.Reset());
-            AddStep("Reset score processor", () => Processor.Reset());
+            AddStep("Reset score processor", () => ScoreProcessor.Reset());
         }
 
         private void ProcessHit(double scoreTime) =>
-            AddStep("Process note", () => Processor.ProcessHit(scoreTime, 0));
+            AddStep("Process note", () => ScoreProcessor.ProcessHit(scoreTime, 0));
 
         [Test]
         public void ProcessHit_PerfectHit_ColorsCursorPerfect() {

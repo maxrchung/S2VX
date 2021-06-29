@@ -48,7 +48,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(Story.Notes.MissThreshold + 20));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold * 2 + 25);
+            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Story.Notes.MissThreshold * 2 + 25);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(Story.Notes.MissThreshold + 10));
-            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold);
+            AddAssert("Hit only top note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Story.Notes.MissThreshold);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(Story.Notes.MissThreshold * 2 + 60));
-            AddAssert("Note was missed", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold);
+            AddAssert("Note was missed", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Story.Notes.MissThreshold);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(Story.Notes.MissThreshold * 2 + 60));
-            AddAssert("Note was hit", () => PlayScreen.ScoreProcessor.Score == Story.Notes.MissThreshold / 2);
+            AddAssert("Note was hit", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Story.Notes.MissThreshold / 2);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Testing;
+﻿using osu.Framework.Testing;
 
 namespace S2VX.Game.Tests {
     /// <summary>
@@ -9,9 +7,7 @@ namespace S2VX.Game.Tests {
     /// logic within our own TestScene class.
     /// </summary>
     public class S2VXTestScene : ManualInputManagerTestScene {
-        protected override Container<Drawable> Content { get; }
-
-        public S2VXTestScene() => base.Content.Add(Content = new SquareContainer());
+        public S2VXTestScene() => base.Content.Add(new SquareContainer());
 
         protected override ITestSceneTestRunner CreateRunner() => new S2VXTestSceneTestRunner();
     }

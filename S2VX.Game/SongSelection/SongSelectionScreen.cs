@@ -90,7 +90,7 @@ namespace S2VX.Game.SongSelection {
 
             if (DirectoryContainsDirectories("")) {
                 InternalChildren = new Drawable[] {
-                    new Border(CurSelectionPath) {
+                    new Border(CurSelectionPath, () => this.Exit()) {
                         Width = fullWidth,
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
@@ -117,7 +117,7 @@ namespace S2VX.Game.SongSelection {
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
-                        new Border(CurSelectionPath) {
+                        new Border(CurSelectionPath, () => this.Exit()) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
@@ -126,7 +126,7 @@ namespace S2VX.Game.SongSelection {
                     };
                 } else {
                     InternalChildren = new Drawable[] {
-                        new Border(CurSelectionPath) {
+                        new Border(CurSelectionPath, () => this.Exit()) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,

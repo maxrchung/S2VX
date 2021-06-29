@@ -1,12 +1,20 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
-using osu.Framework.Screens;
 using osuTK.Graphics;
+using System;
 
 namespace S2VX.Game.SongSelection.UserInterface {
-    public class BorderOuterBox : RelativeBox {
-        [Resolved]
-        private ScreenStack Screens { get; set; }
+    public class BorderOuterBox : Box {
+        private Action OnExit { get; set; }
+
+        public BorderOuterBox(Action onExit) => OnExit = onExit;
+
+        [BackgroundDependencyLoader]
+        private void Load() {
+            Colour = Color4.White;
+            Size = new(1000);
+        }
 
         protected override bool OnHover(HoverEvent e) {
             Colour = Color4.LightGray;
@@ -16,9 +24,8 @@ namespace S2VX.Game.SongSelection.UserInterface {
         protected override void OnHoverLost(HoverLostEvent e) => Colour = Color4.White;
 
         protected override bool OnClick(ClickEvent e) {
-            Screens.CurrentScreen.Exit();
+            OnExit();
             return true;
         }
-
     }
 }
