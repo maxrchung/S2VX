@@ -15,6 +15,7 @@ namespace S2VX.Game.Play.Score {
         public int Combo { get; set; }
         public int MaxCombo { get; set; }
         public double Accuracy => Scores.Count == 0 ? 0 : (double)PerfectCount / Scores.Count;
+        public bool IsFullCombo => Combo == MaxCombo;
 
         public double Median() {
             if (Scores.Count == 0) {
