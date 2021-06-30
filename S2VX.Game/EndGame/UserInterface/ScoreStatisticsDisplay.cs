@@ -16,8 +16,8 @@ namespace S2VX.Game.EndGame.UserInterface {
                 CreateRow("Accuracy", scoreStatistics.Accuracy),
                 CreateRow("Median", scoreStatistics.Median()),
             };
-            Y = 500;
-            Size = new(500);
+            Y = 450;
+            Size = new(450);
         }
 
         private static Drawable[] CreateRow(string key, object value) {

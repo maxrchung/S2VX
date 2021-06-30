@@ -105,8 +105,16 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [Test]
+        public void EndGameScreen_IncludesLeaderboard() {
+            EndGameScreen endGameScreen = null;
+            AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen = new(new(), "HeadlessTests/SongPreviewTests/ValidStory.s2ry")));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+            AddAssert("Leaderboard exists", () => endGameScreen.LeaderboardContainer != null);
+        }
+
+        [Test]
         public void OnExit_ClickBorder_GoesBackToSongSelection() {
-            PlayScreen playScreen = null;
+        PlayScreen playScreen = null;
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen = CreatePlayScreen()));
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
             EndGameScreen endGameScreen = null;
