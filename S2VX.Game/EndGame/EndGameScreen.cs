@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
 using S2VX.Game.EndGame.UserInterface;
+using S2VX.Game.Leaderboard;
 using S2VX.Game.Play.Score;
 using S2VX.Game.SongSelection.Containers;
 
@@ -12,6 +13,7 @@ namespace S2VX.Game.EndGame {
         private string StoryDirectory { get; }
         public Border Border { get; private set; }
         public ScoreStatisticsDisplay ScoreStatisticsDisplay { get; private set; }
+        public LeaderboardContainer LeaderboardContainer { get; private set; }
 
         public EndGameScreen(ScoreStatistics scoreStatistics, string storyDirectory) {
             ScoreStatistics = scoreStatistics;
@@ -26,9 +28,15 @@ namespace S2VX.Game.EndGame {
                 // chain twice
                 Border = new Border(StoryDirectory, () => this.GetParentScreen().GetParentScreen().MakeCurrent()),
                 ScoreStatisticsDisplay = new ScoreStatisticsDisplay(ScoreStatistics) {
-                    Y = 500,
-                    Size = new(500)
-                }
+                    Y = 450,
+                    Size = new(450)
+                },
+                LeaderboardContainer = new LeaderboardContainer(StoryDirectory) {
+                    Width = 450,
+                    Height = 650,
+                    X = 500,
+                    Y = 250
+                },
             };
     }
 }

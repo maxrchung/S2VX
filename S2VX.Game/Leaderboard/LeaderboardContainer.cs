@@ -17,8 +17,8 @@ namespace S2VX.Game.Leaderboard {
         private TextFlowContainer ScoreColumn { get; set; }
         public int EntryCount { get; set; }
 
-        public LeaderboardContainer(string storyPath, string leaderboardFileName = DefaultLeaderboardFileName) =>
-            LeaderboardPath = Path.Combine(Path.GetDirectoryName(storyPath), leaderboardFileName);
+        public LeaderboardContainer(string storyDirectory, string leaderboardFileName = DefaultLeaderboardFileName) =>
+            LeaderboardPath = Path.Combine(storyDirectory, leaderboardFileName);
 
         [BackgroundDependencyLoader]
         private void Load() {
