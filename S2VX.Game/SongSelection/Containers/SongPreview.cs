@@ -34,6 +34,7 @@ namespace S2VX.Game.SongSelection.Containers {
         private string AudioPath { get; set; }
         private Texture ThumbnailTexture { get; set; }
         private TextFlowContainer TextContainer { get; set; }
+        public LeaderboardContainer LeaderboardContainer { get; private set; }
 
         public SongPreview(
             string storyDirectory,
@@ -122,7 +123,7 @@ namespace S2VX.Game.SongSelection.Containers {
                         },
                     }
                 },
-                new LeaderboardContainer(StoryDirectory) {
+                LeaderboardContainer = new LeaderboardContainer(StoryDirectory) {
                     Width = leaderboardWidth,
                     Height = leaderboardHeight,
                     Y = songInfoHeight,

@@ -31,7 +31,7 @@ namespace S2VX.Game.EndGame {
                     Y = 450,
                     Size = new(450)
                 },
-                LeaderboardContainer = new LeaderboardContainer(StoryDirectory) {
+                LeaderboardContainer = new LeaderboardContainer(StoryDirectory, scoreStatistics: ScoreStatistics) {
                     Width = 450,
                     Height = 650,
                     X = 500,
