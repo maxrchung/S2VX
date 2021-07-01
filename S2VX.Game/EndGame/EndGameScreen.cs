@@ -43,7 +43,7 @@ namespace S2VX.Game.EndGame {
                 Border = new Border(StoryDirectory, () => this.GetParentScreen().GetParentScreen().MakeCurrent()),
                 ScoreStatisticsDisplay = new ScoreStatisticsDisplay(ScoreStatistics),
                 ScoreGrade = new ScoreGrade(ScoreStatistics.Accuracy, ScoreStatistics.IsFullCombo),
-                LeaderboardContainer = new LeaderboardContainer(StoryDirectory) {
+                LeaderboardContainer = new LeaderboardContainer(StoryDirectory, scoreStatistics: ScoreStatistics) {
                     Width = 450,
                     Height = 650,
                     X = 500,

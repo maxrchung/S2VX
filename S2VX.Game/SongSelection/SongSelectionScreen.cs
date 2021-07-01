@@ -27,6 +27,7 @@ namespace S2VX.Game.SongSelection {
 
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        private SongPreview SongPreview { get; set; }
 
         private List<Drawable> CreateSelectionItems() {
             var selectionItems = new List<Drawable>();
@@ -62,6 +63,8 @@ namespace S2VX.Game.SongSelection {
             // Block Exiting
             return true;
         }
+
+        public override void OnResuming(IScreen last) => SongPreview?.LeaderboardContainer?.LoadLeaderboard();
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
@@ -131,7 +134,7 @@ namespace S2VX.Game.SongSelection {
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
                         },
-                        new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
+                        SongPreview = new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
