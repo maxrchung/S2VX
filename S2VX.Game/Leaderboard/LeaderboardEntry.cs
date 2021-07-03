@@ -11,7 +11,10 @@ namespace S2VX.Game.Leaderboard {
             Score = score;
         }
 
-        public int CompareTo(LeaderboardEntry other) =>
-            int.Parse(Score, CultureInfo.InvariantCulture).CompareTo(int.Parse(other.Score, CultureInfo.InvariantCulture));
+        // Compare two entries by ascending score first, then by name
+        public int CompareTo(LeaderboardEntry other) {
+            var scoreCompare = int.Parse(Score, CultureInfo.InvariantCulture).CompareTo(int.Parse(other.Score, CultureInfo.InvariantCulture));
+            return scoreCompare == 0 ? string.Compare(Name, other.Name, StringComparison.Ordinal) : scoreCompare;
+        }
     }
 }

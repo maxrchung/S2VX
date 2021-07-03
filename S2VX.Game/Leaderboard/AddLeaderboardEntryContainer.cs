@@ -35,16 +35,13 @@ namespace S2VX.Game.Leaderboard {
                     Masking = true,
                 },
                 SaveButton = new() {
-                    Action = () => {
-                        LeaderboardContainer.AddEntry(NameInput.Text, Score);
-                        Clear();
-                    },
+                    Action = () => LeaderboardContainer.AddEntry(NameInput.Text, Score),
                     Width = InputWidth * 0.25f,
                     Height = InputHeight,
                     Icon = FontAwesome.Solid.Save,
                 }
             };
-            NameInput.OnCommit += (_, _) => SaveButton.Click();
+            NameInput.OnCommit += (_, _) => SaveButton.Click();  // Pressing enter clicks the button
         }
     }
 }
