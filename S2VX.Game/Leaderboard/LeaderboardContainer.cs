@@ -38,65 +38,46 @@ namespace S2VX.Game.Leaderboard {
         [BackgroundDependencyLoader]
         private void Load() {
             var textSize = SizeConsts.TextSize1;
+            NameColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
+                AutoSizeAxes = Axes.Both,
+                Anchor = Anchor.TopLeft,
+                Origin = Anchor.TopLeft,
+                TextAnchor = Anchor.TopLeft,
+                Colour = Color4.White,
+                Margin = new MarginPadding {
+                    Horizontal = textSize / 2,
+                },
+            };
+            ScoreColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
+                AutoSizeAxes = Axes.Both,
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+                TextAnchor = Anchor.TopRight,
+                Colour = Color4.White,
+                Margin = new MarginPadding {
+                    Horizontal = textSize / 2,
+                },
+            };
+            var nameAndScore = new Container {
+                Width = Width,
+                AutoSizeAxes = Axes.Y,
+                Children = new[] {
+                    NameColumn,
+                    ScoreColumn
+                },
+            };
+
             if (ScoreStatistics == null) {
                 // Read-only leaderboard
-                Child = new Container {
-                    Width = Width,
-                    AutoSizeAxes = Axes.Y,
-                    Children = new[] {
-                        NameColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.TopLeft,
-                            TextAnchor = Anchor.TopLeft,
-                            Colour = Color4.White,
-                            Margin = new MarginPadding {
-                                Horizontal = textSize / 2,
-                            },
-                        },
-                        ScoreColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopRight,
-                            Origin = Anchor.TopRight,
-                            TextAnchor = Anchor.TopRight,
-                            Colour = Color4.White,
-                            Margin = new MarginPadding {
-                                Horizontal = textSize / 2,
-                            },
-                        },
-                    },
-                };
+                Child = nameAndScore;
             } else {
-                Child = new Container {
+                Child = new FillFlowContainer {
                     Width = Width,
                     AutoSizeAxes = Axes.Y,
-                    Children = new FillFlowContainer[] {
-                        new AddLeaderboardEntryContainer(this, ScoreStatistics.Score) {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.TopLeft,
-                        },
-                        NameColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.TopLeft,
-                            TextAnchor = Anchor.TopLeft,
-                            Colour = Color4.White,
-                            Margin = new MarginPadding {
-                                Horizontal = textSize / 2,
-                            },
-                        },
-                        ScoreColumn = new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.TopRight,
-                            Origin = Anchor.TopRight,
-                            TextAnchor = Anchor.TopRight,
-                            Colour = Color4.White,
-                            Margin = new MarginPadding {
-                                Horizontal = textSize / 2,
-                            },
-                        },
-                    },
+                    Children = new Drawable[] {
+                        new AddLeaderboardEntryContainer(this, ScoreStatistics.Score),
+                        nameAndScore
+                    }
                 };
             }
 
@@ -109,6 +90,7 @@ namespace S2VX.Game.Leaderboard {
             LeaderboardData?.Clear();
             NameColumn.Clear();
             ScoreColumn.Clear();
+            EntryCount = 0;
             var text = File.ReadAllText(LeaderboardPath);
             try {
                 LeaderboardData = JsonConvert.DeserializeObject<List<LeaderboardEntry>>(text);
@@ -127,9 +109,9 @@ namespace S2VX.Game.Leaderboard {
         public void AddEntry(string name, double score) {
             var entry = new LeaderboardEntry(name, Math.Round(score).ToString(CultureInfo.InvariantCulture));
             LeaderboardData.Add(entry);
+            LeaderboardData.Sort();
             File.WriteAllText(LeaderboardPath, JsonConvert.SerializeObject(LeaderboardData));
-            // Reload the leaderboard
-            LoadLeaderboard();
+            LoadLeaderboard(); // Reload the leaderboard
         }
     }
 }

@@ -62,6 +62,14 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Shows correct score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "1234");
         }
 
+        [Test]
+        public void Push_Score_ShowsLeaderboard() {
+            EndGameScreen endGameScreen = null;
+            AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen = new(new(), "HeadlessTests/SongPreviewTests/ValidStory.s2ry")));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+            AddAssert("Leaderboard exists", () => endGameScreen.LeaderboardContainer != null);
+        }
+
         private static string GetTextInTextFlowContainer(TextFlowContainer container) {
             var spriteText = container[0] as SpriteText;
             return spriteText.Text.ToString();
@@ -114,7 +122,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void OnExit_ClickBorder_GoesBackToSongSelection() {
-        PlayScreen playScreen = null;
+            PlayScreen playScreen = null;
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen = CreatePlayScreen()));
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
             EndGameScreen endGameScreen = null;

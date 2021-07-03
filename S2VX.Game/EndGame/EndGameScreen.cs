@@ -45,9 +45,9 @@ namespace S2VX.Game.EndGame {
                 ScoreGrade = new ScoreGrade(ScoreStatistics.Accuracy, ScoreStatistics.IsFullCombo),
                 LeaderboardContainer = new LeaderboardContainer(StoryDirectory, scoreStatistics: ScoreStatistics) {
                     Width = 450,
-                    Height = 650,
+                    Height = 750,
                     X = 500,
-                    Y = 250
+                    Y = 150
                 },
             };
     }
