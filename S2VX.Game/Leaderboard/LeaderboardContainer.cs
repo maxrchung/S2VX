@@ -18,6 +18,7 @@ namespace S2VX.Game.Leaderboard {
         private ScoreStatistics ScoreStatistics { get; }
 
         private List<LeaderboardEntry> LeaderboardData { get; set; }
+        private LeaderboardEntry LastAddedEntry { get; set; }
         private TextFlowContainer NameColumn { get; set; }
         private TextFlowContainer ScoreColumn { get; set; }
         public int EntryCount { get; set; }
@@ -107,8 +108,13 @@ namespace S2VX.Game.Leaderboard {
         }
 
         public void AddEntry(string name, double score) {
-            var entry = new LeaderboardEntry(name, Math.Round(score).ToString(CultureInfo.InvariantCulture));
-            LeaderboardData.Add(entry);
+            if (LastAddedEntry != null) {
+                // Remove last added entry from LeaderboardData, if there are duplicates just remove one
+                LeaderboardData.Remove(
+                    LeaderboardData.Find(entry => entry.Name == LastAddedEntry.Name && entry.Score == LastAddedEntry.Score));
+            }
+            LastAddedEntry = new LeaderboardEntry(name, score.ToString(CultureInfo.InvariantCulture));
+            LeaderboardData.Add(LastAddedEntry);
             LeaderboardData.Sort();
             File.WriteAllText(LeaderboardPath, JsonConvert.SerializeObject(LeaderboardData));
             LoadLeaderboard(); // Reload the leaderboard
