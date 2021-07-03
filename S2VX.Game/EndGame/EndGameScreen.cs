@@ -24,7 +24,7 @@ namespace S2VX.Game.EndGame {
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Escape:
-                    this.Exit();
+                    this.GetParentScreen().GetParentScreen().MakeCurrent();
                     return true;
                 default:
                     break;
