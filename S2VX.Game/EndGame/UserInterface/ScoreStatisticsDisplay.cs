@@ -5,7 +5,7 @@ using S2VX.Game.Play.Score;
 
 namespace S2VX.Game.EndGame.UserInterface {
     public class ScoreStatisticsDisplay : GridContainer {
-        public ScoreStatisticsDisplay(ScoreStatistics scoreStatistics) =>
+        public ScoreStatisticsDisplay(ScoreStatistics scoreStatistics) {
             Content = new Drawable[][] {
                 CreateRow("Score", scoreStatistics.Score),
                 CreateRow("Max Combo", scoreStatistics.MaxCombo),
@@ -16,6 +16,9 @@ namespace S2VX.Game.EndGame.UserInterface {
                 CreateRow("Accuracy", scoreStatistics.Accuracy),
                 CreateRow("Median", scoreStatistics.Median()),
             };
+            Y = 500;
+            Size = new(500);
+        }
 
         private static Drawable[] CreateRow(string key, object value) {
             var keyDisplay = new SpriteText {

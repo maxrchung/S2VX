@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
+using osuTK.Input;
 using S2VX.Game.EndGame;
 using S2VX.Game.Play;
 using S2VX.Game.SongSelection;
@@ -82,12 +83,12 @@ namespace S2VX.Game.Tests.VisualTests {
             );
 
         [Test]
-        public void OnTrackCompleted_PlayScreenTrackComplete_PushesEndGameScreen() {
+        public void OnTrackCompleted_PlayScreenTrackComplete_LeavesPlayScreen() {
             PlayScreen playScreen = null;
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen = CreatePlayScreen()));
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
-            AddAssert("Pushes end game screen", () => ScreenStack.CurrentScreen is EndGameScreen);
+            AddAssert("Leaves play screen", () => !playScreen.IsCurrentScreen());
         }
 
         [Test]
@@ -100,11 +101,11 @@ namespace S2VX.Game.Tests.VisualTests {
             )));
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
-            AddAssert("Stays on play screen", () => ScreenStack.CurrentScreen is PlayScreen);
+            AddAssert("Stays on play screen", () => playScreen.IsCurrentScreen());
         }
 
         [Test]
-        public void OnExit_SongSelectionToPlayToEndGame_GoesBackToSongSelection() {
+        public void OnExit_ClickBorder_GoesBackToSongSelection() {
             PlayScreen playScreen = null;
             AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen = CreatePlayScreen()));
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
@@ -112,7 +113,19 @@ namespace S2VX.Game.Tests.VisualTests {
             AddStep("Add end game screen", () => playScreen.Push(endGameScreen = new(new(), "")));
             AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
             AddStep("Click outer border", () => endGameScreen.Border.BorderOuter.Click());
-            AddAssert("Goes back to song selection", () => ScreenStack.CurrentScreen is SongSelectionScreen);
+            AddAssert("Goes back to song selection", () => SongSelectionScreen.IsCurrentScreen());
+        }
+
+        [Test]
+        public void OnExit_PressEscape_GoesBackToSongSelection() {
+            PlayScreen playScreen = null;
+            AddStep("Add play screen", () => SongSelectionScreen.Push(playScreen = CreatePlayScreen()));
+            AddUntilStep("Load play screen", () => playScreen.IsLoaded);
+            EndGameScreen endGameScreen = null;
+            AddStep("Add end game screen", () => playScreen.Push(endGameScreen = new(new(), "")));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+            AddStep("Press escape", () => InputManager.PressKey(Key.Escape));
+            AddAssert("Goes back to song selection", () => SongSelectionScreen.IsCurrentScreen());
         }
     }
 }
