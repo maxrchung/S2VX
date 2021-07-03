@@ -1,6 +1,8 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
+using osuTK.Input;
 using S2VX.Game.EndGame.UserInterface;
 using S2VX.Game.Play.Score;
 using S2VX.Game.SongSelection.Containers;
@@ -17,6 +19,17 @@ namespace S2VX.Game.EndGame {
         public EndGameScreen(ScoreStatistics scoreStatistics, string storyDirectory) {
             ScoreStatistics = scoreStatistics;
             StoryDirectory = storyDirectory;
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e) {
+            switch (e.Key) {
+                case Key.Escape:
+                    this.Exit();
+                    return true;
+                default:
+                    break;
+            }
+            return false;
         }
 
         [BackgroundDependencyLoader]
