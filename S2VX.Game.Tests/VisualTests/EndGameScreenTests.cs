@@ -61,6 +61,14 @@ namespace S2VX.Game.Tests.VisualTests {
             AddAssert("Shows correct score", () => GetScoreInGridContainerContent(endGameScreen.ScoreStatisticsDisplay.Content) == "1234");
         }
 
+        [Test]
+        public void Push_Score_ShowsLeaderboard() {
+            EndGameScreen endGameScreen = null;
+            AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen = new(new(), "HeadlessTests/SongPreviewTests/ValidStory.s2ry")));
+            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
+            AddAssert("Leaderboard exists", () => endGameScreen.LeaderboardContainer != null);
+        }
+
         private static string GetTextInTextFlowContainer(TextFlowContainer container) {
             var spriteText = container[0] as SpriteText;
             return spriteText.Text.ToString();
@@ -101,14 +109,6 @@ namespace S2VX.Game.Tests.VisualTests {
             AddUntilStep("Load play screen", () => playScreen.IsLoaded);
             AddStep("Complete track", () => playScreen.OnTrackCompleted());
             AddAssert("Stays on play screen", () => ScreenStack.CurrentScreen is PlayScreen);
-        }
-
-        [Test]
-        public void EndGameScreen_IncludesLeaderboard() {
-            EndGameScreen endGameScreen = null;
-            AddStep("Add end game screen", () => SongSelectionScreen.Push(endGameScreen = new(new(), "HeadlessTests/SongPreviewTests/ValidStory.s2ry")));
-            AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
-            AddAssert("Leaderboard exists", () => endGameScreen.LeaderboardContainer != null);
         }
 
         [Test]

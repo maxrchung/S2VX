@@ -11,14 +11,11 @@ namespace S2VX.Game.Leaderboard {
 
         private LeaderboardContainer LeaderboardContainer { get; }
         private double Score { get; }
-        public BasicTextBox NameInput { get; } = new() {
-            Size = new Vector2(InputWidth, InputHeight),
-            BorderColour = Color4.Red,
-            Masking = true
-        };
+        public BasicTextBox NameInput { get; private set; }
+        private IconButton SaveButton { get; set; }
 
-        private const float InputWidth = 200.0f;
-        private const float InputHeight = 100.0f;
+        private const float InputWidth = 450.0f;
+        private const float InputHeight = 80.0f;
 
         public AddLeaderboardEntryContainer(LeaderboardContainer leaderboardContainer, double score) {
             LeaderboardContainer = leaderboardContainer;
@@ -28,19 +25,26 @@ namespace S2VX.Game.Leaderboard {
         [BackgroundDependencyLoader]
         private void Load() {
             var textSize = SizeConsts.TextSize1;
+            Width = InputWidth;
+            Height = InputHeight;
             AutoSizeAxes = Axes.Both;
-            Child = new Container {
-                AutoSizeAxes = Axes.Both,
-                Children = new Drawable[] {
-                    NameInput,
-                    new IconButton {
-                        Action = () => LeaderboardContainer.AddEntry(NameInput.Text, Score),
-                        Width = InputWidth / 4,
-                        Height = InputHeight,
-                        Icon = FontAwesome.Solid.Save
-                    }
+            Children = new Drawable[] {
+                NameInput = new() {
+                    Size = new Vector2(InputWidth * 0.75f, InputHeight),
+                    BorderColour = Color4.Red,
+                    Masking = true,
+                },
+                SaveButton = new() {
+                    Action = () => {
+                        LeaderboardContainer.AddEntry(NameInput.Text, Score);
+                        Clear();
+                    },
+                    Width = InputWidth * 0.25f,
+                    Height = InputHeight,
+                    Icon = FontAwesome.Solid.Save,
                 }
             };
+            NameInput.OnCommit += (_, _) => SaveButton.Click();
         }
     }
 }
