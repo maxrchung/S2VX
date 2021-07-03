@@ -16,7 +16,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
 
         [Test]
         public void AddEntry_IncrementsEntryCountByOne() {
-            var input = "valid.json";
+            var input = "increment.json";
             ScoreStatistics scoreStatistics = new();
             var oldEntryCount = -1;
             AddStep($"Add leaderboard {input}", () => {
