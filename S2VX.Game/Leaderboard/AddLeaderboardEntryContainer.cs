@@ -11,7 +11,7 @@ namespace S2VX.Game.Leaderboard {
 
         private LeaderboardContainer LeaderboardContainer { get; }
         private double Score { get; }
-        public BasicTextBox NameInput { get; private set; }
+        private BasicTextBox NameInput { get; set; }
         private IconButton SaveButton { get; set; }
 
         private const float InputWidth = 450.0f;

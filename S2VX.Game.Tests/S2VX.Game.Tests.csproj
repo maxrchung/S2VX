@@ -35,6 +35,9 @@
     <None Update="VisualTests\LeaderboardTests\invalid.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="VisualTests\LeaderboardTests\increment.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="VisualTests\LeaderboardTests\valid.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
