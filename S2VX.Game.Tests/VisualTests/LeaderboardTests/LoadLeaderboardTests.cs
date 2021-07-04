@@ -7,7 +7,7 @@ using System.IO;
 namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
     public class LoadLeaderboardTests : S2VXTestScene {
 
-        private readonly string StoryPath = Path.Combine("VisualTests", "LeaderboardTests", "story.s2ry");
+        private readonly string StoryDirectory = Path.Combine("VisualTests", "LeaderboardTests");
         private LeaderboardContainer Leaderboard { get; set; }
 
         [SetUpSteps]
@@ -17,7 +17,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         public void NoStoryboardFile_HasZeroEntries() {
             var input = "doesNotExist.json";
             AddStep($"Add leaderboard {input}", () => {
-                Leaderboard = new LeaderboardContainer(StoryPath, input) {
+                Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
                     Width = 540,
                     Height = 360,
                     Anchor = Anchor.TopCentre,
@@ -32,7 +32,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         public void InvalidStoryboardFile_HasMinusOneEntries() {
             var input = "invalid.json";
             AddStep($"Add leaderboard {input}", () => {
-                Leaderboard = new LeaderboardContainer(StoryPath, input) {
+                Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
                     Width = 540,
                     Height = 360,
                     Anchor = Anchor.TopCentre,
@@ -47,7 +47,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         public void ValidStoryboardFile_HasThreeEntries() {
             var input = "valid.json";
             AddStep($"Add leaderboard {input}", () => {
-                Leaderboard = new LeaderboardContainer(StoryPath, input) {
+                Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
                     Width = 540,
                     Height = 360,
                     Anchor = Anchor.TopCentre,
