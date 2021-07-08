@@ -17,7 +17,7 @@ namespace S2VX.Game.Leaderboard {
         public string LeaderboardPath { get; }
         private ScoreStatistics ScoreStatistics { get; }
 
-        private List<LeaderboardEntry> LeaderboardData { get; set; }
+        public List<LeaderboardEntry> LeaderboardData { get; private set; }
         private LeaderboardEntry LastAddedEntry { get; set; }
         private TextFlowContainer NameColumn { get; set; }
         private TextFlowContainer ScoreColumn { get; set; }
@@ -113,7 +113,8 @@ namespace S2VX.Game.Leaderboard {
                 LeaderboardData.Remove(
                     LeaderboardData.Find(entry => entry.Name == LastAddedEntry.Name && entry.Score == LastAddedEntry.Score));
             }
-            LastAddedEntry = new LeaderboardEntry(name, score.ToString(CultureInfo.InvariantCulture));
+            // Make sure we round the score so that a floating point score doesn't overlap the name
+            LastAddedEntry = new LeaderboardEntry(name, Math.Round(score).ToString(CultureInfo.InvariantCulture));
             LeaderboardData.Add(LastAddedEntry);
             LeaderboardData.Sort();
             File.WriteAllText(LeaderboardPath, JsonConvert.SerializeObject(LeaderboardData));
