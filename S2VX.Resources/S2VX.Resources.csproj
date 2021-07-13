@@ -20,10 +20,12 @@
     <EmbeddedResource Include="Tracks\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Menees.Analyzers" Version="3.0.2">
+    <PackageReference Include="Menees.Analyzers" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.521.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
   </ItemGroup>
 </Project>

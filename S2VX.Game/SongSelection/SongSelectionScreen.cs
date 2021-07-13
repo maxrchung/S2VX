@@ -27,6 +27,7 @@ namespace S2VX.Game.SongSelection {
 
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
+        private SongPreview SongPreview { get; set; }
 
         private List<Drawable> CreateSelectionItems() {
             var selectionItems = new List<Drawable>();
@@ -63,6 +64,8 @@ namespace S2VX.Game.SongSelection {
             return true;
         }
 
+        public override void OnResuming(IScreen last) => SongPreview?.LeaderboardContainer?.LoadLeaderboard();
+
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
                 case Key.Escape:
@@ -90,7 +93,7 @@ namespace S2VX.Game.SongSelection {
 
             if (DirectoryContainsDirectories("")) {
                 InternalChildren = new Drawable[] {
-                    new Border(CurSelectionPath) {
+                    new Border(CurSelectionPath, () => this.Exit()) {
                         Width = fullWidth,
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
@@ -117,7 +120,7 @@ namespace S2VX.Game.SongSelection {
                 if (!directoryContainsStory) {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
-                        new Border(CurSelectionPath) {
+                        new Border(CurSelectionPath, () => this.Exit()) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
@@ -126,12 +129,12 @@ namespace S2VX.Game.SongSelection {
                     };
                 } else {
                     InternalChildren = new Drawable[] {
-                        new Border(CurSelectionPath) {
+                        new Border(CurSelectionPath, () => this.Exit()) {
                             Width = fullWidth,
                             Height = fullHeight,
                             InnerBoxRelativeSize = innerSize,
                         },
-                        new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
+                        SongPreview = new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
                             Width = fullWidth * innerSize,
                             Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,

@@ -21,7 +21,7 @@ namespace S2VX.Game.Editor.CommandPanel {
 
         public static Vector2 InputSize { get; } = new Vector2(106, 30);
         public static float InputBarHeight { get; } = 70;
-        private static Vector2 PanelSize { get; } = new Vector2(727, 727);
+        private static Vector2 PanelSize { get; } = new Vector2(727, 1000);
         public CommandPanelInputBar AddInputBar { get; private set; }
         private CommandPanelInputBar EditInputBar { get; set; }
         private S2VXCommand EditCommandReference { get; set; }
@@ -56,6 +56,7 @@ namespace S2VX.Game.Editor.CommandPanel {
                     }
                 }
             }
+            CommandsList.Add(new Container { Height = 1000 });
         }
 
         private void AddEditBarToCommandsList() {

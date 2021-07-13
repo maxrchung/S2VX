@@ -4,13 +4,21 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
 using S2VX.Game.SongSelection.UserInterface;
+using System;
 
 namespace S2VX.Game.SongSelection.Containers {
     public class Border : CompositeDrawable {
         public string CurSelectionPath { get; set; }
         public float InnerBoxRelativeSize { get; set; } = 0.9f;
+        private Action OnExit { get; }
+        public BorderOuterBox BorderOuter { get; private set; }
+        public TextFlowContainer TxtPath { get; private set; }
+        public BorderInnerBox BorderInner { get; private set; }
 
-        public Border(string curSelectionPath) => CurSelectionPath = curSelectionPath;
+        public Border(string curSelectionPath, Action onExit) {
+            CurSelectionPath = curSelectionPath;
+            OnExit = onExit;
+        }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -24,10 +32,8 @@ namespace S2VX.Game.SongSelection.Containers {
             Height = fullHeight;
 
             InternalChildren = new Drawable[] {
-                // BorderOuterBox
-                new BorderOuterBox { },
-                // TextContainer
-                new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
+                BorderOuter = new BorderOuterBox(OnExit),
+                TxtPath = new TextFlowContainer(s => s.Font = new FontUsage("default", titleSize)) {
                     Width = fullWidth,
                     Height = borderSize,
                     Margin = new MarginPadding {
@@ -38,14 +44,7 @@ namespace S2VX.Game.SongSelection.Containers {
                     Colour = Color4.Black,
                     // TODO: truncate text if it's too long
                 },
-                // BorderInnerBox
-                new BorderInnerBox {
-                    Colour = Color4.Black,
-                    Width = InnerBoxRelativeSize,
-                    Height = InnerBoxRelativeSize,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                },
+                BorderInner = new BorderInnerBox(),
             };
         }
 

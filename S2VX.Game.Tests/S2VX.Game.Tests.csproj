@@ -19,19 +19,31 @@
     <AssemblyName>S2VX.Game.Tests</AssemblyName>
   </PropertyGroup>
   <ItemGroup Label="Project References">
+    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
     <ProjectReference Include="..\S2VX.Game\S2VX.Game.csproj" />
   </ItemGroup>
   <ItemGroup Label="Package References">
-    <PackageReference Include="Menees.Analyzers" Version="3.0.2">
+    <PackageReference Include="Menees.Analyzers" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="ppy.osu.Framework" Version="2021.521.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="VisualTests\LeaderboardTests\empty.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LeaderboardTests\invalid.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LeaderboardTests\increment.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VisualTests\LeaderboardTests\valid.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="VisualTests\EditorScreenTests\ValidStory.s2ry">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

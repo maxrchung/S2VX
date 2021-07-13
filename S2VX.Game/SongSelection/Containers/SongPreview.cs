@@ -9,6 +9,7 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor;
+using S2VX.Game.Leaderboard;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Settings;
@@ -33,6 +34,7 @@ namespace S2VX.Game.SongSelection.Containers {
         private string AudioPath { get; set; }
         private Texture ThumbnailTexture { get; set; }
         private TextFlowContainer TextContainer { get; set; }
+        public LeaderboardContainer LeaderboardContainer { get; private set; }
 
         public SongPreview(
             string storyDirectory,
@@ -62,9 +64,11 @@ namespace S2VX.Game.SongSelection.Containers {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var width = S2VXGameBase.GameWidth;
-            var songInfoHeight = width * 0.6f;
-            var btnHeight = width * 0.4f;
+            var width = Width;
+            var songInfoHeight = width * 0.4f;
+            var leaderboardWidth = width * 0.6f;
+            var leaderboardHeight = width * 0.4f;
+            var btnHeight = width * 0.2f;
             var spacingMargin = 0.05f;
             var textSize = SizeConsts.TextSize1;
             var thumbnailSize = width * 0.3f;
@@ -89,7 +93,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 Action = LoadPlay
             };
 
-            InternalChildren = new[] {
+            InternalChildren = new Drawable[] {
                 // TODO: add blurred background
                 new FillFlowContainer {
                     Width = width,
@@ -119,10 +123,17 @@ namespace S2VX.Game.SongSelection.Containers {
                         },
                     }
                 },
+                LeaderboardContainer = new LeaderboardContainer(StoryDirectory) {
+                    Width = leaderboardWidth,
+                    Height = leaderboardHeight,
+                    Y = songInfoHeight,
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                },
                 new FillFlowContainer {
                     Width = width,
                     Height = btnHeight,
-                    Y = songInfoHeight,
+                    Y = songInfoHeight + leaderboardHeight,
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     Direction = FillDirection.Horizontal,

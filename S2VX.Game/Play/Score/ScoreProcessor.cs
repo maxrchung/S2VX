@@ -7,7 +7,7 @@ using S2VX.Game.Story;
 using System;
 using System.Globalization;
 
-namespace S2VX.Game.Play.UserInterface {
+namespace S2VX.Game.Play.Score {
     /// <summary>
     /// Handles the scoring of game notes and game hold notes - changes cursor
     /// color, plays hit sounds, and updates score amount
@@ -19,10 +19,7 @@ namespace S2VX.Game.Play.UserInterface {
         [Resolved]
         private S2VXCursor Cursor { get; set; }
 
-        // Score should be a double type because during a drag, score may add
-        // very small values that are between 0 and 1. If we int cast or round
-        // this drag value, we'll always get 0.
-        public double Score { get; private set; }
+        public ScoreStatistics ScoreStatistics { get; private set; } = new();
         private TextFlowContainer TxtScore { get; set; }
         public S2VXSample Hit { get; private set; }
         public S2VXSample Miss { get; private set; }
@@ -40,19 +37,33 @@ namespace S2VX.Game.Play.UserInterface {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     TextAnchor = Anchor.CentreRight,
-                    Text = Score.ToString(CultureInfo.InvariantCulture)
+                    Text = ScoreStatistics.Score.ToString(CultureInfo.InvariantCulture)
                 }
             };
         }
 
-        public void AddScore(double moreScore) {
-            Score += moreScore;
-            TxtScore.Text = $"{Math.Round(Score)}";
+        private void AddScore(double moreScore) {
+            ScoreStatistics.Score += moreScore;
+            ScoreStatistics.Scores.Add(moreScore);
+            TxtScore.Text = $"{Math.Round(ScoreStatistics.Score)}";
+        }
+
+        private void AddCombo() {
+            if (++ScoreStatistics.Combo > ScoreStatistics.MaxCombo) {
+                ScoreStatistics.MaxCombo = ScoreStatistics.Combo;
+            }
+        }
+
+        private void UpdateMiss() {
+            Cursor.UpdateColor(Story.Notes.MissColor);
+            Miss.Play();
+            ++ScoreStatistics.MissCount;
+            ScoreStatistics.Combo = 0;
         }
 
         public void Reset() {
-            Score = 0;
-            TxtScore.Text = $"{Math.Round(Score)}";
+            ScoreStatistics = new();
+            TxtScore.Text = $"{Math.Round(ScoreStatistics.Score)}";
             Hit.Reset();
             Miss.Reset();
         }
@@ -67,28 +78,32 @@ namespace S2VX.Game.Play.UserInterface {
 
             } else if (relativeTime < -notes.HitThreshold) { // Early miss
                 AddScore(score);
-                Cursor.UpdateColor(notes.MissColor);
-                Miss.Play();
+                UpdateMiss();
 
             } else if (relativeTime < -notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(notes.EarlyColor);
                 Hit.Play();
+                ++ScoreStatistics.EarlyCount;
+                AddCombo();
 
             } else if (relativeTime < notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(notes.PerfectColor);
                 Hit.Play();
+                ++ScoreStatistics.PerfectCount;
+                AddCombo();
 
             } else if (relativeTime < notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(notes.LateColor);
                 Hit.Play();
+                ++ScoreStatistics.LateCount;
+                AddCombo();
 
             } else { // Late miss and beyond
                 AddScore(notes.MissThreshold);
-                Cursor.UpdateColor(notes.MissColor);
-                Miss.Play();
+                UpdateMiss();
             }
 
             return score;
@@ -110,8 +125,7 @@ namespace S2VX.Game.Play.UserInterface {
                     AddScore(score);
                     Cursor.UpdateColor(notes.LateColor);
                 } else {
-                    Cursor.UpdateColor(notes.MissColor);
-                    Miss.Play();
+                    UpdateMiss();
                 }
 
             } else { // After hold
@@ -120,8 +134,7 @@ namespace S2VX.Game.Play.UserInterface {
                 } else {
                     score = noteEndTime - lastReleaseTime;
                     AddScore(score);
-                    Cursor.UpdateColor(notes.MissColor);
-                    Miss.Play();
+                    UpdateMiss();
                 }
             }
 
