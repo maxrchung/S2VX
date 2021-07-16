@@ -14,7 +14,6 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         [Cached]
         private S2VXStory Story { get; } = new();
 
-        private Notes Notes { get; set; }
         private ScoreProcessor Processor { get; } = new();
 
         [BackgroundDependencyLoader]
@@ -22,7 +21,6 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
 
         [SetUpSteps]
         public void SetUpSteps() {
-            Notes = Story.Notes;
             AddStep("Reset cursor", () => Cursor.Reset());
             AddStep("Reset score processor", () => Processor.Reset());
         }

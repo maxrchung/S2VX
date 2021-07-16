@@ -97,11 +97,11 @@ namespace S2VX.Game.Story.Note {
             if (time < HitTime - notes.ShowTime - notes.FadeInTime) {
                 State = HoldNoteState.NotVisible;
 
-            } else if (time >= HitTime - notes.MissThreshold && time <= HitTime) {
+            } else if (time >= HitTime - Notes.MissThreshold && time <= HitTime) {
                 // HitWindow comes first in logic since it may overshadow VisibleBefore
                 State = HoldNoteState.HitWindow;
 
-            } else if (time < HitTime - notes.MissThreshold) {
+            } else if (time < HitTime - Notes.MissThreshold) {
                 State = HoldNoteState.VisibleBefore;
             } else if (time < EndTime) {
                 State = HoldNoteState.During;
@@ -176,11 +176,10 @@ namespace S2VX.Game.Story.Note {
 
         private void ProcessTimedScore() {
             var time = Time.Current;
-            var notes = Story.Notes;
             switch (State) {
                 case HoldNoteState.During:
                     // Explicitly handles a miss if a player fails to press the hit note
-                    var missTime = HitTime + notes.MissThreshold;
+                    var missTime = HitTime + Notes.MissThreshold;
                     if (!IsHitScored && time > missTime) {
                         IsHitScored = true;
                         TotalScore += ScoreProcessor.ProcessHit(missTime, HitTime);
