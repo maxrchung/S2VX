@@ -68,6 +68,7 @@ namespace S2VX.Game.Play.Score {
             Miss.Reset();
         }
 
+        //public double ProcessHit(double scoreTime, double noteHitTime, Vector2 notePos) {
         public double ProcessHit(double scoreTime, double noteHitTime) {
             var notes = Story.Notes;
             var relativeTime = scoreTime - noteHitTime;
