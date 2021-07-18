@@ -11,6 +11,7 @@ using S2VX.Game.EndGame;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
+using System;
 using System.IO;
 
 namespace S2VX.Game.Play {
@@ -28,6 +29,7 @@ namespace S2VX.Game.Play {
         public HitErrorBar HitErrorBar { get; private set; }
         public Bindable<bool> ConfigHitErrorBarVisibility { get; set; } = new();
         public Bindable<bool> ConfigScoreVisibility { get; set; } = new();
+        public GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
 
         public PlayScreen(bool isUsingEditorSettings, S2VXStory story, DrawableTrack track) {
             IsUsingEditorSettings = isUsingEditorSettings;
@@ -77,6 +79,7 @@ namespace S2VX.Game.Play {
                 Track,
                 HitErrorBar,
                 ScoreProcessor,
+                VolumeDisplay
             };
 
             Track.Start();
@@ -105,6 +108,24 @@ namespace S2VX.Game.Play {
                     return true;
             }
             return false;
+        }
+
+        protected override bool OnScroll(ScrollEvent e) {
+            Console.WriteLine("Ooga");
+            if (e.ScrollDelta.Y > 0) {
+                Console.WriteLine("Booga");
+                VolumeDisplay.VolumeIncrease();
+            } else {
+                VolumeDisplay.VolumeDecrease();
+            }
+            return false;
+            //if (e.ScrollDelta.Y > 0) {
+            //    VolumeDisplay.VolumeIncrease();
+            //} else {
+            //    VolumeDisplay.VolumeDecrease();
+            //}
+            //VolumeDisplay.UpdateDisplay();
+            //return false;
         }
 
         public override bool OnExiting(IScreen next) {
