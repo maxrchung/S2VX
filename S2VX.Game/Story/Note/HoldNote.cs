@@ -8,6 +8,7 @@ using System.Linq;
 namespace S2VX.Game.Story.Note {
     public abstract class HoldNote : S2VXNote {
         public double EndTime { get; set; }
+        public List<Vector2> MidCoordinates { get; } = new();
         public Vector2 EndCoordinates { get; set; }
         protected HoldApproach HoldApproach { get; set; }
         public override Approach Approach {
@@ -19,11 +20,52 @@ namespace S2VX.Game.Story.Note {
             }
         }
 
+        // Total distance of the hold note
+        // Calculating this once on initialization will optimize position calculations during update
+        private float TotalDistance { get; set; }
+        private void CalculateTotalDistance() {
+            var allCoordinates = MidCoordinates.Append(EndCoordinates);
+            var startCoordinate = Coordinates;
+            foreach (var endCoordinate in allCoordinates) {
+                var distance = (endCoordinate - startCoordinate).Length;
+                TotalDistance += distance;
+                startCoordinate = endCoordinate;
+            }
+        }
+
+        private Vector2 CalculateCurrentPosition(double time) {
+            // Find distance based on given time
+            var offsetFraction = S2VXUtils.ClampedInterpolation(time, 0, 1, HitTime, EndTime);
+            var offsetDistance = (float)offsetFraction * TotalDistance;
+
+            // Calculate offset position
+            var allCoordinates = MidCoordinates.Append(EndCoordinates);
+            var startCoordinate = Coordinates;
+            var totalDistance = 0f;
+            foreach (var endCoordinate in allCoordinates) {
+                var distance = (endCoordinate - startCoordinate).Length;
+
+                // If our position is within the current coordinate
+                if (totalDistance + distance > offsetDistance) {
+                    var remainingDistance = offsetDistance - totalDistance;
+                    var offsetCoordinates = S2VXUtils.ClampedInterpolation(remainingDistance, startCoordinate, endCoordinate, 0, distance);
+                    return offsetCoordinates;
+                } else {
+                    totalDistance += distance;
+                    startCoordinate = endCoordinate;
+                }
+            }
+            return EndCoordinates;
+        }
+
         [Resolved]
         private S2VXStory Story { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load() => AddInternal(SliderPath);
+        private void Load() {
+            CalculateTotalDistance();
+            AddInternal(SliderPath);
+        }
 
         public Path SliderPath { get; set; } = new() {
             // Show slider path behind note
@@ -45,7 +87,7 @@ namespace S2VX.Game.Story.Note {
             BoxOuter.Size = Vector2.One - cameraFactor * new Vector2(Story.Grid.Thickness);
             BoxInner.Size = BoxOuter.Size - 2 * cameraFactor * new Vector2(OutlineThickness);
 
-            var currCoordinates = S2VXUtils.ClampedInterpolation(Time.Current, Coordinates, EndCoordinates, HitTime, EndTime);
+            var currCoordinates = CalculateCurrentPosition(Time.Current);
             Position = S2VXUtils.Rotate(currCoordinates - camera.Position, Rotation) * Size.X;
         }
 
