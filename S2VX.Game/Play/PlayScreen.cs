@@ -11,7 +11,6 @@ using S2VX.Game.EndGame;
 using S2VX.Game.Play.Containers;
 using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
-using System;
 using System.IO;
 
 namespace S2VX.Game.Play {
@@ -29,7 +28,9 @@ namespace S2VX.Game.Play {
         public HitErrorBar HitErrorBar { get; private set; }
         public Bindable<bool> ConfigHitErrorBarVisibility { get; set; } = new();
         public Bindable<bool> ConfigScoreVisibility { get; set; } = new();
-        public GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
+
+        [Resolved]
+        private GlobalVolumeDisplay VolumeDisplay { get; set; }
 
         public PlayScreen(bool isUsingEditorSettings, S2VXStory story, DrawableTrack track) {
             IsUsingEditorSettings = isUsingEditorSettings;
@@ -78,8 +79,7 @@ namespace S2VX.Game.Play {
                 },
                 Track,
                 HitErrorBar,
-                ScoreProcessor,
-                VolumeDisplay
+                ScoreProcessor
             };
 
             Track.Start();
