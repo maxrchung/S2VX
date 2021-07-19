@@ -111,21 +111,13 @@ namespace S2VX.Game.Play {
         }
 
         protected override bool OnScroll(ScrollEvent e) {
-            Console.WriteLine("Ooga");
             if (e.ScrollDelta.Y > 0) {
-                Console.WriteLine("Booga");
                 VolumeDisplay.VolumeIncrease();
             } else {
                 VolumeDisplay.VolumeDecrease();
             }
+            VolumeDisplay.UpdateDisplay();
             return false;
-            //if (e.ScrollDelta.Y > 0) {
-            //    VolumeDisplay.VolumeIncrease();
-            //} else {
-            //    VolumeDisplay.VolumeDecrease();
-            //}
-            //VolumeDisplay.UpdateDisplay();
-            //return false;
         }
 
         public override bool OnExiting(IScreen next) {
