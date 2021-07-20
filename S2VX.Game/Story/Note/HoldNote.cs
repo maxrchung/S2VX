@@ -8,7 +8,10 @@ using System.Linq;
 namespace S2VX.Game.Story.Note {
     public abstract class HoldNote : S2VXNote {
         public double EndTime { get; set; }
-        public List<Vector2> MidCoordinates { get; } = new();
+        public List<Vector2> MidCoordinates { get; } = new() {
+            new Vector2(2, -2),
+            new Vector2(3, -1)
+        };
         public Vector2 EndCoordinates { get; set; }
         protected HoldApproach HoldApproach { get; set; }
         public override Approach Approach {
@@ -104,12 +107,12 @@ namespace S2VX.Game.Story.Note {
 
         private void UpdateVertices() {
             var vertices = Time.Current < HitTime
-                ? SnakeInVertices()
-                : SnakeOutVertices();
+                ? SnakeOutVertices()
+                : SnakeInVertices();
             SliderPath.Vertices = vertices;
         }
 
-        private List<Vector2> SnakeInVertices() {
+        private List<Vector2> SnakeOutVertices() {
             var vertices = new List<Vector2>();
             var startTime = HitTime - (EndTime - HitTime);
             var endFraction = S2VXUtils.ClampedInterpolation(Time.Current, 0, 1, startTime, HitTime);
@@ -138,11 +141,13 @@ namespace S2VX.Game.Story.Note {
             return vertices;
         }
 
-        private List<Vector2> SnakeOutVertices() {
+        private List<Vector2> SnakeInVertices() {
             var vertices = new List<Vector2>();
             var startFraction = S2VXUtils.ClampedInterpolation(Time.Current, 0, 1, HitTime, EndTime);
             var startDistance = (float)startFraction * TotalDistance;
             var noteWidth = Story.Camera.Scale.X * S2VXGameBase.GameWidth;
+
+            vertices.Add(Vector2.Zero);
 
             var startCoordinates = Coordinates;
             var totalDistance = 0f;
@@ -155,7 +160,7 @@ namespace S2VX.Game.Story.Note {
                     if (totalDistance + distance > startDistance) {
                         var remainingDistance = startDistance - totalDistance;
                         offsetCoordinates = S2VXUtils.ClampedInterpolation(remainingDistance, startCoordinates, coordinates, 0, distance);
-                        vertices.Add(Vector2.Zero);
+                        vertices.Add((coordinates - offsetCoordinates) * noteWidth);
                         hasFoundStart = true;
                     }
                 } else {
@@ -166,7 +171,6 @@ namespace S2VX.Game.Story.Note {
                 startCoordinates = coordinates;
             }
 
-            vertices.Add((EndCoordinates - offsetCoordinates) * noteWidth);
             return vertices;
         }
     }
