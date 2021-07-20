@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Lines;
 using osuTK;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,18 +42,18 @@ namespace S2VX.Game.Story.Note {
         [Resolved]
         private S2VXStory Story { get; set; }
 
+        public SliderPath SliderPath { get; set; } = new() {
+            // Show slider path behind note
+            Depth = 100,
+            Anchor = Anchor.Centre
+        };
+
         [BackgroundDependencyLoader]
         private void Load() {
             InitAllCoordinates();
             InitTotalDistance();
             AddInternal(SliderPath);
         }
-
-        public Path SliderPath { get; set; } = new() {
-            // Show slider path behind note
-            Depth = 100,
-            Anchor = Anchor.Centre
-        };
 
         protected override void UpdatePosition() {
             UpdateIndicator();
@@ -98,9 +97,9 @@ namespace S2VX.Game.Story.Note {
         private void UpdateSliderPath() {
             UpdateVertices();
 
-            var noteWidth = Story.Camera.Scale.X * S2VXGameBase.GameWidth;
-            SliderPath.PathRadius = noteWidth / 2;
-            SliderPath.Colour = Story.Notes.HoldNoteOutlineColor;
+            SliderPath.PathRadius = Story.Camera.Scale.X * S2VXGameBase.GameWidth / 2;
+            SliderPath.OutlineThickness = OutlineThickness / Story.Camera.Scale.X * 2;
+            SliderPath.OutlineColor = Story.Notes.HoldNoteOutlineColor;
             // https://github.com/ppy/osu/blob/86cf42d6107246842a30d9802a4a4fc1c09720c7/osu.Game.Rulesets.Osu/Skinning/Default/SnakingSliderBody.cs#L149
             SliderPath.Position = -SliderPath.PositionInBoundingBox(Vector2.Zero);
         }
