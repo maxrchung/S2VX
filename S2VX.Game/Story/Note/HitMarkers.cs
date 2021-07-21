@@ -8,20 +8,17 @@ using System.Collections.Generic;
 namespace S2VX.Game.Story.Note {
     public class HitMarkers : CompositeDrawable {
 
-        //public List<HitMarker> Children { get; private set; } = new();
+        [BackgroundDependencyLoader]
+        private void Load() => RelativeSizeAxes = Axes.Both;
 
-        protected override void Update() {
-            var markersToRemove = new List<HitMarker>();
-
-            foreach (HitMarker marker in InternalChildren) {
-                if (marker.UpdateMarker()) {
-                    markersToRemove.Add(marker);
+        // Exposure for use with tests only
+        public List<HitMarker> Markers {
+            get {
+                List<HitMarker> list = new();
+                foreach (HitMarker marker in InternalChildren) {
+                    list.Add(marker);
                 }
-            }
-
-            foreach (var marker in markersToRemove) {
-                //Children.Remove(marker);
-                RemoveInternal(marker);
+                return list;
             }
         }
 
@@ -33,7 +30,20 @@ namespace S2VX.Game.Story.Note {
                 MarkerAlpha = alpha
             });
 
-        [BackgroundDependencyLoader]
-        private void Load() => RelativeSizeAxes = Axes.Both;
+        protected override void Update() {
+            var markersToRemove = new List<HitMarker>();
+
+            foreach (HitMarker marker in InternalChildren) {
+                if (marker.UpdateMarker()) {
+                    markersToRemove.Add(marker);
+                }
+            }
+
+            foreach (var marker in markersToRemove) {
+                RemoveInternal(marker);
+            }
+        }
+
+        public void Reset() => ClearInternal();
     }
 }
