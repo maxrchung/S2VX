@@ -67,7 +67,8 @@ namespace S2VX.Game.Story.Note {
                 float maxX = 0;
                 float maxY = 0;
 
-                foreach (var v in Vertices) {
+                for (var i = 0; i < Vertices.Count - 1; ++i) {
+                    var v = Vertices[i];
                     minX = Math.Min(minX, v.X - PathRadius);
                     minY = Math.Min(minY, v.Y - PathRadius);
                     maxX = Math.Max(maxX, v.X + PathRadius);
