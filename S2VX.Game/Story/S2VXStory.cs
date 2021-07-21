@@ -28,6 +28,7 @@ namespace S2VX.Game.Story {
         public Grid Grid { get; } = new();
         public Notes Notes { get; } = new();
         public Approaches Approaches { get; } = new();
+        public HitMarkers HitMarkers { get; } = new();
 
         public IEnumerable<S2VXCommand> DefaultCommands { get; } = S2VXCommand.GetDefaultCommands();
         public List<S2VXCommand> Commands { get; private set; } = new();
@@ -61,7 +62,8 @@ namespace S2VX.Game.Story {
                 Background,
                 Grid,
                 Notes,
-                Approaches
+                Approaches,
+                HitMarkers
             };
         }
 

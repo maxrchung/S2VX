@@ -3,6 +3,7 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osuTK;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
 using System;
@@ -55,8 +56,9 @@ namespace S2VX.Game.Play.Score {
             }
         }
 
-        private void UpdateMiss() {
+        private void UpdateMiss(double time, Vector2 notePos) {
             Cursor.UpdateColor(Notes.MissColor);
+            Story.HitMarkers.AddMarker(notePos, Notes.MissColor, time);
             Miss.Play();
             ++ScoreStatistics.MissCount;
             ScoreStatistics.Combo = 0;
@@ -69,8 +71,12 @@ namespace S2VX.Game.Play.Score {
             Miss.Reset();
         }
 
-        //public double ProcessHit(double scoreTime, double noteHitTime, Vector2 notePos) {
-        public double ProcessHit(double scoreTime, double noteHitTime) {
+        // Used for testing purposes only since Vector2 cannot have a default argument
+        public double ProcessHit(double scoreTime, double noteHitTime) => ProcessHit(scoreTime, noteHitTime, Vector2.Zero);
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) =>
+            ProcessHold(scoreTime, lastReleaseTime, isPress, noteHitTime, noteEndTime, Vector2.Zero);
+
+        public double ProcessHit(double scoreTime, double noteHitTime, Vector2 notePos) {
             var relativeTime = scoreTime - noteHitTime;
             var score = Math.Abs(scoreTime - noteHitTime);
 
@@ -79,11 +85,12 @@ namespace S2VX.Game.Play.Score {
 
             } else if (relativeTime < -Notes.HitThreshold) { // Early miss
                 AddScore(score);
-                UpdateMiss();
+                UpdateMiss(noteHitTime, notePos);
 
             } else if (relativeTime < -Notes.PerfectThreshold) { // Early
                 AddScore(score);
                 Cursor.UpdateColor(Notes.EarlyColor);
+                Story.HitMarkers.AddMarker(notePos, Notes.EarlyColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.EarlyCount;
                 AddCombo();
@@ -91,6 +98,7 @@ namespace S2VX.Game.Play.Score {
             } else if (relativeTime < Notes.PerfectThreshold) { // Perfect
                 AddScore(score);
                 Cursor.UpdateColor(Notes.PerfectColor);
+                Story.HitMarkers.AddMarker(notePos, Notes.PerfectColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.PerfectCount;
                 AddCombo();
@@ -98,19 +106,20 @@ namespace S2VX.Game.Play.Score {
             } else if (relativeTime < Notes.HitThreshold) { // Late
                 AddScore(score);
                 Cursor.UpdateColor(Notes.LateColor);
+                Story.HitMarkers.AddMarker(notePos, Notes.LateColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.LateCount;
                 AddCombo();
 
             } else { // Late miss and beyond
                 AddScore(Notes.MissThreshold);
-                UpdateMiss();
+                UpdateMiss(noteHitTime, notePos);
             }
 
             return score;
         }
 
-        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime, Vector2 notePos) {
             var score = 0.0;
 
             if (scoreTime < noteHitTime) { // Before hold
@@ -124,8 +133,9 @@ namespace S2VX.Game.Play.Score {
                     // Only update score on press
                     AddScore(score);
                     Cursor.UpdateColor(Notes.LateColor);
+                    Story.HitMarkers.AddMarker(notePos, Notes.LateColor, lastReleaseTime);
                 } else {
-                    UpdateMiss();
+                    UpdateMiss(lastReleaseTime, notePos);
                 }
 
             } else { // After hold
@@ -134,7 +144,7 @@ namespace S2VX.Game.Play.Score {
                 } else {
                     score = noteEndTime - lastReleaseTime;
                     AddScore(score);
-                    UpdateMiss();
+                    UpdateMiss(lastReleaseTime, notePos);
                 }
             }
 

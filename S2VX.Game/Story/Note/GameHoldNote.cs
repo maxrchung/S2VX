@@ -146,15 +146,15 @@ namespace S2VX.Game.Story.Note {
                 case HoldNoteState.HitWindow:
                     if (!IsHitScored) {
                         IsHitScored = true;
-                        TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
+                        TotalScore += ScoreProcessor.ProcessHit(time, HitTime, Coordinates);
                     }
                     break;
                 case HoldNoteState.During:
                     if (!IsHitScored) {
                         IsHitScored = true;
-                        TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
+                        TotalScore += ScoreProcessor.ProcessHit(time, HitTime, Coordinates);
                     } else {
-                        TotalScore += ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, true, HitTime, EndTime);
+                        TotalScore += ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, true, HitTime, EndTime, Coordinates);
                     }
                     break;
                 default: // Should never get here
@@ -167,7 +167,7 @@ namespace S2VX.Game.Story.Note {
             switch (State) {
                 case HoldNoteState.During:
                     // No need to update TotalTime here since this does not increase score
-                    ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, HitTime, EndTime);
+                    ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, HitTime, EndTime, Coordinates);
                     break;
                 default: // Should never get here
                     break;
@@ -182,7 +182,7 @@ namespace S2VX.Game.Story.Note {
                     var missTime = HitTime + Notes.MissThreshold;
                     if (!IsHitScored && time > missTime) {
                         IsHitScored = true;
-                        TotalScore += ScoreProcessor.ProcessHit(missTime, HitTime);
+                        TotalScore += ScoreProcessor.ProcessHit(missTime, HitTime, Coordinates);
                         LastHoldReferenceTime = missTime;
                     }
                     break;
@@ -192,10 +192,10 @@ namespace S2VX.Game.Story.Note {
                         switch (LastAction) {
                             case Action.None: // There was never any action, entire hold note was missed
                             case Action.Release: // Early release
-                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime);
+                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime, Coordinates);
                                 break;
                             case Action.Press: // There was no early release, no scoring is needed
-                                ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime);
+                                ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime, Coordinates);
                                 break;
                         }
                     }

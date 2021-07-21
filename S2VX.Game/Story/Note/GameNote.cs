@@ -25,7 +25,7 @@ namespace S2VX.Game.Story.Note {
                 throw new InvalidOperationException("Flagged for removal twice. Fix immediately.");
             }
             PlayScreen.HitErrorBar.RecordHitError(TimingError);
-            ScoreProcessor.ProcessHit(Time.Current, HitTime);
+            ScoreProcessor.ProcessHit(Time.Current, HitTime, Coordinates);
             IsFlaggedForRemoval = true;
         }
 
