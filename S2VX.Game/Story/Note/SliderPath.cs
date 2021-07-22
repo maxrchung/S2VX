@@ -45,7 +45,6 @@ namespace S2VX.Game.Story.Note {
                 ? OutlineColor
                 : Color4.Transparent;
 
-
         private readonly BufferedDrawNodeSharedData SharedData = new(new[] { RenderbufferInternalFormat.DepthComponent16 });
         protected override DrawNode CreateDrawNode() => new BufferedDrawNode(this, new SliderPathDrawNode(this), SharedData);
 
@@ -67,7 +66,7 @@ namespace S2VX.Game.Story.Note {
                 float maxX = 0;
                 float maxY = 0;
 
-                for (var i = 0; i < Vertices.Count - 1; ++i) {
+                for (int i = 0; i < Vertices.Count; ++i) {
                     var v = Vertices[i];
                     minX = Math.Min(minX, v.X - PathRadius);
                     minY = Math.Min(minY, v.Y - PathRadius);
