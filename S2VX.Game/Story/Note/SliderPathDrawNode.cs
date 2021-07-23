@@ -37,7 +37,7 @@ namespace S2VX.Game.Story.Note
             // We multiply the size param by 3 such that the amount of vertices is a multiple of the amount of vertices
             // per primitive (triangles in this case). Otherwise overflowing the batch will result in wrong
             // grouping of vertices into primitives.
-            private readonly LinearBatch<TexturedVertex3D> linearBatch = new LinearBatch<TexturedVertex3D>(MAX_RES * 100 * 3, 10, PrimitiveType.Triangles);
+            private readonly LinearBatch<TexturedVertex3D> linearBatch = new LinearBatch<TexturedVertex3D>(2 * 100 * 3, 10, PrimitiveType.Triangles);
             private readonly QuadBatch<TexturedVertex3D> quadBatch = new QuadBatch<TexturedVertex3D>(200, 10);
 
             public SliderPathDrawNode(SliderPath source)
@@ -76,7 +76,8 @@ namespace S2VX.Game.Story.Note
                 if (dir < 0)
                     theta += MathF.PI;
 
-                Vector2 current = origin + FindClosestCorner(pointOnCircle(theta));
+                var closestCorner = FindClosestCorner(pointOnCircle(theta));
+                Vector2 current = origin + closestCorner;
                 Color4 currentColour = colourAt(current);
                 current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
 
@@ -101,9 +102,10 @@ namespace S2VX.Game.Story.Note
                         Colour = currentColour
                     });
 
-                    current = origin + FindClosestCorner(pointOnCircle(theta + dir * i * MathF.PI / 2));
+                    closestCorner = S2VXUtils.Rotate(closestCorner, 90);
+                    current = origin + closestCorner;
                     currentColour = colourAt(current);
-                    current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
+                    current = Vector2Extensions.Transform(current, DrawInfo.Matrix);  
 
                     // Second outer point
                     linearBatch.Add(new TexturedVertex3D
@@ -148,7 +150,7 @@ namespace S2VX.Game.Story.Note
                 for (int i = 0; i < 2; ++i) {
                     quadBatch.Add(new TexturedVertex3D {
                         Position = firstMiddlePoint,
-                        TexturePosition = new Vector2(texRect.Right, texRect.Centre.Y),
+                        TexturePosition = new Vector2(texRect.Right, texRect.Centre.Y), 
                         Colour = firstMiddleColour
                     });
                     quadBatch.Add(new TexturedVertex3D {
@@ -198,6 +200,7 @@ namespace S2VX.Game.Story.Note
 
                 // Offset by 0.5 pixels inwards to ensure we never sample texels outside the bounds
                 RectangleF texRect = texture.GetTextureRect(new RectangleF(0.5f, 0.5f, texture.Width - 1, texture.Height - 1));
+
                 addLineCap(line.StartPoint, theta + MathF.PI, MathF.PI, texRect);
 
                 for (int i = 1; i < segments.Count; ++i) {

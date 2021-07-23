@@ -31,7 +31,7 @@ namespace S2VX.Game {
             var n1 = v1.Normalized();
             var n2 = v2.Normalized();
 
-            if (n1 == n2) {
+            if (Precision.AlmostEquals(n1, n2)) {
                 return 0;
             }
 
