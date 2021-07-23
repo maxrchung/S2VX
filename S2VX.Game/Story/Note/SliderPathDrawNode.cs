@@ -14,6 +14,7 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Colour; 
 using osu.Framework.Graphics.Shaders;
 using osu.Framework.Graphics;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note
 {
@@ -116,33 +117,13 @@ namespace S2VX.Game.Story.Note
                 }
             }
 
-            private void addVertex(Vector2 vertex, RectangleF texRect) {
-                var unitX = Vector2.UnitX * radius;
-                var unitY = Vector2.UnitY * radius;
-                var topLeft = vertex - unitX - unitY;
-                var topRight = vertex + unitX - unitY;
-                var left = vertex - unitX;
-                var right = vertex + unitX;
-                var bottom = vertex + unitY;
-                var top = vertex - unitY;
-                var bottomLeft = vertex - unitX + unitY;
-                var bottomRight = vertex + unitX + unitY;
-
-                //addOppositeLines(new Line(topLeft, topRight), new Line(left, right), new Line(bottomLeft, bottomRight), texRect);
-                addOppositeLines(new Line(bottomLeft, topLeft), new Line(bottom, top), new Line(bottomRight, topRight), texRect);
-            }
-
             private void addLineQuads(Line line, RectangleF texRect)
             {
-                var unitX = Vector2.UnitX * radius;
-                var unitY = Vector2.UnitY * radius;
-                Vector2 ortho = line.OrthogonalDirection;
-                Line lineLeft = new Line(line.StartPoint - unitX - unitY, line.EndPoint - unitX - unitY);
-                Line lineRight = new Line(line.StartPoint + unitX + unitY, line.EndPoint + unitX + unitY);
-                addOppositeLines(lineLeft, line, lineRight, texRect);
-            }
+                var closestCorner = FindClosestCorner(line);
+                var oppositePoint = new Vector2(-closestCorner.X, -closestCorner.Y);
+                Line lineLeft = new Line(line.StartPoint + closestCorner, line.EndPoint + closestCorner);
+                Line lineRight = new Line(line.StartPoint + oppositePoint, line.EndPoint + oppositePoint);
 
-            private void addOppositeLines(Line lineLeft, Line line, Line lineRight, RectangleF texRect) {
                 Line screenLineLeft = new Line(Vector2Extensions.Transform(lineLeft.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(lineLeft.EndPoint, DrawInfo.Matrix));
                 Line screenLineRight = new Line(Vector2Extensions.Transform(lineRight.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(lineRight.EndPoint, DrawInfo.Matrix));
                 Line screenLine = new Line(Vector2Extensions.Transform(line.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(line.EndPoint, DrawInfo.Matrix));
@@ -189,6 +170,28 @@ namespace S2VX.Game.Story.Note
                     TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
                     Colour = colourAt(lineLeft.StartPoint)
                 });
+            }
+
+            private Vector2 FindClosestCorner(Line line) {
+                var unitX = Vector2.UnitX * radius;
+                var unitY = Vector2.UnitY * radius;
+                var points = new List<Vector2> {
+                    -unitX - unitY, // Top left
+                    unitX - unitY, // Top right
+                    -unitX + unitY, // Bottom left
+                    unitX + unitY // Bottom right
+                };
+                var ortho = line.OrthogonalDirection;
+                var closestCorner = Vector2.Zero;
+                var closestAngle = double.MaxValue;
+                foreach (var point in points) {
+                    var angle = Math.Abs(S2VXUtils.AngleBetween(ortho, point));
+                    if (angle < closestAngle) {
+                        closestAngle = angle;
+                        closestCorner = point;
+                    }
+                }
+                return closestCorner;
             }
 
             private void updateVertexBuffer()
