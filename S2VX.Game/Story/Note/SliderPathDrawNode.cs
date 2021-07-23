@@ -58,16 +58,26 @@ namespace S2VX.Game.Story.Note {
             private void AddLineCap(Vector2 origin, float theta, float thetaDiff, RectangleF texRect) {
                 float dir = Math.Sign(thetaDiff);
                 thetaDiff = dir * thetaDiff;
-                var amountPoints = Precision.AlmostEquals(MathF.Abs(thetaDiff), MathF.PI) ? 2 : 1;
                 if (dir < 0) {
                     theta += MathF.PI;
                 }
+
                 var closestCorner = FindClosestCorner(PointOnCircle(theta));
+                var furthestCorner = FindClosestCorner(PointOnCircle(theta + thetaDiff));
+                var angleBetween = Math.Abs(S2VXUtils.AngleBetween(closestCorner, furthestCorner));
+                var amountPoints = 1;
+                if (Precision.AlmostEquals(angleBetween, 0)) {
+                    amountPoints = 0;
+                } else if (Precision.AlmostEquals(angleBetween, Math.PI)) {
+                    amountPoints = 2;
+                }
+
                 var current = origin + closestCorner;
                 var currentColour = ColourAt(current);
                 current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
                 var screenOrigin = Vector2Extensions.Transform(origin, DrawInfo.Matrix);
                 var originColour = ColourAt(origin);
+
                 for (var i = 1; i <= amountPoints; i++) {
                     // Center point
                     LinearBatch.Add(new() {
@@ -75,16 +85,19 @@ namespace S2VX.Game.Story.Note {
                         TexturePosition = new(texRect.Right, texRect.Centre.Y),
                         Colour = originColour
                     });
+
                     // First outer point
                     LinearBatch.Add(new() {
                         Position = new(current.X, current.Y, 0),
                         TexturePosition = new(texRect.Left, texRect.Centre.Y),
                         Colour = currentColour
                     });
+
                     closestCorner = S2VXUtils.Rotate(closestCorner, 90);
                     current = origin + closestCorner;
                     currentColour = ColourAt(current);
                     current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
+
                     // Second outer point
                     LinearBatch.Add(new() {
                         Position = new(current.X, current.Y, 0),
@@ -99,6 +112,7 @@ namespace S2VX.Game.Story.Note {
                 var oppositePoint = new Vector2(-closestCorner.X, -closestCorner.Y);
                 var lineLeft = new Line(line.StartPoint + closestCorner, line.EndPoint + closestCorner);
                 var lineRight = new Line(line.StartPoint + oppositePoint, line.EndPoint + oppositePoint);
+
                 var screenLineLeft = new Line(Vector2Extensions.Transform(
                     lineLeft.StartPoint, DrawInfo.Matrix),
                     Vector2Extensions.Transform(lineLeft.EndPoint, DrawInfo.Matrix)
@@ -111,6 +125,7 @@ namespace S2VX.Game.Story.Note {
                     Vector2Extensions.Transform(line.StartPoint, DrawInfo.Matrix),
                     Vector2Extensions.Transform(line.EndPoint, DrawInfo.Matrix)
                 );
+
                 QuadBatch.Add(new() {
                     Position = new(screenLineRight.EndPoint.X, screenLineRight.EndPoint.Y, 0),
                     TexturePosition = new(texRect.Left, texRect.Centre.Y),
@@ -121,6 +136,7 @@ namespace S2VX.Game.Story.Note {
                     TexturePosition = new(texRect.Left, texRect.Centre.Y),
                     Colour = ColourAt(lineRight.StartPoint)
                 });
+
                 // Each "quad" of the slider is actually rendered as 2 quads, being split in half along the approximating line.
                 // On this line the depth is 1 instead of 0, which is done properly handle self-overlap using the depth buffer.
                 // Thus the middle vertices need to be added twice (once for each quad).
@@ -140,6 +156,7 @@ namespace S2VX.Game.Story.Note {
                         Colour = secondMiddleColour
                     });
                 }
+
                 QuadBatch.Add(new() {
                     Position = new(screenLineLeft.EndPoint.X, screenLineLeft.EndPoint.Y, 0),
                     TexturePosition = new(texRect.Left, texRect.Centre.Y),
@@ -155,29 +172,51 @@ namespace S2VX.Game.Story.Note {
             private Vector2 FindClosestCorner(Vector2 direction) {
                 var unitX = Vector2.UnitX * Radius;
                 var unitY = Vector2.UnitY * Radius;
-                var points = new List<Vector2> {
-                    -unitX - unitY, // Top left
-                    unitX - unitY, // Top right
-                    -unitX + unitY, // Bottom left
-                    unitX + unitY // Bottom right
-                };
+                var topLeft = -unitX - unitY;
+                var topRight = unitX - unitY;
+                var bottomLeft = -unitX + unitY;
+                var bottomRight = unitX + unitY;
+
+                // Handle edge cases by forcing the result to a corner
+                if (Precision.AlmostEquals(Math.Abs(direction.X), 0)) {
+                    direction.X = 0;
+                } else if (Precision.AlmostEquals(Math.Abs(direction.X), 1)) {
+                    direction.X = 1;
+                }
+                if (Precision.AlmostEquals(Math.Abs(direction.Y), 0)) {
+                    direction.Y = 0;
+                } else if (Precision.AlmostEquals(Math.Abs(direction.Y), 1)) {
+                    direction.Y = 1;
+                }
+                if (direction == new Vector2(0, -1)) {
+                    return topLeft;
+                } else if (direction == new Vector2(1, 0)) {
+                    return topRight;
+                } else if (direction == new Vector2(-1, 0)) {
+                    return bottomLeft;
+                } else if (direction == new Vector2(0, 1)) {
+                    return bottomRight;
+                }
+
+                var corners = new List<Vector2> { topLeft, topRight, bottomLeft, bottomRight };
                 var closestCorner = Vector2.Zero;
                 var closestAngle = double.MaxValue;
-                foreach (var point in points) {
-                    var angle = Math.Abs(S2VXUtils.AngleBetween(direction, point));
+                foreach (var corner in corners) {
+                    var angle = Math.Abs(S2VXUtils.AngleBetween(direction, corner));
                     if (angle < closestAngle) {
                         closestAngle = angle;
-                        closestCorner = point;
+                        closestCorner = corner;
                     }
                 }
                 return closestCorner;
             }
 
             private void UpdateVertexBuffer() {
-                var line = Segments[0];
-                var theta = line.Theta;
                 // Offset by 0.5 pixels inwards to ensure we never sample texels outside the bounds
                 var texRect = Texture.GetTextureRect(new(0.5f, 0.5f, Texture.Width - 1, Texture.Height - 1));
+                var line = Segments[0];
+                var theta = line.Theta;
+
                 AddLineCap(line.StartPoint, theta + MathF.PI, MathF.PI, texRect);
                 for (var i = 1; i < Segments.Count; ++i) {
                     var nextLine = Segments[i];
@@ -188,6 +227,7 @@ namespace S2VX.Game.Story.Note {
                     theta = nextTheta;
                 }
                 AddLineCap(line.EndPoint, theta, MathF.PI, texRect);
+
                 foreach (var segment in Segments) {
                     AddLineQuads(segment, texRect);
                 }
@@ -198,6 +238,7 @@ namespace S2VX.Game.Story.Note {
                 if (Texture?.Available != true || Segments.Count == 0) {
                     return;
                 }
+
                 GLWrapper.PushDepthInfo(DepthInfo.Default);
                 // Blending is removed to allow for correct blending between the wedges of the path.
                 GLWrapper.SetBlend(BlendingParameters.None);
