@@ -65,11 +65,11 @@ namespace S2VX.Game.Story.Note {
                 var closestCorner = FindClosestCorner(PointOnCircle(theta));
                 var furthestCorner = FindClosestCorner(PointOnCircle(theta + thetaDiff));
                 var angleBetween = Math.Abs(S2VXUtils.AngleBetween(closestCorner, furthestCorner));
-                var amountPoints = 1;
+                var amountPoints = 4;
                 if (Precision.AlmostEquals(angleBetween, 0)) {
-                    amountPoints = 0;
+                    amountPoints = 4;
                 } else if (Precision.AlmostEquals(angleBetween, Math.PI)) {
-                    amountPoints = 2;
+                    amountPoints = 4;
                 }
 
                 var current = origin + closestCorner;
