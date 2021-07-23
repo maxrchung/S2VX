@@ -65,7 +65,6 @@ namespace S2VX.Game.Story.Note {
                 var minY = 0f;
                 var maxX = 0f;
                 var maxY = 0f;
-
                 for (var i = 0; i < Vertices.Count; ++i) {
                     var v = Vertices[i];
                     minX = Math.Min(minX, v.X - PathRadius);
@@ -73,7 +72,6 @@ namespace S2VX.Game.Story.Note {
                     maxX = Math.Max(maxX, v.X + PathRadius);
                     maxY = Math.Max(maxY, v.Y + PathRadius);
                 }
-
                 return new RectangleF(minX, minY, maxX - minX, maxY - minY);
             }
             return new RectangleF(0, 0, 0, 0);
