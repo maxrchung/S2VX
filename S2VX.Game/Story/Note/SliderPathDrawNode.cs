@@ -124,18 +124,20 @@ namespace S2VX.Game.Story.Note
                 Line lineLeft = new Line(line.StartPoint + closestCorner, line.EndPoint + closestCorner);
                 Line lineRight = new Line(line.StartPoint + oppositePoint, line.EndPoint + oppositePoint);
 
-                Line screenLineLeft = new Line(Vector2Extensions.Transform(lineLeft.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(lineLeft.EndPoint, DrawInfo.Matrix));
+                var textureLeftOffset = FixOutlineOffset(line);
+
+                Line screenLineLeft = new Line(Vector2Extensions.Transform(lineLeft.StartPoint,  DrawInfo.Matrix), Vector2Extensions.Transform(lineLeft.EndPoint, DrawInfo.Matrix));
                 Line screenLineRight = new Line(Vector2Extensions.Transform(lineRight.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(lineRight.EndPoint, DrawInfo.Matrix));
                 Line screenLine = new Line(Vector2Extensions.Transform(line.StartPoint, DrawInfo.Matrix), Vector2Extensions.Transform(line.EndPoint, DrawInfo.Matrix));
 
                 quadBatch.Add(new TexturedVertex3D {
                     Position = new Vector3(screenLineRight.EndPoint.X, screenLineRight.EndPoint.Y, 0),
-                    TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
+                    TexturePosition = new Vector2(textureLeftOffset, texRect.Centre.Y),
                     Colour = colourAt(lineRight.EndPoint)
                 });
                 quadBatch.Add(new TexturedVertex3D {
                     Position = new Vector3(screenLineRight.StartPoint.X, screenLineRight.StartPoint.Y, 0),
-                    TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
+                    TexturePosition = new Vector2(textureLeftOffset, texRect.Centre.Y),
                     Colour = colourAt(lineRight.StartPoint)
                 });
 
@@ -162,14 +164,29 @@ namespace S2VX.Game.Story.Note
 
                 quadBatch.Add(new TexturedVertex3D {
                     Position = new Vector3(screenLineLeft.EndPoint.X, screenLineLeft.EndPoint.Y, 0),
-                    TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
+                    TexturePosition = new Vector2(textureLeftOffset, texRect.Centre.Y),
                     Colour = colourAt(lineLeft.EndPoint)
                 });
                 quadBatch.Add(new TexturedVertex3D {
                     Position = new Vector3(screenLineLeft.StartPoint.X, screenLineLeft.StartPoint.Y, 0),
-                    TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
+                    TexturePosition = new Vector2(textureLeftOffset, texRect.Centre.Y),
                     Colour = colourAt(lineLeft.StartPoint)
                 });
+            }
+
+
+            // Segments that are going at a 45 degree angle have a noticeably
+            // thicker outline than horizontal or vertical segments. This
+            // function offsets the texture position to account for the outline
+            // difference.
+            private float FixOutlineOffset(Line line) {
+                var theta = MathF.Abs(line.Theta);
+                while (theta - MathF.PI / 2 >= 0) {
+                    theta -= MathF.PI / 2;
+                }
+                var diff = MathF.Abs(theta - MathF.PI / 4);
+                var offset = S2VXUtils.ClampedInterpolation(diff, 0.707f * Source.OutlineThickness / 2, 0, 0, MathF.PI / 4);
+                return offset;
             }
 
             private Vector2 FindClosestCorner(Vector2 direction) {
