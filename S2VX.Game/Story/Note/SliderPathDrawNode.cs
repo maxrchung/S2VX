@@ -55,30 +55,15 @@ namespace S2VX.Game.Story.Note {
                 ? ((SRGBColour)DrawColourInfo.Colour).Linear
                 : DrawColourInfo.Colour.Interpolate(RelativePosition(localPos)).Linear;
 
-            private void AddLineCap(Vector2 origin, float theta, float thetaDiff, RectangleF texRect) {
-                float dir = Math.Sign(thetaDiff);
-                thetaDiff = dir * thetaDiff;
-                if (dir < 0) {
-                    theta += MathF.PI;
-                }
-
-                var closestCorner = FindClosestCorner(PointOnCircle(theta));
-                var furthestCorner = FindClosestCorner(PointOnCircle(theta + thetaDiff));
-                var angleBetween = Math.Abs(S2VXUtils.AngleBetween(closestCorner, furthestCorner));
-                var amountPoints = 4;
-                if (Precision.AlmostEquals(angleBetween, 0)) {
-                    amountPoints = 4;
-                } else if (Precision.AlmostEquals(angleBetween, Math.PI)) {
-                    amountPoints = 4;
-                }
-
-                var current = origin + closestCorner;
+            private void AddLineCap(Vector2 origin, RectangleF texRect) {
+                var cornerOffset = new Vector2(-Radius, -Radius);
+                var current = origin + cornerOffset;
                 var currentColour = ColourAt(current);
                 current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
                 var screenOrigin = Vector2Extensions.Transform(origin, DrawInfo.Matrix);
                 var originColour = ColourAt(origin);
 
-                for (var i = 1; i <= amountPoints; i++) {
+                for (var i = 1; i <= 4; i++) {
                     // Center point
                     LinearBatch.Add(new() {
                         Position = new(screenOrigin.X, screenOrigin.Y, 1),
@@ -93,8 +78,8 @@ namespace S2VX.Game.Story.Note {
                         Colour = currentColour
                     });
 
-                    closestCorner = S2VXUtils.Rotate(closestCorner, 90);
-                    current = origin + closestCorner;
+                    cornerOffset = S2VXUtils.Rotate(cornerOffset, 90);
+                    current = origin + cornerOffset;
                     currentColour = ColourAt(current);
                     current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
 
@@ -214,21 +199,9 @@ namespace S2VX.Game.Story.Note {
             private void UpdateVertexBuffer() {
                 // Offset by 0.5 pixels inwards to ensure we never sample texels outside the bounds
                 var texRect = Texture.GetTextureRect(new(0.5f, 0.5f, Texture.Width - 1, Texture.Height - 1));
-                var line = Segments[0];
-                var theta = line.Theta;
-
-                AddLineCap(line.StartPoint, theta + MathF.PI, MathF.PI, texRect);
-                for (var i = 1; i < Segments.Count; ++i) {
-                    var nextLine = Segments[i];
-                    var nextTheta = nextLine.Theta;
-                    AddLineCap(line.EndPoint, theta, nextTheta - theta, texRect);
-
-                    line = nextLine;
-                    theta = nextTheta;
-                }
-                AddLineCap(line.EndPoint, theta, MathF.PI, texRect);
-
+                AddLineCap(Segments[0].StartPoint, texRect);
                 foreach (var segment in Segments) {
+                    AddLineCap(segment.EndPoint, texRect);
                     AddLineQuads(segment, texRect);
                 }
             }
