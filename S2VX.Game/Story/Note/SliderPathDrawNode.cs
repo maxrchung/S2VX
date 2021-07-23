@@ -15,6 +15,7 @@ using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Shaders;
 using osu.Framework.Graphics;
 using System.Linq;
+using osu.Framework.Utils;
 
 namespace S2VX.Game.Story.Note
 {
@@ -36,7 +37,7 @@ namespace S2VX.Game.Story.Note
             // We multiply the size param by 3 such that the amount of vertices is a multiple of the amount of vertices
             // per primitive (triangles in this case). Otherwise overflowing the batch will result in wrong
             // grouping of vertices into primitives.
-            private readonly LinearBatch<TexturedVertex3D> halfCircleBatch = new LinearBatch<TexturedVertex3D>(MAX_RES * 100 * 3, 10, PrimitiveType.Triangles);
+            private readonly LinearBatch<TexturedVertex3D> linearBatch = new LinearBatch<TexturedVertex3D>(MAX_RES * 100 * 3, 10, PrimitiveType.Triangles);
             private readonly QuadBatch<TexturedVertex3D> quadBatch = new QuadBatch<TexturedVertex3D>(200, 10);
 
             public SliderPathDrawNode(SliderPath source)
@@ -67,17 +68,15 @@ namespace S2VX.Game.Story.Note
 
             private void addLineCap(Vector2 origin, float theta, float thetaDiff, RectangleF texRect)
             {
-                const float step = MathF.PI / MAX_RES;
-
                 float dir = Math.Sign(thetaDiff);
                 thetaDiff = dir * thetaDiff;
-
-                int amountPoints = (int)Math.Ceiling(thetaDiff / step);
+                
+                int amountPoints = Precision.AlmostEquals(MathF.Abs(thetaDiff), MathF.PI) ? 2 : 1;
 
                 if (dir < 0)
                     theta += MathF.PI;
 
-                Vector2 current = origin + pointOnCircle(theta) * radius;
+                Vector2 current = origin + FindClosestCorner(pointOnCircle(theta));
                 Color4 currentColour = colourAt(current);
                 current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
 
@@ -87,7 +86,7 @@ namespace S2VX.Game.Story.Note
                 for (int i = 1; i <= amountPoints; i++)
                 {
                     // Center point
-                    halfCircleBatch.Add(new TexturedVertex3D
+                    linearBatch.Add(new TexturedVertex3D
                     {
                         Position = new Vector3(screenOrigin.X, screenOrigin.Y, 1),
                         TexturePosition = new Vector2(texRect.Right, texRect.Centre.Y),
@@ -95,20 +94,19 @@ namespace S2VX.Game.Story.Note
                     });
 
                     // First outer point
-                    halfCircleBatch.Add(new TexturedVertex3D
+                    linearBatch.Add(new TexturedVertex3D
                     {
                         Position = new Vector3(current.X, current.Y, 0),
                         TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
                         Colour = currentColour
                     });
 
-                    float angularOffset = Math.Min(i * step, thetaDiff);
-                    current = origin + pointOnCircle(theta + dir * angularOffset) * radius;
+                    current = origin + FindClosestCorner(pointOnCircle(theta + dir * i * MathF.PI / 2));
                     currentColour = colourAt(current);
                     current = Vector2Extensions.Transform(current, DrawInfo.Matrix);
 
                     // Second outer point
-                    halfCircleBatch.Add(new TexturedVertex3D
+                    linearBatch.Add(new TexturedVertex3D
                     {
                         Position = new Vector3(current.X, current.Y, 0),
                         TexturePosition = new Vector2(texRect.Left, texRect.Centre.Y),
@@ -119,7 +117,7 @@ namespace S2VX.Game.Story.Note
 
             private void addLineQuads(Line line, RectangleF texRect)
             {
-                var closestCorner = FindClosestCorner(line);
+                var closestCorner = FindClosestCorner(line.OrthogonalDirection);
                 var oppositePoint = new Vector2(-closestCorner.X, -closestCorner.Y);
                 Line lineLeft = new Line(line.StartPoint + closestCorner, line.EndPoint + closestCorner);
                 Line lineRight = new Line(line.StartPoint + oppositePoint, line.EndPoint + oppositePoint);
@@ -172,7 +170,7 @@ namespace S2VX.Game.Story.Note
                 });
             }
 
-            private Vector2 FindClosestCorner(Line line) {
+            private Vector2 FindClosestCorner(Vector2 direction) {
                 var unitX = Vector2.UnitX * radius;
                 var unitY = Vector2.UnitY * radius;
                 var points = new List<Vector2> {
@@ -181,11 +179,10 @@ namespace S2VX.Game.Story.Note
                     -unitX + unitY, // Bottom left
                     unitX + unitY // Bottom right
                 };
-                var ortho = line.OrthogonalDirection;
                 var closestCorner = Vector2.Zero;
                 var closestAngle = double.MaxValue;
                 foreach (var point in points) {
-                    var angle = Math.Abs(S2VXUtils.AngleBetween(ortho, point));
+                    var angle = Math.Abs(S2VXUtils.AngleBetween(direction, point));
                     if (angle < closestAngle) {
                         closestAngle = angle;
                         closestCorner = point;
@@ -221,31 +218,22 @@ namespace S2VX.Game.Story.Note
             public override void Draw(Action<TexturedVertex2D> vertexAction)
             {
                 base.Draw(vertexAction);
-
                 if (texture?.Available != true || segments.Count == 0)
                     return;
-
                 GLWrapper.PushDepthInfo(DepthInfo.Default);
-
                 // Blending is removed to allow for correct blending between the wedges of the path.
                 GLWrapper.SetBlend(BlendingParameters.None);
-
                 pathShader.Bind();
-
                 texture.TextureGL.Bind();
-
                 updateVertexBuffer();
-
                 pathShader.Unbind();
-
                 GLWrapper.PopDepthInfo();
             }
               
             protected override void Dispose(bool isDisposing)
             {
                 base.Dispose(isDisposing);
-
-                halfCircleBatch.Dispose();
+                linearBatch.Dispose();
                 quadBatch.Dispose();
             }
         }
