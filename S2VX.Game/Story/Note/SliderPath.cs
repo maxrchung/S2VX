@@ -61,12 +61,12 @@ namespace S2VX.Game.Story.Note {
 
         private RectangleF VertexBounds() {
             if (Vertices.Count > 0) {
-                float minX = 0;
-                float minY = 0;
-                float maxX = 0;
-                float maxY = 0;
+                var minX = 0f;
+                var minY = 0f;
+                var maxX = 0f;
+                var maxY = 0f;
 
-                for (int i = 0; i < Vertices.Count; ++i) {
+                for (var i = 0; i < Vertices.Count; ++i) {
                     var v = Vertices[i];
                     minX = Math.Min(minX, v.X - PathRadius);
                     minY = Math.Min(minY, v.Y - PathRadius);
