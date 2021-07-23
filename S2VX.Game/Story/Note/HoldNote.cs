@@ -40,7 +40,7 @@ namespace S2VX.Game.Story.Note {
             UpdateSliderPath();
         }
 
-        // These are helpers for calculating hold related values
+        // These are static helpers for calculating hold related values
         // TODO: There's probably a better way to share this between HoldApproach and HoldNote for calculating these values
         // TODO: Optimize these so that they are called once on initialization instead of ran every update loop
         private static IEnumerable<Vector2> CombineAllCoordinates(Vector2 coordinates, List<Vector2> midCoordinates, Vector2 endCoordinates)
