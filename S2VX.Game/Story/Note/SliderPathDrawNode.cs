@@ -202,8 +202,8 @@ namespace S2VX.Game.Story.Note {
                 // 1) ApplyState() is called and the SliderPathDrawNode gets a
                 //    reference to the current texture, let's call it Texture1.
                 // 2) There can be a very frequent Update call (e.g. CameraScale
-                //    command) that invalidates the path texture and updates it
-                //    to Texture2.
+                //    command) that invalidates the path texture and sets the
+                //    texture to Texture2.
                 // 3) Texture1 is disposed of.
                 // 4) UpdateVertexBuffer tries to use the disposed Texture1,
                 //    causing undefined behavior and visual flickering issues.
