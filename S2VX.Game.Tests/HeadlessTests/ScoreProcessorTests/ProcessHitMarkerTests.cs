@@ -29,9 +29,9 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             AddStep("Process hit", () => ScoreProcessor.ProcessHit(scoreTime, 0, new Vector2(100, 100)));
 
         [Test]
-        public void ProcessHit_PerfectHit_CreatesPerfectMarker() {
+        public void ProcessHit_PerfectHit_CreatesNoMarker() {
             ProcessHit(0);
-            AddAssert("Creates a perfect hit marker", () => HitMarkers.Markers[0].Colour == Notes.PerfectColor);
+            AddAssert("No marker is created", () => HitMarkers.Markers.Count == 0);
         }
 
         [Test]
