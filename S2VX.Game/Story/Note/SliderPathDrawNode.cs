@@ -8,7 +8,6 @@ using osu.Framework.Graphics.OpenGL;
 using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Shaders;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
@@ -23,12 +22,11 @@ namespace S2VX.Game.Story.Note {
 
             private readonly List<Line> Segments = new();
 
-            private Texture Texture;
             private Vector2 DrawSize;
             private float Radius;
             private IShader PathShader;
 
-            private readonly LinearBatch<TexturedVertex3D> LinearBatch = new(2 * 100 * 3, 10, PrimitiveType.Triangles);
+            private readonly LinearBatch<TexturedVertex3D> LinearBatch = new(4 * 100 * 3, 10, PrimitiveType.Triangles);
             private readonly QuadBatch<TexturedVertex3D> QuadBatch = new(200, 10);
 
             public SliderPathDrawNode(SliderPath source)
@@ -41,7 +39,6 @@ namespace S2VX.Game.Story.Note {
                 Segments.Clear();
                 Segments.AddRange(Source.Segments());
 
-                Texture = Source.Texture;
                 DrawSize = Source.DrawSize;
                 Radius = Source.PathRadius;
                 PathShader = Source.PathShader;
@@ -195,8 +192,24 @@ namespace S2VX.Game.Story.Note {
             }
 
             private void UpdateVertexBuffer() {
+                // As noted by the comments for ApplyState(), Source.Texture
+                // should be set in ApplyState(), not in real-time like this.
+                // However, without doing this, I ran into some Dispose() issues
+                // that caused some flickering. Here are the steps to explain
+                // what's going on with the process:
+                //
+                // 1) ApplyState() is called and SliderPathDrawNode gets a
+                //    reference to the current Texture1.
+                // 2) There can be an Update call (e.g. CameraScale command)
+                //    that invalidates and updates the texture to Texture2.
+                // 3) Texture1 is disposed of.
+                // 4) UpdateVertexBuffer tries to use the disposed Texture1,
+                //    causing undefined behavior and visual flickering issues.
+                var texture = Source.Texture;
+
                 // Offset by 0.5 pixels inwards to ensure we never sample texels outside the bounds
-                var texRect = Texture.GetTextureRect(new(0.5f, 0.5f, Texture.Width - 1, Texture.Height - 1));
+                var texRect = texture.GetTextureRect(new(0.5f, 0.5f, texture.Width - 1, texture.Height - 1));
+
                 AddLineCap(Segments[0].StartPoint, texRect);
                 foreach (var segment in Segments) {
                     AddLineCap(segment.EndPoint, texRect);
@@ -206,7 +219,8 @@ namespace S2VX.Game.Story.Note {
 
             public override void Draw(Action<TexturedVertex2D> vertexAction) {
                 base.Draw(vertexAction);
-                if (Texture?.Available != true || Segments.Count == 0) {
+                var texture = Source.Texture;
+                if (texture?.Available != true || Segments.Count == 0) {
                     return;
                 }
 
@@ -214,7 +228,7 @@ namespace S2VX.Game.Story.Note {
                 // Blending is removed to allow for correct blending between the wedges of the path.
                 GLWrapper.SetBlend(BlendingParameters.None);
                 PathShader.Bind();
-                Texture.TextureGL.Bind();
+                texture.TextureGL.Bind();
                 UpdateVertexBuffer();
                 PathShader.Unbind();
                 GLWrapper.PopDepthInfo();
