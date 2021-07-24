@@ -193,15 +193,17 @@ namespace S2VX.Game.Story.Note {
 
             private void UpdateVertexBuffer() {
                 // As noted by the comments for ApplyState(), Source.Texture
-                // should be set in ApplyState(), not in real-time like this.
-                // However, without doing this, I ran into some Dispose() issues
-                // that caused some flickering. Here are the steps to explain
-                // what's going on with the process:
+                // should be set in ApplyState(), not in real-time like this
+                // next code line. However, without doing this, I ran into some
+                // Dispose() issues that caused some flickering issues. Here are
+                // some steps to explain the problem if you try and save
+                // Source.Texture in ApplyState():
                 //
-                // 1) ApplyState() is called and SliderPathDrawNode gets a
-                //    reference to the current Texture1.
-                // 2) There can be an Update call (e.g. CameraScale command)
-                //    that invalidates and updates the texture to Texture2.
+                // 1) ApplyState() is called and the SliderPathDrawNode gets a
+                //    reference to the current texture, let's call it Texture1.
+                // 2) There can be a very frequent Update call (e.g. CameraScale
+                //    command) that invalidates the path texture and updates it
+                //    to Texture2.
                 // 3) Texture1 is disposed of.
                 // 4) UpdateVertexBuffer tries to use the disposed Texture1,
                 //    causing undefined behavior and visual flickering issues.
