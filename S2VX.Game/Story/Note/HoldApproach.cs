@@ -11,8 +11,6 @@ namespace S2VX.Game.Story.Note {
         public Vector2 EndCoordinates { get; set; }
 
         public List<Vector2> MidCoordinates { get; } = new() {
-            new Vector2(2, -2),
-            new Vector2(3, -1)
         };
 
         [Resolved]
