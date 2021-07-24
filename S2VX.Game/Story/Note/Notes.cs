@@ -34,13 +34,13 @@ namespace S2VX.Game.Story.Note {
         public float NoteOutlineThickness { get; set; }
 
         // TODO: Remove these defaults and use command classes
-        public static Color4 PerfectColor { get; set; } = S2VXColorConstants.LightYellow;
-        public static Color4 EarlyColor { get; set; } = S2VXColorConstants.White;
-        public static Color4 LateColor { get; set; } = S2VXColorConstants.DarkYellow;
-        public static Color4 MissColor { get; set; } = S2VXColorConstants.Red;
-        public static float PerfectThreshold { get; set; } = 30;
-        public static float HitThreshold { get; set; } = 100;
-        public static float MissThreshold { get; set; } = 200;
+        public static Color4 PerfectColor { get; } = S2VXColorConstants.LightYellow;
+        public static Color4 EarlyColor { get; } = S2VXColorConstants.BrightCyan;
+        public static Color4 LateColor { get; } = S2VXColorConstants.Magenta;
+        public static Color4 MissColor { get; } = S2VXColorConstants.Red;
+        public static float PerfectThreshold { get; } = 30;
+        public static float HitThreshold { get; } = 100;
+        public static float MissThreshold { get; } = 200;
 
         public bool HasPressedNote { get; set; }
 

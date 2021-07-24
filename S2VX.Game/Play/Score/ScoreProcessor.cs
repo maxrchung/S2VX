@@ -57,7 +57,6 @@ namespace S2VX.Game.Play.Score {
         }
 
         private void UpdateMiss(double time, Vector2 notePos) {
-            Cursor.UpdateColor(Notes.MissColor);
             Story.HitMarkers.AddMarker(notePos, Notes.MissColor, time);
             Miss.Play();
             ++ScoreStatistics.MissCount;
@@ -89,7 +88,6 @@ namespace S2VX.Game.Play.Score {
 
             } else if (relativeTime < -Notes.PerfectThreshold) { // Early
                 AddScore(score);
-                Cursor.UpdateColor(Notes.EarlyColor);
                 Story.HitMarkers.AddMarker(notePos, Notes.EarlyColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.EarlyCount;
@@ -97,15 +95,12 @@ namespace S2VX.Game.Play.Score {
 
             } else if (relativeTime < Notes.PerfectThreshold) { // Perfect
                 AddScore(score);
-                Cursor.UpdateColor(Notes.PerfectColor);
-                Story.HitMarkers.AddMarker(notePos, Notes.PerfectColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.PerfectCount;
                 AddCombo();
 
             } else if (relativeTime < Notes.HitThreshold) { // Late
                 AddScore(score);
-                Cursor.UpdateColor(Notes.LateColor);
                 Story.HitMarkers.AddMarker(notePos, Notes.LateColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.LateCount;
@@ -132,7 +127,6 @@ namespace S2VX.Game.Play.Score {
                     score = scoreTime - lastReleaseTime;
                     // Only update score on press
                     AddScore(score);
-                    Cursor.UpdateColor(Notes.LateColor);
                     Story.HitMarkers.AddMarker(notePos, Notes.LateColor, lastReleaseTime);
                 } else {
                     UpdateMiss(lastReleaseTime, notePos);

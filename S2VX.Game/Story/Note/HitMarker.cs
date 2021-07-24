@@ -11,6 +11,7 @@ namespace S2VX.Game.Story.Note {
 
         public Vector2 Coordinates { get; init; }
         public double SpawnTime { get; init; }
+        public double MarkerShowTime { get; init; } = 800;
         public float MarkerAlpha { get; init; }  // Maximum alpha from which the marker will start to fade out
         private RelativeBox Marker { get; } = new();
 
@@ -38,7 +39,7 @@ namespace S2VX.Game.Story.Note {
             return false;
         }
 
-        private void UpdateAlpha() => Alpha = S2VXUtils.ClampedInterpolation(Time.Current, MarkerAlpha, 0.0f, SpawnTime, SpawnTime + 200);
+        private void UpdateAlpha() => Alpha = S2VXUtils.ClampedInterpolation(Time.Current, MarkerAlpha, 0.0f, SpawnTime, SpawnTime + MarkerShowTime);
 
         /// <summary>
         /// Updates a hit marker's position/rotation/size
