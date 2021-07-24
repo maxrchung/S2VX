@@ -47,8 +47,6 @@ namespace S2VX.Game.Story.Note {
                 PathShader = Source.PathShader;
             }
 
-            private static Vector2 PointOnCircle(float angle) => new(MathF.Sin(angle), -MathF.Cos(angle));
-
             private Vector2 RelativePosition(Vector2 localPos) => Vector2.Divide(localPos, DrawSize);
 
             private Color4 ColourAt(Vector2 localPos) => DrawColourInfo.Colour.HasSingleColour
