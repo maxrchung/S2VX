@@ -129,7 +129,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 StartValue = Color4.Green,
                 EndValue = Color4.Green
             }));
-            AddAssert("Hold note path is green", () => note.SliderPath.Colour == Color4.Green);
+            AddAssert("Hold note path is green", () => note.SliderPath.OutlineColor == Color4.Green);
         }
 
         [Test]
