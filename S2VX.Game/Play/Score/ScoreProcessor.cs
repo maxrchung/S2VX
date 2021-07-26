@@ -70,25 +70,34 @@ namespace S2VX.Game.Play.Score {
             Miss.Reset();
         }
 
-        // Used for testing purposes only since Vector2 cannot have a default argument
-        public double ProcessHit(double scoreTime, double noteHitTime) => ProcessHit(scoreTime, noteHitTime, Vector2.Zero);
-        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) =>
-            ProcessHold(scoreTime, lastReleaseTime, isPress, noteHitTime, noteEndTime, Vector2.Zero);
+        /// <summary>
+        /// Converts current absolute cursor position to story coordinates
+        /// </summary>
+        /// <returns>Cursor position in story coordinates</returns>
+        private Vector2 GetCursorPosition() {
+            var relativePosition = (Cursor.ActiveCursor.Position - Story.DrawSize / 2) / Story.DrawWidth;
+            var camera = Story.Camera;
+            var rotatedPosition = S2VXUtils.Rotate(relativePosition, -camera.Rotation);
+            var scaledPosition = rotatedPosition * (1 / camera.Scale.X);
+            return scaledPosition + camera.Position;
+        }
 
-        public double ProcessHit(double scoreTime, double noteHitTime, Vector2 notePos) {
+        public double ProcessHit(double scoreTime, double noteHitTime) {
             var relativeTime = scoreTime - noteHitTime;
             var score = Math.Abs(scoreTime - noteHitTime);
+
+            var cursorPos = GetCursorPosition();
 
             if (relativeTime < -Notes.MissThreshold) { // Before miss
                 return 0;
 
             } else if (relativeTime < -Notes.HitThreshold) { // Early miss
                 AddScore(score);
-                UpdateMiss(noteHitTime, notePos);
+                UpdateMiss(noteHitTime, cursorPos);
 
             } else if (relativeTime < -Notes.PerfectThreshold) { // Early
                 AddScore(score);
-                Story.HitMarkers.AddMarker(notePos, Notes.EarlyColor, noteHitTime);
+                Story.HitMarkers.AddMarker(cursorPos, Notes.EarlyColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.EarlyCount;
                 AddCombo();
@@ -101,21 +110,22 @@ namespace S2VX.Game.Play.Score {
 
             } else if (relativeTime < Notes.HitThreshold) { // Late
                 AddScore(score);
-                Story.HitMarkers.AddMarker(notePos, Notes.LateColor, noteHitTime);
+                Story.HitMarkers.AddMarker(cursorPos, Notes.LateColor, noteHitTime);
                 Hit.Play();
                 ++ScoreStatistics.LateCount;
                 AddCombo();
 
             } else { // Late miss and beyond
                 AddScore(Notes.MissThreshold);
-                UpdateMiss(noteHitTime, notePos);
+                UpdateMiss(noteHitTime, cursorPos);
             }
 
             return score;
         }
 
-        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime, Vector2 notePos) {
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
             var score = 0.0;
+            var cursorPos = GetCursorPosition();
 
             if (scoreTime < noteHitTime) { // Before hold
                 // Return early so we don't update score, cursor, or hitsounds
@@ -127,9 +137,9 @@ namespace S2VX.Game.Play.Score {
                     score = scoreTime - lastReleaseTime;
                     // Only update score on press
                     AddScore(score);
-                    Story.HitMarkers.AddMarker(notePos, Notes.LateColor, lastReleaseTime);
+                    Story.HitMarkers.AddMarker(cursorPos, Notes.LateColor, lastReleaseTime);
                 } else {
-                    UpdateMiss(lastReleaseTime, notePos);
+                    UpdateMiss(lastReleaseTime, cursorPos);
                 }
 
             } else { // After hold
@@ -138,7 +148,7 @@ namespace S2VX.Game.Play.Score {
                 } else {
                     score = noteEndTime - lastReleaseTime;
                     AddScore(score);
-                    UpdateMiss(lastReleaseTime, notePos);
+                    UpdateMiss(lastReleaseTime, cursorPos);
                 }
             }
 

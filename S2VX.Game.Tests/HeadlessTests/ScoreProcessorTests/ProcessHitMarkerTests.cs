@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
-using osuTK;
 using S2VX.Game.Play.Score;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Note;
@@ -26,7 +25,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         }
 
         private void ProcessHit(double scoreTime) =>
-            AddStep("Process hit", () => ScoreProcessor.ProcessHit(scoreTime, 0, new Vector2(100, 100)));
+            AddStep("Process hit", () => ScoreProcessor.ProcessHit(scoreTime, 0));
 
         [Test]
         public void ProcessHit_PerfectHit_CreatesNoMarker() {
