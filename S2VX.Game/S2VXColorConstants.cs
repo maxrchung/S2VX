@@ -11,5 +11,7 @@ namespace S2VX.Game {
         public static Color4 White { get; } = Color4.White;
         public static Color4 LightYellow { get; } = new Color4(0.9804f, 0.9216f, 0.3961f, 1);
         public static Color4 DarkYellow { get; } = new Color4(0.6588f, 0.6235f, 0.2392f, 1);
+        public static Color4 Magenta { get; } = new Color4(1.0f, 0, 1.0f, 1);
+        public static Color4 BrightCyan { get; } = new Color4(0, 1.0f, 1.0f, 1);
     }
 }

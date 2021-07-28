@@ -11,17 +11,13 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         [Cached]
         private S2VXStory Story { get; } = new();
 
-        private Notes Notes { get; set; }
         private ScoreProcessor Processor { get; } = new();
 
         [BackgroundDependencyLoader]
         private void Load() => Add(Processor);
 
         [SetUpSteps]
-        public void SetUpSteps() {
-            Notes = Story.Notes;
-            AddStep("Reset score processor", () => Processor.Reset());
-        }
+        public void SetUpSteps() => AddStep("Reset score processor", () => Processor.Reset());
 
         private void ProcessHit(double scoreTime) =>
             AddStep("Process note", () => Processor.ProcessHit(scoreTime, 0));
