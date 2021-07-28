@@ -96,8 +96,8 @@ namespace S2VX.Game.Story.Note {
                 var lineLeft = new Line(line.StartPoint + closestCorner, line.EndPoint + closestCorner);
                 var lineRight = new Line(line.StartPoint + oppositePoint, line.EndPoint + oppositePoint);
 
-                var screenLineLeft = new Line(Vector2Extensions.Transform(
-                    lineLeft.StartPoint, DrawInfo.Matrix),
+                var screenLineLeft = new Line(
+                    Vector2Extensions.Transform(lineLeft.StartPoint, DrawInfo.Matrix),
                     Vector2Extensions.Transform(lineLeft.EndPoint, DrawInfo.Matrix)
                 );
                 var screenLineRight = new Line(
