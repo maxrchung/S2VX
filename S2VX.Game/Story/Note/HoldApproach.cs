@@ -10,6 +10,9 @@ namespace S2VX.Game.Story.Note {
 
         public Vector2 EndCoordinates { get; set; }
 
+        public List<Vector2> MidCoordinates { get; } = new() {
+        };
+
         [Resolved]
         private S2VXStory Story { get; set; } = null;
 
@@ -76,7 +79,7 @@ namespace S2VX.Game.Story.Note {
             var thickness = approaches.Thickness;
 
             var time = Time.Current;
-            var coordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
+            var coordinates = HoldNote.InterpolateCoordinates(time, HitTime, EndTime, Coordinates, MidCoordinates, EndCoordinates);
             UpdateInnerApproachPosition(coordinates, editorApproachRate);
 
             // Calculate outer approach values
