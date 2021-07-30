@@ -64,6 +64,11 @@ namespace S2VX.Game.Story.Note {
             return (Coordinates - currCoordinates) * noteWidth;
         }
 
+        protected Vector2 GetVertexEndPosition(float noteWidth, double time) {
+            var currCoordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
+            return (EndCoordinates - currCoordinates) * noteWidth;
+        }
+
         private void UpdateAnchorPath() {
             HeadAnchor.Size = Size;
             TailAnchor.Size = Size;

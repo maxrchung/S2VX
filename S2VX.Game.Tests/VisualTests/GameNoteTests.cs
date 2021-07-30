@@ -51,7 +51,7 @@ namespace S2VX.Game.Tests.VisualTests {
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddAssert("Does not trigger multiple notes", () =>
-                (originalNoteCount - 1) * Story.Notes.MissThreshold == PlayScreen.ScoreProcessor.ScoreStatistics.Score
+                (originalNoteCount - 1) * Notes.MissThreshold == PlayScreen.ScoreProcessor.ScoreStatistics.Score
             );
         }
 

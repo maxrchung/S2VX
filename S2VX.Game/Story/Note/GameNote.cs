@@ -32,7 +32,7 @@ namespace S2VX.Game.Story.Note {
         // Conditions for which a note can be clicked
         private bool IsClickable() {
             TimingError = Time.Current - HitTime;
-            var isWithinMissThreshold = Math.Abs(TimingError) <= Story.Notes.MissThreshold;
+            var isWithinMissThreshold = Math.Abs(TimingError) <= Notes.MissThreshold;
 
             // Has IsFlaggedForRemoval check to prevent race condition that can cause double flagging for removal.
             return !Story.Notes.HasPressedNote && !IsFlaggedForRemoval && IsHovered && Alpha != 0 && isWithinMissThreshold;
@@ -56,8 +56,8 @@ namespace S2VX.Game.Story.Note {
             }
 
             // Remove note if after miss threshold
-            if (Time.Current >= HitTime + Story.Notes.MissThreshold) {
-                TimingError = Story.Notes.MissThreshold;
+            if (Time.Current >= HitTime + Notes.MissThreshold) {
+                TimingError = Notes.MissThreshold;
                 FlagForRemoval();
             }
 
@@ -81,13 +81,13 @@ namespace S2VX.Game.Story.Note {
             }
             // Show time to Hit time with miss threshold time
             // Hold the note at fully visible until after MissThreshold
-            else if (time < HitTime + notes.HitThreshold) {
+            else if (time < HitTime + Notes.HitThreshold) {
                 Alpha = maxAlpha;
             }
             // Hit time with miss threshold time to Fade out time
-            else if (time < HitTime + notes.HitThreshold + notes.FadeOutTime) {
-                var startTime = HitTime + notes.HitThreshold;
-                var endTime = HitTime + notes.HitThreshold + notes.FadeOutTime;
+            else if (time < HitTime + Notes.HitThreshold + notes.FadeOutTime) {
+                var startTime = HitTime + Notes.HitThreshold;
+                var endTime = HitTime + Notes.HitThreshold + notes.FadeOutTime;
                 Alpha = S2VXUtils.ClampedInterpolation(time, maxAlpha, 0.0f, startTime, endTime);
             } else {
                 Alpha = 0;

@@ -11,21 +11,14 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         [Cached]
         private S2VXStory Story { get; } = new();
 
-        private Notes Notes { get; set; }
         private ScoreProcessor ScoreProcessor { get; } = new();
 
         [BackgroundDependencyLoader]
         private void Load() => Add(ScoreProcessor);
 
         [SetUpSteps]
-        public void SetUpSteps() {
-            // Tried to put this line into Load() but ran into an issue where if
-            // I ran a test by itself through the Test Explorer, the Load()
-            // wasn't triggered correctly
-            Notes = Story.Notes;
-
+        public void SetUpSteps() =>
             AddStep("Reset score processor", () => ScoreProcessor.Reset());
-        }
 
         private void ProcessHit(double scoreTime) =>
             AddStep("Process note", () => ScoreProcessor.ProcessHit(scoreTime, 0));

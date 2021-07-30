@@ -31,14 +31,14 @@ namespace S2VX.Game {
             var n1 = v1.Normalized();
             var n2 = v2.Normalized();
 
-            if (n1 == n2) {
+            if (Precision.AlmostEquals(n1, n2)) {
                 return 0;
             }
 
             var dot = Vector2.Dot(n1, n2);
-            Math.Clamp(dot, -1.0f, 1.0f);
+            var clamped = Math.Clamp(dot, -1.0f, 1.0f);
 
-            var rot = Math.Acos(dot);
+            var rot = Math.Acos(clamped);
 
             // Use cross vector3 to determine direction
             var cross = Vector3.Cross(new Vector3(n1.X, n1.Y, 0), new Vector3(n2.X, n2.Y, 0));
