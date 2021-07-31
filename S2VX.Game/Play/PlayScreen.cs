@@ -117,7 +117,7 @@ namespace S2VX.Game.Play {
                 VolumeDisplay.VolumeDecrease();
             }
             VolumeDisplay.UpdateDisplay();
-            return false;
+            return true;
         }
 
         public override bool OnExiting(IScreen next) {

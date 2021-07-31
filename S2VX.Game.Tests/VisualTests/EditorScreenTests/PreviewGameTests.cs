@@ -9,6 +9,9 @@ using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
     public class PreviewGameTests : S2VXTestScene {
+        [Cached]
+        private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
+
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             var storyPath = Path.Combine("VisualTests", "EditorScreenTests", "ValidStory.s2ry");
