@@ -3,8 +3,10 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Screens;
 using osu.Framework.Testing;
+using osu.Framework.Utils;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
+using System;
 using System.IO;
 
 namespace S2VX.Game.Tests.VisualTests {
@@ -28,37 +30,36 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         [SetUpSteps]
-        private void SetUpSteps() => AddStep("Reset volume to 0", () => Audio.Volume.Value = 0);
+        private void SetUpSteps() => AddStep("Reset volume to 0.5", () => Audio.Volume.Value = 0.5d);
 
-        [Test]
-        public void GlobalVolumeDisplay_ScrollWheelUp_VolumeIsTen() {
-            AddStep("Move mouse over song selection screen", () => InputManager.MoveMouseTo(PlayScreen));
-            AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-            AddAssert("Volume is 0.1", () => Audio.Volume.Value == 0.1);
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)] // Tests scrolling up after reaching maximum volume
+        public void GlobalVolumeDisplay_ScrollWheelUp_VolumeIsCorrect(int numScrolls) {
+            AddStep("Move mouse over playScreen", () => InputManager.MoveMouseTo(PlayScreen));
+            for (var i = 0; i < numScrolls; ++i) {
+                AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
+            }
+            var expectedVol = Math.Clamp(0.5 + 0.1 * numScrolls, 0d, 1d);
+            AddAssert($"Volume is {expectedVol}", () => Precision.AlmostEquals(Audio.Volume.Value, expectedVol));
         }
 
-        //[TestCase(1)]
-        //[TestCase(2)]
-        //[TestCase(3)]
-        //[TestCase(4)]
-        //[TestCase(5)]
-        //[TestCase(6)]
-        //[TestCase(7)] // Tests scrolling up after reaching maximum AR
-        //public void EditorApproachRateDisplay_ScrollWheelUp_ApproachRateIsCorrect(int numScrolls) {
-        //    AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
-        //    for (var i = 0; i < numScrolls; ++i) {
-        //        AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
-        //    }
-        //    var expectedAR = Math.Clamp(Math.Pow(2, numScrolls), 1, 64);
-        //    AddAssert($"Editor approach rate is {expectedAR}", () => Editor.EditorApproachRate == expectedAR);
-        //}
-
-        //[Test]
-        //public void EditorApproachRateDisplay_ScrollWheelDownTwoTimes_ApproachRateIsStillOne() {
-        //    AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
-        //    AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
-        //    AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
-        //    AddAssert("Editor approach rate is 1", () => Editor.EditorApproachRate == 1);
-        //}
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)] // Tests scrolling down after reaching minimum volume
+        public void GlobalVolumeDisplay_ScrollWheelDown_VolumeIsCorrect(int numScrolls) {
+            AddStep("Move mouse over playScreen", () => InputManager.MoveMouseTo(PlayScreen));
+            for (var i = 0; i < numScrolls; ++i) {
+                AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
+            }
+            var expectedVol = Math.Clamp(0.5 - 0.1 * numScrolls, 0d, 1d);
+            AddAssert($"Volume is {expectedVol}", () => Precision.AlmostEquals(Audio.Volume.Value, expectedVol));
+        }
     }
 }
