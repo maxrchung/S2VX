@@ -25,7 +25,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [TestCase(4)]
         [TestCase(5)]
         [TestCase(6)] // Tests scrolling up after reaching maximum volume
-        public void GlobalVolume_IncreaseVolume_VolumeIsTen(int numScrolls) {
+        public void GlobalVolume_IncreaseVolume_VolumeIsCorrect(int numScrolls) {
             for (var i = 0; i < numScrolls; ++i) {
                 AddStep("Increase volume once", () => VolumeDisplay.VolumeIncrease());
             }
@@ -39,7 +39,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [TestCase(4)]
         [TestCase(5)]
         [TestCase(6)] // Tests scrolling down after reaching minimum volume
-        public void GlobalVolumeDisplay_ScrollWheelUp_VolumeIsTeasn(int numScrolls) {
+        public void GlobalVolume_DecreaseVolume_VolumeIsCorrect(int numScrolls) {
             for (var i = 0; i < numScrolls; ++i) {
                 AddStep("Decrease volume once", () => VolumeDisplay.VolumeDecrease());
             }
