@@ -17,9 +17,6 @@ namespace S2VX.Game.Tests.VisualTests {
         private AudioManager Audio { get; set; }
 
         [Cached]
-        private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
-
-        [Cached]
         private ScreenStack ScreenStack { get; } = new();
         private SongSelectionScreen SongSelectionScreen { get; } = new();
 

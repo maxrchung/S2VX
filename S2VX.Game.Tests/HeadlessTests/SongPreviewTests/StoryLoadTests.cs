@@ -11,9 +11,6 @@ namespace S2VX.Game.Tests.HeadlessTests.SongPreviewTests {
         [Cached]
         private ScreenStack Screens { get; set; } = new();
 
-        [Cached]
-        private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
-
         private SongPreview SongPreview { get; set; }
         private static string StoryDirectory { get; } = Path.Combine("HeadlessTests", "SongPreviewTests");
         private static string AudioFileName { get; } = "1-second-of-silence.mp3";

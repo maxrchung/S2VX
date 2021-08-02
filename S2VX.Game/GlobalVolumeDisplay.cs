@@ -19,7 +19,7 @@ namespace S2VX.Game {
             Y = -CornerPadding - 5
         };
 
-        private const float DisplayWidth = S2VXGameBase.GameWidth / 7.45f;
+        private const float DisplayWidth = S2VXGameBase.GameWidth / 7;
         private const float DisplayHeight = S2VXGameBase.GameWidth / 30;
         private const int CornerPadding = 40;
 

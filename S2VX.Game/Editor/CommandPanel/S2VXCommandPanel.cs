@@ -189,7 +189,7 @@ namespace S2VX.Game.Editor.CommandPanel {
             LoadCommandsList();
             Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
-                new BasicScrollContainer
+                new S2VXScrollContainer
                 {
                     // This is so mega fucked?
                     Position = new Vector2(0, InputBarHeight),

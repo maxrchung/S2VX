@@ -20,9 +20,6 @@ namespace S2VX.Game.Tests.HeadlessTests.S2VXCursorTests {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        [Cached]
-        private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
-
         private string AudioPath { get; } = Path.Combine("TestTracks", "1-second-of-silence.mp3");
         private EditorScreen EditorScreen { get; set; }
         private PlayScreen PlayScreen { get; set; }

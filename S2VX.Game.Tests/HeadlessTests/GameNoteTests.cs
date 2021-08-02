@@ -18,8 +18,6 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Resolved]
         private AudioManager Audio { get; set; }
 
-        [Cached]
-        private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
         private S2VXStory Story { get; set; } = new S2VXStory();
         private StopwatchClock Stopwatch { get; set; }
         private PlayScreen PlayScreen { get; set; }
