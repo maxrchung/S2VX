@@ -5,9 +5,6 @@ namespace S2VX.Game {
     public class S2VXScrollContainer : BasicScrollContainer {
         public S2VXScrollContainer() { }
 
-        protected override bool OnScroll(ScrollEvent e) {
-            base.OnScroll(e);
-            return false;
-        }
+        protected override bool OnScroll(ScrollEvent e) => !e.AltPressed && base.OnScroll(e);
     }
 }
