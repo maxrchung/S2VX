@@ -330,12 +330,15 @@ namespace S2VX.Game.Editor {
         }
 
         protected override bool OnScroll(ScrollEvent e) {
-            if (e.ScrollDelta.Y > 0) {
-                NotesTimeline.SnapToTick(true);
-            } else {
-                NotesTimeline.SnapToTick(false);
+            if (!e.AltPressed) {
+                if (e.ScrollDelta.Y > 0) {
+                    NotesTimeline.SnapToTick(true);
+                } else {
+                    NotesTimeline.SnapToTick(false);
+                }
+                return true;
             }
-            return true;
+            return false;
         }
 
         public override bool OnExiting(IScreen next) {
