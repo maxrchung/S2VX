@@ -449,10 +449,7 @@ namespace S2VX.Game.Editor {
 
         // Note that Volume is set in a special framework.ini that is unique to your computer,
         // for example my path is: C:\Users\Wax Chug da Gwad\AppData\Roaming\S2VX\framework.ini
-        private void VolumeSet(double volume = 1.0) {
-            Audio.Volume.Value = volume;
-            EditorInfoBar.VolumeDisplay.UpdateDisplay();
-        }
+        private void VolumeSet(double volume = 1.0) => Audio.Volume.Value = volume;
 
         public void VolumeIncrease(double step = 0.1) => VolumeSet(Audio.Volume.Value + step);
 
