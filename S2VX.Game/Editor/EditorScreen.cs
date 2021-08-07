@@ -159,8 +159,6 @@ namespace S2VX.Game.Editor {
                             new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
                             new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
                             new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
-                            new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
-                            new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
                             new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
                             new MenuItem("Decrease Editor Approach Rate (MouseWheelDown over Approach Rate)", ApproachRateDecrease),
