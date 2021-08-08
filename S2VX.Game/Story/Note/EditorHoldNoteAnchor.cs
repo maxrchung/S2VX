@@ -10,7 +10,6 @@ namespace S2VX.Game.Story.Note {
 
         public EditorHoldNoteAnchor(EditorHoldNote note) {
             Colour = S2VXColorConstants.BrickRed;
-            RelativeSizeAxes = Axes.Both;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             Note = note;

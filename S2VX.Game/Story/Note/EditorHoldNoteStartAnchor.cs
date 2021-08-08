@@ -11,13 +11,13 @@ namespace S2VX.Game.Story.Note {
         public EditorHoldNoteStartAnchor(EditorHoldNote note) : base(note) { }
 
         protected override bool OnDragStart(DragStartEvent e) {
-            OldCoords = Note.EndCoordinates;
+            OldCoords = Note.Coordinates;
             return true;
         }
 
-        protected override void OnDrag(DragEvent e) => Note.UpdateEndCoordinates(Editor.MousePosition);
+        protected override void OnDrag(DragEvent e) => Note.UpdateCoordinates(Editor.MousePosition);
 
         protected override void OnDragEnd(DragEndEvent e) =>
-            Editor.Reversibles.Push(new ReversibleUpdateHoldNoteEndCoordinates(Note, OldCoords, Editor.MousePosition));
+            Editor.Reversibles.Push(new ReversibleUpdateNoteCoordinates(Note, OldCoords, Editor.MousePosition));
     }
 }
