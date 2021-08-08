@@ -25,12 +25,12 @@ namespace S2VX.Game.Story.Note {
         private void Load(AudioManager audio) {
             Hit = new("hit", audio);
             HitSoundTimes = new() { HitTime, EndTime };
-            HeadAnchor = new(this, true);
-            TailAnchor = new(this, false);
+            StartAnchor = new(this);
+            EndAnchor = new(this);
             AddInternal(AnchorPath);
-            AddInternal(HeadAnchor);
+            AddInternal(StartAnchor);
             AddInternal(MidAnchors);
-            AddInternal(TailAnchor);
+            AddInternal(EndAnchor);
         }
 
         private Path AnchorPath { get; set; } = new() {
@@ -38,11 +38,11 @@ namespace S2VX.Game.Story.Note {
             PathRadius = EditorHoldNoteAnchor.AnchorWidth / 2.0f
         };
 
-        private EditorHoldNoteAnchor HeadAnchor { get; set; }
+        private EditorHoldNoteStartAnchor StartAnchor { get; set; }
 
-        private EditorHoldNoteAnchor TailAnchor { get; set; }
+        private EditorHoldNoteEndAnchor EndAnchor { get; set; }
 
-        public Container<EditorHoldNoteAnchor> MidAnchors { get; } = new() {
+        public Container<EditorHoldNoteMidAnchor> MidAnchors { get; } = new() {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre
         };
@@ -68,13 +68,19 @@ namespace S2VX.Game.Story.Note {
             HoldApproach.EndCoordinates = EndCoordinates;
         }
 
+        public void UpdateMidCoordinates(Vector2 coordinates, int index) {
+            MidCoordinates[index] = coordinates;
+            HoldApproach.MidCoordinates[index] = coordinates;
+        }
+
         private void UpdateAnchorPath() {
-            // Dynamically add mid anchors since this could be changed during preview
-            // Note that we do not handle removal of anchors
+            // Dynamically add mid anchors since this could be changed during
+            // preview creation. Note that we are making some assumptions of how
+            // anchors work here, namely that mid anchors are only added to and
+            // never removed.
             if (MidCoordinates.Count > MidAnchors.Count) {
                 for (var i = 0; i < MidCoordinates.Count; ++i) {
-                    var midAnchor = new EditorHoldNoteAnchor(this, true);
-                    MidAnchors.Add(midAnchor);
+                    MidAnchors.Add(new(this, i));
                 }
             }
 
@@ -85,7 +91,7 @@ namespace S2VX.Game.Story.Note {
             var currCoordinates = InterpolateCoordinates(time, HitTime, EndTime, Coordinates, MidCoordinates, EndCoordinates);
 
             var vertices = new List<Vector2>() { (Coordinates - currCoordinates) * noteWidth };
-            HeadAnchor.Position = vertices.First();
+            StartAnchor.Position = vertices.First();
             for (var i = 0; i < MidCoordinates.Count; ++i) {
                 var midCoordinates = MidCoordinates[i];
                 var offsetPosition = (midCoordinates - currCoordinates) * noteWidth;
@@ -93,7 +99,7 @@ namespace S2VX.Game.Story.Note {
                 MidAnchors[i].Position = offsetPosition;
             }
             vertices.Add((EndCoordinates - currCoordinates) * noteWidth);
-            TailAnchor.Position = vertices.Last();
+            EndAnchor.Position = vertices.Last();
 
             AnchorPath.Vertices = vertices;
             // Explained in HoldNote.cs UpdateSliderPath() Lol
