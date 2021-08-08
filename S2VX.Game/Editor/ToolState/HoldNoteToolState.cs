@@ -46,17 +46,21 @@ namespace S2VX.Game.Editor.ToolState {
                 if (e.Button == MouseButton.Left) {
                     Preview.MidCoordinates.Add(Editor.MousePosition);
                 } else if (e.Button == MouseButton.Right) {
-                    var note = new EditorHoldNote {
-                        Coordinates = Preview.Coordinates,
-                        HitTime = Preview.HitTime,
-                        EndTime = endTime,
-                        EndCoordinates = Editor.MousePosition,
-                    };
-                    note.MidCoordinates.AddRange(Preview.MidCoordinates);
-                    Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
+                    AddHoldNote(endTime);
                     IsRecording = !IsRecording;
                 }
             }
+        }
+
+        private void AddHoldNote(double endTime) {
+            var note = new EditorHoldNote {
+                Coordinates = Preview.Coordinates,
+                HitTime = Preview.HitTime,
+                EndTime = endTime,
+                EndCoordinates = Editor.MousePosition,
+            };
+            note.MidCoordinates.AddRange(Preview.MidCoordinates);
+            Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
         }
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
