@@ -98,7 +98,7 @@ namespace S2VX.Game.SongSelection {
                         Height = fullHeight,
                         InnerBoxRelativeSize = innerSize,
                     },
-                    new BasicScrollContainer {
+                    new S2VXScrollContainer {
                         Width = fullWidth * innerSize,
                         Height = fullHeight * innerSize,
                         Margin = new MarginPadding {

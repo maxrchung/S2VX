@@ -42,12 +42,6 @@ namespace S2VX.Game.Editor.Containers {
             TextAnchor = Anchor.TopCentre,
         };
 
-        public VolumeDisplay VolumeDisplay { get; } = new() {
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-            TextAnchor = Anchor.TopRight,
-        };
-
         public const float InfoBarHeight = 0.03f;
         public const float InfoBarWidth = 1.0f;
 
@@ -65,7 +59,6 @@ namespace S2VX.Game.Editor.Containers {
                 ToolDisplay,
                 NoteSnapDivisorDisplay,
                 MousePositionDisplay,
-                VolumeDisplay,
                 ApproachRateDisplay
             };
         }
@@ -74,7 +67,6 @@ namespace S2VX.Game.Editor.Containers {
             ToolDisplay.UpdateDisplay();
             NoteSnapDivisorDisplay.UpdateDisplay();
             MousePositionDisplay.UpdateDisplay();
-            VolumeDisplay.UpdateDisplay();
             ApproachRateDisplay.UpdateDisplay();
         }
     }

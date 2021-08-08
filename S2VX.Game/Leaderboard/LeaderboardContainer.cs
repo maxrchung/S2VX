@@ -11,7 +11,7 @@ using System.Globalization;
 using System.IO;
 
 namespace S2VX.Game.Leaderboard {
-    public class LeaderboardContainer : BasicScrollContainer {
+    public class LeaderboardContainer : S2VXScrollContainer {
 
         private const string DefaultLeaderboardFileName = "leaderboard.json";
         public string LeaderboardPath { get; }
