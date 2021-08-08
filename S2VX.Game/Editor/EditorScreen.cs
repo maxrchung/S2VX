@@ -159,8 +159,6 @@ namespace S2VX.Game.Editor {
                             new MenuItem("Increase Beat Snap Divisor (Ctrl+Shift+])", PlaybackIncreaseBeatDivisor),
                             new MenuItem("Decrease Playback Speed (Down, MouseWheelDown over Speed)", PlaybackDecreaseRate),
                             new MenuItem("Increase Playback Speed (Up,  MouseWheelUp over Speed)", PlaybackIncreaseRate),
-                            new MenuItem("Decrease Volume (MouseWheelDown over Volume)", VolumeDecrease),
-                            new MenuItem("Increase Volume (MouseWheelUp over Volume)", VolumeIncrease),
                             new MenuItem("Decrease Snapping Divisor (MouseWheelDown over Snap Divisor)", SnapDivisorDecrease),
                             new MenuItem("Increase Snapping Divisor (MouseWheelUp over Snap Divisor)", SnapDivisorIncrease),
                             new MenuItem("Decrease Editor Approach Rate (MouseWheelDown over Approach Rate)", ApproachRateDecrease),
@@ -330,12 +328,15 @@ namespace S2VX.Game.Editor {
         }
 
         protected override bool OnScroll(ScrollEvent e) {
-            if (e.ScrollDelta.Y > 0) {
-                NotesTimeline.SnapToTick(true);
-            } else {
-                NotesTimeline.SnapToTick(false);
+            if (!e.AltPressed) {
+                if (e.ScrollDelta.Y > 0) {
+                    NotesTimeline.SnapToTick(true);
+                } else {
+                    NotesTimeline.SnapToTick(false);
+                }
+                return true;
             }
-            return true;
+            return false;
         }
 
         public override bool OnExiting(IScreen next) {
@@ -446,10 +447,7 @@ namespace S2VX.Game.Editor {
 
         // Note that Volume is set in a special framework.ini that is unique to your computer,
         // for example my path is: C:\Users\Wax Chug da Gwad\AppData\Roaming\S2VX\framework.ini
-        private void VolumeSet(double volume = 1.0) {
-            Audio.Volume.Value = volume;
-            EditorInfoBar.VolumeDisplay.UpdateDisplay();
-        }
+        private void VolumeSet(double volume = 1.0) => Audio.Volume.Value = volume;
 
         public void VolumeIncrease(double step = 0.1) => VolumeSet(Audio.Volume.Value + step);
 

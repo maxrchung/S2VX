@@ -4,6 +4,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor.Reversible;
@@ -189,7 +190,7 @@ namespace S2VX.Game.Editor.CommandPanel {
             LoadCommandsList();
             Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
-                new BasicScrollContainer
+                new S2VXScrollContainer
                 {
                     // This is so mega fucked?
                     Position = new Vector2(0, InputBarHeight),
@@ -209,6 +210,8 @@ namespace S2VX.Game.Editor.CommandPanel {
                 }
             };
         }
+
+        protected override bool OnScroll(ScrollEvent e) => false;
 
         protected override void PopIn() => this.FadeIn(100);
 

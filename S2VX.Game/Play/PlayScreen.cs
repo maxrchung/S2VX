@@ -29,6 +29,9 @@ namespace S2VX.Game.Play {
         public Bindable<bool> ConfigHitErrorBarVisibility { get; set; } = new();
         public Bindable<bool> ConfigScoreVisibility { get; set; } = new();
 
+        [Resolved]
+        private GlobalVolumeDisplay VolumeDisplay { get; set; }
+
         public PlayScreen(bool isUsingEditorSettings, S2VXStory story, DrawableTrack track) {
             IsUsingEditorSettings = isUsingEditorSettings;
             Story = story;
@@ -76,7 +79,7 @@ namespace S2VX.Game.Play {
                 },
                 Track,
                 HitErrorBar,
-                ScoreProcessor,
+                ScoreProcessor
             };
 
             Track.Start();
@@ -105,6 +108,16 @@ namespace S2VX.Game.Play {
                     return true;
             }
             return false;
+        }
+
+        protected override bool OnScroll(ScrollEvent e) {
+            if (e.ScrollDelta.Y > 0) {
+                VolumeDisplay.VolumeIncrease();
+            } else {
+                VolumeDisplay.VolumeDecrease();
+            }
+            VolumeDisplay.UpdateDisplay();
+            return true;
         }
 
         public override bool OnExiting(IScreen next) {
