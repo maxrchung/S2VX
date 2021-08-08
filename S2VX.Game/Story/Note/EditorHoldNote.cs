@@ -1,11 +1,13 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Lines;
 using osuTK;
 using S2VX.Game.Editor;
 using S2VX.Game.Editor.Reversible;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace S2VX.Game.Story.Note {
     public class EditorHoldNote : HoldNote {
@@ -27,16 +29,23 @@ namespace S2VX.Game.Story.Note {
             TailAnchor = new(this, false);
             AddInternal(AnchorPath);
             AddInternal(HeadAnchor);
+            AddInternal(MidAnchors);
             AddInternal(TailAnchor);
         }
 
         private Path AnchorPath { get; set; } = new() {
             Anchor = Anchor.Centre,
+            PathRadius = EditorHoldNoteAnchor.AnchorWidth / 2.0f
         };
 
         private EditorHoldNoteAnchor HeadAnchor { get; set; }
 
         private EditorHoldNoteAnchor TailAnchor { get; set; }
+
+        public Container<EditorHoldNoteAnchor> MidAnchors { get; } = new() {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre
+        };
 
         public override void UpdateHitTime(double hitTime) {
             EndTime = hitTime + EndTime - HitTime;
@@ -59,35 +68,33 @@ namespace S2VX.Game.Story.Note {
             HoldApproach.EndCoordinates = EndCoordinates;
         }
 
-        private Vector2 GetVertexStartPosition(float noteWidth, double time) {
-            var currCoordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
-            return (Coordinates - currCoordinates) * noteWidth;
-        }
-
-        protected Vector2 GetVertexEndPosition(float noteWidth, double time) {
-            var currCoordinates = S2VXUtils.ClampedInterpolation(time, Coordinates, EndCoordinates, HitTime, EndTime);
-            return (EndCoordinates - currCoordinates) * noteWidth;
-        }
-
         private void UpdateAnchorPath() {
-            HeadAnchor.Size = Size;
-            TailAnchor.Size = Size;
+            // Dynamically add mid anchors since this could be changed during preview
+            // Note that we do not handle removal of anchors
+            if (MidCoordinates.Count > MidAnchors.Count) {
+                for (var i = 0; i < MidCoordinates.Count; ++i) {
+                    var midAnchor = new EditorHoldNoteAnchor(this, true);
+                    MidAnchors.Add(midAnchor);
+                }
+            }
 
             var time = Time.Current;
             var drawWidth = S2VXGameBase.GameWidth;
-            AnchorPath.PathRadius = OutlineThickness * drawWidth / 2;
             var camera = Story.Camera;
             var noteWidth = camera.Scale.X * drawWidth;
-            var endPosition = GetVertexEndPosition(noteWidth, time);
-            var startPosition = GetVertexStartPosition(noteWidth, time);
+            var currCoordinates = InterpolateCoordinates(time, HitTime, EndTime, Coordinates, MidCoordinates, EndCoordinates);
 
-            var vertices = new List<Vector2>() {
-                startPosition,
-                endPosition,
-            };
+            var vertices = new List<Vector2>() { (Coordinates - currCoordinates) * noteWidth };
+            HeadAnchor.Position = vertices.First();
+            for (var i = 0; i < MidCoordinates.Count; ++i) {
+                var midCoordinates = MidCoordinates[i];
+                var offsetPosition = (midCoordinates - currCoordinates) * noteWidth;
+                vertices.Add(offsetPosition);
+                MidAnchors[i].Position = offsetPosition;
+            }
+            vertices.Add((EndCoordinates - currCoordinates) * noteWidth);
+            TailAnchor.Position = vertices.Last();
 
-            HeadAnchor.Position = startPosition;
-            TailAnchor.Position = endPosition;
             AnchorPath.Vertices = vertices;
             // Explained in HoldNote.cs UpdateSliderPath() Lol
             AnchorPath.Position = -AnchorPath.PositionInBoundingBox(Vector2.Zero);

@@ -37,26 +37,24 @@ namespace S2VX.Game.Editor.ToolState {
 
         public override void OnToolMouseUp(MouseUpEvent e) {
             if (!IsRecording) {
-                Preview.HitTime = Time.Current;
-                Preview.Coordinates = Editor.MousePosition;
-                Preview.MidCoordinates.Clear();
                 IsRecording = true;
-            } else {
-                var endTime = Time.Current;
-                if (endTime > Preview.HitTime) {
-                    if (e.Button == MouseButton.Left) {
-                        Preview.MidCoordinates.Add(Editor.MousePosition);
-                    } else if (e.Button == MouseButton.Right) {
-                        var note = new EditorHoldNote {
-                            Coordinates = Preview.Coordinates,
-                            HitTime = Preview.HitTime,
-                            EndTime = endTime,
-                            EndCoordinates = Editor.MousePosition,
-                        };
-                        note.MidCoordinates.AddRange(Preview.MidCoordinates);
-                        Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
-                        IsRecording = !IsRecording;
-                    }
+                return;
+            }
+
+            var endTime = Time.Current;
+            if (endTime > Preview.HitTime) {
+                if (e.Button == MouseButton.Left) {
+                    Preview.MidCoordinates.Add(Editor.MousePosition);
+                } else if (e.Button == MouseButton.Right) {
+                    var note = new EditorHoldNote {
+                        Coordinates = Preview.Coordinates,
+                        HitTime = Preview.HitTime,
+                        EndTime = endTime,
+                        EndCoordinates = Editor.MousePosition,
+                    };
+                    note.MidCoordinates.AddRange(Preview.MidCoordinates);
+                    Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
+                    IsRecording = !IsRecording;
                 }
             }
         }
@@ -89,6 +87,7 @@ namespace S2VX.Game.Editor.ToolState {
                 Preview.Coordinates = Editor.MousePosition;
                 Preview.EndCoordinates = Editor.MousePosition;
                 Preview.MidCoordinates.Clear();
+                Preview.MidAnchors.Clear();
             }
         }
 

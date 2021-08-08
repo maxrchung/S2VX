@@ -8,6 +8,8 @@ using S2VX.Game.Editor.Reversible;
 
 namespace S2VX.Game.Story.Note {
     public class EditorHoldNoteAnchor : Box {
+        public static int AnchorWidth { get; } = 10;
+
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
         private EditorHoldNote Note { get; set; }
@@ -16,11 +18,11 @@ namespace S2VX.Game.Story.Note {
 
         public EditorHoldNoteAnchor(EditorHoldNote note, bool isHead) {
             Colour = S2VXColorConstants.BrickRed;
-            RelativeSizeAxes = Axes.Both;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             Note = note;
             IsHead = isHead;
+            Size = new(AnchorWidth);
         }
 
         protected override bool OnDragStart(DragStartEvent e) {
