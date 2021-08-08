@@ -76,7 +76,7 @@ namespace S2VX.Game.Story.Note {
         private void UpdateAnchorPath() {
             // Dynamically add mid anchors since this could be changed during
             // preview creation. Note that we are making some assumptions of how
-            // anchors work here, namely that mid anchors are only added to and
+            // anchors work here, namely that mid anchors are only added and
             // never removed.
             if (MidCoordinates.Count > MidAnchors.Count) {
                 for (var i = 0; i < MidCoordinates.Count; ++i) {
