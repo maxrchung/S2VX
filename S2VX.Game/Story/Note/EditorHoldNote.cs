@@ -163,6 +163,7 @@ namespace S2VX.Game.Story.Note {
                 EndTime = EndTime,
                 EndCoordinates = EndCoordinates
             };
+            approach.MidCoordinates.AddRange(MidCoordinates);
             Approach = approach;
             return approach;
         }
