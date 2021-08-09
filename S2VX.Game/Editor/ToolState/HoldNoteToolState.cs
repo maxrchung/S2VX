@@ -96,6 +96,6 @@ namespace S2VX.Game.Editor.ToolState {
         }
 
         public override string DisplayName() =>
-            IsRecording ? "Hold Note (Click to End, Esc to Cancel)" : "Hold Note (Click to Start)";
+            IsRecording ? "Hold Note (LClick) Add, (RClick) End, (Esc) Cancel" : "Hold Note (Click to Start)";
     }
 }
