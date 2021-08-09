@@ -13,14 +13,12 @@ using System.Linq;
 namespace S2VX.Game.Tests.VisualTests {
     public class HoldNoteToolStateTests : S2VXTestScene {
         private EditorScreen Editor { get; set; }
-        private S2VXTrack Track { get; set; }
         private S2VXStory Story { get; set; } = new();
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio) {
             var audioPath = Path.Combine("TestTracks", "1-minute-of-silence.mp3");
-            Track = S2VXTrack.Open(audioPath, audio);
-            Add(new ScreenStack(Editor = new(Story, Track)));
+            Add(new ScreenStack(Editor = new(Story, S2VXTrack.Open(audioPath, audio))));
         }
 
         [SetUpSteps]
@@ -67,19 +65,17 @@ namespace S2VX.Game.Tests.VisualTests {
         private void Undo() =>
             AddStep("Undo", () => {
                 InputManager.PressKey(Key.ControlLeft);
-                InputManager.PressKey(Key.Z);
+                InputManager.Key(Key.Z);
                 InputManager.ReleaseKey(Key.ControlLeft);
-                InputManager.ReleaseKey(Key.Z);
             });
 
         private void Redo() =>
             AddStep("Redo", () => {
                 InputManager.PressKey(Key.ControlLeft);
                 InputManager.PressKey(Key.ShiftLeft);
-                InputManager.PressKey(Key.Z);
+                InputManager.Key(Key.Z);
                 InputManager.ReleaseKey(Key.ControlLeft);
                 InputManager.ReleaseKey(Key.ShiftLeft);
-                InputManager.ReleaseKey(Key.Z);
             });
 
         [Test]

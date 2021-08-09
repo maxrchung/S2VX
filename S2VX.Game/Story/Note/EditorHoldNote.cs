@@ -38,9 +38,9 @@ namespace S2VX.Game.Story.Note {
             PathRadius = EditorHoldNoteAnchor.AnchorWidth / 2.0f
         };
 
-        private EditorHoldNoteStartAnchor StartAnchor { get; set; }
+        public EditorHoldNoteStartAnchor StartAnchor { get; private set; }
 
-        private EditorHoldNoteEndAnchor EndAnchor { get; set; }
+        public EditorHoldNoteEndAnchor EndAnchor { get; private set; }
 
         public Container<EditorHoldNoteMidAnchor> MidAnchors { get; } = new() {
             Anchor = Anchor.Centre,
