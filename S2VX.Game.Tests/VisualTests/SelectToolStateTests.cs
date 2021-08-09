@@ -14,16 +14,6 @@ using System.Linq;
 
 namespace S2VX.Game.Tests.VisualTests {
     public class SelectToolStateTests : S2VXTestScene {
-        // With hold note, adjust start point - start point modified
-        // Ctrl+z - start point removed
-        // Ctrl+shift+z - start point readded
-        // With hold note, adjust end point - end point modified
-        // Ctrl+z - end point removed
-        // Ctrl+shift+z - end point readded
-        // With hold note with multiple mid coordinates, adjust mid coordinate - mid coordinate modified
-        // Ctrl+z - mid point removed
-        // Ctrl+shift+z - mid point readded
-
         private EditorScreen Editor { get; set; }
         private S2VXStory Story { get; set; } = new();
         private EditorHoldNote HoldNote { get; set; }
