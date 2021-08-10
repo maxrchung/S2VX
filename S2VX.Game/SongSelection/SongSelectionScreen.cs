@@ -11,12 +11,19 @@ using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace S2VX.Game.SongSelection {
     public class SongSelectionScreen : Screen {
+        [Resolved]
+        private S2VXGameBase GameBase { get; set; }
+
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         [Resolved]
         private AudioManager Audio { get; set; }
 
@@ -77,6 +84,17 @@ namespace S2VX.Game.SongSelection {
             return false;
         }
 
+        /// <summary>
+        /// Creates a new story from template with the specified filepath
+        /// </summary>
+        /// <param name="filePath">The mp3 audio file to use for this new story</param>
+        public void Import(string filePath) {
+            if (Screens.CurrentScreen == this) {
+                Console.WriteLine(CurSelectionPath + " is importing " + filePath);
+                Audio.Samples.Get("menuhit").Play();
+            }
+        }
+
         [BackgroundDependencyLoader]
         private void Load() {
             Storage = new NativeStorage(CurSelectionPath);
@@ -85,6 +103,7 @@ namespace S2VX.Game.SongSelection {
                 Directory.CreateDirectory(CurSelectionPath);
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
+            GameBase.RegisterImportHandler(this);
 
             var fullWidth = S2VXGameBase.GameWidth;
             var fullHeight = S2VXGameBase.GameWidth;
@@ -143,6 +162,11 @@ namespace S2VX.Game.SongSelection {
                     };
                 }
             }
+        }
+
+        protected override void Dispose(bool isDisposing) {
+            base.Dispose(isDisposing);
+            GameBase?.UnregisterImportHandler(this);
         }
     }
 }
