@@ -13,6 +13,8 @@ using System.IO;
 using System.Linq;
 
 namespace S2VX.Game.Tests.HeadlessTests {
+    // We are writing these as HeadlessTest because we precisely manipulate time
+    // with the StopwatchClock.
     [HeadlessTest]
     public class GameHoldNoteTests : S2VXTestScene {
         private S2VXStory Story { get; set; } = new S2VXStory();
@@ -386,6 +388,33 @@ namespace S2VX.Game.Tests.HeadlessTests {
             PressAndRelease(50, 200);
             PressAndRelease(600, 100);
             AddAssert("Plays 2 miss sounds", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 2);
+        }
+
+        [Test]
+        public void OnPress_MouseNotOverEndCoordinates_HasFullScore() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            // We need to temporarily seek to the middle somewhere so that the
+            // note can update its position. If we try to immediately seek to
+            // 1001 and assert the score, the note still thinks that the cursor
+            // is hovered over itself and will register the hit as successful.
+            AddStep("Seek to middle", () => Stopwatch.Seek(500));
+            AddStep("Seek to end", () => Stopwatch.Seek(1001));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000);
+        }
+
+
+        [Test]
+        public void OnPress_MouseNotOverEndCoordinates_PlaysMissSound() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Seek to middle", () => Stopwatch.Seek(500));
+            AddStep("Seek to end", () => Stopwatch.Seek(1001));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Plays miss sound", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 1);
         }
     }
 }

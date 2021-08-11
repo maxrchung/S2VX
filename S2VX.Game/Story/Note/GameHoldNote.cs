@@ -189,14 +189,12 @@ namespace S2VX.Game.Story.Note {
                 case HoldNoteState.VisibleAfter:
                     if (!IsEndScored) {
                         IsEndScored = true;
-                        switch (LastAction) {
-                            case Action.None: // There was never any action, entire hold note was missed
-                            case Action.Release: // Early release
-                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime);
-                                break;
-                            case Action.Press: // There was no early release, no scoring is needed
-                                ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime);
-                                break;
+                        if (LastAction == Action.Press && IsHovered) { // There was no early release, no scoring is needed
+                            ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime);
+                        } else {
+                            // case Action.None: // There was never any action, entire hold note was missed
+                            // case Action.Release: // Early release
+                            TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime);
                         }
                     }
                     break;
