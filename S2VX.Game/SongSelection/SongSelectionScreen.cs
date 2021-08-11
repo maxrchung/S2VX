@@ -13,6 +13,7 @@ using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -35,19 +36,20 @@ namespace S2VX.Game.SongSelection {
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private SongPreview SongPreview { get; set; }
+        private List<Drawable> SelectionItems { get; set; } = new();
 
-        private List<Drawable> CreateSelectionItems() {
-            var selectionItems = new List<Drawable>();
+        private void Clear() => SelectionItems.Clear();
+
+        private void CreateSelectionItems() {
             var dirs = Storage.GetDirectories("");
             foreach (var dir in dirs) {
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
-                selectionItems.Add(new SelectedItemDisplay(
+                SelectionItems.Add(new SelectedItemDisplay(
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 ));
             }
-            return selectionItems;
         }
 
         private (bool, string, string, Texture) DirectoryContainsStory(string dir) {
@@ -89,9 +91,23 @@ namespace S2VX.Game.SongSelection {
         /// </summary>
         /// <param name="filePath">The mp3 audio file to use for this new story</param>
         public void Import(string filePath) {
+            // Only handle the import if this screen is on top
             if (Screens.CurrentScreen == this) {
-                Console.WriteLine(CurSelectionPath + " is importing " + filePath);
+                var targetPath = Path.Combine(CurSelectionPath, Path.GetFileNameWithoutExtension(filePath));
+                var dupNumber = 1;
+                while (Directory.Exists(targetPath)) {
+                    targetPath = Path.Combine(CurSelectionPath,
+                        Path.GetFileNameWithoutExtension(filePath) + dupNumber.ToString(CultureInfo.InvariantCulture));
+                    dupNumber++;
+                }
+                Directory.CreateDirectory(targetPath);
+                File.Copy(filePath, Path.Combine(targetPath, Path.GetFileName(filePath)));
+                Console.WriteLine("Copied " + filePath + " to " + targetPath);
                 Audio.Samples.Get("menuhit").Play();
+
+                // Reload selection items
+                Clear();
+                Schedule(LoadSelectionScreen);
             }
         }
 
@@ -104,13 +120,17 @@ namespace S2VX.Game.SongSelection {
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
             GameBase.RegisterImportHandler(this);
+            LoadSelectionScreen();
+        }
 
+        private void LoadSelectionScreen() {
             var fullWidth = S2VXGameBase.GameWidth;
             var fullHeight = S2VXGameBase.GameWidth;
             var innerSize = 0.9f;
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
+                CreateSelectionItems();
                 InternalChildren = new Drawable[] {
                     new Border(CurSelectionPath, () => this.Exit()) {
                         Width = fullWidth,
@@ -130,7 +150,7 @@ namespace S2VX.Game.SongSelection {
                             Width = fullWidth * innerSize,
                             AutoSizeAxes = Axes.Y,
                             Direction = FillDirection.Full,
-                            Children = CreateSelectionItems()
+                            Children = SelectionItems
                         },
                     },
                 };
