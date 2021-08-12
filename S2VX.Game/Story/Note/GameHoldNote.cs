@@ -154,7 +154,7 @@ namespace S2VX.Game.Story.Note {
                         IsHitScored = true;
                         TotalScore += ScoreProcessor.ProcessHit(time, HitTime);
                     } else {
-                        TotalScore += ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, true, HitTime, EndTime);
+                        TotalScore += ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, true, HitTime, EndTime, IsHovered);
                     }
                     break;
                 default: // Should never get here
@@ -167,7 +167,7 @@ namespace S2VX.Game.Story.Note {
             switch (State) {
                 case HoldNoteState.During:
                     // No need to update TotalTime here since this does not increase score
-                    ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, HitTime, EndTime);
+                    ScoreProcessor.ProcessHold(time, LastHoldReferenceTime, false, HitTime, EndTime, IsHovered);
                     break;
                 default: // Should never get here
                     break;
@@ -189,12 +189,14 @@ namespace S2VX.Game.Story.Note {
                 case HoldNoteState.VisibleAfter:
                     if (!IsEndScored) {
                         IsEndScored = true;
-                        if (LastAction == Action.Press && IsHovered) { // There was no early release, no scoring is needed
-                            ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime);
-                        } else {
-                            // case Action.None: // There was never any action, entire hold note was missed
-                            // case Action.Release: // Early release
-                            TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime);
+                        switch (LastAction) {
+                            case Action.None: // There was never any action, entire hold note was missed
+                            case Action.Release: // Early release
+                                TotalScore += ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, false, HitTime, EndTime, IsHovered);
+                                break;
+                            case Action.Press: // There was no early release, no scoring is needed
+                                ScoreProcessor.ProcessHold(EndTime, LastHoldReferenceTime, true, HitTime, EndTime, IsHovered);
+                                break;
                         }
                     }
                     break;
