@@ -93,7 +93,10 @@ namespace S2VX.Game.SongSelection {
         public void Import(string filePath) {
             // Only handle the import if this screen is on top
             if (Screens.CurrentScreen == this) {
+                var templatePath = "Template";
                 var targetPath = Path.Combine(CurSelectionPath, Path.GetFileNameWithoutExtension(filePath));
+
+                // Create new directory
                 var dupNumber = 1;
                 while (Directory.Exists(targetPath)) {
                     targetPath = Path.Combine(CurSelectionPath,
@@ -101,8 +104,15 @@ namespace S2VX.Game.SongSelection {
                     dupNumber++;
                 }
                 Directory.CreateDirectory(targetPath);
-                File.Copy(filePath, Path.Combine(targetPath, Path.GetFileName(filePath)));
-                Console.WriteLine("Copied " + filePath + " to " + targetPath);
+
+                // Copy dragged MP3 and rename it audio.mp3
+                File.Copy(filePath, Path.Combine(targetPath, "audio.mp3"));
+
+                // Copy other files from template
+                foreach (var file in Directory.GetFiles(templatePath)) {
+                    File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
+                }
+
                 Audio.Samples.Get("menuhit").Play();
 
                 // Reload selection items
