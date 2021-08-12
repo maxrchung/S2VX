@@ -19,7 +19,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
         public void SetUpSteps() => AddStep("Reset score processor", () => Processor.Reset());
 
         private void ProcessHold(double scoreTime, bool isPress) =>
-            AddStep("Process note", () => Processor.ProcessHold(scoreTime, 0, isPress, 0, 1000));
+            AddStep("Process note", () => Processor.ProcessHold(scoreTime, 0, isPress, 0, 1000, true));
 
         [Test]
         public void ProcessHold_PressBeforeDuring_PlaysNoSound() {
