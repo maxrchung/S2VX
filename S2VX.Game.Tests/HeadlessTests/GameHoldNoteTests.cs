@@ -402,7 +402,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Seek to middle", () => Stopwatch.Seek(500));
             AddStep("Seek to end", () => Stopwatch.Seek(1001));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
-            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000);
+            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Notes.MissThreshold);
         }
 
 
