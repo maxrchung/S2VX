@@ -190,7 +190,7 @@ namespace S2VX.Game.Editor {
             ToolContainer.Clock = trackClock;
         }
 
-        private void SetToolState(S2VXToolState newState) {
+        public void SetToolState(S2VXToolState newState) {
             ToolState.HandleExit();
             ToolState = newState;
             ToolContainer.Child = ToolState;

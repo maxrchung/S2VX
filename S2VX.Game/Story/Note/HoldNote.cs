@@ -7,8 +7,7 @@ using System.Linq;
 namespace S2VX.Game.Story.Note {
     public abstract class HoldNote : S2VXNote {
         public double EndTime { get; set; }
-        public List<Vector2> MidCoordinates { get; } = new() {
-        };
+        public List<Vector2> MidCoordinates { get; } = new();
         public Vector2 EndCoordinates { get; set; }
         protected HoldApproach HoldApproach { get; set; }
         public override Approach Approach {

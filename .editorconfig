@@ -186,35 +186,35 @@ dotnet_naming_rule.everything_should_be_pascal_case.style = pascal_case
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.interface.required_modifiers = 
+dotnet_naming_symbols.interface.required_modifiers =
 
 dotnet_naming_symbols.everything.applicable_kinds = *
 dotnet_naming_symbols.everything.applicable_accessibilities = *
-dotnet_naming_symbols.everything.required_modifiers = 
+dotnet_naming_symbols.everything.required_modifiers =
 
 dotnet_naming_symbols.local.applicable_kinds = local
 dotnet_naming_symbols.local.applicable_accessibilities = local
-dotnet_naming_symbols.local.required_modifiers = 
+dotnet_naming_symbols.local.required_modifiers =
 
 dotnet_naming_symbols.parameter.applicable_kinds = parameter
 dotnet_naming_symbols.parameter.applicable_accessibilities = *
-dotnet_naming_symbols.parameter.required_modifiers = 
+dotnet_naming_symbols.parameter.required_modifiers =
 
 # Naming styles
 
-dotnet_naming_style.pascal_case.required_prefix = 
-dotnet_naming_style.pascal_case.required_suffix = 
-dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.required_prefix =
+dotnet_naming_style.pascal_case.required_suffix =
+dotnet_naming_style.pascal_case.word_separator =
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
 dotnet_naming_style.begins_with_i.required_prefix = I
-dotnet_naming_style.begins_with_i.required_suffix = 
-dotnet_naming_style.begins_with_i.word_separator = 
+dotnet_naming_style.begins_with_i.required_suffix =
+dotnet_naming_style.begins_with_i.word_separator =
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
-dotnet_naming_style.camel_case.required_prefix = 
-dotnet_naming_style.camel_case.required_suffix = 
-dotnet_naming_style.camel_case.word_separator = 
+dotnet_naming_style.camel_case.required_prefix =
+dotnet_naming_style.camel_case.required_suffix =
+dotnet_naming_style.camel_case.word_separator =
 dotnet_naming_style.camel_case.capitalization = camel_case
 
 # CA1062: Validate arguments of public methods
@@ -264,7 +264,7 @@ dotnet_diagnostic.CA1001.severity = suggestion
 
 # CA1031: Do not catch general exception types
 # There are some areas, such as loading a story, where we want to blanket
-# catch all exceptions. If we don't do this, then we could end up crashing 
+# catch all exceptions. If we don't do this, then we could end up crashing
 # the game because an unaccounted exception was unhandled
 dotnet_diagnostic.CA1031.severity = suggestion
 
@@ -274,3 +274,10 @@ dotnet_diagnostic.CA1031.severity = suggestion
 # Collection or interfaces everywhere. We will prefer interfaces only when it is
 # necessary, e.g. some form of abstraction or polymorphism.
 dotnet_diagnostic.CA1002.severity = suggestion
+
+# IDE0130: Namespace does not match folder structure
+# Since upgrading to Visual Studio 16.11.0, we're getting false positive code
+# analysis errors telling us to change some of our namespace declarations.
+# However, as far as I can tell, not only are we declaring the namespaces
+# correctly, but the rule's suggested change is incorrect.
+dotnet_diagnostic.IDE0130.severity = suggestion

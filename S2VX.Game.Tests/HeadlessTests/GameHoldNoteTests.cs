@@ -13,6 +13,8 @@ using System.IO;
 using System.Linq;
 
 namespace S2VX.Game.Tests.HeadlessTests {
+    // We are writing these as HeadlessTest because we precisely manipulate time
+    // with the StopwatchClock.
     [HeadlessTest]
     public class GameHoldNoteTests : S2VXTestScene {
         private S2VXStory Story { get; set; } = new S2VXStory();
@@ -106,11 +108,8 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddAssert("Note is in VisibleAfter state", () => note.State == HoldNoteState.VisibleAfter);
         }
 
-        [TestCase(20, 20)]  // Press and Release entirely within NotVisible state
-        [TestCase(20, 1330)] // Press in NotVisible, Release when note disappears
         [TestCase(100, 800)]  // Press and Release entirely within VisibleBefore state
         [TestCase(100, 1250)] // Press in VisibleBefore, Release when note disappears
-        [TestCase(1260, 40)] // Press and Release entirely within VisibleAfter state
         public void Score_PressIgnored_IsFullDuration(int timeToPress, int holdDuration) {
             GameHoldNote note = null;
             AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
@@ -121,6 +120,25 @@ namespace S2VX.Game.Tests.HeadlessTests {
             PressAndRelease(timeToPress, holdDuration);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is note duration (full miss)", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 100.0);
+        }
+
+        // These cases have an additional MissThreshold score because the mouse
+        // is not over the end coordinate at the end time. This is most likely
+        // caused by moving/pressing the mouse when the note is not initialized yet (i.e.
+        // outside of the note's fade in and fade out times).
+        [TestCase(20, 20)]  // Press and Release entirely within NotVisible state
+        [TestCase(20, 1330)] // Press in NotVisible, Release when note disappears
+        [TestCase(1260, 40)] // Press and Release entirely within VisibleAfter state
+        public void Score_PressIgnored_IsFullDurationPlusEndPenalty(int timeToPress, int holdDuration) {
+            GameHoldNote note = null;
+            AddStep("Add note", () => Story.AddNote(note = new GameHoldNote {
+                HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
+                EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
+            }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            PressAndRelease(timeToPress, holdDuration);
+            AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
+            AddAssert("Score is note duration (full miss)", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 100.0 + Notes.MissThreshold);
         }
 
         [Test]
@@ -322,7 +340,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after hold note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
-            AddAssert("Hits the later note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == holdNoteEndTime - holdNoteHitTime);
+            AddAssert("Hits the later note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == holdNoteEndTime - holdNoteHitTime + Notes.MissThreshold);
         }
 
         [Test]
@@ -363,7 +381,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             });
             AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(note));
             PressAndRelease(1001, 2000);
-            AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000);
+            AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000 + Notes.MissThreshold);
         }
 
         [Test]
@@ -386,6 +404,33 @@ namespace S2VX.Game.Tests.HeadlessTests {
             PressAndRelease(50, 200);
             PressAndRelease(600, 100);
             AddAssert("Plays 2 miss sounds", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 2);
+        }
+
+        [Test]
+        public void OnPress_MouseNotOverEndCoordinates_HasFullScore() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            // We need to temporarily seek to the middle somewhere so that the
+            // note can update its position. If we try to immediately seek to
+            // 1001 and assert the score, the note still thinks that the cursor
+            // is hovered over itself and will register the hit as successful.
+            AddStep("Seek to middle", () => Stopwatch.Seek(500));
+            AddStep("Seek to end", () => Stopwatch.Seek(1001));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Has full score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Notes.MissThreshold);
+        }
+
+
+        [Test]
+        public void OnPress_MouseNotOverEndCoordinates_PlaysMissSound() {
+            AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
+            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Hold key", () => InputManager.PressKey(Key.Z));
+            AddStep("Seek to middle", () => Stopwatch.Seek(500));
+            AddStep("Seek to end", () => Stopwatch.Seek(1001));
+            AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
+            AddAssert("Plays miss sound", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 1);
         }
     }
 }
