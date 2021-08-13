@@ -9,18 +9,25 @@ namespace S2VX.Game.Story.JSONConverters {
             var obj = new JObject {
                 { "HitTime", value.HitTime },
                 { "EndTime", value.EndTime },
+                { "Coordinates", new JObject {
+                    { "x", value.Coordinates.X },
+                    { "y", value.Coordinates.Y }
+                } },
+                { "EndCoordinates", new JObject {
+                    { "x", value.EndCoordinates.X },
+                    { "y", value.EndCoordinates.Y }
+                } },
             };
-            var coordinates = new JObject {
-                { "x", value.Coordinates.X },
-                { "y", value.Coordinates.Y }
-            };
-            obj.Add("Coordinates", coordinates);
 
-            var endCoordinates = new JObject {
-                { "x", value.EndCoordinates.X },
-                { "y", value.EndCoordinates.Y }
-            };
-            obj.Add("EndCoordinates", endCoordinates);
+            var midCoordinates = new JArray();
+            foreach (var coordinates in value.MidCoordinates) {
+                midCoordinates.Add(new JObject {
+                    { "x", coordinates.X },
+                    { "y", coordinates.Y }
+                });
+            }
+            obj.Add("MidCoordinates", midCoordinates);
+
             obj.WriteTo(writer);
         }
 

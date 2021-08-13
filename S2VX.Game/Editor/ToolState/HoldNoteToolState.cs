@@ -26,8 +26,6 @@ namespace S2VX.Game.Editor.ToolState {
                 Editor.EditorInfoBar.ToolDisplay.UpdateDisplay();
             }
         }
-        private Vector2 Coordinates { get; set; }
-        private double HitTime { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load() {
@@ -37,25 +35,32 @@ namespace S2VX.Game.Editor.ToolState {
             Child = PreviewContainer;
         }
 
-        public override bool OnToolClick(ClickEvent e) {
+        public override void OnToolMouseUp(MouseUpEvent e) {
             if (!IsRecording) {
-                HitTime = Time.Current;
-                Coordinates = Editor.MousePosition;
-            } else {
-                var endTime = Time.Current;
-                if (endTime > HitTime) {
-                    var note = new EditorHoldNote {
-                        Coordinates = Coordinates,
-                        HitTime = HitTime,
-                        EndTime = endTime,
-                        EndCoordinates = Editor.MousePosition
-                    };
-                    Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
-                }
+                IsRecording = true;
+                return;
             }
 
-            IsRecording = !IsRecording;
-            return true;
+            var endTime = Time.Current;
+            if (endTime > Preview.HitTime) {
+                if (e.Button == MouseButton.Left) {
+                    Preview.MidCoordinates.Add(Editor.MousePosition);
+                } else if (e.Button == MouseButton.Right) {
+                    AddHoldNote(endTime);
+                    IsRecording = !IsRecording;
+                }
+            }
+        }
+
+        private void AddHoldNote(double endTime) {
+            var note = new EditorHoldNote {
+                Coordinates = Preview.Coordinates,
+                HitTime = Preview.HitTime,
+                EndTime = endTime,
+                EndCoordinates = Editor.MousePosition,
+            };
+            note.MidCoordinates.AddRange(Preview.MidCoordinates);
+            Editor.Reversibles.Push(new ReversibleAddHoldNote(Story, note, Editor));
         }
 
         public override bool OnToolKeyDown(KeyDownEvent e) {
@@ -85,10 +90,12 @@ namespace S2VX.Game.Editor.ToolState {
                 Preview.EndTime = Time.Current;
                 Preview.Coordinates = Editor.MousePosition;
                 Preview.EndCoordinates = Editor.MousePosition;
+                Preview.MidCoordinates.Clear();
+                Preview.MidAnchors.Clear();
             }
         }
 
         public override string DisplayName() =>
-            IsRecording ? "Hold Note (Click to End, Esc to Cancel)" : "Hold Note (Click to Start)";
+            IsRecording ? "Hold Note (LClick) Add, (RClick) End, (Esc) Cancel" : "Hold Note (Click to Start)";
     }
 }
