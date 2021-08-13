@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StoryMerge": {
+      "commandName": "Project",
+      "commandLineArgs": "-i alex.s2ry aaron.s2ry max.s2ry -o shelter.s2ry"
+    }
+  }
+}
