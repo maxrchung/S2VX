@@ -11,7 +11,6 @@ using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
