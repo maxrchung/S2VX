@@ -116,7 +116,7 @@ namespace S2VX.Game.SongSelection {
 
                 // Reload selection items
                 Clear();
-                Schedule(LoadSelectionScreen);
+                Schedule(LoadSelectionScreen);  // Only the update thread can mutate InternalChildren
             }
         }
 

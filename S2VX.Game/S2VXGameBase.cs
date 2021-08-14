@@ -36,7 +36,7 @@ namespace S2VX.Game {
         private List<SongSelectionScreen> FileImporters { get; set; } = new();
 
         // Ensure game and tests scale with window size and screen DPI.
-        protected S2VXGameBase() => base.Content.Add(Content = new DrawSizePreservingFillContainer {
+        public S2VXGameBase() => base.Content.Add(Content = new DrawSizePreservingFillContainer {
             // You may want to change TargetDrawSize to your "default"
             // resolution, which will decide how things scale and position when
             // using absolute coordinates.
