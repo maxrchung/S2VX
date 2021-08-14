@@ -24,7 +24,7 @@ namespace S2VX.Game.Tests.HeadlessTests.ScoreProcessorTests {
             AddStep("Process note", () => ScoreProcessor.ProcessHit(scoreTime, 0));
 
         private void ProcessHold(double scoreTime, bool isPress) =>
-            AddStep("Process note", () => ScoreProcessor.ProcessHold(scoreTime, 0, isPress, 0, 1000));
+            AddStep("Process note", () => ScoreProcessor.ProcessHold(scoreTime, 0, isPress, 0, 1000, true));
 
         [Test]
         public void ProcessHit_PerfectHit_AddsToPerfectCount() {

@@ -123,7 +123,7 @@ namespace S2VX.Game.Play.Score {
             return score;
         }
 
-        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime) {
+        public double ProcessHold(double scoreTime, double lastReleaseTime, bool isPress, double noteHitTime, double noteEndTime, bool isHovered) {
             var score = 0.0;
             var cursorPos = GetCursorPosition();
 
@@ -144,11 +144,20 @@ namespace S2VX.Game.Play.Score {
 
             } else { // After hold
                 if (isPress) {
-                    Hit.Play();
+                    if (isHovered) {
+                        Hit.Play();
+                    } else {
+                        score = Notes.MissThreshold;
+                        AddScore(score);
+                        UpdateMiss(noteEndTime, cursorPos);
+                    }
                 } else {
                     score = noteEndTime - lastReleaseTime;
+                    if (!isHovered) {
+                        score += Notes.MissThreshold;
+                    }
                     AddScore(score);
-                    UpdateMiss(lastReleaseTime, cursorPos);
+                    UpdateMiss(noteEndTime, cursorPos);
                 }
             }
 
