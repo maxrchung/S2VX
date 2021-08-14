@@ -25,51 +25,7 @@ namespace S2VX.Game.Tests.HeadlessTests.SongSelectionScreenTests {
             Add(Screens);
         }
 
-        //[SetUpSteps]
-        //public void SetUpSteps() => AddStep("Delete any existing files", () => Directory.Delete(StoryDirectory, true));
-
-        //[Test]
-        //public void Import_ValidMP3_CreatesNewDirectory() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("Directory with same name is created", () =>
-        //        Directory.Exists(NewStoryDirectory));
-        //}
-
-        //[Test]
-        //public void Import_ValidMP3_HasAudio() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("audio.mp3 exists in the new directory", () =>
-        //        File.Exists(Path.Combine(NewStoryDirectory, "audio.mp3")));
-        //}
-
-        //[Test]
-        //public void Import_ValidMP3_HasLeaderboard() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("leaderboard.json exists in the new directory", () =>
-        //        File.Exists(Path.Combine(NewStoryDirectory, "leaderboard.json")));
-        //}
-
-        //[Test]
-        //public void Import_ValidMP3_HasMetadata() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("metadata.json exists in the new directory", () =>
-        //        File.Exists(Path.Combine(NewStoryDirectory, "metadata.json")));
-        //}
-
-        //[Test]
-        //public void Import_ValidMP3_HasStory() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("story.s2ry exists in the new directory", () =>
-        //        File.Exists(Path.Combine(NewStoryDirectory, "story.s2ry")));
-        //}
-
-        //[Test]
-        //public void Import_ValidMP3_HasThumbnail() {
-        //    AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
-        //    AddAssert("thumbnail.jpg exists in the new directory", () =>
-        //        File.Exists(Path.Combine(NewStoryDirectory, "thumbnail.jpg")));
-        //}
-
+        // There is no cleanup due to thumbnail.jpg being perpetually in-use by the update thread which will never run
         [Test]
         public void Import_ValidMP3_HasValidStory() {
             AddStep("Import valid MP3", () => SongSelectionScreen.Import(Path.Combine(AudioDirectory, AudioFileName)));
