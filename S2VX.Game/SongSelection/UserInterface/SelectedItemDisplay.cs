@@ -3,8 +3,10 @@ using osu.Framework.Audio;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
@@ -17,11 +19,38 @@ namespace S2VX.Game.SongSelection.UserInterface {
         [Resolved]
         private AudioManager Audio { get; set; }
 
+        public static Vector2 DeleteButtonSize { get; } = new(106, 30);
+        private static Vector2 ButtonSize { get; } = new(100, 30);
+
+        private const float BoxSize = S2VXGameBase.GameWidth / 4;
+        private const float TextSize = S2VXGameBase.GameWidth / 40;
         public string ItemName { get; set; }
         public string CurSelectionPath { get; set; }
         public Texture ThumbnailTexture { get; set; }
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
+
+        //private static BasicButton CancelButton { get; set; }
+        //private Container DeleteConfirmation { get; } = new Container() {
+        //    new Box {
+        //        Colour = Color4.Black,
+        //        Size = new Vector2(BoxSize)
+        //    },
+        //    new FillFlowContainer {
+        //        Children = new Drawable[] {
+        //            new SpriteText() {
+        //                Text = "Confirm delete?"
+        //            },
+        //            new BasicButton() {
+        //                Text = "OK",
+        //                //Action = () => Delete Story,
+        //                Size = ButtonSize,
+        //            },
+        //            CancelButton
+        //        }
+        //    }
+        //};
+        private IconButton DeleteButton { get; set; }
 
         public SelectedItemDisplay(string itemName, string curSelectionPath, Texture thumbnailTexture = null) {
             ItemName = itemName;
@@ -30,26 +59,31 @@ namespace S2VX.Game.SongSelection.UserInterface {
         }
 
         protected override bool OnHover(HoverEvent e) {
+            //DeleteButton.FadeIn();
             SelectedIndicatorBox.Alpha = 1;
             Thumbnail.Alpha = 0.7f;
             return false;
         }
 
         protected override void OnHoverLost(HoverLostEvent e) {
+            //DeleteButton.FadeOut(1000);
             SelectedIndicatorBox.Alpha = 0;
             Thumbnail.Alpha = 1;
         }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var boxSize = S2VXGameBase.GameWidth / 4;
-            var textSize = S2VXGameBase.GameWidth / 40;
-
-            Width = boxSize;
-            Height = boxSize;
+            //DeleteConfirmation.FadeOut();
+            //CancelButton = new BasicButton() {
+            //    Text = "Cancel",
+            //    Action = () => DeleteConfirmation.FadeOut(),
+            //    Size = ButtonSize,
+            //};
+            Width = BoxSize;
+            Height = BoxSize;
             Margin = new MarginPadding {
-                Vertical = boxSize / 10,
-                Horizontal = boxSize / 10
+                Vertical = BoxSize / 10,
+                Horizontal = BoxSize / 10
             };
 
             InternalChildren = new Drawable[] {
@@ -61,7 +95,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                 Thumbnail = new IconButton {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Size = new Vector2(boxSize),
+                    Size = new Vector2(BoxSize),
                     Texture = ThumbnailTexture,
                     TextureName = "logo",
                     Action = () => {
@@ -77,7 +111,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Colour = Color4.Black.Opacity(0.5f),
                 },
                 // TextContainer
-                new TextFlowContainer(s => s.Font = new FontUsage("default", textSize)) {
+                new TextFlowContainer(s => s.Font = new FontUsage("default", TextSize)) {
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     Y = 0.8f,
@@ -85,6 +119,17 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     TextAnchor = Anchor.TopCentre,
                     Text = ItemName,
                 },
+                //DeleteButton = new IconButton {
+                //    Action = () => DeleteConfirmation.FadeIn(),
+                //    Width = DeleteButtonSize.Y,
+                //    Height = DeleteButtonSize.Y,
+                //    Anchor = Anchor.TopRight,
+                //    Origin = Anchor.TopRight,
+                //    Alpha = 0.7f,
+                //    //Colour = S2VXColorConstants.DarkYellow,
+                //    Icon = FontAwesome.Solid.Trash
+                //},
+                //DeleteConfirmation
             };
         }
 
