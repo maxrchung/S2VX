@@ -11,6 +11,7 @@ using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
+using System;
 
 namespace S2VX.Game.SongSelection.UserInterface {
     public class SelectedItemDisplay : CompositeDrawable {
@@ -29,56 +30,65 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public Texture ThumbnailTexture { get; set; }
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
+        private Container DeleteConfirmation { get; set; }
+        //private void DeleteConfirmationFadeout() {
 
-        //private static BasicButton CancelButton { get; set; }
-        //private Container DeleteConfirmation { get; } = new Container() {
-        //    new Box {
-        //        Colour = Color4.Black,
-        //        Size = new Vector2(BoxSize)
-        //    },
-        //    new FillFlowContainer {
-        //        Children = new Drawable[] {
-        //            new SpriteText() {
-        //                Text = "Confirm delete?"
-        //            },
-        //            new BasicButton() {
-        //                Text = "OK",
-        //                //Action = () => Delete Story,
-        //                Size = ButtonSize,
-        //            },
-        //            CancelButton
-        //        }
-        //    }
-        //};
+        //}
+
+        private static BasicButton CancelButton { get; set; }
+
+        //private Container DeleteConfirmation { get; } = ;
         private IconButton DeleteButton { get; set; }
 
         public SelectedItemDisplay(string itemName, string curSelectionPath, Texture thumbnailTexture = null) {
             ItemName = itemName;
             CurSelectionPath = curSelectionPath;
             ThumbnailTexture = thumbnailTexture;
+            DeleteConfirmation = new Container() {
+                new Box {
+                    Colour = Color4.Black,
+                    Size = new Vector2(BoxSize)
+                },
+                new FillFlowContainer {
+                    Children = new Drawable[] {
+                        new SpriteText() {
+                            Text = "Confirm delete?"
+                        },
+                        new BasicButton() {
+                            Text = "OK",
+                            //Action = () => Delete Story,
+                            Size = ButtonSize,
+                        },
+                        CancelButton = new BasicButton() {
+                            Text = "Cancel",
+                            //Action = () => DeleteConfirmationFadeout,
+                            Size = ButtonSize,
+                        }
+                    }
+                }
+            };
+            CancelButton.Action = () => DeleteConfirmation.FadeOut();
+
         }
 
         protected override bool OnHover(HoverEvent e) {
-            //DeleteButton.FadeIn();
+            DeleteButton.FadeIn();
             SelectedIndicatorBox.Alpha = 1;
             Thumbnail.Alpha = 0.7f;
             return false;
         }
 
         protected override void OnHoverLost(HoverLostEvent e) {
-            //DeleteButton.FadeOut(1000);
+            DeleteButton.FadeOut(100);
             SelectedIndicatorBox.Alpha = 0;
             Thumbnail.Alpha = 1;
         }
 
         [BackgroundDependencyLoader]
         private void Load() {
-            //DeleteConfirmation.FadeOut();
-            //CancelButton = new BasicButton() {
-            //    Text = "Cancel",
-            //    Action = () => DeleteConfirmation.FadeOut(),
-            //    Size = ButtonSize,
-            //};
+            DeleteConfirmation.FadeOut();
+            //CancelButton.Action = () => DeleteConfirmation.FadeOut();
+            Console.WriteLine(CancelButton.Text);
             Width = BoxSize;
             Height = BoxSize;
             Margin = new MarginPadding {
@@ -119,18 +129,19 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     TextAnchor = Anchor.TopCentre,
                     Text = ItemName,
                 },
-                //DeleteButton = new IconButton {
-                //    Action = () => DeleteConfirmation.FadeIn(),
-                //    Width = DeleteButtonSize.Y,
-                //    Height = DeleteButtonSize.Y,
-                //    Anchor = Anchor.TopRight,
-                //    Origin = Anchor.TopRight,
-                //    Alpha = 0.7f,
-                //    //Colour = S2VXColorConstants.DarkYellow,
-                //    Icon = FontAwesome.Solid.Trash
-                //},
-                //DeleteConfirmation
+                DeleteButton = new IconButton {
+                    Action = () => DeleteConfirmation.FadeIn(),
+                    Width = DeleteButtonSize.Y,
+                    Height = DeleteButtonSize.Y,
+                    Anchor = Anchor.TopRight,
+                    Origin = Anchor.TopRight,
+                    Alpha = 0.7f,
+                    //Colour = S2VXColorConstants.DarkYellow,
+                    Icon = FontAwesome.Solid.Trash
+                },
+                DeleteConfirmation
             };
+            DeleteButton.FadeOut();
         }
 
     }
