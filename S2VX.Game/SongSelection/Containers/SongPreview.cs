@@ -45,8 +45,9 @@ namespace S2VX.Game.SongSelection.Containers {
             ThumbnailTexture = thumbnailTexture;
         }
 
-        private void AddSongMetadata() {
+        public void LoadSongMetadata() {
             var metadata = MetadataSettings.Load(StoryDirectory);
+            TextContainer.Clear();
             TextContainer.AddParagraph($"Title: {metadata.SongTitle}");
             TextContainer.AddParagraph($"Artist: {metadata.SongArtist}");
             TextContainer.AddParagraph($"Author: {metadata.StoryAuthor}");
@@ -135,7 +136,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 }
             };
 
-            AddSongMetadata();
+            LoadSongMetadata();
         }
 
         private void LoadEditor() {
