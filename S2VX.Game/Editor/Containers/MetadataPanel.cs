@@ -10,12 +10,18 @@ using S2VX.Game.Story.Settings;
 
 namespace S2VX.Game.Editor.Containers {
     public class MetadataPanel : OverlayContainer {
-        private static Vector2 PanelSize { get; } = new(330, 230);
+        private static Vector2 PanelSize { get; } = new(1000, 230);
         private static Vector2 PanelPosition { get; } = new(0, S2VXGameBase.GameWidth / 2);
         private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
 
         private string StoryDirectory { get; }
+
+        public BasicTextBox TxtTitle { get; private set; }
+        public BasicTextBox TxtArtist { get; private set; }
+        public BasicTextBox TxtAuthor { get; private set; }
+        public BasicTextBox TxtDescription { get; private set; }
+        public BasicButton BtnSave { get; private set; }
 
         public MetadataPanel(string storyDirectory) => StoryDirectory = storyDirectory;
 
@@ -29,18 +35,18 @@ namespace S2VX.Game.Editor.Containers {
         [BackgroundDependencyLoader]
         private void Load() {
             var metadata = MetadataSettings.Load(StoryDirectory);
-            var title = AddRow("Title", metadata.SongTitle);
-            var artist = AddRow("Artist", metadata.SongArtist);
-            var author = AddRow("Author", metadata.StoryAuthor);
-            var description = AddRow("Description", metadata.MiscDescription);
-            Form.Add(new BasicButton {
+            TxtTitle = AddRow("TitleTitle", metadata.SongTitle);
+            TxtArtist = AddRow("Artist", metadata.SongArtist);
+            TxtAuthor = AddRow("Author", metadata.StoryAuthor);
+            TxtDescription = AddRow("Description", metadata.MiscDescription);
+            Form.Add(BtnSave = new BasicButton {
                 Text = "Save",
                 Action = () => {
-                    metadata.SongTitle = title.Text;
-                    metadata.SongArtist = artist.Text;
-                    metadata.StoryAuthor = author.Text;
-                    metadata.MiscDescription = description.Text;
-                    metadata.Save(StoryDirectory);
+                    metadata.SongTitle = TxtTitle.Text;
+                    metadata.SongArtist = TxtArtist.Text;
+                    metadata.StoryAuthor = TxtAuthor.Text;
+                    metadata.MiscDescription = TxtDescription.Text;
+                    metadata.Save();
                 },
                 Size = new(InputSize.X / 2, InputSize.Y)
             });
