@@ -106,7 +106,7 @@ namespace S2VX.Game.Editor {
                         CreateMenu(),
                         Timeline,
                         CommandPanel,
-                        //MetadataPanel
+                        MetadataPanel
                     }
             };
             editorUI.State.Value = Visibility.Visible;
