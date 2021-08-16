@@ -128,7 +128,7 @@ namespace S2VX.Game.Tests.VisualTests {
             EndGameScreen endGameScreen = null;
             AddStep("Add end game screen", () => playScreen.Push(endGameScreen = new(new(), "")));
             AddUntilStep("Load end game screen", () => endGameScreen.IsLoaded);
-            AddStep("Click outer border", () => endGameScreen.Border.BorderOuter.TriggerClick());
+            AddStep("Click outer border", () => endGameScreen.Border.BorderOuter.Click());
             AddAssert("Goes back to song selection", () => SongSelectionScreen.IsCurrentScreen());
         }
 

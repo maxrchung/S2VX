@@ -26,10 +26,10 @@ namespace S2VX.Game.Tests.HeadlessTests.SongPreviewTests {
             );
 
         private void ClickEditButton() =>
-            AddStep("Click edit button", () => SongPreview.BtnEdit.TriggerClick());
+            AddStep("Click edit button", () => SongPreview.BtnEdit.Click());
 
         private void ClickPlayButton() =>
-            AddStep("Click play button", () => SongPreview.BtnPlay.TriggerClick());
+            AddStep("Click play button", () => SongPreview.BtnPlay.Click());
 
         private void AssertEditHasRedBorder() =>
             AddAssert("Has red border", () => SongPreview.BtnEdit.BorderThickness == 5);

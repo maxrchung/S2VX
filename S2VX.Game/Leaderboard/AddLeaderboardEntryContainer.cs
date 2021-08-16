@@ -41,7 +41,7 @@ namespace S2VX.Game.Leaderboard {
                     Icon = FontAwesome.Solid.Save,
                 }
             };
-            NameInput.OnCommit += (_, _) => SaveButton.TriggerClick();  // Pressing enter clicks the button
+            NameInput.OnCommit += (_, _) => SaveButton.Click();  // Pressing enter clicks the button
         }
     }
 }
