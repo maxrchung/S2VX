@@ -6,32 +6,29 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
-using S2VX.Game.Story;
 using S2VX.Game.Story.Settings;
-using System.IO;
 
 namespace S2VX.Game.Editor.Containers {
     public class MetadataPanel : OverlayContainer {
-        private static Vector2 PanelSize { get; } = new(320, 220);
+        private static Vector2 PanelSize { get; } = new(330, 230);
+        private static Vector2 PanelPosition { get; } = new(0, S2VXGameBase.GameWidth / 2);
         private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
 
-        [Resolved]
-        private S2VXStory Story { get; set; }
-        public int BackgroundDependencyLoader { get; }
+        private string StoryDirectory { get; }
+
+        public MetadataPanel(string storyDirectory) => StoryDirectory = storyDirectory;
 
         private FillFlowContainer Form { get; set; } = new() {
-            Direction = FillDirection.Vertical,
-            Size = PanelSize,
             Child = new SpriteText { Text = "Metadata Panel" },
+            Direction = FillDirection.Vertical,
+            Position = new(Pad),
+            Size = PanelSize
         };
 
         [BackgroundDependencyLoader]
         private void Load() {
-            var storyDirectory = Path.GetDirectoryName(Story.StoryPath);
-            var metadata = MetadataSettings.Load(storyDirectory);
-
-            Size = PanelSize;
+            var metadata = MetadataSettings.Load(StoryDirectory);
             var title = AddRow("Title", metadata.SongTitle);
             var artist = AddRow("Artist", metadata.SongArtist);
             var author = AddRow("Author", metadata.StoryAuthor);
@@ -43,7 +40,7 @@ namespace S2VX.Game.Editor.Containers {
                     metadata.SongArtist = artist.Text;
                     metadata.StoryAuthor = author.Text;
                     metadata.MiscDescription = description.Text;
-                    metadata.Save(storyDirectory);
+                    metadata.Save(StoryDirectory);
                 },
                 Size = new(InputSize.X / 2, InputSize.Y)
             });
@@ -52,6 +49,10 @@ namespace S2VX.Game.Editor.Containers {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 Form
             };
+
+            Origin = Anchor.CentreLeft;
+            Position = PanelPosition;
+            Size = PanelSize;
         }
 
         private BasicTextBox AddRow(string key, string value) {

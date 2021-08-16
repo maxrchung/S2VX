@@ -17,6 +17,7 @@ using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
+using System.IO;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
@@ -52,7 +53,7 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new();
         public EditorInfoBar EditorInfoBar { get; } = new();
         public S2VXCommandPanel CommandPanel { get; } = new();
-        public MetadataPanel MetadataPanel { get; } = new();
+        public MetadataPanel MetadataPanel { get; private set; }
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
@@ -106,7 +107,7 @@ namespace S2VX.Game.Editor {
                         CreateMenu(),
                         Timeline,
                         CommandPanel,
-                        MetadataPanel
+                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath))
                     }
             };
             editorUI.State.Value = Visibility.Visible;
