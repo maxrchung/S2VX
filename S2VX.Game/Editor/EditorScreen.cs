@@ -52,6 +52,7 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new();
         public EditorInfoBar EditorInfoBar { get; } = new();
         public S2VXCommandPanel CommandPanel { get; } = new();
+        public MetadataPanel MetadataPanel { get; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
@@ -104,7 +105,8 @@ namespace S2VX.Game.Editor {
                         EditorInfoBar,
                         CreateMenu(),
                         Timeline,
-                        CommandPanel
+                        CommandPanel,
+                        //MetadataPanel
                     }
             };
             editorUI.State.Value = Visibility.Visible;
@@ -142,6 +144,7 @@ namespace S2VX.Game.Editor {
                         {
                             new MenuItem("Editor Interface (Ctrl+H)", ViewEditorUI),
                             new MenuItem("Command Panel (C)", ViewCommandPanel),
+                            new MenuItem("Metadata Panel (Ctrl+M)", ViewMetadataPanel),
                         }
                     },
                     new MenuItem("Playback")
@@ -248,6 +251,11 @@ namespace S2VX.Game.Editor {
                 case Key.H:
                     if (e.ControlPressed) {
                         ViewEditorUI();
+                    }
+                    break;
+                case Key.M:
+                    if (e.ControlPressed) {
+                        ViewMetadataPanel();
                     }
                     break;
                 case Key.R:
@@ -405,6 +413,8 @@ namespace S2VX.Game.Editor {
         private void ViewEditorUI() => EditorUI.ToggleVisibility();
 
         private void ViewCommandPanel() => CommandPanel.ToggleVisibility();
+
+        private void ViewMetadataPanel() => MetadataPanel.ToggleVisibility();
 
         private void PlaybackPlay() {
             if (Track.CurrentTime < Track.Length) {
