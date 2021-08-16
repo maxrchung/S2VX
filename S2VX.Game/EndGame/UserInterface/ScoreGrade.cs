@@ -1,6 +1,6 @@
-﻿using osu.Framework.Graphics.Containers;
+﻿using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics;
 using osuTK;
 
 namespace S2VX.Game.EndGame.UserInterface {

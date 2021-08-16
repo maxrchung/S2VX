@@ -21,7 +21,7 @@ namespace S2VX.Game.Editor.Containers {
         public ApproachRateDisplay ApproachRateDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 365,
+            X = 510,
             Width = 200,
             TextAnchor = Anchor.TopRight,
         };
@@ -29,7 +29,7 @@ namespace S2VX.Game.Editor.Containers {
         public NoteSnapDivisorDisplay NoteSnapDivisorDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 565,
+            X = 710,
             Width = 200,
             TextAnchor = Anchor.TopCentre,
         };
@@ -37,15 +37,9 @@ namespace S2VX.Game.Editor.Containers {
         public MousePositionDisplay MousePositionDisplay { get; } = new() {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.TopLeft,
-            X = 770,
+            X = 910,
             Width = 200,
             TextAnchor = Anchor.TopCentre,
-        };
-
-        public VolumeDisplay VolumeDisplay { get; } = new() {
-            Anchor = Anchor.TopRight,
-            Origin = Anchor.TopRight,
-            TextAnchor = Anchor.TopRight,
         };
 
         public const float InfoBarHeight = 0.03f;
@@ -65,7 +59,6 @@ namespace S2VX.Game.Editor.Containers {
                 ToolDisplay,
                 NoteSnapDivisorDisplay,
                 MousePositionDisplay,
-                VolumeDisplay,
                 ApproachRateDisplay
             };
         }
@@ -74,7 +67,6 @@ namespace S2VX.Game.Editor.Containers {
             ToolDisplay.UpdateDisplay();
             NoteSnapDivisorDisplay.UpdateDisplay();
             MousePositionDisplay.UpdateDisplay();
-            VolumeDisplay.UpdateDisplay();
             ApproachRateDisplay.UpdateDisplay();
         }
     }
