@@ -8,7 +8,7 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story.Settings;
 
-namespace S2VX.Game.Editor.UserInterface {
+namespace S2VX.Game.Editor.Containers {
     public class MetadataPanel : S2VXOverlayContainer {
         private static Vector2 PanelSize { get; } = new(330, 230);
         private static Vector2 InputSize = new(200, 30);

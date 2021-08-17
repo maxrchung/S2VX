@@ -1,7 +1,7 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 
-namespace S2VX.Game {
+namespace S2VX.Game.Editor.Containers {
     /// <summary>
     /// Reduces some redundancy and ensures that our overlay containers (e.g.
     /// command panel, metadata panel, tap panel) stay consistent

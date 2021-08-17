@@ -13,7 +13,6 @@ using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
-using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
