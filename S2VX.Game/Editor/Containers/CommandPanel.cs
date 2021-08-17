@@ -8,12 +8,13 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Editor.Reversible;
+using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 using System;
 
-namespace S2VX.Game.Editor.CommandPanel {
-    public class S2VXCommandPanel : S2VXOverlayContainer {
+namespace S2VX.Game.Editor.Containers {
+    public class CommandPanel : S2VXOverlayContainer {
 
         [Resolved]
         private EditorScreen Editor { get; set; } = null;

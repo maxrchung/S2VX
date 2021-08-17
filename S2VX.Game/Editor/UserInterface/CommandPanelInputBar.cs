@@ -4,18 +4,19 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
 
-namespace S2VX.Game.Editor.CommandPanel {
+namespace S2VX.Game.Editor.UserInterface {
     public class CommandPanelInputBar : FillFlowContainer {
         public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
         public CommandPanelValueInput StartTime { get; }
         public CommandPanelValueInput EndTime { get; }
         public CommandPanelValueInput StartValue { get; } = new();
         public CommandPanelValueInput EndValue { get; } = new();
-        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = S2VXCommandPanel.InputSize.X };
+        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
         public Button BtnSave { get; }
 
         public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick,
@@ -29,8 +30,8 @@ namespace S2VX.Game.Editor.CommandPanel {
             Func<double> currentTimeDelegate) {
             var saveIcon = isEditBar ? FontAwesome.Solid.Save : FontAwesome.Solid.Plus;
             BtnSave = new IconButton() {
-                Width = S2VXCommandPanel.InputSize.Y,
-                Height = S2VXCommandPanel.InputSize.Y,
+                Width = CommandPanel.InputSize.Y,
+                Height = CommandPanel.InputSize.Y,
                 Icon = saveIcon
             };
             StartTime = new(currentTimeDelegate);
@@ -95,7 +96,7 @@ namespace S2VX.Game.Editor.CommandPanel {
         [BackgroundDependencyLoader]
         private void Load() {
             AutoSizeAxes = Axes.X;
-            Height = S2VXCommandPanel.InputBarHeight;
+            Height = CommandPanel.InputBarHeight;
 
             AddInput("Type", DropType);
             AddValueInput("StartTime", StartTime);

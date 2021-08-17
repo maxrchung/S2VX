@@ -10,7 +10,6 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
-using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
@@ -53,7 +52,7 @@ namespace S2VX.Game.Editor {
         public NotesTimeline NotesTimeline { get; } = new();
         private Timeline Timeline { get; } = new();
         public EditorInfoBar EditorInfoBar { get; } = new();
-        public S2VXCommandPanel CommandPanel { get; } = new();
+        public CommandPanel CommandPanel { get; } = new();
         public MetadataPanel MetadataPanel { get; private set; }
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {

@@ -1,15 +1,15 @@
-﻿using S2VX.Game.Editor.CommandPanel;
+﻿using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleUpdateCommand : IReversible {
-        private S2VXCommandPanel CommandPanel { get; set; }
+        private CommandPanel CommandPanel { get; set; }
         private S2VXStory Story { get; set; }
         private S2VXCommand OldCommand { get; set; }
         private S2VXCommand NewCommand { get; set; }
 
-        public ReversibleUpdateCommand(S2VXCommand oldCommand, S2VXCommand newCommand, S2VXCommandPanel commandPanel) {
+        public ReversibleUpdateCommand(S2VXCommand oldCommand, S2VXCommand newCommand, CommandPanel commandPanel) {
             OldCommand = oldCommand;
             NewCommand = newCommand;
             CommandPanel = commandPanel;

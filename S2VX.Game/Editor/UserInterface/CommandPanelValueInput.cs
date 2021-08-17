@@ -6,17 +6,18 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK.Graphics;
 using S2VX.Game.Editor.ColorPicker;
+using S2VX.Game.Editor.Containers;
 using System;
 using System.Globalization;
 
-namespace S2VX.Game.Editor.CommandPanel {
+namespace S2VX.Game.Editor.UserInterface {
     public class CommandPanelValueInput : Container {
 
         public TextBox TxtValue { get; } = CreateErrorTextBox();
 
         private static BasicTextBox CreateErrorTextBox() =>
             new() {
-                Size = S2VXCommandPanel.InputSize,
+                Size = CommandPanel.InputSize,
                 BorderColour = Color4.Red,
                 Masking = true
             };
@@ -27,7 +28,7 @@ namespace S2VX.Game.Editor.CommandPanel {
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
             Position = new(-5, 5),
-            Size = new(S2VXCommandPanel.InputSize.Y - 10)
+            Size = new(CommandPanel.InputSize.Y - 10)
         };
 
         public BasicButton BtnToggle { get; } = new BasicButton() {
@@ -35,12 +36,12 @@ namespace S2VX.Game.Editor.CommandPanel {
             Anchor = Anchor.TopRight,
             Origin = Anchor.TopRight,
             Position = new(-5, 5),
-            Size = new(S2VXCommandPanel.InputSize.Y - 10)
+            Size = new(CommandPanel.InputSize.Y - 10)
         };
 
         public S2VXColorPicker ColorPicker { get; } = new S2VXColorPicker() {
             Alpha = 0,
-            Position = new(0, S2VXCommandPanel.InputSize.Y)
+            Position = new(0, CommandPanel.InputSize.Y)
         };
 
         public void UseColorPicker(bool isColorValue) {
@@ -96,7 +97,7 @@ namespace S2VX.Game.Editor.CommandPanel {
 
         [BackgroundDependencyLoader]
         private void Load() {
-            Size = S2VXCommandPanel.InputSize;
+            Size = CommandPanel.InputSize;
 
             Children = new Drawable[] {
                 TxtValue,
