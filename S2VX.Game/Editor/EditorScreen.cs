@@ -108,9 +108,7 @@ namespace S2VX.Game.Editor {
                         CreateMenu(),
                         Timeline,
                         CommandPanel,
-                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)) {
-                            Position = new(0, S2VXGameBase.GameWidth / 2)
-                        }
+                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath))
                     }
             };
             editorUI.State.Value = Visibility.Visible;
