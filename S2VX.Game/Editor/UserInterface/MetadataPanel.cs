@@ -8,10 +8,9 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story.Settings;
 
-namespace S2VX.Game.Editor.Containers {
+namespace S2VX.Game.Editor.UserInterface {
     public class MetadataPanel : OverlayContainer {
         private static Vector2 PanelSize { get; } = new(330, 230);
-        private static Vector2 PanelPosition { get; } = new(0, S2VXGameBase.GameWidth / 2);
         private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
 
@@ -57,7 +56,6 @@ namespace S2VX.Game.Editor.Containers {
             };
 
             Origin = Anchor.CentreLeft;
-            Position = PanelPosition;
             Size = PanelSize;
         }
 

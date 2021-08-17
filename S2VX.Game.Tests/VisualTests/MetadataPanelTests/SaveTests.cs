@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Testing;
-using S2VX.Game.Editor.Containers;
+using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Story.Settings;
 using System.IO;
 

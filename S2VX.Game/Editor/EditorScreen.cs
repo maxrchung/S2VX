@@ -14,6 +14,7 @@ using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
+using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
@@ -107,7 +108,9 @@ namespace S2VX.Game.Editor {
                         CreateMenu(),
                         Timeline,
                         CommandPanel,
-                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath))
+                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)) {
+                            Position = new(0, S2VXGameBase.GameWidth / 2)
+                        }
                     }
             };
             editorUI.State.Value = Visibility.Visible;
