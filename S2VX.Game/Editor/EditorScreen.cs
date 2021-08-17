@@ -52,7 +52,8 @@ namespace S2VX.Game.Editor {
         private Timeline Timeline { get; } = new();
         public EditorInfoBar EditorInfoBar { get; } = new();
         public CommandPanel CommandPanel { get; } = new();
-        public MetadataPanel MetadataPanel { get; private set; }
+        private MetadataPanel MetadataPanel { get; set; }
+        private TapPanel TapPanel { get; set; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
@@ -106,7 +107,8 @@ namespace S2VX.Game.Editor {
                         CreateMenu(),
                         Timeline,
                         CommandPanel,
-                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath))
+                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)),
+                        TapPanel
                     }
             };
             editorUI.State.Value = Visibility.Visible;
@@ -145,6 +147,7 @@ namespace S2VX.Game.Editor {
                             new MenuItem("Editor Interface (Ctrl+H)", ViewEditorUI),
                             new MenuItem("Command Panel (C)", ViewCommandPanel),
                             new MenuItem("Metadata Panel (Ctrl+M)", ViewMetadataPanel),
+                            new MenuItem("Tap Panel (Ctrl+T)", ViewTapPanel),
                         }
                     },
                     new MenuItem("Playback")
@@ -311,6 +314,10 @@ namespace S2VX.Game.Editor {
                     PlaybackPlay();
                     break;
                 case Key.T:
+                    if (e.ControlPressed) {
+                        ViewTapPanel();
+                        break;
+                    }
                     PlaybackDisplay();
                     break;
                 case Key.Left:
@@ -415,6 +422,8 @@ namespace S2VX.Game.Editor {
         private void ViewCommandPanel() => CommandPanel.ToggleVisibility();
 
         private void ViewMetadataPanel() => MetadataPanel.ToggleVisibility();
+
+        private void ViewTapPanel() => TapPanel.ToggleVisibility();
 
         private void PlaybackPlay() {
             if (Track.CurrentTime < Track.Length) {
