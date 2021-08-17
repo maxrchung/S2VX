@@ -10,7 +10,7 @@ using S2VX.Game.Story.Settings;
 
 namespace S2VX.Game.Editor.Containers {
     public class MetadataPanel : OverlayContainer {
-        private static Vector2 PanelSize { get; } = new(1000, 230);
+        private static Vector2 PanelSize { get; } = new(330, 230);
         private static Vector2 PanelPosition { get; } = new(0, S2VXGameBase.GameWidth / 2);
         private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
