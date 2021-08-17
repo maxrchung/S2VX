@@ -9,7 +9,7 @@ using osuTK.Graphics;
 using S2VX.Game.Story.Settings;
 
 namespace S2VX.Game.Editor.UserInterface {
-    public class MetadataPanel : OverlayContainer {
+    public class MetadataPanel : S2VXOverlayContainer {
         private static Vector2 PanelSize { get; } = new(330, 230);
         private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
@@ -92,9 +92,5 @@ namespace S2VX.Game.Editor.UserInterface {
             Form.Add(row);
             return textbox;
         }
-
-        protected override void PopIn() => this.FadeIn(100);
-
-        protected override void PopOut() => this.FadeOut(100);
     }
 }

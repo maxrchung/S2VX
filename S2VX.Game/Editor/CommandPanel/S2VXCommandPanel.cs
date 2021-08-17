@@ -13,7 +13,7 @@ using S2VX.Game.Story.Command;
 using System;
 
 namespace S2VX.Game.Editor.CommandPanel {
-    public class S2VXCommandPanel : OverlayContainer {
+    public class S2VXCommandPanel : S2VXOverlayContainer {
 
         [Resolved]
         private EditorScreen Editor { get; set; } = null;
@@ -212,9 +212,5 @@ namespace S2VX.Game.Editor.CommandPanel {
         }
 
         protected override bool OnScroll(ScrollEvent e) => false;
-
-        protected override void PopIn() => this.FadeIn(100);
-
-        protected override void PopOut() => this.FadeOut(100);
     }
 }
