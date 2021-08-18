@@ -9,8 +9,6 @@ namespace S2VX.Game.Tests.HeadlessTests.SongSelectionScreenTests {
     [HeadlessTest]
     public class ImportTests : S2VXTestScene {
         [Cached]
-        private S2VXGameBase GameBase { get; } = new();
-        [Cached]
         private ScreenStack Screens { get; } = new();
 
         private SongSelectionScreen SongSelectionScreen { get; } = new();
