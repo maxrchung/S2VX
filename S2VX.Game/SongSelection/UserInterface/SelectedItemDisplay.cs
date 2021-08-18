@@ -12,6 +12,7 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace S2VX.Game.SongSelection.UserInterface {
     public class SelectedItemDisplay : CompositeDrawable {
@@ -25,6 +26,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
 
         private const float BoxSize = S2VXGameBase.GameWidth / 4;
         private const float TextSize = S2VXGameBase.GameWidth / 40;
+        public List<SelectedItemDisplay> SelectionItems { get; }
         public string ItemName { get; set; }
         public string CurSelectionPath { get; set; }
         public Texture ThumbnailTexture { get; set; }
@@ -34,13 +36,20 @@ namespace S2VX.Game.SongSelection.UserInterface {
         //private void DeleteConfirmationFadeout() {
 
         //}
+        private void DeleteStory() {
+            Console.WriteLine(SelectionItems);
+            SelectionItems.RemoveAll(s => s.ItemName == ItemName && s.CurSelectionPath == CurSelectionPath);
+        }
 
-        private static BasicButton CancelButton { get; set; }
+        private static BasicButton CancelButton;
+        //private static BasicButton OkButton;
 
         //private Container DeleteConfirmation { get; } = ;
         private IconButton DeleteButton { get; set; }
 
-        public SelectedItemDisplay(string itemName, string curSelectionPath, Texture thumbnailTexture = null) {
+        public SelectedItemDisplay(Action loadSelectionScreen, List<SelectedItemDisplay> selectionItems, string itemName, string curSelectionPath,
+            Texture thumbnailTexture = null) {
+            SelectionItems = selectionItems;
             ItemName = itemName;
             CurSelectionPath = curSelectionPath;
             ThumbnailTexture = thumbnailTexture;
@@ -56,7 +65,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                         },
                         new BasicButton() {
                             Text = "OK",
-                            //Action = () => Delete Story,
+                            Action = () => { DeleteStory(); loadSelectionScreen(); },
                             Size = ButtonSize,
                         },
                         CancelButton = new BasicButton() {
@@ -68,6 +77,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                 }
             };
             CancelButton.Action = () => DeleteConfirmation.FadeOut();
+            //OkButton.Action = () => Test();
 
         }
 
@@ -88,7 +98,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
         private void Load() {
             DeleteConfirmation.FadeOut();
             //CancelButton.Action = () => DeleteConfirmation.FadeOut();
-            Console.WriteLine(CancelButton.Text);
+            //Console.WriteLine(CancelButton.Text);
             Width = BoxSize;
             Height = BoxSize;
             Margin = new MarginPadding {

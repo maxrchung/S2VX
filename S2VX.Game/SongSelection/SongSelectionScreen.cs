@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace S2VX.Game.SongSelection {
     public class SongSelectionScreen : Screen {
+        //[Resolved]
+        //private S2VXGameBase GameBase { get; set; }
+
         [Resolved]
         private AudioManager Audio { get; set; }
 
@@ -28,19 +31,30 @@ namespace S2VX.Game.SongSelection {
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private SongPreview SongPreview { get; set; }
+        //private S2VXScrollContainer StoryContainer { get; set; }
+        private List<SelectedItemDisplay> StoryList { get; set; } = new();
 
-        private List<Drawable> CreateSelectionItems() {
-            var selectionItems = new List<Drawable>();
+        private const float FullWidth = S2VXGameBase.GameWidth;
+        private const float FullHeight = S2VXGameBase.GameWidth;
+        private const float InnerSize = 0.9f;
+
+        private void CreateSelectionItems() {
             var dirs = Storage.GetDirectories("");
+
             foreach (var dir in dirs) {
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
-                selectionItems.Add(new SelectedItemDisplay(
+                StoryList.Add(new SelectedItemDisplay(
+                    () => {
+                        LoadSelectionScreen();
+                        StoryList.RemoveAll(s => s.ItemName == dir && s.CurSelectionPath == CurSelectionPath);
+                        Storage.DeleteDirectory(CurSelectionPath + "/" + dir);
+                    },
+                    StoryList,
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 ));
             }
-            return selectionItems;
         }
 
         private (bool, string, string, Texture) DirectoryContainsStory(string dir) {
@@ -86,21 +100,23 @@ namespace S2VX.Game.SongSelection {
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
 
-            var fullWidth = S2VXGameBase.GameWidth;
-            var fullHeight = S2VXGameBase.GameWidth;
-            var innerSize = 0.9f;
+            LoadSelectionScreen();
+        }
+
+        private void LoadSelectionScreen() {
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
+                CreateSelectionItems();
                 InternalChildren = new Drawable[] {
                     new Border(CurSelectionPath, () => this.Exit()) {
-                        Width = fullWidth,
-                        Height = fullHeight,
-                        InnerBoxRelativeSize = innerSize,
+                        Width = FullWidth,
+                        Height = FullHeight,
+                        InnerBoxRelativeSize = InnerSize,
                     },
                     new S2VXScrollContainer {
-                        Width = fullWidth * innerSize,
-                        Height = fullHeight * innerSize,
+                        Width = FullWidth * InnerSize,
+                        Height = FullHeight * InnerSize,
                         Margin = new MarginPadding {
                             Horizontal = Width * spacingMargin,
                             Vertical = Height * spacingMargin,
@@ -108,10 +124,10 @@ namespace S2VX.Game.SongSelection {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Child = new FillFlowContainer {
-                            Width = fullWidth * innerSize,
+                            Width = FullWidth * InnerSize,
                             AutoSizeAxes = Axes.Y,
                             Direction = FillDirection.Full,
-                            Children = CreateSelectionItems()
+                            Children = StoryList
                         },
                     },
                 };
@@ -121,22 +137,22 @@ namespace S2VX.Game.SongSelection {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
                         new Border(CurSelectionPath, () => this.Exit()) {
-                            Width = fullWidth,
-                            Height = fullHeight,
-                            InnerBoxRelativeSize = innerSize,
+                            Width = FullWidth,
+                            Height = FullHeight,
+                            InnerBoxRelativeSize = InnerSize,
                             Colour = Color4.Red,
                         },
                     };
                 } else {
                     InternalChildren = new Drawable[] {
                         new Border(CurSelectionPath, () => this.Exit()) {
-                            Width = fullWidth,
-                            Height = fullHeight,
-                            InnerBoxRelativeSize = innerSize,
+                            Width = FullWidth,
+                            Height = FullHeight,
+                            InnerBoxRelativeSize = InnerSize,
                         },
                         SongPreview = new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
-                            Width = fullWidth * innerSize,
-                            Height = fullHeight * innerSize,
+                            Width = FullWidth * InnerSize,
+                            Height = FullHeight * InnerSize,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                         },
@@ -144,5 +160,27 @@ namespace S2VX.Game.SongSelection {
                 }
             }
         }
+
+        //private void DeleteStoryAndReloadSelectionScreen() {
+        //    LoadSelectionScreen();
+
+        //}
+
+        //protected override void Update() {
+        //    StoryContainer.Child = new FillFlowContainer {
+        //        Width = FullWidth * InnerSize,
+        //        AutoSizeAxes = Axes.Y,
+        //        Direction = FillDirection.Full,
+        //        Children = CreateSelectionItems()
+        //    };
+        //    base.Update();
+        //}
+
+        //protected override void OnMouseUp(MouseUpEvent e) => StoryContainer.Child = new FillFlowContainer {
+        //    Width = FullWidth * InnerSize,
+        //    AutoSizeAxes = Axes.Y,
+        //    Direction = FillDirection.Full,
+        //    Children = CreateSelectionItems()
+        //};
     }
 }
