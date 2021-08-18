@@ -2,11 +2,11 @@
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
 using osuTK.Graphics;
+using S2VX.Game.Editor.UserInterface;
 
 namespace S2VX.Game.Editor.Containers {
     public class TapPanel : S2VXOverlayContainer {
@@ -21,6 +21,7 @@ namespace S2VX.Game.Editor.Containers {
             Position = PanelPosition;
             Size = PanelSize;
 
+            var receptor = new TapReceptor();
             Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 new FillFlowContainer {
@@ -30,17 +31,15 @@ namespace S2VX.Game.Editor.Containers {
                         new SpriteText {
                             Text = "Tap Panel"
                         },
-                        new Box {
-                            Colour = S2VXColorConstants.DarkBlack,
-                            Size = new(100)
+                        receptor,
+                        new SpriteText {
+                            Current = receptor.TapsLabel
                         },
                         new SpriteText {
-                            Text = "Taps: 0"
-                        },
-                        new SpriteText {
-                            Text = "BPM: 0"
+                            Current = receptor.BPMLabel
                         },
                         new BasicButton {
+                            Action = () => receptor.Reset(),
                             Size = InputSize,
                             Text = "Reset"
                         }
