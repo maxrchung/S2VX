@@ -17,9 +17,6 @@ using System.Linq;
 
 namespace S2VX.Game.SongSelection {
     public class SongSelectionScreen : Screen {
-        //[Resolved]
-        //private S2VXGameBase GameBase { get; set; }
-
         [Resolved]
         private AudioManager Audio { get; set; }
 
@@ -31,12 +28,13 @@ namespace S2VX.Game.SongSelection {
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private SongPreview SongPreview { get; set; }
-        //private S2VXScrollContainer StoryContainer { get; set; }
         private List<SelectedItemDisplay> StoryList { get; set; } = new();
 
         private const float FullWidth = S2VXGameBase.GameWidth;
         private const float FullHeight = S2VXGameBase.GameWidth;
         private const float InnerSize = 0.9f;
+
+        private void Clear() => StoryList.Clear();
 
         private void CreateSelectionItems() {
             var dirs = Storage.GetDirectories("");
@@ -45,11 +43,11 @@ namespace S2VX.Game.SongSelection {
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
                 StoryList.Add(new SelectedItemDisplay(
                     () => {
-                        LoadSelectionScreen();
+                        //thumbnailPath.Dispose();
+                        Schedule(() => LoadSelectionScreen(true, dir));
+                        Clear();
                         StoryList.RemoveAll(s => s.ItemName == dir && s.CurSelectionPath == CurSelectionPath);
-                        Storage.DeleteDirectory(CurSelectionPath + "/" + dir);
                     },
-                    StoryList,
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
@@ -103,7 +101,7 @@ namespace S2VX.Game.SongSelection {
             LoadSelectionScreen();
         }
 
-        private void LoadSelectionScreen() {
+        private void LoadSelectionScreen(bool deleteDir = false, string dir = null) {
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
@@ -159,28 +157,12 @@ namespace S2VX.Game.SongSelection {
                     };
                 }
             }
+
+            if (deleteDir) {
+                Storage.DeleteDirectory(dir);
+            }
         }
 
-        //private void DeleteStoryAndReloadSelectionScreen() {
-        //    LoadSelectionScreen();
-
-        //}
-
-        //protected override void Update() {
-        //    StoryContainer.Child = new FillFlowContainer {
-        //        Width = FullWidth * InnerSize,
-        //        AutoSizeAxes = Axes.Y,
-        //        Direction = FillDirection.Full,
-        //        Children = CreateSelectionItems()
-        //    };
-        //    base.Update();
-        //}
-
-        //protected override void OnMouseUp(MouseUpEvent e) => StoryContainer.Child = new FillFlowContainer {
-        //    Width = FullWidth * InnerSize,
-        //    AutoSizeAxes = Axes.Y,
-        //    Direction = FillDirection.Full,
-        //    Children = CreateSelectionItems()
-        //};
+        protected override void Dispose(bool isDisposing) => base.Dispose(isDisposing);//GameBase?.UnregisterImportHandler(this);
     }
 }

@@ -33,23 +33,11 @@ namespace S2VX.Game.SongSelection.UserInterface {
         public RelativeBox SelectedIndicatorBox { get; private set; }
         private IconButton Thumbnail { get; set; }
         private Container DeleteConfirmation { get; set; }
-        //private void DeleteConfirmationFadeout() {
 
-        //}
-        private void DeleteStory() {
-            Console.WriteLine(SelectionItems);
-            SelectionItems.RemoveAll(s => s.ItemName == ItemName && s.CurSelectionPath == CurSelectionPath);
-        }
-
-        private static BasicButton CancelButton;
-        //private static BasicButton OkButton;
-
-        //private Container DeleteConfirmation { get; } = ;
         private IconButton DeleteButton { get; set; }
 
-        public SelectedItemDisplay(Action loadSelectionScreen, List<SelectedItemDisplay> selectionItems, string itemName, string curSelectionPath,
+        public SelectedItemDisplay(Action deleteSelectionItem, string itemName, string curSelectionPath,
             Texture thumbnailTexture = null) {
-            SelectionItems = selectionItems;
             ItemName = itemName;
             CurSelectionPath = curSelectionPath;
             ThumbnailTexture = thumbnailTexture;
@@ -65,20 +53,17 @@ namespace S2VX.Game.SongSelection.UserInterface {
                         },
                         new BasicButton() {
                             Text = "OK",
-                            Action = () => { DeleteStory(); loadSelectionScreen(); },
+                            Action = () => deleteSelectionItem(),
                             Size = ButtonSize,
                         },
-                        CancelButton = new BasicButton() {
+                        new BasicButton() {
                             Text = "Cancel",
-                            //Action = () => DeleteConfirmationFadeout,
+                            Action = () => DeleteConfirmation.FadeOut(),
                             Size = ButtonSize,
                         }
                     }
                 }
             };
-            CancelButton.Action = () => DeleteConfirmation.FadeOut();
-            //OkButton.Action = () => Test();
-
         }
 
         protected override bool OnHover(HoverEvent e) {
@@ -97,8 +82,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
         [BackgroundDependencyLoader]
         private void Load() {
             DeleteConfirmation.FadeOut();
-            //CancelButton.Action = () => DeleteConfirmation.FadeOut();
-            //Console.WriteLine(CancelButton.Text);
             Width = BoxSize;
             Height = BoxSize;
             Margin = new MarginPadding {
