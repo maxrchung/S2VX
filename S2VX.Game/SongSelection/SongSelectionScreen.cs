@@ -72,7 +72,10 @@ namespace S2VX.Game.SongSelection {
             return true;
         }
 
-        public override void OnResuming(IScreen last) => SongPreview?.LeaderboardContainer?.LoadLeaderboard();
+        public override void OnResuming(IScreen last) {
+            SongPreview?.LeaderboardContainer?.LoadLeaderboard();
+            SongPreview?.LoadSongMetadata();
+        }
 
         protected override bool OnKeyDown(KeyDownEvent e) {
             switch (e.Key) {
