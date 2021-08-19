@@ -1,48 +1,36 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
-using osu.Framework.Screens;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
 using osuTK.Input;
-using S2VX.Game.Editor;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.UserInterface;
-using S2VX.Game.Story;
-using S2VX.Game.Story.Command;
-using S2VX.Game.Story.Note;
-using System.IO;
 
 namespace S2VX.Game.Tests.HeadlessTests {
     [HeadlessTest]
     public class TapPanelTests : S2VXTestScene {
-        private TapPanel TapPanel { get; set; }
+        private TapPanel TapPanel { get; set; } = new();
         private TapReceptor TapReceptor { get; set; }
-
-
         private StopwatchClock TapClock { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio) {
+        private void Load() {
             TapClock = new();
-            var audioPath = Path.Combine("TestTracks", "10-seconds-of-silence.mp3");
-            var editor = new EditorScreen(new S2VXStory(), S2VXTrack.Open(audioPath, audio));
-            TapPanel = editor.TapPanel;
             TapPanel.Clock = new FramedClock(TapClock);
             TapReceptor = TapPanel.TapReceptor;
-            Add(new ScreenStack(editor));
+            TapPanel.ToggleVisibility();
+            Add(TapPanel);
         }
 
         // All tests will have a note that starts to appear in 1 second
         [SetUpSteps]
         public void SetUpSteps() {
-            AddStep("Reset clock", () => TapPanel.Clock = new FramedClock(TapClock));
+            AddStep("Reset clock", () => TapPanel.Clock = new FramedClock(TapClock = new()));
             AddStep("Reset tap panel", () => TapReceptor.Reset());
             AddStep("Move mouse", () => InputManager.MoveMouseTo(TapReceptor));
         }
 
-        public void MouseClick() => AddStep("Click", () => InputManager.Click());
-        public void KeyUp() => AddStep("Key up", () => InputManager.PressKey(Key.F));
+        public void MouseClick() => AddStep("Click", () => TapReceptor.Click());
         public void Seek(double time) => AddStep($"Seek to {time}", () => TapClock.Seek(time));
         public void AssertTaps(int taps) => AddAssert($"Is {taps} taps", () => TapReceptor.TapsLabel.Value == $"Taps: {taps}");
         public void AssertBPM(int bpm) => AddAssert($"Is {bpm} BPM", () => TapReceptor.BPMLabel.Value == $"BPM: {bpm}");
@@ -54,30 +42,30 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void ProcessTap_0Taps_Is0BPM() => AssertTaps(0);
 
         [Test]
-        public void ProcessTap_1ClickIn1Second_Is1Tap() {
+        public void ProcessTap_1TapIn1Second_Is1Tap() {
             MouseClick();
             AssertTaps(1);
         }
 
         [Test]
-        public void ProcessTap_1ClickIn1Second_Is0BPM() {
+        public void ProcessTap_1TapIn1Second_Is0BPM() {
             MouseClick();
             AssertBPM(0);
         }
 
         [Test]
-        public void ProcessTap_2KeyUpsIn1Second_Is2Taps() {
-            KeyUp();
+        public void ProcessTap_2TapsIn1Second_Is2Taps() {
+            MouseClick();
             Seek(1000);
-            KeyUp();
+            MouseClick();
             AssertTaps(2);
         }
 
         [Test]
-        public void ProcessTap_2KeyUpsIn1Second_Is60BPM() {
-            KeyUp();
+        public void ProcessTap_2TapsIn1Second_Is60BPM() {
+            MouseClick();
             Seek(1000);
-            KeyUp();
+            MouseClick();
             AssertBPM(60);
         }
 
@@ -85,7 +73,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void ProcessTap_3TapsIn1Second_Is3Taps() {
             MouseClick();
             Seek(500);
-            KeyUp();
+            MouseClick();
             Seek(1000);
             MouseClick();
             AssertTaps(3);
@@ -93,11 +81,11 @@ namespace S2VX.Game.Tests.HeadlessTests {
 
         [Test]
         public void ProcessTap_3TapsIn1Second_Is120BPM() {
-            KeyUp();
+            MouseClick();
             Seek(500);
             MouseClick();
             Seek(1000);
-            KeyUp();
+            MouseClick();
             AssertBPM(120);
         }
     }
