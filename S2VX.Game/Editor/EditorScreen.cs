@@ -53,7 +53,7 @@ namespace S2VX.Game.Editor {
         public EditorInfoBar EditorInfoBar { get; } = new();
         public CommandPanel CommandPanel { get; } = new();
         private MetadataPanel MetadataPanel { get; set; }
-        private TapPanel TapPanel { get; set; } = new();
+        public TapPanel TapPanel { get; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;

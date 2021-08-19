@@ -15,13 +15,14 @@ namespace S2VX.Game.Editor.Containers {
         private static Vector2 InputSize = new(100, 30);
         private const float Pad = 10;
 
+        public TapReceptor TapReceptor { get; } = new();
+
         [BackgroundDependencyLoader]
         private void Load() {
             Origin = Anchor.CentreLeft;
             Position = PanelPosition;
             Size = PanelSize;
 
-            var receptor = new TapReceptor();
             Children = new Drawable[] {
                 new RelativeBox { Colour = Color4.Black.Opacity(0.9f) },
                 new FillFlowContainer {
@@ -31,15 +32,15 @@ namespace S2VX.Game.Editor.Containers {
                         new SpriteText {
                             Text = "Tap Panel"
                         },
-                        receptor,
+                        TapReceptor,
                         new SpriteText {
-                            Current = receptor.TapsLabel
+                            Current = TapReceptor.TapsLabel
                         },
                         new SpriteText {
-                            Current = receptor.BPMLabel
+                            Current = TapReceptor.BPMLabel
                         },
                         new BasicButton {
-                            Action = () => receptor.Reset(),
+                            Action = () => TapReceptor.Reset(),
                             Size = InputSize,
                             Text = "Reset"
                         }
