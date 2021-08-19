@@ -1,0 +1,19 @@
+{
+  "Commands": [],
+  "Notes": [],
+  "HoldNotes": [],
+  "EditorSettings": {
+    "TrackTime": 0.0,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3,
+    "EditorApproachRate": 1
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 100.0,
+    "FastestBPM": 100.0,
+    "StoryLength": 0,
+    "CommandCount": 0,
+    "NoteCount": 0
+  }
+}

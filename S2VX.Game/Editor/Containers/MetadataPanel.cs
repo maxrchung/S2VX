@@ -40,7 +40,7 @@ namespace S2VX.Game.Editor.Containers {
             Size = PanelSize;
 
             var metadata = MetadataSettings.Load(StoryDirectory);
-            TxtTitle = AddRow("TitleTitle", metadata.SongTitle);
+            TxtTitle = AddRow("Title", metadata.SongTitle);
             TxtArtist = AddRow("Artist", metadata.SongArtist);
             TxtAuthor = AddRow("Author", metadata.StoryAuthor);
             TxtDescription = AddRow("Description", metadata.MiscDescription);
