@@ -31,6 +31,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         }
 
         public void MouseClick() => AddStep("Click", () => InputManager.Click(MouseButton.Left));
+        public void PressReleaseKey() => AddStep("Key press", () => InputManager.Key(Key.F));
         public void Seek(double time) => AddStep($"Seek to {time}", () => TapClock.Seek(time));
         public void AssertTaps(int taps) => AddAssert($"Is {taps} taps", () => TapReceptor.TapsLabel.Value == $"Taps: {taps}");
         public void AssertBPM(int bpm) => AddAssert($"Is {bpm} BPM", () => TapReceptor.BPMLabel.Value == $"BPM: {bpm}");
@@ -86,6 +87,26 @@ namespace S2VX.Game.Tests.HeadlessTests {
             MouseClick();
             Seek(1000);
             MouseClick();
+            AssertBPM(120);
+        }
+
+        [Test]
+        public void ProcessTap_3KeyPressesIn1Second_Is3Taps() {
+            PressReleaseKey();
+            Seek(500);
+            PressReleaseKey();
+            Seek(1000);
+            PressReleaseKey();
+            AssertTaps(3);
+        }
+
+        [Test]
+        public void ProcessTap_3KeyPressesIn1Second_Is120BPM() {
+            PressReleaseKey();
+            Seek(500);
+            PressReleaseKey();
+            Seek(1000);
+            PressReleaseKey();
             AssertBPM(120);
         }
     }
