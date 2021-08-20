@@ -2,6 +2,7 @@ using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
 using osu.Framework.Timing;
+using osuTK.Input;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.UserInterface;
 
@@ -26,9 +27,10 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void SetUpSteps() {
             AddStep("Reset clock", () => TapPanel.Clock = new FramedClock(TapClock = new()));
             AddStep("Reset tap panel", () => TapReceptor.Reset());
+            AddStep("Move mouse", () => InputManager.MoveMouseTo(TapReceptor));
         }
 
-        public void MouseClick() => AddStep("Click", () => TapReceptor.Click());
+        public void MouseClick() => AddStep("Click", () => InputManager.Click(MouseButton.Left));
         public void Seek(double time) => AddStep($"Seek to {time}", () => TapClock.Seek(time));
         public void AssertTaps(int taps) => AddAssert($"Is {taps} taps", () => TapReceptor.TapsLabel.Value == $"Taps: {taps}");
         public void AssertBPM(int bpm) => AddAssert($"Is {bpm} BPM", () => TapReceptor.BPMLabel.Value == $"BPM: {bpm}");
