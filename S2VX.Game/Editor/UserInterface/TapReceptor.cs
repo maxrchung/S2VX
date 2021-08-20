@@ -49,18 +49,17 @@ namespace S2VX.Game.Editor.UserInterface {
         }
         // ProcessTap() on key up instead of key down so we lessen the chance of
         // held presses, i.e. if you hold down the Z key, it will continuously
-        // trigger OnKeyDown. This also follows how the click handler works
+        // trigger OnKeyDown
         protected override void OnKeyUp(KeyUpEvent e) {
             if (IsHotKeyPressed) {
                 ProcessTap();
             }
         }
 
-        protected override bool OnClick(ClickEvent e) {
+        protected override void OnMouseUp(MouseUpEvent e) {
             if (e.Button is MouseButton.Left or MouseButton.Right) {
                 ProcessTap();
             }
-            return true;
         }
 
         protected override bool OnHover(HoverEvent e) {
