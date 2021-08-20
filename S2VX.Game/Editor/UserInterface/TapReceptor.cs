@@ -7,6 +7,7 @@ using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.UserInterface {
     public class TapReceptor : CompositeDrawable {
@@ -38,28 +39,30 @@ namespace S2VX.Game.Editor.UserInterface {
         private double StartTime { get; set; }
         private double CurrentBPM { get; set; }
 
+        // Keeps track of what keys are currently held down
+        private HashSet<Key> HotKeysPressed { get; set; } = new();
+
         // We want to block input if ZXCVASDF is pressed so that, for example,
         // we don't repeatedly bring up the command panel with C. However, we
         // also don't want to block all inputs because then we can't Escape out
         // of the editor screen.
-        private bool IsHotKeyPressed { get; set; }
         protected override bool OnKeyDown(KeyDownEvent e) {
-            IsHotKeyPressed = IsHovered && e.Key is Key.Z or Key.X or Key.C or Key.V or Key.A or Key.S or Key.D or Key.F;
-            return IsHotKeyPressed;
-        }
-        // ProcessTap() on key up instead of key down so we lessen the chance of
-        // held presses, i.e. if you hold down the Z key, it will continuously
-        // trigger OnKeyDown
-        protected override void OnKeyUp(KeyUpEvent e) {
-            if (IsHotKeyPressed) {
-                ProcessTap();
+            var isHotKeyPressed = IsHovered && e.Key is Key.Z or Key.X or Key.C or Key.V or Key.A or Key.S or Key.D or Key.F;
+            if (isHotKeyPressed) {
+                if (!HotKeysPressed.Contains(e.Key)) {
+                    ProcessTap();
+                }
+                HotKeysPressed.Add(e.Key);
             }
+            return isHotKeyPressed;
         }
+        protected override void OnKeyUp(KeyUpEvent e) => HotKeysPressed.Remove(e.Key);
 
-        protected override void OnMouseUp(MouseUpEvent e) {
+        protected override bool OnMouseDown(MouseDownEvent e) {
             if (e.Button is MouseButton.Left or MouseButton.Right) {
                 ProcessTap();
             }
+            return true;
         }
 
         protected override bool OnHover(HoverEvent e) {
