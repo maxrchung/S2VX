@@ -44,7 +44,7 @@ namespace S2VX.Game.Editor.UserInterface {
         // of the editor screen.
         private bool IsHotKeyPressed { get; set; }
         protected override bool OnKeyDown(KeyDownEvent e) {
-            IsHotKeyPressed = e.Key is Key.Z or Key.X or Key.C or Key.V or Key.A or Key.S or Key.D or Key.F;
+            IsHotKeyPressed = IsHovered && e.Key is Key.Z or Key.X or Key.C or Key.V or Key.A or Key.S or Key.D or Key.F;
             return IsHotKeyPressed;
         }
         // ProcessTap() on key up instead of key down so we lessen the chance of
