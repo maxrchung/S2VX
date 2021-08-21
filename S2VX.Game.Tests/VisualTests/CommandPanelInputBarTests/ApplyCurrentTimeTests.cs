@@ -6,7 +6,7 @@ using osu.Framework.Testing;
 using osu.Framework.Utils;
 using osuTK.Input;
 using S2VX.Game.Editor;
-using S2VX.Game.Editor.CommandPanel;
+using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Story.Command;
 using System.Globalization;
 using System.IO;

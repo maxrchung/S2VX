@@ -54,6 +54,15 @@ namespace S2VX.Game {
             }
         }
 
+        public static string DoubleToString(double data, int precision = 0) {
+            if (precision == 0) {
+                return $"{data}";
+            } else {
+                var formatString = "{0:0." + new string('#', precision) + "}";
+                return string.Format(CultureInfo.InvariantCulture, formatString, data);
+            }
+        }
+
         public static string Vector2ToString(Vector2 data, int precision = 0) {
             if (precision == 0) {
                 return $"({data.X},{data.Y})";

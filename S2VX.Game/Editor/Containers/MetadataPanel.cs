@@ -8,11 +8,11 @@ using osuTK;
 using osuTK.Graphics;
 using S2VX.Game.Story.Settings;
 
-namespace S2VX.Game.Editor.UserInterface {
-    public class MetadataPanel : OverlayContainer {
-        private static Vector2 InputSize = new(200, 30);
-        private static Vector2 PanelSize { get; } = new(330, 230);
+namespace S2VX.Game.Editor.Containers {
+    public class MetadataPanel : S2VXOverlayContainer {
+        private static Vector2 PanelSize { get; } = new(330, 240);
         private static Vector2 PanelPosition = new(0, S2VXGameBase.GameWidth / 2);
+        private static Vector2 InputSize = new(200, 30);
         private const float Pad = 10;
 
         private string StoryDirectory { get; }
@@ -27,8 +27,9 @@ namespace S2VX.Game.Editor.UserInterface {
 
         private FillFlowContainer Form { get; set; } = new() {
             Direction = FillDirection.Vertical,
-            Position = new(Pad),
+            Padding = new(Pad),
             Size = PanelSize,
+            Spacing = new(Pad),
             Child = new SpriteText { Text = "Metadata Panel" }
         };
 
@@ -64,7 +65,7 @@ namespace S2VX.Game.Editor.UserInterface {
 
         private BasicTextBox AddRow(string key, string value) {
             var keyContainer = new Container {
-                Size = new(InputSize.X / 2, InputSize.Y + Pad),
+                Size = new(InputSize.X / 2, InputSize.Y),
                 Child = new SpriteText {
                     Anchor = Anchor.CentreRight,
                     Font = FontUsage.Default.With(weight: "Bold"),
@@ -78,15 +79,15 @@ namespace S2VX.Game.Editor.UserInterface {
                 Origin = Anchor.CentreLeft,
                 Size = InputSize,
                 Text = value.ToString(),
-                X = Pad,
             };
             var valueContainer = new Container {
-                Size = new(InputSize.X, InputSize.Y + Pad),
+                Size = new(InputSize.X, InputSize.Y),
                 Child = textbox
             };
 
             var row = new FillFlowContainer() {
-                Size = new(PanelSize.X, InputSize.Y + Pad),
+                Size = new(PanelSize.X, InputSize.Y),
+                Spacing = new(Pad),
                 Children = new Drawable[] {
                     keyContainer,
                     valueContainer
@@ -95,9 +96,5 @@ namespace S2VX.Game.Editor.UserInterface {
             Form.Add(row);
             return textbox;
         }
-
-        protected override void PopIn() => this.FadeIn(100);
-
-        protected override void PopOut() => this.FadeOut(100);
     }
 }
