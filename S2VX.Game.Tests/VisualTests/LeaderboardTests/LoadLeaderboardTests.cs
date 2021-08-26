@@ -57,5 +57,8 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
             });
             AddAssert($"Valid leaderboard with 3 entries", () => Leaderboard.EntryCount == 3);
         }
+
+        [Test]
+        public void Load_NullStoryDirectory_DoesNotThrowException() => AddStep($"Add leaderboard", () => Add(new LeaderboardContainer(null)));
     }
 }
