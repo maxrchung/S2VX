@@ -28,7 +28,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void EditorApproachRateDisplay_ScrollWheelUpThenDown_ApproachRateIsOne() {
-            AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
+            AddStep("Move mouse over approach rate display", () => MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
             AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
             AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
             AddAssert("Editor approach rate is 1", () => Editor.EditorApproachRate == 1);
@@ -42,7 +42,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [TestCase(6)]
         [TestCase(7)] // Tests scrolling up after reaching maximum AR
         public void EditorApproachRateDisplay_ScrollWheelUp_ApproachRateIsCorrect(int numScrolls) {
-            AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
+            AddStep("Move mouse over approach rate display", () => MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
             for (var i = 0; i < numScrolls; ++i) {
                 AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
             }
@@ -52,7 +52,7 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void EditorApproachRateDisplay_ScrollWheelDownTwoTimes_ApproachRateIsStillOne() {
-            AddStep("Move mouse over approach rate display", () => InputManager.MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
+            AddStep("Move mouse over approach rate display", () => MoveMouseTo(Editor.EditorInfoBar.ApproachRateDisplay));
             AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
             AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
             AddAssert("Editor approach rate is 1", () => Editor.EditorApproachRate == 1);
