@@ -11,6 +11,9 @@ namespace S2VX.Game.Tests {
     /// </summary>
     public class S2VXTestScene : ManualInputManagerTestScene {
         [Cached]
+        private S2VXGameBase GameBase { get; } = new();
+
+        [Cached]
         private GlobalVolumeDisplay VolumeDisplay { get; set; } = new();
 
         protected override Container<Drawable> Content { get; } = new SquareContainer();

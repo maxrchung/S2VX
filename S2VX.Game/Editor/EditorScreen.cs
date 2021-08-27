@@ -10,13 +10,13 @@ using osu.Framework.Timing;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
-using S2VX.Game.Editor.CommandPanel;
 using S2VX.Game.Editor.Containers;
 using S2VX.Game.Editor.Reversible;
 using S2VX.Game.Editor.ToolState;
 using S2VX.Game.Play;
 using S2VX.Game.Story;
 using System;
+using System.IO;
 
 namespace S2VX.Game.Editor {
     public class EditorScreen : Screen {
@@ -51,7 +51,9 @@ namespace S2VX.Game.Editor {
         public NotesTimeline NotesTimeline { get; } = new();
         private Timeline Timeline { get; } = new();
         public EditorInfoBar EditorInfoBar { get; } = new();
-        public S2VXCommandPanel CommandPanel { get; } = new();
+        public CommandPanel CommandPanel { get; } = new();
+        private MetadataPanel MetadataPanel { get; set; }
+        public TapPanel TapPanel { get; } = new();
 
         public EditorScreen(S2VXStory story, S2VXTrack track) {
             Story = story;
@@ -104,7 +106,9 @@ namespace S2VX.Game.Editor {
                         EditorInfoBar,
                         CreateMenu(),
                         Timeline,
-                        CommandPanel
+                        CommandPanel,
+                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)),
+                        TapPanel
                     }
             };
             editorUI.State.Value = Visibility.Visible;
@@ -142,6 +146,8 @@ namespace S2VX.Game.Editor {
                         {
                             new MenuItem("Editor Interface (Ctrl+H)", ViewEditorUI),
                             new MenuItem("Command Panel (C)", ViewCommandPanel),
+                            new MenuItem("Metadata Panel (Ctrl+M)", ViewMetadataPanel),
+                            new MenuItem("Tap Panel (Ctrl+T)", ViewTapPanel),
                         }
                     },
                     new MenuItem("Playback")
@@ -250,6 +256,11 @@ namespace S2VX.Game.Editor {
                         ViewEditorUI();
                     }
                     break;
+                case Key.M:
+                    if (e.ControlPressed) {
+                        ViewMetadataPanel();
+                    }
+                    break;
                 case Key.R:
                     if (e.ControlPressed) {
                         ProjectRefresh();
@@ -303,6 +314,10 @@ namespace S2VX.Game.Editor {
                     PlaybackPlay();
                     break;
                 case Key.T:
+                    if (e.ControlPressed) {
+                        ViewTapPanel();
+                        break;
+                    }
                     PlaybackDisplay();
                     break;
                 case Key.Left:
@@ -405,6 +420,10 @@ namespace S2VX.Game.Editor {
         private void ViewEditorUI() => EditorUI.ToggleVisibility();
 
         private void ViewCommandPanel() => CommandPanel.ToggleVisibility();
+
+        private void ViewMetadataPanel() => MetadataPanel.ToggleVisibility();
+
+        private void ViewTapPanel() => TapPanel.ToggleVisibility();
 
         private void PlaybackPlay() {
             if (Track.CurrentTime < Track.Length) {

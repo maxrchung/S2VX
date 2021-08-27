@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -20,8 +19,6 @@ namespace S2VX.Game.SongSelection.Containers {
     public class SongPreview : CompositeDrawable {
         public IconButton BtnEdit { get; private set; }
         public IconButton BtnPlay { get; private set; }
-
-        private const string MetadataPath = "metadata.json";
 
         [Resolved]
         private ScreenStack Screens { get; set; }
@@ -48,14 +45,9 @@ namespace S2VX.Game.SongSelection.Containers {
             ThumbnailTexture = thumbnailTexture;
         }
 
-        private void AddSongMetadata() {
-            var metadataPath = Path.Combine(StoryDirectory, MetadataPath);
-            var metadata = new MetadataSettings();
-            if (File.Exists(metadataPath)) {
-                var text = File.ReadAllText(metadataPath);
-                metadata = JsonConvert.DeserializeObject<MetadataSettings>(text);
-            }
-
+        public void LoadSongMetadata() {
+            var metadata = MetadataSettings.Load(StoryDirectory);
+            TextContainer.Clear();
             TextContainer.AddParagraph($"Title: {metadata.SongTitle}");
             TextContainer.AddParagraph($"Artist: {metadata.SongArtist}");
             TextContainer.AddParagraph($"Author: {metadata.StoryAuthor}");
@@ -144,7 +136,7 @@ namespace S2VX.Game.SongSelection.Containers {
                 }
             };
 
-            AddSongMetadata();
+            LoadSongMetadata();
         }
 
         private void LoadEditor() {

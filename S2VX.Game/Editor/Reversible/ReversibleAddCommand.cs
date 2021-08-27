@@ -1,13 +1,13 @@
-﻿using S2VX.Game.Editor.CommandPanel;
+﻿using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Editor.Reversible {
     public class ReversibleAddCommand : IReversible {
         private S2VXCommand Command { get; set; }
 
-        private S2VXCommandPanel CommandPanel { get; set; }
+        private CommandPanel CommandPanel { get; set; }
 
-        public ReversibleAddCommand(S2VXCommand command, S2VXCommandPanel commandPanel) {
+        public ReversibleAddCommand(S2VXCommand command, CommandPanel commandPanel) {
             Command = command;
             CommandPanel = commandPanel;
         }

@@ -13,11 +13,18 @@ using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
 namespace S2VX.Game.SongSelection {
     public class SongSelectionScreen : Screen {
+        [Resolved]
+        private S2VXGameBase GameBase { get; set; }
+
+        [Resolved]
+        private ScreenStack Screens { get; set; }
+
         [Resolved]
         private AudioManager Audio { get; set; }
 
@@ -29,33 +36,30 @@ namespace S2VX.Game.SongSelection {
         private NativeStorage Storage { get; set; }
         private StorageBackedResourceStore CurLevelResourceStore { get; set; }
         private SongPreview SongPreview { get; set; }
-        private List<SelectedItemDisplay> StoryList { get; set; } = new();
+        private List<Drawable> SelectionItems { get; set; } = new();
 
-        private const float FullWidth = S2VXGameBase.GameWidth;
-        private const float FullHeight = S2VXGameBase.GameWidth;
-        private const float InnerSize = 0.9f;
-
-        private void Clear() => StoryList.Clear();
+        private void Clear() => SelectionItems.Clear();
 
         private void CreateSelectionItems(string deletedDir = null) {
             var dirs = Storage.GetDirectories("");
-
             foreach (var dir in dirs) {
                 if (dir == deletedDir) { continue; }
 
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
-                StoryList.Add(new SelectedItemDisplay(
-                    () => {
-                        Clear();
-                        TryDeleteDirectory(dir);
-                        CreateSelectionItems(dir);
-                        LoadSelectionScreen();
-                    },
+                SelectionItems.Add(new SelectedItemDisplay(
+                    () => DeleteSelectionItem(dir),
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 ));
             }
+        }
+
+        public void DeleteSelectionItem(string dir) {
+            Clear();
+            TryDeleteDirectory(dir);
+            CreateSelectionItems(dir);
+            LoadSelectionScreen();
         }
 
         private void TryDeleteDirectory(string dir) {
@@ -105,6 +109,42 @@ namespace S2VX.Game.SongSelection {
             return false;
         }
 
+        /// <summary>
+        /// Creates a new story from template with the specified filepath
+        /// </summary>
+        /// <param name="filePath">The mp3 audio file to use for this new story</param>
+        public void Import(string filePath) {
+            // Only handle the import if this screen is on top
+            if (Screens.CurrentScreen == this) {
+                var templatePath = "Template";
+                var targetPath = Path.Combine(CurSelectionPath, Path.GetFileNameWithoutExtension(filePath));
+
+                // Create new directory
+                var dupNumber = 1;
+                while (Directory.Exists(targetPath)) {
+                    targetPath = Path.Combine(CurSelectionPath,
+                        Path.GetFileNameWithoutExtension(filePath) + dupNumber.ToString(CultureInfo.InvariantCulture));
+                    dupNumber++;
+                }
+                Directory.CreateDirectory(targetPath);
+
+                // Copy dragged MP3 and rename it audio.mp3
+                File.Copy(filePath, Path.Combine(targetPath, "audio.mp3"));
+
+                // Copy other files from template
+                foreach (var file in Directory.GetFiles(templatePath)) {
+                    File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
+                }
+
+                Audio.Samples.Get("menuhit").Play();
+
+                // Reload selection items
+                Clear();
+                CreateSelectionItems();
+                Schedule(LoadSelectionScreen);  // Only the update thread can mutate InternalChildren
+            }
+        }
+
         [BackgroundDependencyLoader]
         private void Load() {
             Storage = new NativeStorage(CurSelectionPath);
@@ -113,24 +153,27 @@ namespace S2VX.Game.SongSelection {
                 Directory.CreateDirectory(CurSelectionPath);
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
-
+            GameBase.RegisterImportHandler(this);
             CreateSelectionItems();
             LoadSelectionScreen();
         }
 
         private void LoadSelectionScreen() {
+            var fullWidth = S2VXGameBase.GameWidth;
+            var fullHeight = S2VXGameBase.GameWidth;
+            var innerSize = 0.9f;
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
                 InternalChildren = new Drawable[] {
                     new Border(CurSelectionPath, () => this.Exit()) {
-                        Width = FullWidth,
-                        Height = FullHeight,
-                        InnerBoxRelativeSize = InnerSize,
+                        Width = fullWidth,
+                        Height = fullHeight,
+                        InnerBoxRelativeSize = innerSize,
                     },
                     new S2VXScrollContainer {
-                        Width = FullWidth * InnerSize,
-                        Height = FullHeight * InnerSize,
+                        Width = fullWidth * innerSize,
+                        Height = fullHeight * innerSize,
                         Margin = new MarginPadding {
                             Horizontal = Width * spacingMargin,
                             Vertical = Height * spacingMargin,
@@ -138,10 +181,10 @@ namespace S2VX.Game.SongSelection {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Child = new FillFlowContainer {
-                            Width = FullWidth * InnerSize,
+                            Width = fullWidth * innerSize,
                             AutoSizeAxes = Axes.Y,
                             Direction = FillDirection.Full,
-                            Children = StoryList
+                            Children = SelectionItems
                         },
                     },
                 };
@@ -151,28 +194,33 @@ namespace S2VX.Game.SongSelection {
                     // Empty directory, show red border
                     InternalChildren = new Drawable[] {
                         new Border(CurSelectionPath, () => this.Exit()) {
-                            Width = FullWidth,
-                            Height = FullHeight,
-                            InnerBoxRelativeSize = InnerSize,
+                            Width = fullWidth,
+                            Height = fullHeight,
+                            InnerBoxRelativeSize = innerSize,
                             Colour = Color4.Red,
                         },
                     };
                 } else {
                     InternalChildren = new Drawable[] {
                         new Border(CurSelectionPath, () => this.Exit()) {
-                            Width = FullWidth,
-                            Height = FullHeight,
-                            InnerBoxRelativeSize = InnerSize,
+                            Width = fullWidth,
+                            Height = fullHeight,
+                            InnerBoxRelativeSize = innerSize,
                         },
                         SongPreview = new SongPreview (CurSelectionPath, storyPath, audioPath, thumbnailTexture) {
-                            Width = FullWidth * InnerSize,
-                            Height = FullHeight * InnerSize,
+                            Width = fullWidth * innerSize,
+                            Height = fullHeight * innerSize,
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                         },
                     };
                 }
             }
+        }
+
+        protected override void Dispose(bool isDisposing) {
+            base.Dispose(isDisposing);
+            GameBase?.UnregisterImportHandler(this);
         }
     }
 }
