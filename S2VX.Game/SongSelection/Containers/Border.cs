@@ -16,7 +16,7 @@ namespace S2VX.Game.SongSelection.Containers {
         public BorderInnerBox BorderInner { get; private set; }
 
         public Border(string curSelectionPath, Action onExit) {
-            CurSelectionPath = curSelectionPath;
+            CurSelectionPath = curSelectionPath ?? "";
             OnExit = onExit;
         }
 
