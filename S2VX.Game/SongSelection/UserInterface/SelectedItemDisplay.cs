@@ -129,7 +129,6 @@ namespace S2VX.Game.SongSelection.UserInterface {
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
                     Alpha = 0.7f,
-                    //Colour = S2VXColorConstants.DarkYellow,
                     Icon = FontAwesome.Solid.Trash
                 },
                 DeleteConfirmation
