@@ -32,7 +32,7 @@ namespace S2VX.Game.Leaderboard {
         /// <param name="leaderboardFileName">(Optional) File name to use for the JSON leaderboard</param>
         /// <param name="scoreStatistics">(Optional) The new score to add to the leaderboard. Leave null to hide the AddLeaderboardEntryContainer</param>
         public LeaderboardContainer(string storyDirectory, string leaderboardFileName = DefaultLeaderboardFileName, ScoreStatistics scoreStatistics = null) {
-            LeaderboardPath = Path.Combine(storyDirectory, leaderboardFileName);
+            LeaderboardPath = Path.Combine(storyDirectory ?? "", leaderboardFileName);
             ScoreStatistics = scoreStatistics;
         }
 
