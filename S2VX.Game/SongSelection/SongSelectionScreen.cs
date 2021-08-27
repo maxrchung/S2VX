@@ -11,6 +11,7 @@ using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,22 +37,37 @@ namespace S2VX.Game.SongSelection {
 
         private void Clear() => StoryList.Clear();
 
-        private void CreateSelectionItems() {
+        private void CreateSelectionItems(string deletedDir = null) {
             var dirs = Storage.GetDirectories("");
 
             foreach (var dir in dirs) {
+                if (dir == deletedDir) { continue; }
+
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
                 StoryList.Add(new SelectedItemDisplay(
                     () => {
-                        //thumbnailPath.Dispose();
-                        Schedule(() => LoadSelectionScreen(true, dir));
                         Clear();
-                        StoryList.RemoveAll(s => s.ItemName == dir && s.CurSelectionPath == CurSelectionPath);
+                        TryDeleteDirectory(dir);
+                        CreateSelectionItems(dir);
+                        LoadSelectionScreen();
                     },
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 ));
+            }
+        }
+
+        private void TryDeleteDirectory(string dir) {
+            var hasException = true;
+            while (hasException) {
+                try {
+                    Storage.DeleteDirectory(dir);
+                    hasException = false;
+                } catch (Exception ex) {
+                    // Don't really know how to handle this weird async stuff
+                    Console.WriteLine(ex);
+                }
             }
         }
 
@@ -98,14 +114,14 @@ namespace S2VX.Game.SongSelection {
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
 
+            CreateSelectionItems();
             LoadSelectionScreen();
         }
 
-        private void LoadSelectionScreen(bool deleteDir = false, string dir = null) {
+        private void LoadSelectionScreen() {
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
-                CreateSelectionItems();
                 InternalChildren = new Drawable[] {
                     new Border(CurSelectionPath, () => this.Exit()) {
                         Width = FullWidth,
@@ -157,12 +173,6 @@ namespace S2VX.Game.SongSelection {
                     };
                 }
             }
-
-            if (deleteDir) {
-                Storage.DeleteDirectory(dir);
-            }
         }
-
-        protected override void Dispose(bool isDisposing) => base.Dispose(isDisposing);//GameBase?.UnregisterImportHandler(this);
     }
 }

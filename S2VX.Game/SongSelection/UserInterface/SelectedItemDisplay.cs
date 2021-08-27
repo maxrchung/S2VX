@@ -137,5 +137,10 @@ namespace S2VX.Game.SongSelection.UserInterface {
             DeleteButton.FadeOut();
         }
 
+        //protected override void Dispose(bool isDisposing) {
+        //    base.Dispose(isDisposing);
+        //    ThumbnailTexture.Dispose();
+        //    Thumbnail.Dispose();
+        //}
     }
 }
