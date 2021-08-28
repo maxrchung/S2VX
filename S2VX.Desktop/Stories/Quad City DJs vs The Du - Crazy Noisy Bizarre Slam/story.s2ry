@@ -1,0 +1,284 @@
+{
+  "Commands": [
+    {
+      "StartValue": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "EndValue": {
+        "x": 2.0,
+        "y": 3.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 0,
+      "Type": "CameraMove"
+    },
+    {
+      "StartValue": 800.0,
+      "EndValue": 800.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesShowTime"
+    },
+    {
+      "StartValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.0,
+        "G": 0.1686,
+        "B": 0.2118,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "BackgroundColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.02745,
+        "G": 0.2118,
+        "B": 0.2588,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "GridColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.7961,
+        "G": 0.2941,
+        "B": 0.08628,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesColor"
+    },
+    {
+      "StartValue": 0.008,
+      "EndValue": 0.008,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesThickness"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesColor"
+    },
+    {
+      "StartValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.1647,
+        "G": 0.6314,
+        "B": 0.5961,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldApproachesColor"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesOutlineThickness"
+    },
+    {
+      "StartValue": 0.01,
+      "EndValue": 0.01,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineThickness"
+    },
+    {
+      "StartValue": 242.0,
+      "EndValue": 242.0,
+      "StartTime": 0.0,
+      "EndTime": 368002.0,
+      "Easing": 0,
+      "Type": "TimingChange"
+    },
+    {
+      "StartValue": 45.0,
+      "EndValue": -45.0,
+      "StartTime": 0.0,
+      "EndTime": 10000.0,
+      "Easing": 15,
+      "Type": "CameraRotate"
+    },
+    {
+      "StartValue": 0.4,
+      "EndValue": 0.4,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "ApproachesDistance"
+    },
+    {
+      "StartValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "EndValue": {
+        "R": 0.9922,
+        "G": 0.9647,
+        "B": 0.8902,
+        "A": 1.0
+      },
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesOutlineColor"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "NotesAlpha"
+    },
+    {
+      "StartValue": 0.7,
+      "EndValue": 0.7,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "HoldNotesAlpha"
+    }
+  ],
+  "Notes": [
+    {
+      "HitTime": 929.7520661157025,
+      "Coordinates": {
+        "x": -1.0,
+        "y": 1.5
+      }
+    },
+    {
+      "HitTime": 867.7685950413223,
+      "Coordinates": {
+        "x": -1.5,
+        "y": 1.0
+      }
+    },
+    {
+      "HitTime": 805.7851239669423,
+      "Coordinates": {
+        "x": -2.0,
+        "y": 1.0
+      }
+    }
+  ],
+  "HoldNotes": [
+    {
+      "HitTime": 1239.6694214876034,
+      "EndTime": 2231.415453233635,
+      "Coordinates": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "EndCoordinates": {
+        "x": 3.0,
+        "y": 3.0
+      }
+    }
+  ],
+  "EditorSettings": {
+    "TrackTime": 0.0,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 242.0,
+    "FastestBPM": 242.0,
+    "StoryLength": 433.8842975206611,
+    "CommandCount": 18,
+    "NoteCount": 4
+  }
+}
