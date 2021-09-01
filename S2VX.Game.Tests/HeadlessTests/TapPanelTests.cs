@@ -27,7 +27,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void SetUpSteps() {
             AddStep("Reset clock", () => TapPanel.Clock = new FramedClock(TapClock = new()));
             AddStep("Reset tap panel", () => TapReceptor.Reset());
-            AddStep("Move mouse", () => InputManager.MoveMouseTo(TapReceptor));
+            AddStep("Move mouse", () => MoveMouseTo(TapReceptor));
         }
 
         public void MouseClick() => AddStep("Click", () => InputManager.Click(MouseButton.Left));

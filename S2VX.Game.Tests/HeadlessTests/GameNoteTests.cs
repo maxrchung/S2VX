@@ -44,7 +44,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             });
 
             AddStep("Seek clock", () => Stopwatch.Seek(25));
-            AddStep("Move mouse to centre", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to centre", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(Notes.MissThreshold + 20));
@@ -59,7 +59,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             });
 
             AddStep("Seek clock", () => Stopwatch.Seek(10));
-            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to second note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek clock", () => Stopwatch.Seek(Notes.MissThreshold + 10));
@@ -69,7 +69,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_OutsideMissThreshold_DoesNothing() {
             AddStep("Add note", () => Story.AddNote(new GameNote { HitTime = Notes.MissThreshold + 50 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(Notes.MissThreshold * 2 + 60));
@@ -81,7 +81,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
             GameNote note = null;
             AddStep("Add note", () => Story.AddNote(note = new GameNote { HitTime = Notes.MissThreshold + 50 }));
             AddStep("Seek between pre-threshold and HitTime", () => Stopwatch.Seek(note.HitTime - Notes.MissThreshold / 2));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after post-threshold", () => Stopwatch.Seek(Notes.MissThreshold * 2 + 60));

@@ -37,13 +37,13 @@ namespace S2VX.Game.Tests.VisualTests {
 
         // Adds a hold note that goes from (0,0) at 0 milliseconds to (200, 0) at 1000 milliseconds to (200,200) at 2000 milliseconds
         private void AddMultiPointHoldNote() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(Editor, new()));
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
             AddStep("Add start", () => InputManager.Click(MouseButton.Left));
             AddStep("Seek to end", () => Editor.Seek(1000));
-            AddStep("Move mouse to mid", () => InputManager.MoveMouseTo(Editor, new(200, 0)));
+            AddStep("Move mouse to mid", () => MoveMouseTo(Editor, new(200, 0)));
             AddStep("Add mid", () => InputManager.Click(MouseButton.Left));
             AddStep("Seek to end", () => Editor.Seek(2000));
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
             AddStep("Add end", () => InputManager.Click(MouseButton.Right));
         }
 
@@ -64,9 +64,9 @@ namespace S2VX.Game.Tests.VisualTests {
             });
 
         private void DragStart() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(HoldNote.StartAnchor));
+            AddStep("Move mouse to start", () => MoveMouseTo(HoldNote.StartAnchor));
             AddStep("Press start", () => InputManager.PressButton(MouseButton.Left));
-            AddStep("Drag start", () => InputManager.MoveMouseTo(Editor, new(-100, -100)));
+            AddStep("Drag start", () => MoveMouseTo(Editor, new(-100, -100)));
             AddStep("Release start", () => InputManager.ReleaseButton(MouseButton.Left));
         }
 
@@ -98,9 +98,9 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         private void DragMid() {
-            AddStep("Move mouse to mid", () => InputManager.MoveMouseTo(HoldNote.MidAnchors[0]));
+            AddStep("Move mouse to mid", () => MoveMouseTo(HoldNote.MidAnchors[0]));
             AddStep("Press mid", () => InputManager.PressButton(MouseButton.Left));
-            AddStep("Drag mid", () => InputManager.MoveMouseTo(Editor, new(-100, -100)));
+            AddStep("Drag mid", () => MoveMouseTo(Editor, new(-100, -100)));
             AddStep("Release mid", () => InputManager.ReleaseButton(MouseButton.Left));
         }
 
@@ -132,9 +132,9 @@ namespace S2VX.Game.Tests.VisualTests {
         }
 
         private void DragEnd() {
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(HoldNote.EndAnchor));
+            AddStep("Move mouse to end", () => MoveMouseTo(HoldNote.EndAnchor));
             AddStep("Press end", () => InputManager.PressButton(MouseButton.Left));
-            AddStep("Drag end", () => InputManager.MoveMouseTo(Editor, new(-100, -100)));
+            AddStep("Drag end", () => MoveMouseTo(Editor, new(-100, -100)));
             AddStep("Release end", () => InputManager.ReleaseButton(MouseButton.Left));
         }
 
