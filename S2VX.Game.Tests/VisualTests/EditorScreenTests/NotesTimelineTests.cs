@@ -53,10 +53,10 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             var oldFirstVisibleTick = int.MinValue;
             AddStep("Seek to beginning", () => Editor.Seek(0));
             AddStep("Init value to compare with", () => oldFirstVisibleTick = Editor.NotesTimeline.FirstVisibleTick);
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First()));
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past right edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
             AddStep("Undo note move", () => {
                 InputManager.PressKey(Key.LControl);
@@ -72,10 +72,10 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             var oldFirstVisibleTick = int.MinValue;
             AddStep("Seek to 2.1s", () => Editor.Seek(2100));
             AddStep("Init value to compare with", () => oldFirstVisibleTick = Editor.NotesTimeline.FirstVisibleTick);
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First()));
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past left edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
             AddStep("Undo note move", () => {
                 InputManager.PressKey(Key.LControl);
@@ -94,11 +94,11 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             AddStep("Move mouse to end of hold note", () => {
                 var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
                 var offsetVector = new Vector2(halfWidth - 5, 0);
-                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+                MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
             });
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past left edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
             AddStep("Undo note move", () => {
                 InputManager.PressKey(Key.LControl);
@@ -117,11 +117,11 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             AddStep("Move mouse to end of hold note", () => {
                 var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
                 var offsetVector = new Vector2(halfWidth - 5, 0);
-                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+                MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
             });
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past right edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
             AddStep("Undo note move", () => {
                 InputManager.PressKey(Key.LControl);
@@ -140,13 +140,13 @@ namespace S2VX.Game.Tests.VisualTests.EditorScreenTests {
             AddStep("Move mouse to end of hold note", () => {
                 var halfWidth = Editor.NotesTimeline.NoteToTimelineNote.Values.First().DrawWidth / 2;
                 var offsetVector = new Vector2(halfWidth - 5, 0);
-                InputManager.MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
+                MoveMouseTo(Editor.NotesTimeline.NoteToTimelineNote.Values.First(), offsetVector);
             });
             AddStep("LMouse down", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Move mouse past right edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("Move mouse past left edge of NotesTimeline", () =>
-                InputManager.MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
+                MoveMouseTo(Editor.NotesTimeline.TickBarContent, new Vector2(-Editor.NotesTimeline.TickBarContent.DrawWidth, 0)));
             AddStep("LMouse up", () => InputManager.ReleaseButton(MouseButton.Left));
             AddStep("Undo note move", () => {
                 InputManager.PressKey(Key.LControl);

@@ -39,7 +39,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [TestCase(5)]
         [TestCase(6)] // Tests scrolling up after reaching maximum volume
         public void GlobalVolumeDisplay_ScrollWheelUp_VolumeIsCorrect(int numScrolls) {
-            AddStep("Move mouse over playScreen", () => InputManager.MoveMouseTo(PlayScreen));
+            AddStep("Move mouse over playScreen", () => MoveMouseTo(PlayScreen));
             for (var i = 0; i < numScrolls; ++i) {
                 AddStep("Scroll wheel up", () => InputManager.ScrollVerticalBy(1));
             }
@@ -54,7 +54,7 @@ namespace S2VX.Game.Tests.VisualTests {
         [TestCase(5)]
         [TestCase(6)] // Tests scrolling down after reaching minimum volume
         public void GlobalVolumeDisplay_ScrollWheelDown_VolumeIsCorrect(int numScrolls) {
-            AddStep("Move mouse over playScreen", () => InputManager.MoveMouseTo(PlayScreen));
+            AddStep("Move mouse over playScreen", () => MoveMouseTo(PlayScreen));
             for (var i = 0; i < numScrolls; ++i) {
                 AddStep("Scroll wheel down", () => InputManager.ScrollVerticalBy(-1));
             }
