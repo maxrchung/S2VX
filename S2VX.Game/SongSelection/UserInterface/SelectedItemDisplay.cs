@@ -53,7 +53,7 @@ namespace S2VX.Game.SongSelection.UserInterface {
                         },
                         new BasicButton() {
                             Text = "OK",
-                            Action = () => deleteSelectionItem(),
+                            Action = deleteSelectionItem,
                             Size = ButtonSize,
                         },
                         new BasicButton() {
