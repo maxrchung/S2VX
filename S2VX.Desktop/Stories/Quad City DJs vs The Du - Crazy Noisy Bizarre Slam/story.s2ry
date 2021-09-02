@@ -1,0 +1,28 @@
+{
+  "Commands": [
+    {
+      "StartValue": 136.0,
+      "EndValue": 136.0,
+      "StartTime": 0.0,
+      "EndTime": 0.0,
+      "Easing": 0,
+      "Type": "TimingChange"
+    }
+  ],
+  "Notes": [],
+  "HoldNotes": [],
+  "EditorSettings": {
+    "TrackTime": 0.0,
+    "TrackPlaybackRate": 1.0,
+    "SnapDivisor": 2,
+    "BeatSnapDivisorIndex": 3,
+    "EditorApproachRate": 1
+  },
+  "DifficultySettings": {
+    "SlowestBPM": 136.0,
+    "FastestBPM": 136.0,
+    "StoryLength": 433.8842975206611,
+    "CommandCount": 1,
+    "NoteCount": 0
+  }
+}

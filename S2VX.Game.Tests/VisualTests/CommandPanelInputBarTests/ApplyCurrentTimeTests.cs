@@ -41,7 +41,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void ClickBtn_AppliesCurrentTime() {
             AddStep("Seek to 100", () => Editor.Seek(100));
-            AddStep("Move mouse to button", () => InputManager.MoveMouseTo(InputBar.StartTime.BtnApplyCurrentTime));
+            AddStep("Move mouse to button", () => MoveMouseTo(InputBar.StartTime.BtnApplyCurrentTime));
             AddStep("Click button", () => InputManager.PressButton(MouseButton.Left));
             AddStep("Release button", () => InputManager.ReleaseButton(MouseButton.Left));
             AddAssert("Time field is 100", () => Precision.AlmostEquals(

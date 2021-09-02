@@ -116,7 +116,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(timeToPress, holdDuration);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is note duration (full miss)", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 100.0);
@@ -135,7 +135,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(timeToPress, holdDuration);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is note duration (full miss)", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 100.0 + Notes.MissThreshold);
@@ -148,7 +148,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(1000, 100);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is offset from HitTime", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score ==
@@ -165,7 +165,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(timeToPress, holdDuration);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is offset from HitTime", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score ==
@@ -180,7 +180,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(950, 50);
             PressAndRelease(1000, 50);
             PressAndRelease(1050, 50);
@@ -202,7 +202,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(timeToPress, holdDuration);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.EndTime + Story.Notes.FadeOutTime));
             AddAssert("Score is offset from HitTime and/or EndTime", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score ==
@@ -219,7 +219,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek to HitTime", () => Stopwatch.Seek(Story.Notes.FadeInTime + Story.Notes.ShowTime + 50));
             AddStep("Press Z", () => InputManager.PressKey(Key.Z));
             AddStep("Seek to HitTime + 5", () => Stopwatch.Seek(note.HitTime + 5));
@@ -240,7 +240,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek to 100", () => Stopwatch.Seek(100));
             AddStep("Press Z", () => InputManager.PressKey(Key.Z));
             AddStep("Seek to HitTime", () => Stopwatch.Seek(Story.Notes.FadeInTime + Story.Notes.ShowTime + 50));
@@ -259,7 +259,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 HitTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 50,
                 EndTime = Story.Notes.FadeInTime + Story.Notes.ShowTime + 150
             }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek to HitTime", () => Stopwatch.Seek(Story.Notes.FadeInTime + Story.Notes.ShowTime + 50));
             AddStep("Press Z", () => InputManager.PressKey(Key.Z));
             AddStep("Seek to HitTime + 5", () => Stopwatch.Seek(note.HitTime + 5));
@@ -282,7 +282,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 Story.AddNote(note = new GameNote { HitTime = 100 });
             });
 
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
             AddStep("Seek after last note is deleted", () => Stopwatch.Seek(note.HitTime + Notes.MissThreshold));
             AddAssert("Hits only hold note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Notes.MissThreshold);
@@ -297,7 +297,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 Story.AddNote(new GameHoldNote { HitTime = holdNoteHitTime, EndTime = holdNoteEndTime });
             });
 
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
             AddStep("Seek after last note is deleted", () => Stopwatch.Seek(holdNoteEndTime + Story.Notes.FadeOutTime));
@@ -319,7 +319,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 });
             });
 
-            AddStep("Move mouse to hold note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to hold note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(holdNoteHitTime, holdNoteEndTime - holdNoteHitTime);
             AddStep("Seek after note is deleted", () => Stopwatch.Seek(note.HitTime + Notes.MissThreshold));
             AddAssert("Hits the later hold note", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == Notes.MissThreshold);
@@ -335,7 +335,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                 Story.AddNote(note = new GameNote { HitTime = 100, Coordinates = new Vector2(1, 0) });
             });
 
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek to note HitTime", () => Stopwatch.Seek(note.HitTime));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
@@ -346,7 +346,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_LongerNotePerfectHold_HasNoScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(0, 1000);
             AddAssert("Has no score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 0);
         }
@@ -354,7 +354,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_LongerNoteHalfwayHold_HasHalfScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(500, 500);
             AddAssert("Has half score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 500);
         }
@@ -362,7 +362,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_LongerNoteNoHold_HasFullScore() {
             AddStep("Add notes", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek after EndTime", () => Stopwatch.Seek(1000));
             AddAssert("Has full score", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000);
         }
@@ -379,7 +379,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
                     EndCoordinates = Vector2.One
                 });
             });
-            AddStep("Move mouse to second note", () => InputManager.MoveMouseTo(note));
+            AddStep("Move mouse to second note", () => MoveMouseTo(note));
             PressAndRelease(1001, 2000);
             AddAssert("Plays second note out of order", () => PlayScreen.ScoreProcessor.ScoreStatistics.Score == 1000 + Notes.MissThreshold);
         }
@@ -388,7 +388,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         public void OnPress_MultipleHitsInMissThresholdBeforeHitTime_PlaysHitSoundOnce() {
             GameHoldNote note = null;
             AddStep("Add notes", () => Story.AddNote(note = new GameHoldNote { HitTime = 0, EndTime = 1000 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Seek before HitTime", () => Stopwatch.Seek(note.HitTime - 1));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Release key", () => InputManager.ReleaseKey(Key.Z));
@@ -400,7 +400,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_2ReleasesInDuringState_Plays2MissSounds() {
             AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000 }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             PressAndRelease(50, 200);
             PressAndRelease(600, 100);
             AddAssert("Plays 2 miss sounds", () => PlayScreen.ScoreProcessor.Miss.PlayCount == 2);
@@ -409,7 +409,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_MouseNotOverEndCoordinates_HasFullScore() {
             AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             // We need to temporarily seek to the middle somewhere so that the
             // note can update its position. If we try to immediately seek to
@@ -425,7 +425,7 @@ namespace S2VX.Game.Tests.HeadlessTests {
         [Test]
         public void OnPress_MouseNotOverEndCoordinates_PlaysMissSound() {
             AddStep("Add note", () => Story.AddNote(new GameHoldNote { HitTime = 0, EndTime = 1000, EndCoordinates = new(100, 100) }));
-            AddStep("Move mouse to note", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse to note", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Seek to middle", () => Stopwatch.Seek(500));
             AddStep("Seek to end", () => Stopwatch.Seek(1001));
