@@ -11,6 +11,7 @@ using osuTK.Graphics;
 using osuTK.Input;
 using S2VX.Game.SongSelection.Containers;
 using S2VX.Game.SongSelection.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -39,15 +40,38 @@ namespace S2VX.Game.SongSelection {
 
         private void Clear() => SelectionItems.Clear();
 
-        private void CreateSelectionItems() {
+        private void CreateSelectionItems(string deletedDir = null) {
             var dirs = Storage.GetDirectories("");
             foreach (var dir in dirs) {
+                if (dir == deletedDir) { continue; }
+
                 var thumbnailPath = Storage.GetFiles(dir, "thumbnail.*").FirstOrDefault();
                 SelectionItems.Add(new SelectedItemDisplay(
+                    () => DeleteSelectionItem(dir),
                     dir,
                     CurSelectionPath,
                     string.IsNullOrEmpty(thumbnailPath) ? null : Texture.FromStream(CurLevelResourceStore.GetStream(thumbnailPath))
                 ));
+            }
+        }
+
+        public void DeleteSelectionItem(string dir) {
+            Clear();
+            TryDeleteDirectory(dir);
+            CreateSelectionItems(dir);
+            LoadSelectionScreen();
+        }
+
+        private void TryDeleteDirectory(string dir) {
+            var hasException = true;
+            while (hasException) {
+                try {
+                    Storage.DeleteDirectory(dir);
+                    hasException = false;
+                } catch (Exception ex) {
+                    // Don't really know how to handle this weird async stuff
+                    Console.WriteLine(ex);
+                }
             }
         }
 
@@ -119,6 +143,7 @@ namespace S2VX.Game.SongSelection {
 
                 // Reload selection items
                 Clear();
+                CreateSelectionItems();
                 Schedule(LoadSelectionScreen);  // Only the update thread can mutate InternalChildren
             }
         }
@@ -132,6 +157,7 @@ namespace S2VX.Game.SongSelection {
             }
             CurLevelResourceStore = new StorageBackedResourceStore(Storage);
             GameBase.RegisterImportHandler(this);
+            CreateSelectionItems();
             LoadSelectionScreen();
         }
 
@@ -142,7 +168,6 @@ namespace S2VX.Game.SongSelection {
             var spacingMargin = 0.1f;
 
             if (DirectoryContainsDirectories("")) {
-                CreateSelectionItems();
                 InternalChildren = new Drawable[] {
                     new Border(CurSelectionPath, () => this.Exit()) {
                         Width = fullWidth,
