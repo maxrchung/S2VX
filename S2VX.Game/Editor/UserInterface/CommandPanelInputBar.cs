@@ -11,12 +11,12 @@ using System.Collections.Generic;
 
 namespace S2VX.Game.Editor.UserInterface {
     public class CommandPanelInputBar : FillFlowContainer {
-        public Dropdown<string> DropType { get; } = new BasicDropdown<string> { Width = 160 };
+        public Dropdown<string> DropType { get; } = new S2VXDropdown<string> { Width = 160 };
         public CommandPanelValueInput StartTime { get; }
         public CommandPanelValueInput EndTime { get; }
         public CommandPanelValueInput StartValue { get; } = new();
         public CommandPanelValueInput EndValue { get; } = new();
-        public Dropdown<string> DropEasing { get; } = new BasicDropdown<string> { Width = CommandPanel.InputSize.X };
+        public Dropdown<string> DropEasing { get; } = new S2VXDropdown<string> { Width = CommandPanel.InputSize.X };
         public Button BtnSave { get; }
 
         public static CommandPanelInputBar CreateAddInputBar(Action<ValueChangedEvent<string>> handleTypeSelect, Action handleAddClick,
