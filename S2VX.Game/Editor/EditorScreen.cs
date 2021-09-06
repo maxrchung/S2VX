@@ -1,5 +1,6 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -39,7 +40,15 @@ namespace S2VX.Game.Editor {
 
         private S2VXStory Story { get; }
         public S2VXTrack Track { get; }
-        private EditorUI EditorUI { get; set; }
+
+        /// <summary>
+        /// Determines whether the Editor UI is visible. This is defined as a
+        /// bindable so that this property can affect both hold note anchors and
+        /// editor screen elements.
+        /// </summary>
+        public Bindable<Visibility> EditorUIVisibility { get; } = new Bindable<Visibility>(Visibility.Visible);
+        public S2VXVisibilityContainer EditorUI { get; private set; }
+
         public Container<RelativeBox> NoteSelectionIndicators { get; } = new() {
             RelativePositionAxes = Axes.Both,
             RelativeSizeAxes = Axes.Both,
@@ -96,22 +105,21 @@ namespace S2VX.Game.Editor {
             EditorApproachRate = editorSettings.EditorApproachRate;
         }
 
-        private EditorUI CreateEditorUI() {
-            var editorUI = new EditorUI {
-                RelativeSizeAxes = Axes.Both,
+        private S2VXVisibilityContainer CreateEditorUI() {
+            var editorUI = new S2VXVisibilityContainer {
                 Children = new Drawable[] {
-                        NoteSelectionIndicators,
-                        ToolContainer,
-                        NotesTimeline,
-                        EditorInfoBar,
-                        CreateMenu(),
-                        Timeline,
-                        CommandPanel,
-                        MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)),
-                        TapPanel
-                    }
+                    NoteSelectionIndicators,
+                    ToolContainer,
+                    NotesTimeline,
+                    EditorInfoBar,
+                    CreateMenu(),
+                    Timeline,
+                    CommandPanel,
+                    MetadataPanel = new MetadataPanel(Path.GetDirectoryName(Story.StoryPath)),
+                    TapPanel
+                }
             };
-            editorUI.State.Value = Visibility.Visible;
+            editorUI.State.BindTo(EditorUIVisibility);
             return editorUI;
         }
 
@@ -417,7 +425,9 @@ namespace S2VX.Game.Editor {
 
         private void EditRedo() => Reversibles.Redo();
 
-        private void ViewEditorUI() => EditorUI.ToggleVisibility();
+        private void ViewEditorUI() => EditorUIVisibility.Value = EditorUIVisibility.Value == Visibility.Visible
+            ? Visibility.Hidden
+            : Visibility.Visible;
 
         private void ViewCommandPanel() => CommandPanel.ToggleVisibility();
 
