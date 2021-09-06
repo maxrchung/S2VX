@@ -13,6 +13,8 @@ namespace S2VX.Game.Story.Note {
     public class EditorHoldNote : HoldNote {
         public S2VXSample Hit { get; private set; }
 
+        public S2VXVisibilityContainer AnchorContainer { get; private set; }
+
         private int NumHitSounds { get; set; }
         private List<double> HitSoundTimes { get; set; }
 
@@ -27,10 +29,17 @@ namespace S2VX.Game.Story.Note {
             HitSoundTimes = new() { HitTime, EndTime };
             StartAnchor = new(this);
             EndAnchor = new(this);
-            AddInternal(AnchorPath);
-            AddInternal(StartAnchor);
-            AddInternal(MidAnchors);
-            AddInternal(EndAnchor);
+
+            AnchorContainer = new S2VXVisibilityContainer {
+                Children = new Drawable[] {
+                    AnchorPath,
+                    StartAnchor,
+                    MidAnchors,
+                    EndAnchor
+                }
+            };
+            AnchorContainer.State.BindTo(Editor.EditorUIVisibility);
+            AddInternal(AnchorContainer);
         }
 
         private Path AnchorPath { get; set; } = new() {
