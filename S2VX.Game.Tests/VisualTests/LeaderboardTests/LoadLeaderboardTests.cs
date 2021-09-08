@@ -14,7 +14,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         public void SetUpSteps() => AddStep("Clear all", Clear);
 
         [Test]
-        public void NoStoryboardFile_HasZeroEntries() {
+        public void Load_NoLeaderboardFile_HasZeroEntries() {
             var input = "doesNotExist.json";
             AddStep($"Add leaderboard {input}", () => {
                 Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
@@ -29,7 +29,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         }
 
         [Test]
-        public void InvalidStoryboardFile_HasMinusOneEntries() {
+        public void Load_InvalidLeaderboardFile_HasMinusOneEntries() {
             var input = "invalid.json";
             AddStep($"Add leaderboard {input}", () => {
                 Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
@@ -44,7 +44,7 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
         }
 
         [Test]
-        public void ValidStoryboardFile_HasThreeEntries() {
+        public void Load_ValidLeaderboardFile_HasThreeEntries() {
             var input = "valid.json";
             AddStep($"Add leaderboard {input}", () => {
                 Leaderboard = new LeaderboardContainer(StoryDirectory, input) {
@@ -57,5 +57,8 @@ namespace S2VX.Game.Tests.VisualTests.LeaderboardTests {
             });
             AddAssert($"Valid leaderboard with 3 entries", () => Leaderboard.EntryCount == 3);
         }
+
+        [Test]
+        public void Load_NullStoryDirectory_DoesNotThrowException() => AddStep($"Add leaderboard", () => Add(new LeaderboardContainer(null)));
     }
 }

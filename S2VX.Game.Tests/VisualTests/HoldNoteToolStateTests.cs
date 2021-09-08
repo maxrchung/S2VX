@@ -34,31 +34,31 @@ namespace S2VX.Game.Tests.VisualTests {
 
         [Test]
         public void AddHoldNote_Escape_DoesNotAddNote() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(Editor, new()));
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
             AddStep("Add start", () => InputManager.Click(MouseButton.Left));
             AddStep("Press escape", () => InputManager.PressKey(Key.Escape));
             AddStep("Release escape", () => InputManager.ReleaseKey(Key.Escape));
             AddStep("Seek to end", () => Editor.Seek(2000));
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
             AddStep("Try and add end", () => InputManager.Click(MouseButton.Right));
             AddAssert("Does not add note", () => Story.Notes.Children.Count == 0);
         }
 
         [Test]
         public void AddHoldNote_SameHitAndEndTime_DoesNotAddNote() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(Editor, new()));
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
             AddStep("Add start", () => InputManager.Click(MouseButton.Left));
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
             AddStep("Try and add end", () => InputManager.Click(MouseButton.Right));
             AddAssert("Does not add note", () => Story.Notes.Children.Count == 0);
         }
 
         // Adds a hold note that goes from (0,0) at 0 milliseconds to (200,200) at 2000 milliseconds
         private void AddStraightHoldNote() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(Editor, new()));
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
             AddStep("Add start", () => InputManager.Click(MouseButton.Left));
             AddStep("Seek to end", () => Editor.Seek(2000));
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
             AddStep("Add end", () => InputManager.Click(MouseButton.Right));
         }
 
@@ -107,13 +107,13 @@ namespace S2VX.Game.Tests.VisualTests {
 
         // Adds a hold note that goes from (0,0) at 0 milliseconds to (200, 0) at 1000 milliseconds to (200,200) at 2000 milliseconds
         private void AddMultiPointHoldNote() {
-            AddStep("Move mouse to start", () => InputManager.MoveMouseTo(Editor, new()));
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
             AddStep("Add start", () => InputManager.Click(MouseButton.Left));
             AddStep("Seek to end", () => Editor.Seek(1000));
-            AddStep("Move mouse to mid", () => InputManager.MoveMouseTo(Editor, new(200, 0)));
+            AddStep("Move mouse to mid", () => MoveMouseTo(Editor, new(200, 0)));
             AddStep("Add mid", () => InputManager.Click(MouseButton.Left));
             AddStep("Seek to end", () => Editor.Seek(2000));
-            AddStep("Move mouse to end", () => InputManager.MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
             AddStep("Add end", () => InputManager.Click(MouseButton.Right));
         }
 

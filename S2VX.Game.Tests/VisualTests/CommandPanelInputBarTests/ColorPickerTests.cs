@@ -2,7 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Testing;
 using osuTK.Graphics;
-using S2VX.Game.Editor.CommandPanel;
+using S2VX.Game.Editor.UserInterface;
 using S2VX.Game.Story.Command;
 
 namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {

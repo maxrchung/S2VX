@@ -48,7 +48,7 @@ namespace S2VX.Game.Tests.VisualTests {
                 }
                 originalNoteCount = Story.Notes.Children.Count;
             });
-            AddStep("Move mouse", () => InputManager.MoveMouseTo(Story.Notes.Children.First()));
+            AddStep("Move mouse", () => MoveMouseTo(Story.Notes.Children.First()));
             AddStep("Hold key", () => InputManager.PressKey(Key.Z));
             AddStep("Start clock", () => Stopwatch.Start());
             AddUntilStep("Wait until all notes are removed", () => Story.Notes.Children.Count == 0);
