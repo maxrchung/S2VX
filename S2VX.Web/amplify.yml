@@ -1,0 +1,14 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        build:
+          commands:
+            - dotnet publish -c Release -o release
+      artifacts:
+        baseDirectory: /release/wwwroot
+        files:
+          - '**/*'
+      cache:
+        paths: []
+    appRoot: S2VX.Web
