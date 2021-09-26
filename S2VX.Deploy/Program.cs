@@ -1,5 +1,4 @@
 ﻿using Amazon.CDK;
-using System.Diagnostics.CodeAnalysis;
 
 namespace S2VX.Deploy {
     internal sealed class Program {

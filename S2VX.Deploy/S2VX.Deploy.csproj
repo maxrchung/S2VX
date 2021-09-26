@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Amazon.CDK" Version="1.123.0" />
     <PackageReference Include="Amazon.CDK.AWS.Amplify" Version="1.123.0" />
+    <PackageReference Include="Amazon.CDK.AWS.CodeBuild" Version="1.123.0" />
+    <PackageReference Include="Amazon.CDK.AWS.Route53" Version="1.123.0" />
   </ItemGroup>
 
 </Project>
