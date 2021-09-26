@@ -52,16 +52,16 @@ jobs:
     - name: CDK synth
       uses: two4suited/aws-cdk-dotnet-github-action@master
       with:
-        cdk_subcommand: 'diff'
+        cdk_subcommand: diff
 
 
     - name: CDK diff
       uses: two4suited/aws-cdk-dotnet-github-action@master
       with:
-        cdk_subcommand: 'synth'
+        cdk_subcommand: synth
 
     - name: CDK deploy
       uses: two4suited/aws-cdk-dotnet-github-action@master
       with:
-        cdk_subcommand: 'deploy'
-        args: '--require-approval never'
+        cdk_subcommand: deploy
+        args: --require-approval never
