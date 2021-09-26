@@ -1,6 +1,5 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.Amplify;
-using Amazon.CDK.AWS.Route53;
 using Amplify = Amazon.CDK.AWS.Amplify;
 
 namespace S2VX.Deploy {
