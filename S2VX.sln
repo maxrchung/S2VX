@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoryMerge.Tests", "StoryMe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Framework", "osu-framework\osu.Framework\osu.Framework.csproj", "{DCA345DD-EE5B-4D3A-BACA-F7D952141B31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S2VX.Web", "S2VX.Web\S2VX.Web.csproj", "{B715C90B-9C0F-428F-8C15-CD7109404A31}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,18 +118,6 @@ Global
 		{DCA345DD-EE5B-4D3A-BACA-F7D952141B31}.Release|iPhone.Build.0 = Release|Any CPU
 		{DCA345DD-EE5B-4D3A-BACA-F7D952141B31}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{DCA345DD-EE5B-4D3A-BACA-F7D952141B31}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|iPhone.Build.0 = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{B715C90B-9C0F-428F-8C15-CD7109404A31}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
