@@ -5,7 +5,7 @@ using Amplify = Amazon.CDK.AWS.Amplify;
 namespace S2VX.Deploy {
     public class S2VXStack : Stack {
         internal S2VXStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props) {
-            var app = new Amplify.App(this, "S2VX.Amplify", new Amplify.AppProps {
+            var app = new Amplify.App(this, "S2VX", new Amplify.AppProps {
                 // Configurations for Amplify to find and access our repo
                 SourceCodeProvider = new GitHubSourceCodeProvider(new GitHubSourceCodeProviderProps {
                     Owner = "maxrchung",
@@ -18,7 +18,7 @@ namespace S2VX.Deploy {
             });
 
             // Links our s2vx.com domain to the repository branch
-            var branch = app.AddBranch("amplify-deploy");
+            var branch = app.AddBranch("release");
             var domain = app.AddDomain("s2vx.com");
             domain.MapRoot(branch);
         }
