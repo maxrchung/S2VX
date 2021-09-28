@@ -281,3 +281,11 @@ dotnet_diagnostic.CA1002.severity = suggestion
 # However, as far as I can tell, not only are we declaring the namespaces
 # correctly, but the rule's suggested change is incorrect.
 dotnet_diagnostic.IDE0130.severity = suggestion
+
+# CA1806: Constructor creates an instance that is never used
+# AWS CDK best practice is to create new instances that are not used
+dotnet_diagnostic.CA1806.severity = suggestion
+
+# CA1711: Identifiers should not have incorrect suffix
+# AWS CDK best practice encourages using Stack as a suffix
+dotnet_diagnostic.CA1711.severity = suggestion
