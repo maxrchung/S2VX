@@ -57,13 +57,13 @@ You can use any of these inputs to hit notes:
 
 You can drag an mp3 file into the song selection screen to create a new story, then you can edit it in the S2VX editor. The editor lets you place notes, manipulate the camera, add commands, among other things. You can view all the available tools and hotkeys by going through the top menu. Here are a few key features we support:
 
-## Tools
+### Tools
 * Select Tool: `LClick` to select and move notes
 * Note Tool: `LClick` to place regular notes
 * Hold Note Tool: `LClick` to place hold notes, `RClick` to end hold note
 * Camera Tool: `LClick` to move camera, `RClick` to rotate camera, `MClick` to scale camera
 
-## Command Panel
+### Command Panel
 
 Use the Command Panel in the editor to create, update, and delete commands. A command has a start time, start value, end time, end value, and customizes the story's behavior. Here are a few examples of what you can do:
 
