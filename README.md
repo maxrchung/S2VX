@@ -3,7 +3,7 @@
 
 # S2VX
 
-S2VX is a rhythm game where you click the squares to the beat. It is heavily inspired by [osu!](https://osu.ppy.sh) and is built with [osu!framework](https://github.com/ppy/osu-framework). S2VX uses a timeable, movable, scalable, rotatable camera system to place notes, bringing you more interactive gameplay and motion sickness.
+S2VX is a rhythm game where you click the squares to the beat. It is heavily inspired by [osu!](https://osu.ppy.sh) and is built with [osu!framework](https://github.com/ppy/osu-framework). S2VX uses a timeable, movable, scalable, rotatable camera system to place notes, enabling some more interactive gameplay and motion sickness.
 
 Check out our website and some demos: https://S2VX.com
 
