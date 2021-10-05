@@ -71,12 +71,12 @@ You can drag an mp3 file into the song selection screen to create a new story, t
 
 <img src="https://user-images.githubusercontent.com/3955187/135948393-8af71640-6c18-40be-8c2b-c0d446800251.png" width="666" />
 
-Use the Command Panel in the editor to create, update, and delete commands. A command has a start time, start value, end time, end value, and customizes the story's behavior. Here are a few examples of what you can do:
+Use the Command Panel in the editor to create, update, and delete commands. A command customizes a story's behavior with a start time, start value, end time, and end value. Here are a few examples of what commands can do:
 
-* `NotesAlpha|0|0.7|0|0.7|`: Set the transparency of regular notes to 0.7 at the start of the story.
-* `HoldNotesOutlineColor|0|(1,1,1)|0|(1,1,1)`: Set the hold note outline color to white at the start of the story.
-* `NotesShowTime|0|800|0|800`: Set the note show time to 800 milliseconds at the start of the story. A note's life time determined by fade in time, show time, and fade out time. The note should be hit at the end of the note's show time.
-* `TimingChange|0|242|368002|242|`: Set the editor BPM to 242 from time 0 to 368002 milliseconds. This has no visible impact in gameplay but makes it much easier to place notes in the editor.
+* `NotesAlpha|0|0.7|0|0.7|` Sets the transparency of regular notes to 0.7 at the start of the story.
+* `HoldNotesOutlineColor|0|(1,1,1)|0|(1,1,1)` Sets the hold note outline color to white at the start of the story.
+* `NotesShowTime|0|800|0|800` Sets the note show time to 800 milliseconds at the start of the story. A note's visibility is determined by fade in time, show time, and fade out time. S2VX will show the note so that it should be hit at the end of the note's show time. For example, a note is placed at time 1000 and has fade in time 100, show time 800, and fade out time 100. The note will fade in at time 100-200, stay shown at time 200-1000, and fade out at time 1000-1100.
+* `TimingChange|0|242|368002|242|` Sets the editor BPM to 242 from time 0 to 368002 milliseconds. This has no visible impact in gameplay but makes it much easier to place notes in the editor.
 
 # How 2 Thank
 
