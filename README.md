@@ -17,7 +17,7 @@ For Windows users, you can follow these instructions to run the game:
 
 Alternatively, you can build and run the S2VX source code yourself:
 
-1. Install the correct SDK for [.NET](https://dotnet.microsoft.com). You can find the version we're using by checking the `<TargetFramework>` tag in one of our `csproj` file: https://github.com/maxrchung/S2VX/blob/master/S2VX.Desktop/S2VX.Desktop.csproj#L3
+1. Install the correct [SDK for .NET](https://dotnet.microsoft.com). You can find the version we're using by checking the `<TargetFramework>` tag in one of our `csproj` file: https://github.com/maxrchung/S2VX/blob/master/S2VX.Desktop/S2VX.Desktop.csproj#L3
 
 2. Clone the repository:
 
