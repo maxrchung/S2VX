@@ -39,6 +39,8 @@ dotnet run
 
 # How 2 Play
 
+<img src="https://user-images.githubusercontent.com/3955187/135947355-b3c50f29-e7d7-4b69-bcad-4c8d9a03338b.png" width="666" />
+
 S2VX plays very similarly to osu!standard. Notes appear on the screen and your goal is to hit them as accurately as possible. In S2VX, there are regular notes as well as hold notes. Regular notes only need a single click to register a score, while hold notes need a button held down for a duration. Score is calculated based on hit error, so the lower the score the better.
 
 You can use any of these inputs to hit notes:
@@ -55,6 +57,8 @@ You can use any of these inputs to hit notes:
 
 # How 2 Edit
 
+<img src="https://user-images.githubusercontent.com/3955187/135947872-e5cb8a74-1044-43c9-8b6f-111aa561d906.png" width="666" />
+
 You can drag an mp3 file into the song selection screen to create a new story, then you can edit it in the S2VX editor. The editor lets you place notes, manipulate the camera, add commands, among other things. You can view all the available tools and hotkeys by going through the top menu. Here are a few key features we support:
 
 ### Tools
@@ -64,6 +68,8 @@ You can drag an mp3 file into the song selection screen to create a new story, t
 * Camera Tool: `LClick` to move camera, `RClick` to rotate camera, `MClick` to scale camera
 
 ### Command Panel
+
+<img src="https://user-images.githubusercontent.com/3955187/135948393-8af71640-6c18-40be-8c2b-c0d446800251.png" width="666" />
 
 Use the Command Panel in the editor to create, update, and delete commands. A command has a start time, start value, end time, end value, and customizes the story's behavior. Here are a few examples of what you can do:
 
