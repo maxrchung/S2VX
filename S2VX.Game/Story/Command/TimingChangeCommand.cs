@@ -7,11 +7,12 @@
             story.BPM = bpm;
             story.Offset = StartTime;
         }
-        protected override string ToValues() => $"{StartValue}|{EndValue}";
+        protected override string ToStartValue() => $"{StartValue}";
+        protected override string ToEndValue() => $"{EndValue}";
         public static TimingChangeCommand FromString(string[] split) {
             var command = new TimingChangeCommand() {
-                StartValue = S2VXUtils.StringToFloat(split[4]),
-                EndValue = S2VXUtils.StringToFloat(split[5]),
+                StartValue = S2VXUtils.StringToFloat(split[2]),
+                EndValue = S2VXUtils.StringToFloat(split[4]),
             };
             return command;
         }

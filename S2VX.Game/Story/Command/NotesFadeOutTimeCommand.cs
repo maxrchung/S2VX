@@ -6,11 +6,12 @@
             var fadeOutTime = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Notes.FadeOutTime = fadeOutTime;
         }
-        protected override string ToValues() => $"{StartValue}|{EndValue}";
+        protected override string ToStartValue() => $"{StartValue}";
+        protected override string ToEndValue() => $"{EndValue}";
         public static NotesFadeOutTimeCommand FromString(string[] split) {
             var command = new NotesFadeOutTimeCommand() {
-                StartValue = S2VXUtils.StringToFloat(split[4]),
-                EndValue = S2VXUtils.StringToFloat(split[5]),
+                StartValue = S2VXUtils.StringToFloat(split[2]),
+                EndValue = S2VXUtils.StringToFloat(split[4]),
             };
             return command;
         }

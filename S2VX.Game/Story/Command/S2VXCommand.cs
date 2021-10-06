@@ -27,8 +27,9 @@ namespace S2VX.Game.Story.Command {
             return compare;
         }
 
-        protected abstract string ToValues();
-        public override string ToString() => $"{GetCommandName()}|{StartTime}|{EndTime}|{Easing}|{ToValues()}";
+        protected abstract string ToStartValue();
+        protected abstract string ToEndValue();
+        public override string ToString() => $"{GetCommandName()}|{StartTime}|{ToStartValue()}|{EndTime}|{ToEndValue()}|{Easing}";
 
         public static string GetShortName(string fullName) => fullName.Replace("Command", "", StringComparison.Ordinal);
 
@@ -67,8 +68,8 @@ namespace S2VX.Game.Story.Command {
             var staticMethod = systemType.GetMethod("FromString", BindingFlags.Public | BindingFlags.Static);
             var command = staticMethod.Invoke(null, new object[] { split }) as S2VXCommand;
             command.StartTime = S2VXUtils.StringToDouble(split[1]);
-            command.EndTime = S2VXUtils.StringToDouble(split[2]);
-            command.Easing = Enum.Parse<Easing>(split[3]);
+            command.EndTime = S2VXUtils.StringToDouble(split[3]);
+            command.Easing = Enum.Parse<Easing>(split[5]);
             return command;
         }
 

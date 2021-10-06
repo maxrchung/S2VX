@@ -86,10 +86,10 @@ namespace S2VX.Game.Editor.UserInterface {
             var data = command.ToString().Split('{', '|', '}');
             DropType.Current.Value = data[0];
             StartTime.TxtValue.Text = data[1];
-            EndTime.TxtValue.Text = data[2];
-            DropEasing.Current.Value = data[3];
-            StartValue.TxtValue.Text = data[4];
-            EndValue.TxtValue.Text = data[5];
+            StartValue.TxtValue.Text = data[2];
+            EndTime.TxtValue.Text = data[3];
+            EndValue.TxtValue.Text = data[4];
+            DropEasing.Current.Value = data[5];
             Reset();
         }
 

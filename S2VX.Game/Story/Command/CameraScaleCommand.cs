@@ -11,11 +11,12 @@ namespace S2VX.Game.Story.Command {
             story.Camera.SetScale(this, scale);
             story.Camera.ReleaseCameraScaleLock(this);
         }
-        protected override string ToValues() => $"{S2VXUtils.Vector2ToString(StartValue)}|{S2VXUtils.Vector2ToString(EndValue)}";
+        protected override string ToStartValue() => S2VXUtils.Vector2ToString(StartValue);
+        protected override string ToEndValue() => S2VXUtils.Vector2ToString(EndValue);
         public static CameraScaleCommand FromString(string[] split) {
             var command = new CameraScaleCommand() {
-                StartValue = S2VXUtils.StringToVector2(split[4]),
-                EndValue = S2VXUtils.StringToVector2(split[5]),
+                StartValue = S2VXUtils.StringToVector2(split[2]),
+                EndValue = S2VXUtils.StringToVector2(split[4]),
             };
             return command;
         }

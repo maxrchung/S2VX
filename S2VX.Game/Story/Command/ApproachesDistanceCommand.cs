@@ -6,11 +6,12 @@
             var distance = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Approaches.Distance = distance;
         }
-        protected override string ToValues() => $"{StartValue}|{EndValue}";
+        protected override string ToStartValue() => $"{StartValue}";
+        protected override string ToEndValue() => $"{EndValue}";
         public static ApproachesDistanceCommand FromString(string[] split) {
             var command = new ApproachesDistanceCommand() {
-                StartValue = S2VXUtils.StringToFloat(split[4]),
-                EndValue = S2VXUtils.StringToFloat(split[5]),
+                StartValue = S2VXUtils.StringToFloat(split[2]),
+                EndValue = S2VXUtils.StringToFloat(split[4]),
             };
             return command;
         }
