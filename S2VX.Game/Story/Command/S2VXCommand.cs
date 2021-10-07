@@ -29,7 +29,8 @@ namespace S2VX.Game.Story.Command {
 
         protected abstract string ToStartValue();
         protected abstract string ToEndValue();
-        public override string ToString() => $"{GetCommandName()}|{StartTime}|{ToStartValue()}|{EndTime}|{ToEndValue()}|{Easing}";
+        public override string ToString() =>
+            $"{GetCommandName()}|{S2VXUtils.DoubleToString(StartTime, 4)}|{ToStartValue()}|{S2VXUtils.DoubleToString(EndTime, 4)}|{ToEndValue()}|{Easing}";
 
         public static string GetShortName(string fullName) => fullName.Replace("Command", "", StringComparison.Ordinal);
 

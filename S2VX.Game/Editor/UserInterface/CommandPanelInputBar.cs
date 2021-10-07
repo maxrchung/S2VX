@@ -8,6 +8,7 @@ using S2VX.Game.Editor.Containers;
 using S2VX.Game.Story.Command;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace S2VX.Game.Editor.UserInterface {
     public class CommandPanelInputBar : FillFlowContainer {
@@ -73,10 +74,10 @@ namespace S2VX.Game.Editor.UserInterface {
             var data = new string[] {
                 $"{DropType.Current.Value}",
                 $"{StartTime.TxtValue.Current.Value}",
-                $"{EndTime.TxtValue.Current.Value}",
-                $"{DropEasing.Current.Value}",
                 $"{StartValue.TxtValue.Current.Value}",
-                $"{EndValue.TxtValue.Current.Value}"
+                $"{EndTime.TxtValue.Current.Value}",
+                $"{EndValue.TxtValue.Current.Value}",
+                $"{DropEasing.Current.Value}"
             };
             var commandString = string.Join("|", data);
             return commandString;

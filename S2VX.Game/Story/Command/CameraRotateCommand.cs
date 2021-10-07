@@ -8,8 +8,8 @@
             story.Camera.SetRotation(this, rotation);
             story.Camera.ReleaseCameraRotationLock(this);
         }
-        protected override string ToStartValue() => $"{StartValue}";
-        protected override string ToEndValue() => $"{EndValue}";
+        protected override string ToStartValue() => S2VXUtils.FloatToString(StartValue, 4);
+        protected override string ToEndValue() => S2VXUtils.FloatToString(EndValue, 4);
         public static CameraRotateCommand FromString(string[] split) {
             var command = new CameraRotateCommand() {
                 StartValue = S2VXUtils.StringToFloat(split[2]),

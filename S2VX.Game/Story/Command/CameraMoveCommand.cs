@@ -10,8 +10,8 @@ namespace S2VX.Game.Story.Command {
             story.Camera.SetPosition(this, position);
             story.Camera.ReleaseCameraPositionLock(this);
         }
-        protected override string ToStartValue() => S2VXUtils.Vector2ToString(StartValue);
-        protected override string ToEndValue() => S2VXUtils.Vector2ToString(EndValue);
+        protected override string ToStartValue() => S2VXUtils.Vector2ToString(StartValue, 4);
+        protected override string ToEndValue() => S2VXUtils.Vector2ToString(EndValue, 4);
         public static CameraMoveCommand FromString(string[] split) {
             var command = new CameraMoveCommand() {
                 StartValue = S2VXUtils.StringToVector2(split[2]),
