@@ -1,0 +1,19 @@
+# https://swimburger.net/blog/dotnet/how-to-deploy-blazor-webassembly-to-aws-amplify
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - curl -sSL https://dot.net/v1/dotnet-install.sh > dotnet-install.sh
+            - chmod +x *.sh
+            - ./dotnet-install.sh -c 5.0 -InstallDir ./dotnet5
+            - ./dotnet5/dotnet --version
+        build:
+          commands:
+            - ./dotnet5/dotnet publish -c Release -o release
+      artifacts:
+        baseDirectory: /release/wwwroot
+        files:
+          - '**/*'
+    appRoot: S2VX.Web
