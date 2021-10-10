@@ -6,11 +6,12 @@
             var thickness = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Approaches.Thickness = thickness;
         }
-        protected override string ToValues() => $"{StartValue}|{EndValue}";
+        protected override string ToStartValue() => S2VXUtils.FloatToString(StartValue, 4);
+        protected override string ToEndValue() => S2VXUtils.FloatToString(EndValue, 4);
         public static ApproachesThicknessCommand FromString(string[] split) {
             var command = new ApproachesThicknessCommand() {
-                StartValue = S2VXUtils.StringToFloat(split[4]),
-                EndValue = S2VXUtils.StringToFloat(split[5]),
+                StartValue = S2VXUtils.StringToFloat(split[2]),
+                EndValue = S2VXUtils.StringToFloat(split[4]),
             };
             return command;
         }

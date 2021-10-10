@@ -65,7 +65,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
             AddStep("Update start value", () => InputBar.StartValue.TxtValue.Current.Value = "0.1");
             AddStep("Update end value", () => InputBar.EndValue.TxtValue.Current.Value = "1");
             AddStep("Update easing", () => InputBar.DropEasing.Current.Value = Easing.OutQuint.ToString());
-            AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridAlpha|123|456789|OutQuint|0.1|1");
+            AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridAlpha|123|0.1|456789|1|OutQuint");
         }
 
         private void SetUpCommandToValues() {
@@ -119,7 +119,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
         [Test]
         public void CommandToValues_GivenCommand_HasCorrectString() {
             SetUpCommandToValues();
-            AddAssert("Has correct string", () => InputBar.ValuesToString() == "HoldNotesAlpha|999|999|InOutQuad|0.999|0.001");
+            AddAssert("Has correct string", () => InputBar.ValuesToString() == "HoldNotesAlpha|999|0.999|999|0.001|InOutQuad");
         }
     }
 }

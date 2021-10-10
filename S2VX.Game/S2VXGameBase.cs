@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
@@ -86,5 +87,10 @@ namespace S2VX.Game {
         /// </summary>
         /// <param name="handler">The previously registered handler.</param>
         public void UnregisterImportHandler(SongSelectionScreen handler) => FileImporters.Remove(handler);
+
+        protected override IDictionary<FrameworkSetting, object> GetFrameworkConfigDefaults() =>
+            new Dictionary<FrameworkSetting, object> {
+                { FrameworkSetting.VolumeUniversal, 0.5}
+            };
     }
 }

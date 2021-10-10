@@ -13,7 +13,7 @@ namespace S2VX.Game.Tests.UnitTests {
 
         [Test]
         public void FromString_DoubleCommand() {
-            var input = "ApproachesDistance|0.1|0.2|None|0.1|1.0";
+            var input = "ApproachesDistance|0.1|0.1|0.2|1.0|None";
             var expected = new ApproachesDistanceCommand() {
                 StartTime = 0.1f,
                 EndTime = 0.2f,
@@ -31,7 +31,7 @@ namespace S2VX.Game.Tests.UnitTests {
 
         [Test]
         public void FromString_ColorCommand() {
-            var input = "BackgroundColor|0.1|0.2|None|(0,0,0)|(1,1,1)";
+            var input = "BackgroundColor|0.1|(0,0,0)|0.2|(1,1,1)|None";
             var expected = new BackgroundColorCommand() {
                 StartTime = 0.1f,
                 EndTime = 0.2f,
@@ -49,7 +49,7 @@ namespace S2VX.Game.Tests.UnitTests {
 
         [Test]
         public void FromString_Vector2Command() {
-            var input = "CameraMove|0.1|0.2|None|(0,0)|(1,1)";
+            var input = "CameraMove|0.1|(0,0)|0.2|(1,1)|None";
             var expected = new CameraMoveCommand() {
                 StartTime = 0.1f,
                 EndTime = 0.2f,

@@ -8,11 +8,12 @@ namespace S2VX.Game.Story.Command {
             var value = S2VXUtils.ClampedInterpolation(time, StartValue, EndValue, StartTime, EndTime, Easing);
             story.Approaches.ApproachColor = value;
         }
-        protected override string ToValues() => $"{S2VXUtils.Color4ToString(StartValue)}|{S2VXUtils.Color4ToString(EndValue)}";
+        protected override string ToStartValue() => S2VXUtils.Color4ToString(StartValue);
+        protected override string ToEndValue() => S2VXUtils.Color4ToString(EndValue);
         public static ApproachesColorCommand FromString(string[] split) {
             var command = new ApproachesColorCommand() {
-                StartValue = S2VXUtils.StringToColor4(split[4]),
-                EndValue = S2VXUtils.StringToColor4(split[5]),
+                StartValue = S2VXUtils.StringToColor4(split[2]),
+                EndValue = S2VXUtils.StringToColor4(split[4]),
             };
             return command;
         }
