@@ -73,7 +73,7 @@ namespace S2VX.Game {
             }
         }
 
-        public static string Color4ToString(Color4 data) => $"({data.R},{data.G},{data.B})";
+        public static string Color4ToString(Color4 data) => $"({FloatToString(data.R, 4)},{FloatToString(data.G, 4)},{FloatToString(data.B, 4)})";
 
         // Since .NET Core 3.0, values that are too large or small are rounded
         // to infinity. This can cause crashes within our code since arithmetic
