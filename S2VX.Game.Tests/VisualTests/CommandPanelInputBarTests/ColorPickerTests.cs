@@ -49,7 +49,7 @@ namespace S2VX.Game.Tests.VisualTests.CommandPanelInputBarTests {
             AddStep("Update start value", () => InputBar.StartValue.ColorPicker.Current.Value = Color4.Blue);
             AddStep("Update end value", () => InputBar.EndValue.ColorPicker.Current.Value = Color4.Blue);
             AddStep("Update easing", () => InputBar.DropEasing.Current.Value = Easing.OutBounce.ToString());
-            AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridColor|12|345|OutBounce|(0,0,1)|(0,0,1)");
+            AddAssert("Creates correct string", () => InputBar.ValuesToString() == "GridColor|12|(0,0,1)|345|(0,0,1)|OutBounce");
         }
     }
 }
