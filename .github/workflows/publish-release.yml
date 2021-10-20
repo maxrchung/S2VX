@@ -20,7 +20,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core
+    - name: Setup .NET 5
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
@@ -48,6 +48,12 @@ jobs:
         asset_path: ./S2VX.Desktop/bin/publish/S2VX.zip
         asset_name: S2VX.zip
         asset_content_type: application/zip
+
+    # CDK currently only works with .NET 3.1
+    - name: Setup .NET 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
 
     - name: CDK synth
       uses: two4suited/aws-cdk-dotnet-github-action@master
