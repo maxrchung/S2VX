@@ -64,7 +64,7 @@ You can drag an mp3 file into the song selection screen to create a new story, t
 ### Tools
 * Select Tool: `LClick` to select and move notes.
 * Note Tool: `LClick` to place regular notes.
-* Hold Note Tool: `LClick` to place hold notes and add anchor/waypoints, `RClick` to end hold note. Hold notes always progress at a constant speed.
+* Hold Note Tool: `LClick` to place hold notes and add anchor/waypoints, `RClick` to end hold note. Hold notes always progress at a constant speed. 
 * Camera Tool: `LClick` to move camera, `RClick` to rotate camera, `MClick` to scale camera.
 
 ### Command Panel
