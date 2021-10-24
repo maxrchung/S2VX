@@ -14,13 +14,25 @@ namespace S2VX.Game.Story.Note {
         public EditorHoldNoteMidAnchor(EditorHoldNote note, int midIndex) : base(note) => MidIndex = midIndex;
 
         protected override bool OnDragStart(DragStartEvent e) {
+            if (!CanUpdateAnchor(Editor)) {
+                return false;
+            }
             OldCoords = Note.MidCoordinates[MidIndex];
             return true;
         }
 
-        protected override void OnDrag(DragEvent e) => Note.UpdateMidCoordinates(Editor.MousePosition, MidIndex);
+        protected override void OnDrag(DragEvent e) {
+            if (!CanUpdateAnchor(Editor)) {
+                return;
+            }
+            Note.UpdateMidCoordinates(Editor.MousePosition, MidIndex);
+        }
 
-        protected override void OnDragEnd(DragEndEvent e) =>
+        protected override void OnDragEnd(DragEndEvent e) {
+            if (!CanUpdateAnchor(Editor)) {
+                return;
+            }
             Editor.Reversibles.Push(new ReversibleUpdateHoldNoteMidCoordinates(Note, OldCoords, Editor.MousePosition, MidIndex));
+        }
     }
 }
