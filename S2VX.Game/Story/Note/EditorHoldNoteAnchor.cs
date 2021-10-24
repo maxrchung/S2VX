@@ -1,6 +1,8 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osuTK;
+using S2VX.Game.Editor;
+using S2VX.Game.Editor.ToolState;
 
 namespace S2VX.Game.Story.Note {
     public class EditorHoldNoteAnchor : Box {
@@ -15,5 +17,13 @@ namespace S2VX.Game.Story.Note {
             Note = note;
             Size = new(AnchorWidth);
         }
+
+        /// <summary>
+        /// Guard clause to ensure that only select tool can update anchors.
+        /// Null exception can be thrown if anchors are updated during hold note
+        /// creation.
+        /// </summary>
+        protected static bool CanUpdateAnchor(EditorScreen editor) =>
+            editor.ToolState is SelectToolState;
     }
 }

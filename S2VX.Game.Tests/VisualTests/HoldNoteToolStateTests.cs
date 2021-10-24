@@ -143,5 +143,16 @@ namespace S2VX.Game.Tests.VisualTests {
             Redo();
             AddAssert("Adds note", () => Story.Notes.Children.Count == 1);
         }
+
+        [Test]
+        public void AddHoldNote_ClickAndDrag_DoesNotCrash() {
+            AddStep("Move mouse to start", () => MoveMouseTo(Editor, new()));
+            AddStep("Add start", () => InputManager.Click(MouseButton.Left));
+            AddStep("Seek to end", () => Editor.Seek(2000));
+            AddStep("Move mouse to end", () => MoveMouseTo(Editor, new(200, 200)));
+            AddStep("Press", () => InputManager.PressButton(MouseButton.Left));
+            AddStep("Move mouse", () => MoveMouseTo(Editor, new(210, 210)));
+            AddStep("Release", () => InputManager.ReleaseButton(MouseButton.Left));
+        }
     }
 }
