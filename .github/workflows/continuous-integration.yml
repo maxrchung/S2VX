@@ -13,18 +13,13 @@ jobs:
     strategy:
       matrix:
         os:
-        # - windows-latest
+        - windows-latest
         - ubuntu-latest
-        # - macos-latest
+        - macos-latest
 
     env:
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     steps:
     - name: Checkout code
@@ -52,26 +47,3 @@ jobs:
 
     - name: Test project
       run: dotnet test --configuration Release --no-build
-
-      # CDK currently only works with .NET 3.1
-    - name: Setup .NET 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-
-    - name: CDK synth
-      uses: two4suited/aws-cdk-dotnet-github-action@master
-      with:
-        cdk_subcommand: diff
-
-
-    - name: CDK diff
-      uses: two4suited/aws-cdk-dotnet-github-action@master
-      with:
-        cdk_subcommand: synth
-
-    - name: CDK deploy
-      uses: two4suited/aws-cdk-dotnet-github-action@master
-      with:
-        cdk_subcommand: deploy
-        args: --require-approval never
