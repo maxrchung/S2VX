@@ -45,7 +45,7 @@ namespace S2VX.Game.Story.Note {
             var totalDistance = 0f;
             var startCoordinate = allCoordinates.First();
             foreach (var coordinate in allCoordinates.Skip(1)) {
-                var distance = (coordinate - startCoordinate).LengthFast;
+                var distance = (coordinate - startCoordinate).Length;
                 totalDistance += distance;
                 startCoordinate = coordinate;
             }
@@ -123,7 +123,7 @@ namespace S2VX.Game.Story.Note {
             var startCoordinates = allCoordinates.First();
             var totalDistance = 0f;
             foreach (var coordinates in allCoordinates.Skip(1)) {
-                var distance = (coordinates - startCoordinates).LengthFast;
+                var distance = (coordinates - startCoordinates).Length;
 
                 if (totalDistance + distance > endDistance) {
                     var remainingDistance = endDistance - totalDistance;
@@ -154,7 +154,7 @@ namespace S2VX.Game.Story.Note {
             var hasFoundStart = false;
             var offsetCoordinates = new Vector2();
             foreach (var coordinates in allCoordinates.Skip(1)) {
-                var distance = (coordinates - startCoordinates).LengthFast;
+                var distance = (coordinates - startCoordinates).Length;
 
                 if (!hasFoundStart) {
                     if (totalDistance + distance > startDistance) {
