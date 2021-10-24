@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         os:
-        - windows-latest
+        # - windows-latest
         - ubuntu-latest
-        - macos-latest
+        # - macos-latest
 
     env:
       DOTNET_NOLOGO: true
@@ -47,3 +47,26 @@ jobs:
 
     - name: Test project
       run: dotnet test --configuration Release --no-build
+
+      # CDK currently only works with .NET 3.1
+    - name: Setup .NET 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: CDK synth
+      uses: two4suited/aws-cdk-dotnet-github-action@master
+      with:
+        cdk_subcommand: diff
+
+
+    - name: CDK diff
+      uses: two4suited/aws-cdk-dotnet-github-action@master
+      with:
+        cdk_subcommand: synth
+
+    - name: CDK deploy
+      uses: two4suited/aws-cdk-dotnet-github-action@master
+      with:
+        cdk_subcommand: deploy
+        args: --require-approval never
