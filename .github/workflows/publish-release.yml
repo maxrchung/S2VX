@@ -60,7 +60,6 @@ jobs:
       with:
         cdk_subcommand: diff
 
-
     - name: CDK diff
       uses: two4suited/aws-cdk-dotnet-github-action@master
       with:
