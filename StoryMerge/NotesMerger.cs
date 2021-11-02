@@ -66,12 +66,15 @@ namespace StoryMerge {
                 Coordinates = note.Coordinates,
             };
 
-        private static HoldNote CopyHoldNote(HoldNote holdNote) =>
-            new EditorHoldNote {
+        private static HoldNote CopyHoldNote(HoldNote holdNote) {
+            var newNote = new EditorHoldNote {
                 HitTime = holdNote.HitTime,
                 EndTime = holdNote.EndTime,
                 Coordinates = holdNote.Coordinates,
-                EndCoordinates = holdNote.EndCoordinates
+                EndCoordinates = holdNote.EndCoordinates,
             };
+            newNote.MidCoordinates.AddRange(holdNote.MidCoordinates);
+            return newNote;
+        }
     }
 }
